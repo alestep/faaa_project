@@ -1,5 +1,0 @@
-INDEX VERSION 1.126+/Users/Alexander/Documents/Skola/Chalmers/Programmering/Software Engineering/faaa_project/.metadata/.plugins/org.eclipse.jdt.core
-4069392642.index
-45894816.index
-1503574841.index
-2677216316.index
