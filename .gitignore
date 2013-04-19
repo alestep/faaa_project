@@ -30,3 +30,4 @@ proguard/
 
 # Other files
 .metadata/*
+.DS_Store
