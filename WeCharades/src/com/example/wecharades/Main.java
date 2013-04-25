@@ -2,9 +2,10 @@ package com.example.wecharades;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.view.Menu;
 
-public class Main extends Activity {
+public class Main extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
