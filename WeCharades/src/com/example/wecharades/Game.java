@@ -4,6 +4,7 @@ public class Game {
 	private Turn[] turns;
 	private Player p1;
 	private Player p2;
+	private Player thisPlayer;
 	private int turn = 0;
 	private Wordlist wordlist;
 	
@@ -20,28 +21,37 @@ public class Game {
 		turns = new Turn[6];
 		
 		//Creates the six rounds
-		Player playerTurn;
 		for(int i=0 ; i<turns.length ; i++){
-			
 			//Sets the players turn. Player 1 always starts a double-round
-			playerTurn = (i%2 == 0) ? p1 : p2; 
-			
-			turns[i] = new Turn(playerTurn);
+			if(i%2 == 0)
+				turns[i] = new Turn(p1, p2, wordlist.getWord());
+			else 
+				turns[i] = new Turn(p2, p1, wordlist.getWord());
 		}
 	}
 	
 	/**
-	 * Method to set the video link (or other representation) for the turn
-	 * @param video - the link to the video
+	 * Play the active turn. If it isn't the native player's turn, nothing will happen. 
 	 */
-	public void setVideo(String video){
-		turns[turn].setVideo(video);
+	public void play(){
+		Player p = turns[turn].getActivePlayer();
+		if(p != null && p.equals(thisPlayer)){
+			//TODO We need to generate a new view and stuff here.
+			turns[turn].playTurn();
+		}
+		else{
+			//TODO if this player is not the active one, the button should be grayed out.
+		}
 	}
 	
 	/**
-	 * Advance one turn
+	 * Returns a representation of the current score. All non-played turns will have 0 score.
+	 * @return
 	 */
-	public void nextTurn(){
-		turn++;
+	public int[] getScore(){
+		int[] score = new int[6];
+		return score;
+		/*for(int i=0; i<score.length; i++)
+			score[i] = turns[i].getScore(player);*/
 	}
 }
