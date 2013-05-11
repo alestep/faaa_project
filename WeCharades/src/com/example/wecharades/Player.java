@@ -2,7 +2,7 @@ package com.example.wecharades;
 
 public class Player {
 	private int id;
-	private long score;
+	private int score;
+	private long globalScore;
 	private String name;
-	
 }
