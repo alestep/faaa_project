@@ -1,8 +1,17 @@
 package com.example.wecharades;
 
-import android.database.SQLException;
+import android.database.SQLException; //TODO probably not the exception we want!
 
+/**
+ * This class represents a game.
+ *  Each game has 6 turns that should be completed in order to finish a game.
+ *  Each game has two players.
+ * 
+ * @author Anton Dahlström
+ *
+ */
 public class Game {
+	private static int gameId;
 	private Turn[] turns;
 	private Player p1;
 	private Player p2;
@@ -33,7 +42,7 @@ public class Game {
 	}
 	
 	/**
-	 * Play the active turn. If it isn't the native player's turn, nothing will happen. 
+	 * Play the active turn. If it isn't the native player's turn, you should not be able to access this method. 
 	 */
 	public void play(){
 		//if current turn is finished
@@ -43,12 +52,37 @@ public class Game {
 			if(turns[turn].getActivePlayer().equals(thisPlayer)){
 				//TODO We need to generate a new view and stuff here.
 				turns[turn].playTurn();
+				try {
+					Database.pushTurn(this);
+				} catch (Exception e) {
+					// TODO Notify the user that something went wrong!
+					e.printStackTrace();
+				}
 			} else{
 				//TODO if this player is not the active one, the button should be grayed out.
 				//This should probably NOT be here. We do not want players to even have the
 				//possibility to start a turn if it isn't their turn!
 			}
 		}
+	}
+	
+	//Advances the game to next round, or finished it if no rounds left
+	private void nextTurn(){
+		if(turn < 5){
+			try{
+				Database.pushTurn(this);
+			} catch(Exception e){ //TODO correct exception later
+				return; //if the transfer was incomplete
+			}
+			turn++;
+			//TODO should probably redraw or something here
+		} else{ //Else there are no more turns left in the game
+			finish(); //finish the game!
+		}
+	}
+
+	private void finish() {
+		// TODO Auto-generated method stub
 	}
 	
 	/**
@@ -60,23 +94,19 @@ public class Game {
 		return score;
 	}
 	
-	//Advances the game to next round, or finished it if no rounds left
-	private void nextTurn(){
-		if(turn < 6){
-			turn++;
-			//If database connection failed
-			if(!Database.pushTurn(this)){
-				turn--; //rollback turn
-				throw new SQLException();
-			}
-			//TODO should probably redraw or something here
-		} else{
-			finish();
-		}
+	/**
+	 * The current turn number of this game
+	 * @return an integer between 0 and 5
+	 */
+	public int getCurrentTurn(){
+		return turn;
 	}
-
-	private void finish() {
-		// TODO Auto-generated method stub
-		
+	
+	/**
+	 * Returns a pointer to the current turn of the game
+	 * @return a Turn
+	 */
+	public Turn getCurrentTurnInstance(){
+		return turns[turn];
 	}
 }

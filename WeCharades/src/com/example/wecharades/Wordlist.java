@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+/**
+ * A representation of a word list.
+ * 
+ * This class should get the latest version of the word list from the db when created.
+ *  Thereafter, it should be possible to get unique words from the list.
+ * 
+ * @author Anton Dahlström
+ *
+ */
 public class Wordlist {
 	Random random = new Random();
 	private long version;
