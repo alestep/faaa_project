@@ -1,6 +1,5 @@
 package com.example.wecharades;
 
-import android.database.SQLException; //TODO probably not the exception we want!
 
 /**
  * This class represents a game.
@@ -12,12 +11,13 @@ import android.database.SQLException; //TODO probably not the exception we want!
  */
 public class Game {
 	private static int gameId; //Should probably be a string of sorts later: uID1 + uID2 + linuxTime??
-	private Turn[] turns;
+	private Wordlist wordlist;
+	private long timeSinceLastMove;
 	private Player p1;
 	private Player p2;
-	private Player thisPlayer;
+	private Player localPlayer;
+	private Turn[] turns;
 	private int turn = 0;
-	private Wordlist wordlist;
 	
 	/**Constructor for a Game, containing six turns.
 	 * 
@@ -27,6 +27,7 @@ public class Game {
 	public Game(Player p1, Player p2){
 		this.p1 = p1;
 		this.p2 = p2;
+		timeSinceLastMove = Database.getTime();
 		
 		wordlist = new Wordlist();
 		turns = new Turn[6];
@@ -49,13 +50,13 @@ public class Game {
 		if(turns[turn].getState() == Turn.FINISH){
 			nextTurn();
 		} else{
-			if(turns[turn].getActivePlayer().equals(thisPlayer)){
+			if(turns[turn].getActivePlayer().equals(localPlayer)){
 				//TODO We need to generate a new view and stuff here.
 				turns[turn].playTurn();
 				try {
 					Database.pushTurn(this);
 				} catch (Exception e) {
-					// TODO Notify the user that something went wrong!
+					// TODO Notify the user that something went wrong! We should also have a "try again"-button
 					e.printStackTrace();
 				}
 			} else{
@@ -117,5 +118,13 @@ public class Game {
 	 */
 	public Turn getCurrentTurnInstance(){
 		return turns[turn];
+	}
+	
+	/**
+	 * Whether it is the local player's turn
+	 * @return true if local player's turn
+	 */
+	public boolean isLocalPlayersTurn(){
+		return localPlayer.equals(turns[turn].getActivePlayer());
 	}
 }

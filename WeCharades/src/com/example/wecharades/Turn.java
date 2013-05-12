@@ -53,7 +53,7 @@ public class Turn {
 			state = FINISH;
 		}
 		else
-			;//TODO Maybe should have some kind of error throwing here?
+			;//TODO Maybe should have some kind of error-throwing here?
 	}
 	
 	/**
