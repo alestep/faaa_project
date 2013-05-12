@@ -11,7 +11,7 @@ import android.database.SQLException; //TODO probably not the exception we want!
  *
  */
 public class Game {
-	private static int gameId;
+	private static int gameId; //Should probably be a string of sorts later: uID1 + uID2 + linuxTime??
 	private Turn[] turns;
 	private Player p1;
 	private Player p2;
@@ -86,10 +86,19 @@ public class Game {
 	}
 	
 	/**
+	 * Returns the game's id number/string (not final version - do not implement anything based on this yet!)
+	 * @return the Game ID
+	 */
+	public int getId(){
+		return gameId;
+	}
+	
+	/**
 	 * Returns a representation of the current score. All non-played turns will have 0 score.
 	 * @return
 	 */
 	public int[] getScore(){
+		//TODO Implement score-system!
 		int[] score = new int[6];
 		return score;
 	}

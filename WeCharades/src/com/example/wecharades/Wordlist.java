@@ -15,21 +15,14 @@ import java.util.Random;
  */
 public class Wordlist {
 	Random random = new Random();
-	private long version;
 	private ArrayList<String> wordlist = new ArrayList<String>();
 	private HashSet<String> usedWords = new HashSet<String>();
 	
+	/**
+	 * Retrieves the latest word list from the server when created
+	 */
 	public Wordlist(){
 		wordlist = Database.getWordlist();
-		version = Database.getWordlistVersion();
-	}
-
-	public long getVersion() {
-		return version;
-	}
-	
-	public ArrayList<String> getWordlist() {
-		return wordlist;
 	}
 	
 	/**
