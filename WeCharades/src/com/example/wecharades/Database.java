@@ -30,4 +30,14 @@ public class Database {
 	public static ArrayList<String> getWordlist(){
 		return null;
 	}
+	
+	/**
+	 * A method to send a game and any progress to the database.
+	 * 	This is called each time a turn is completed.
+	 * 
+	 * @return if the transaction was successful
+	 */
+	public static boolean pushTurn(Game theGame){
+		return true;
+	}
 }

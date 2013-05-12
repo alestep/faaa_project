@@ -5,30 +5,38 @@ public class Turn {
 	private Player rec, ans, activePlayer;
 	private int recScore = 0, ansScore = 0;
 	private Video video;
+	//Variables to get the state of this turn
+	private int state;
+	public static final int INIT   = 0,	
+							VIDEO  = 1,
+							FINISH = 2;
 	
 	public Turn(Player rec, Player ans, String word){
 		this.rec = rec;
 		this.activePlayer = rec;
 		this.ans = ans;
 		this.word = word;
+		this.state = INIT;
 	}
 	
-	/** //TODO implement this
-	 * 
-	 * @param p - the actual players turn
+	/**
+	 * Play the next turn - this should probably delegate to some other classes later.
+	 *
 	 */
 	public void playTurn(){
 		//We could have a check for current player here.
 		if(activePlayer.equals(rec)){
 			video = new Video();
 			activePlayer = ans;
+			state = VIDEO;
 		}
 		else if (activePlayer.equals(ans)){
 			//TODO Else, a "guessing session" should start
 			activePlayer = null;
+			state = FINISH;
 		}
 		else
-			;
+			;//TODO Maybe should have some kind of error throwing here?
 	}
 	
 	/**
@@ -37,6 +45,14 @@ public class Turn {
 	 */
 	public Player getActivePlayer(){
 		return activePlayer;
+	}
+	
+	/**
+	 * Gets the current state of this turn
+	 * @return 0 if initiated, 1 if video has been recorded, 2 if finished
+	 */
+	public int getState(){
+		return state;
 	}
 	
 	/**
@@ -51,5 +67,4 @@ public class Turn {
 			return ansScore;
 		else return 0; //TODO this should be an exception - or it maybe that we could exclude it.
 	}
-	
 }

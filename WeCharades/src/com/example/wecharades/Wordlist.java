@@ -1,12 +1,14 @@
 package com.example.wecharades;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Wordlist {
 	Random random = new Random();
 	private long version;
 	private ArrayList<String> wordlist = new ArrayList<String>();
+	private HashSet<String> usedWords = new HashSet<String>();
 	
 	public Wordlist(){
 		wordlist = Database.getWordlist();
@@ -21,8 +23,17 @@ public class Wordlist {
 		return wordlist;
 	}
 	
+	/**
+	 * Gets a unique random word from the word list, 
+	 * 	no game should have the same word twice. 
+	 * @return a unique random word
+	 */
 	public String getWord(){
-		return wordlist.get(random.nextInt(wordlist.size()-1));
+		String word;
+		do{
+			word = wordlist.get(random.nextInt(wordlist.size()-1));
+		} while(usedWords.contains(word));
+		usedWords.add(word);
+		return word;
 	}
-	
 }

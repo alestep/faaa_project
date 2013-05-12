@@ -1,5 +1,7 @@
 package com.example.wecharades;
 
+import android.database.SQLException;
+
 public class Game {
 	private Turn[] turns;
 	private Player p1;
@@ -34,13 +36,18 @@ public class Game {
 	 * Play the active turn. If it isn't the native player's turn, nothing will happen. 
 	 */
 	public void play(){
-		Player p = turns[turn].getActivePlayer();
-		if(p != null && p.equals(thisPlayer)){
-			//TODO We need to generate a new view and stuff here.
-			turns[turn].playTurn();
-		}
-		else{
-			//TODO if this player is not the active one, the button should be grayed out.
+		//if current turn is finished
+		if(turns[turn].getState() == Turn.FINISH){
+			nextTurn();
+		} else{
+			if(turns[turn].getActivePlayer().equals(thisPlayer)){
+				//TODO We need to generate a new view and stuff here.
+				turns[turn].playTurn();
+			} else{
+				//TODO if this player is not the active one, the button should be grayed out.
+				//This should probably NOT be here. We do not want players to even have the
+				//possibility to start a turn if it isn't their turn!
+			}
 		}
 	}
 	
@@ -51,7 +58,25 @@ public class Game {
 	public int[] getScore(){
 		int[] score = new int[6];
 		return score;
-		/*for(int i=0; i<score.length; i++)
-			score[i] = turns[i].getScore(player);*/
+	}
+	
+	//Advances the game to next round, or finished it if no rounds left
+	private void nextTurn(){
+		if(turn < 6){
+			turn++;
+			//If database connection failed
+			if(!Database.pushTurn(this)){
+				turn--; //rollback turn
+				throw new SQLException();
+			}
+			//TODO should probably redraw or something here
+		} else{
+			finish();
+		}
+	}
+
+	private void finish() {
+		// TODO Auto-generated method stub
+		
 	}
 }
