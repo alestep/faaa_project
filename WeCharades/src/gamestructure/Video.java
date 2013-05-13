@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package gamestructure;
 
 /**
  * This should represent the part of the game where a video is recorded and uploaded.

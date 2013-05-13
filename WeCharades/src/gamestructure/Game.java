@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package gamestructure;
 
 import android.database.SQLException; //TODO probably not the exception we want!
 
