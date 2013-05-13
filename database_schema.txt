@@ -1,0 +1,18 @@
+Players(_id, name, globalScore)
+
+CurrentGames(_gameId, _player)
+  player -> Players.id
+
+Turns(_gameId, _turn, score, state, videoLink)
+  gameId -> CurrentGames.gameId
+
+GameData(_gameId, turn, currentPlayer)
+  (gameId, currentPlayer) -> CurrentGames.(gameId, player)
+  (gameId, turn) -> Turns(gameId, turn)
+
+RandomQueue(_placeInLine, player)
+  player -> Players.id
+
+Invitations(player1, player2)
+  player1 -> Players.id
+  player2 -> Players.id
