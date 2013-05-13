@@ -13,6 +13,14 @@ import java.util.ArrayList;
 public class Database {
 	
 	/**
+	 * Gets the latest time from the server (to avoid cheating with time)
+	 * @return Unix-time in seconds
+	 */
+	public static long getTime(){
+		return System.currentTimeMillis()/1000; //TODO get this from the server instead...
+	}
+	
+	/**
 	 * A method to retrieve the latest version of the word list from the server
 	 * 
 	 * @return The server/global word list
