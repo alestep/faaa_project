@@ -4,5 +4,7 @@
     <string name="app_name">WeCharades</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="game_view_button_text">Start Gameview</string>
 
 </resources>
