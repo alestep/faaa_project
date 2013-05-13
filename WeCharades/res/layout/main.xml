@@ -16,5 +16,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:text="Capture Video" />
-
 </RelativeLayout>

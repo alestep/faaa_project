@@ -1,6 +1,6 @@
 Players(_id, name, globalScore)
 
-CurrentGames(_gameId, player)
+CurrentGames(_gameId, _player)
   player -> Players.id
 
 Turns(_gameId, _turn, score, state, videoLink)
