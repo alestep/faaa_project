@@ -18,7 +18,7 @@ import android.widget.VideoView;
 
 
 public class ShowVideo extends Activity implements OnClickListener {
-	
+	static String path = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +46,8 @@ public class ShowVideo extends Activity implements OnClickListener {
 			Log.d("ShowVideo.java", "The yesButton was clicked.");// TEMPORARY
 		}
 		else{
-			File file = new File(getRealPathFromURI(CaptureVideo.uriVideo));
+			path = getRealPathFromURI(CaptureVideo.uriVideo);
+			File file = new File(path);
 			boolean deleted = false;
 			deleted = file.delete();
 			Log.d("TAG", Boolean.toString(deleted));
@@ -62,19 +63,6 @@ public class ShowVideo extends Activity implements OnClickListener {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-	/**
-	buttonPlayback.setOnClickListener(new Button.OnClickListener(){
 
-		@Override
-		public void onClick(View arg0) {
-			if(uriVideo == null){
-				Toast.makeText(CaptureVideo.this,"No Video",Toast.LENGTH_LONG).show();
-			}
-			else{
-				Toast.makeText(CaptureVideo.this,"Playback: " + uriVideo.getPath(),Toast.LENGTH_LONG).show();
-				videoviewPlay.setVideoURI(uriVideo);
-				videoviewPlay.start();
-			}
-		}});*/
 
 }
