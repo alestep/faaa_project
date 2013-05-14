@@ -1,4 +1,4 @@
-package com.example.wecharades;
+/**package com.example.wecharades;
 
 
 import java.io.IOException;
@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -112,4 +113,4 @@ public class VideoCapture extends Activity implements OnClickListener, SurfaceHo
 
 
 
-}
+}*/
