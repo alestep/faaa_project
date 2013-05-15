@@ -11,7 +11,6 @@ package com.example.wecharades;
  */
 public class Game {
 	private static int gameId; //Should probably be a string of sorts later: uID1 + uID2 + linuxTime??
-	private Wordlist wordlist;
 	private long timeSinceLastMove;
 	private Player p1;
 	private Player p2;
@@ -25,11 +24,8 @@ public class Game {
 	 * @param p2 - Player 2
 	 */
 	public Game(Player p1, Player p2){
-		this.p1 = p1;
+/*		this.p1 = p1;
 		this.p2 = p2;
-		timeSinceLastMove = Database.getTime();
-		
-		wordlist = new Wordlist();
 		turns = new Turn[6];
 		
 		//Creates the six rounds
@@ -39,7 +35,7 @@ public class Game {
 				turns[i] = new Turn(p1, p2, wordlist.getWord());
 			else 
 				turns[i] = new Turn(p2, p1, wordlist.getWord());
-		}
+		}*/
 	}
 	
 	/**
@@ -54,7 +50,7 @@ public class Game {
 				//TODO We need to generate a new view and stuff here.
 				turns[turn].playTurn();
 				try {
-					Database.pushTurn(this);
+					//Database.pushTurn(this);
 				} catch (Exception e) {
 					// TODO Notify the user that something went wrong! We should also have a "try again"-button
 					e.printStackTrace();
@@ -71,7 +67,7 @@ public class Game {
 	private void nextTurn(){
 		if(turn < 5){
 			try{
-				Database.pushTurn(this);
+				//Database.pushTurn(this);
 			} catch(Exception e){ //TODO correct exception later
 				return; //if the transfer was incomplete
 			}

@@ -21,7 +21,6 @@ public class Turn {
 	private String word;
 	private Player rec, ans, activePlayer;
 	private int recScore = 0, ansScore = 0;
-	private Video video;
 	//Variables to get the state of this turn
 	private int state;
 	public static final int INIT   = 0,	
@@ -43,7 +42,7 @@ public class Turn {
 	public void playTurn(){
 		//We could have a check for current player here.
 		if(activePlayer.equals(rec)){
-			video = new Video();
+			//video = new Video();
 			activePlayer = ans;
 			state = VIDEO;
 		}
