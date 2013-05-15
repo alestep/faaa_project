@@ -65,9 +65,9 @@ public class RegisterActivity extends Activity {
 						@Override
 						public void done(ParseException e) {
 							if (e == null) {
-								// Successful registration - Launch Dashboard Screen
-								Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
-								// Close all views before launching Dashboard
+								// Successful registration - Launch Start Screen
+								Intent dashboard = new Intent(getApplicationContext(), StartScreen.class);
+								//Close all views befora launching start screen
 								dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(dashboard);
 								// Close Registration Screen
@@ -83,7 +83,7 @@ public class RegisterActivity extends Activity {
 									registerErrorMsg.setText("Please enter a valid e-mail");
 								} else {
 									//Unknown error - Error code until all problems fixed...
-									registerErrorMsg.setText("Oops! Something went wrong. Please try again." + e.getCode());
+									registerErrorMsg.setText("Oops! Something went wrong. The server says: " + e.getMessage());
 								}
 							}
 						}
