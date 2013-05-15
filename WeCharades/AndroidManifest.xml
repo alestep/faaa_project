@@ -13,25 +13,19 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.example.wecharades.Main"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+        android:theme="@style/SectionListViewTheme" 
+        android:debuggable="true">
+        <activity 
+            android:name=".StartScreen" 
+            android:label="@string/menu">
+          	<intent-filter>
+            	<action android:name="android.intent.action.MAIN" />
+              	<category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-		    android:name="com.example.wecharades.VideoCapture"
-		    android:label="@string/app_name" >  
-		</activity>
-		<activity 
-		    android:name="com.example.wecharades.ShowVideo"
-		    android:label="@string/app_name" >
-		</activity>	
+        <activity android:name=".NewGameScreen" android:label="@string/new_game"/>
+        <activity android:name=".Friends" android:label="@string/friends"/>
+        <activity android:name=".GameScreen" android:label="@string/game"/>
     </application>
 
 </manifest>

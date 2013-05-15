@@ -1,6 +1,6 @@
 package com.example.wecharades;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,23 +8,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class Main extends ListActivity {
+public class Main extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.first);
 		
-        Button b1 = (Button) findViewById(R.id.button1);
-        
-        b1.setOnClickListener(new OnClickListener(){
+		Button b = (Button) findViewById(R.id.login);
+		b.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(Main.this, StartScreen.class);
+				startActivity(intent);
+			}
+			
+		});
 		
-        	@Override
-        	public void onClick(View w) {
-			Intent intent = new Intent(Main.this, VideoCapture.class);
-			startActivity(intent);
-        	}
-        });
     }
 
 	@Override
@@ -33,5 +34,4 @@ public class Main extends ListActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }
