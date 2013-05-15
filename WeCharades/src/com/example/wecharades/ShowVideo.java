@@ -17,8 +17,13 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 
+
 public class ShowVideo extends Activity implements OnClickListener {
 	static String path = "";
+	public static String fileName;
+
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,17 +41,23 @@ public class ShowVideo extends Activity implements OnClickListener {
 		ww.start();
 		ww.requestFocus();
 		
-
+		path = getRealPathFromURI(CaptureVideo.uriVideo);
+		fileName = getFileNameFromUrl(path);
     }
+	public static String getFileNameFromUrl(String path) {
+        String[] pathArray = path.split("/");
+        return pathArray[pathArray.length - 1];
+    }
+
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.yesButton){
-			//DO SOMETHING
 			Log.d("ShowVideo.java", "The yesButton was clicked.");// TEMPORARY
+			Intent intent = new Intent(ShowVideo.this, UploadVideo.class);
+			startActivity(intent);
 		}
 		else{
-			path = getRealPathFromURI(CaptureVideo.uriVideo);
 			File file = new File(path);
 			boolean deleted = false;
 			deleted = file.delete();

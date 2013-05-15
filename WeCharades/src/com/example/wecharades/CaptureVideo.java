@@ -15,6 +15,7 @@ public class CaptureVideo extends Activity {
 
 	final static int REQUEST_VIDEO_CAPTURED = 1;
 	static Uri uriVideo = null;
+	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,6 +47,7 @@ public class CaptureVideo extends Activity {
 		}
 
 	}
+	
 	public static boolean isIntentAvailable(Context context, String action) {
 	    final PackageManager packageManager = context.getPackageManager();
 	    final Intent intent = new Intent(action);

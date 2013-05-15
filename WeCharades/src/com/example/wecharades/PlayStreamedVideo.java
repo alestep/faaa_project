@@ -1,5 +1,5 @@
 package com.example.wecharades;
-/** TODO: Get the a video streamed from box.com or dropbox.com 
+/** TODO: Get the a video streamed from or dropbox.com 
  * Next step is to get the right word and if the user guess right a score point should be logged in the game logic.
  * 
  * 
@@ -17,7 +17,7 @@ import android.widget.VideoView;
 
 public class PlayStreamedVideo extends Activity implements OnCompletionListener, OnPreparedListener {
 
-	final String TAG = PlayStreamedVideo.class.getSimpleName();
+	final String TAG = "PlayStreamedVideo";
 	private VideoView videoView;
 	private MediaController mediaController;
 	private ProgressBar progressBar;
