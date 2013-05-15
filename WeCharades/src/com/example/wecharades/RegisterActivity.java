@@ -39,11 +39,9 @@ public class RegisterActivity extends Activity {
 		btnRegister.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View view) {
-
-				//To avoid case sensitivity problems...
-				String name = inputNickname.getText().toString().toLowerCase(); 
-				String email = inputEmail.getText().toString().toLowerCase();
-				//Should be case sensitive
+				
+				String name = inputNickname.getText().toString();
+				String email = inputEmail.getText().toString().toLowerCase(); //To avoid case sensitivity problems...
 				String password = inputPassword.getText().toString();
 				String repeatPassword = inputRepeatPassword.getText().toString();
 
@@ -58,11 +56,11 @@ public class RegisterActivity extends Activity {
 				}  else {
 
 					ParseUser user = new ParseUser();
-					user.setUsername(name);
+					user.setUsername(name.toLowerCase());
+					user.put("naturalUsername", name); //to keep the input username, e.g capital letter
 					user.setPassword(password);
 					user.setEmail(email);
-					// other fields can be set just like with ParseObject (if you use setX you don't need put)
-					// for example: user.put("phone", "0706437341");
+
 					user.signUpInBackground(new SignUpCallback() {
 						@Override
 						public void done(ParseException e) {
@@ -106,12 +104,6 @@ public class RegisterActivity extends Activity {
 			}
 		});
 	}
-
-/* Not used atm - might be used later
- * 	private static final Pattern goodEmailFormat = Pattern.compile(
-			"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-			);
-*/
 
 	private boolean badPassword(String password) {
 		//Only two criterias for now...
