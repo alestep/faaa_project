@@ -31,7 +31,7 @@ public class Main extends Activity implements OnClickListener{
 		}
 		if(v.getId()==R.id.button2){
 			Log.d("TAG","tryckt");
-			Intent intentTwo = new Intent(Main.this, UploadVideo.class);
+			Intent intentTwo = new Intent(Main.this, PlayStreamedVideo.class);
 			startActivity(intentTwo);
 		}
 	}	
