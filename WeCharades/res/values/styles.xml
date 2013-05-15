@@ -1,20 +1,25 @@
- <resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+    <style name="SectionTextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:padding">?sectionListView.sectionTextViewPadding</item>
+        <item name="android:textColor">?sectionListView.sectionTextViewTextColor</item>
+        <item name="android:textSize">?sectionListView.sectionTextViewTextSize</item>
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="SectionItemStyle">
+        <item name="android:padding">?sectionListView.sectionItemPadding</item>
+        <item name="android:background">?sectionListView.sectionItemBackground</item>
     </style>
 
+    <style name="ListTextViewStyle" parent="@android:style/TextAppearance">
+        <item name="android:padding">?sectionListView.listTextViewPadding</item>
+        <item name="android:textColor">?sectionListView.listTextViewTextColor</item>
+        <item name="android:textSize">?sectionListView.listTextViewTextSize</item>
+    </style>
+
+    <style name="ListItemStyle">
+        <item name="android:padding">?sectionListView.listItemPadding</item>
+        <item name="android:background">?sectionListView.listItemBackground</item>
+    </style>
 </resources>
