@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="#000" >
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/videoButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/textView"
-        android:ems="10" />
+        android:layout_alignBaseline="@+id/downloadButton"
+        android:layout_alignBottom="@+id/downloadButton"
+        android:layout_toLeftOf="@+id/downloadButton"
+        android:text="Play" />
 
     <TextView
         android:id="@+id/textView"
@@ -28,30 +28,37 @@
     <VideoView
         android:id="@+id/streamedVideoSurface"
         android:layout_width="wrap_content"
-        android:layout_height="402dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_height="330dp"
         android:layout_below="@+id/textView"
         android:layout_margin="4dp" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
+    <Button
+        android:id="@+id/downloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/streamedVideoSurface"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="161dp" />
+        android:layout_alignRight="@+id/playButton"
+        android:layout_below="@+id/streamedVideoSurface"
+        android:text="Download" />
 
     <Button
         android:id="@+id/playButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/streamedVideoSurface"
+        android:layout_below="@+id/downloadButton"
         android:layout_margin="8dp"
-        android:layout_toRightOf="@+id/editText1"
+        android:layout_toRightOf="@+id/textView"
         android:background="@drawable/ic_play"
         android:onClick="onClick" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/streamedVideoSurface"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/playButton"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:textColorHint="@android:color/background_light" />
 
 </RelativeLayout>
