@@ -16,5 +16,7 @@
     <string name="login">Login</string>
     <string name="game">Let\'s play</string>
     <string name="account">Account</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="game_view_button_text">Start Gameview</string>
 
 </resources>

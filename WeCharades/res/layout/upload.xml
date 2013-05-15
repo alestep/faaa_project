@@ -9,31 +9,21 @@
     tools:context=".Main" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/uploadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
-        android:text="Capture Video" />
-    
-    <Button 
-        android:id="@+id/gameviewButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button1"
-        android:layout_centerHorizontal="true"
-        android:text="@string/game_view_button_text"
-        android:onClick="startGameview"
-        />
+        android:text="Upload File" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/linkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="104dp"
-        android:text="Go to upload test." />
+        android:layout_below="@+id/uploadButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="link with dropbox" />
 
 </RelativeLayout>
