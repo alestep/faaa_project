@@ -1,4 +1,4 @@
-package gamestructure;
+package com.example.wecharades;
 
 import java.util.ArrayList;
 

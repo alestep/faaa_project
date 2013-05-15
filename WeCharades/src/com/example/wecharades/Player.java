@@ -1,4 +1,4 @@
-package gamestructure;
+package com.example.wecharades;
 
 /**
  * Information about players that is stored locally.
