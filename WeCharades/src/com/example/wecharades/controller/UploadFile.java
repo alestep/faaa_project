@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
