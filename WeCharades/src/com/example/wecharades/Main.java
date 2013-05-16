@@ -1,5 +1,8 @@
 package com.example.wecharades;
 
+import com.parse.Parse;
+import com.parse.ParseUser;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +11,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
-import com.parse.Parse;
-import com.parse.ParseUser;
 
 public class Main extends Activity implements OnClickListener{
 
@@ -36,6 +36,7 @@ public class Main extends Activity implements OnClickListener{
 			// Closing dashboard screen
 			finish();
 		}
+
 	}
 	@Override
 	public void onClick(View v) {
