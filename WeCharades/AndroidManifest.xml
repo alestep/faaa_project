@@ -27,6 +27,7 @@
             android:name=".StartScreen" 
             android:label="@string/menu">
         </activity>
+        
         <activity android:name=".NewGameScreen" android:label="@string/new_game"/>
         <activity android:name=".Friends" android:label="@string/friends"/>
         <activity android:name=".GameScreen" android:label="@string/game"/>
