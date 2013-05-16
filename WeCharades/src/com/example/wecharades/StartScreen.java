@@ -205,4 +205,7 @@ public class StartScreen extends ListActivity {
 		super.onListItemClick(l, v, position-1, id);
 	}
 
+	public void createGame(View view){
+		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
+	}
 }

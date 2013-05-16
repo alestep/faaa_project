@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
@@ -11,6 +13,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -55,8 +58,17 @@ public class Database {
 			newTurn.put("recPlayerScore",0);
 			newTurn.put("ansPlayer",playerId2);
 			newTurn.put("ansPlayerScore",0);
+			parseList.add(newTurn);
 		}
-		ParseObject.saveAllInBackground(parseList);
+		ParseObject.saveAllInBackground(parseList, new SaveCallback(){
+			public void done(ParseException e){
+				if(e == null){
+					Log.d("Database", "Completed transaction");
+				} else{
+					Log.d("Database", "Transaction was catastrophic: " + e.getMessage());
+				}
+			}
+		});
 	}
 
 	//A private method to parse a ParseObject to a game
