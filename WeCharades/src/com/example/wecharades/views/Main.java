@@ -1,10 +1,10 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.Database;
 import com.example.wecharades.R;
 import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
 import com.example.wecharades.R.menu;
+import com.example.wecharades.controller.Database;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
