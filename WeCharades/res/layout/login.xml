@@ -25,14 +25,14 @@
                 android:textSize="25dip"
                 android:textStyle="bold" />
 
-            <!-- Email Label -->
+            <!-- username Label -->
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Username" />
 
-            <!-- Email TextField -->
+            <!-- username TextField -->
 
             <EditText
                 android:id="@+id/loginUsername"
@@ -72,6 +72,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dip"
+                android:onClick="onClickLogin"
                 android:text="Login" />
 
             <!-- Link to Forgot Password Screen -->

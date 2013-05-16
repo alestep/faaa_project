@@ -45,13 +45,13 @@ public class Database {
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
-			newTurn.put("state","1");
+			newTurn.put("state","1");				//Create global constants perhaps?
 			newTurn.put("word",getWord());
 			newTurn.put("videoLink","");
 			newTurn.put("recPlayer",playerId1);
-			newTurn.put("recPlayerScore",0);
+			newTurn.put("recPlayerScore",0);		//"STARTING_SCORE"
 			newTurn.put("ansPlayer",playerId2);
-			newTurn.put("ansPlayerScore",0);
+			newTurn.put("ansPlayerScore",0);		//"STARTING_SCORE"
 		}
 		ParseObject.saveAllInBackground(parseList);
 	}
@@ -230,5 +230,14 @@ public class Database {
 		}
 		return returnList;
 	}
+	
+	public static void acceptInvitation () {
+		//TODO
+	}
+	
+	public static void declineInvitation () {
+		//TODO
+	}
+	
 
 }
