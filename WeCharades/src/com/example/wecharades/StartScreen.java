@@ -32,6 +32,7 @@ public class StartScreen extends ListActivity {
 		//Check if the user is logged in or saved in the cache
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if(currentUser == null ) {
+			
 			// user is not logged in, show login screen
 			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
 			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -40,8 +41,8 @@ public class StartScreen extends ListActivity {
 		}
 
 		
-		TextView username = (TextView) findViewById(R.id.viewName);
-		String name = (String) currentUser.getString("naturalUsername"); //<-- works
+		//TextView username = (TextView) findViewById(R.id.viewName);
+		//String name = (String) currentUser.getString("naturalUsername"); //<-- works
 		//username.setText(name); // <-- makes the program crash :S Don't know why!
 		
 		items = DatabaseConnector.getList(); //HŠr kan vi skicka med anvŠndarnamneet sŒ vi vet vems data som skall hŠmtas.
@@ -60,7 +61,6 @@ public class StartScreen extends ListActivity {
 				Intent intent = new Intent(StartScreen.this, NewGameScreen.class);
 				startActivity(intent);
 			}
-
 		});
 		
 		btnLogout = (Button) findViewById(R.id.btnLogout);
