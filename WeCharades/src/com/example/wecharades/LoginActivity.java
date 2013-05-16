@@ -40,20 +40,6 @@ public class LoginActivity extends Activity {
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
 		loginProgress.setVisibility(4); //set to invisible
 
-
-
-
-		// Link to Register Screen
-		btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),
-						RegisterActivity.class);
-				startActivity(i);
-				finish();
-			}
-		});
 	}
 
 	/**
