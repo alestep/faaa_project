@@ -2,6 +2,8 @@ package com.example.wecharades;
 
 import java.io.File;
 
+import com.example.wecharades.views.CaptureVideo;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.example.wecharades.views.GameScreen;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;

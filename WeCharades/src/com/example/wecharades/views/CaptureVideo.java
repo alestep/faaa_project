@@ -1,6 +1,10 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
 
 import java.util.List;
+
+import com.example.wecharades.R;
+import com.example.wecharades.ShowVideo;
+import com.example.wecharades.R.layout;
 
 import android.app.Activity;
 import android.content.Context;

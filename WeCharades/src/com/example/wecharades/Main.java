@@ -1,5 +1,6 @@
 package com.example.wecharades;
 
+import com.example.wecharades.views.CaptureVideo;
 import com.parse.Parse;
 import com.parse.ParseUser;
 

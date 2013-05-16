@@ -1,5 +1,7 @@
 package com.example.wecharades;
 
+import com.example.wecharades.views.Friends;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
