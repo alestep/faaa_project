@@ -3,6 +3,7 @@ package com.example.wecharades;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import android.util.Log;
 
@@ -23,8 +24,16 @@ import com.parse.SaveCallback;
  */
 public class Database {
 
-	private static String getWord(){
-		return "Testord"; //TODO This should be implemented later.
+	private static ArrayList<String> getWords(){
+		Random random = new Random();
+		ArrayList<String> list = new ArrayList<String>();
+		String word;
+		while(list.size() <= 6){
+			word = "Testord " + random.nextInt(10);
+			if(list.contains(word))
+				list.add(word);
+		}
+		return list;
 	}
 
 	/**
@@ -46,6 +55,7 @@ public class Database {
 		parseList.add(newGame);
 
 		//Adds all the six turns
+		ArrayList<String> wordList = getWords();
 		ParseObject newTurn;
 		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
@@ -60,7 +70,7 @@ public class Database {
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
 			newTurn.put("state","1");				//TODO Create global constants perhaps?
-			newTurn.put("word",getWord());
+			newTurn.put("word",wordList.get(i-1));
 			newTurn.put("videoLink","");
 			newTurn.put("recPlayer",recP);
 			newTurn.put("recPlayerScore",0);
