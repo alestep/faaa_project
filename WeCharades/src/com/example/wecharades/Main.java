@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.parse.Parse;
-import com.parse.ParseUser;
-
 public class Main extends Activity implements OnClickListener{
 
 	@Override

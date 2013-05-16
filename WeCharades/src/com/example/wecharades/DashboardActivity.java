@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class DashboardActivity extends Activity {
 	Button btnLogout;
-	TextView name;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

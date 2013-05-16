@@ -8,7 +8,6 @@ import com.parse.ParseUser;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,19 +16,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class StartScreen extends ListActivity {
-	/** Called when the activity is first created. */
-
+	
 	Button btnLogout;
+	TextView username;
 	private ArrayList<Item> items = new ArrayList<Item>();
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		View header = View.inflate(this, R.layout.new_game_header, null);
+		ListView lv = getListView();
+		lv.addHeaderView(header);
 
-
+		
 		//Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R"); 
 
 		//Check if the user is logged in or saved in the cache
+		//TODO: Fixa en central isLoggedIn()-funktion senare?
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if(currentUser == null ) {
 			
@@ -41,16 +45,14 @@ public class StartScreen extends ListActivity {
 		}
 
 		
-		//TextView username = (TextView) findViewById(R.id.viewName);
-		//String name = (String) currentUser.getString("naturalUsername"); //<-- works
-		//username.setText(name); // <-- makes the program crash :S Don't know why!
+		//Temporary show username field...
+		username = (TextView) findViewById(R.id.viewName);
+		String name = (String) currentUser.getString("naturalUsername");
+		username.setText(name); 
 		
 		items = DatabaseConnector.getList(); //HŠr kan vi skicka med anvŠndarnamneet sŒ vi vet vems data som skall hŠmtas.
 
-		View header = View.inflate(this, R.layout.new_game_header, null);
-		ListView lv = getListView();
-		lv.addHeaderView(header);
-
+		
 		EntryAdapter adapter = new EntryAdapter(this, items);
 		setListAdapter(adapter);
 
