@@ -32,3 +32,4 @@ proguard/
 .metadata/*
 .DS_Store
 *.save
+*.db

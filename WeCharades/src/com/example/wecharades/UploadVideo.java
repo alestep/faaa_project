@@ -19,8 +19,8 @@ import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.TokenPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.dropbox.client2.session.TokenPair;
 
 public class UploadVideo extends Activity implements OnClickListener {
    
@@ -101,7 +101,7 @@ public class UploadVideo extends Activity implements OnClickListener {
 		    		try {
 		    			File file = new File(ShowVideo.path);
 		    			inputStream = new FileInputStream(file);
-		    			Entry newEntry = mDBApi.putFile(GAME_DIR + ShowVideo.fileName, inputStream, file.length(), null, null);
+		    			Entry newEntry = mDBApi.putFileOverwrite(GAME_DIR + "PresentVideo.mp4", inputStream, file.length(), null);
 		    		} catch (Exception e) {
 		    			System.out.println("Something went wrong: " + e);
 		    		} finally {

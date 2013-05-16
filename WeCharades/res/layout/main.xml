@@ -34,6 +34,6 @@
         android:layout_alignRight="@+id/button1"
         android:layout_below="@+id/button1"
         android:layout_marginTop="104dp"
-        android:text="Go to upload test." />
+        android:text="Go to downloadTest." />
 
 </RelativeLayout>
