@@ -1,4 +1,4 @@
-kpackage com.example.wecharades;
+package com.example.wecharades;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,7 +17,8 @@ import com.parse.ParseQuery;
  *
  */
 public class Database {
-	//Fix for strange query behavious
+
+	//A variable to temporarily save a query result. Should be deleted after use (set to null)
 	private static Object queryReturn;
 
 	private static String getWord(){
@@ -46,15 +47,15 @@ public class Database {
 		ParseObject newTurn;
 		for(int i=1; i <= 6 ; i++){
 			newTurn = new ParseObject("Turn");
-			newTurn.add("game",newGame);
-			newTurn.add("turn",i);
-			newTurn.add("state","1");
-			newTurn.add("word",getWord());
-			newTurn.add("videoLink","N/A");
-			newTurn.add("videoPlayer",playerId1);
-			newTurn.add("videoPlayerScore",0);
-			newTurn.add("answerPlayer",playerId2);
-			newTurn.add("answerPlayerScore",0);
+			newTurn.put("game",newGame);
+			newTurn.put("turn",i);
+			newTurn.put("state","1");
+			newTurn.put("word",getWord());
+			newTurn.put("videoLink","N/A");
+			newTurn.put("videoPlayer",playerId1);
+			newTurn.put("videoPlayerScore",0);
+			newTurn.put("answerPlayer",playerId2);
+			newTurn.put("answerPlayerScore",0);
 		}
 		ParseObject.saveAllInBackground(parseList);
 	}
@@ -62,7 +63,12 @@ public class Database {
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game){
 		if(game.getClassName().equals("Game")){
-			return new Game(game.getString("player1"), game.getString("player2"),game.getString("currentPlayer"), game.getInt("turn"), game.getBoolean("finished"), game.getUpdatedAt());
+			return new Game(game.getString("player1"), 
+					game.getString("player2"),
+					game.getString("currentPlayer"), 
+					game.getInt("turn"), 
+					game.getBoolean("finished"), 
+					game.getUpdatedAt());
 		} else{
 			return null;
 		}
@@ -71,45 +77,100 @@ public class Database {
 	/**
 	 * A method to get a single game
 	 * @param gameId
-	 * @return
+	 * @return The game with gameId
 	 */
 	public static Game getGame(String gameId){
-		Game game;
 		ParseQuery query = new ParseQuery("Game");
 		query.getInBackground(gameId, new GetCallback() {
 			public void done(ParseObject object, ParseException e){
 				if(e == null){
-					queryReturn = parseGame(object);
+					queryReturn = object;
 				} else{
-					//TODO Generate error code
+					//TODO Fix exceptions
 				}
 			}
 		});
-		return (Game) queryReturn;
-		return null;
+		Game game = parseGame((ParseObject) queryReturn);
+		queryReturn = null;
+		return game;
 	}
 
 	/**
 	 * Get a list of game-instances of the logged in player from the Parse server.
-	 * 
+	 * @param The user Id
 	 * @return an ArrayList with Game instances
 	 */
-	public static ArrayList<Game> getGames() {
-		String sharedPreferences = null; //TODO Add the sharedpreferences stored ID here
+	public static ArrayList<Game> getGames(String usrId) {
 		ParseQuery query = new ParseQuery("Game");
-		query.whereContains("player1", sharedPreferences);
-		query.whereContains("player2", sharedPreferences);//TODO
-		return null;
+		query.whereContains("player1", usrId);
+		query.whereContains("player2", usrId);
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> parseObjects, ParseException e){
+				if(e == null){
+					queryReturn = parseObjects;
+				} else{
+					//TODO Exceptions again!
+				}
+			}
+		});
+		ArrayList<Game> games = new ArrayList<Game>();
+		if (queryReturn != null && queryReturn instanceof List){ //check if we have stuff from the query
+			for(ParseObject dbGame : (List<ParseObject>) queryReturn){
+				games.add(parseGame(dbGame));
+			}
+		}
+		queryReturn = null;
+		return games;
 	}
 
 	/**
-	 * Updates a game to the Parse server.
-	 * 
+	 * Update a game on the Parse server.
+	 * @param The game to be updated
 	 */
 	public static void updateGame(Game theGame) {
-
+		final Game game = theGame;
+		ParseQuery query = new ParseQuery("Game");
+		query.getInBackground(theGame.getGameId(), new GetCallback() {
+			public void done(ParseObject object, ParseException e){
+				if(e == null){
+					//Updates the game on the server with the latest info
+					object.put("playerTurn", game.getCurrentPlayer());
+					object.put("turn", game.getTurn());
+					object.saveInBackground();
+				} else{
+					//TODO Fix exceptions
+				}
+			}
+		});
 	}
-
+	
+	/**
+	 * Retrieves a turn from the database
+	 * @param gameId - the game to which this turn belongs
+	 * @param turnNumber - the turn number
+	 * @return A Turn class representation of the retrieved data
+	 */
+	public static Turn getTurn(String gameId, int turnNumber){
+		ParseQuery query = new ParseQuery("Turn");
+		query.whereEqualTo("game", gameId);
+		query.whereEqualTo("turn", turnNumber);
+		query.getInBackground(gameId, new GetCallback(){
+			public void done(ParseObject object, ParseException e){
+				if(e == null){
+					queryReturn = object;
+				} else{
+					//TODO fix exception
+				}
+			}
+		});
+		return null;
+	}
+	
+	/**
+	 * Gets the player with player Id from the database
+	 * @param playerId the Player's id
+	 * @return a Player representation
+	 */
 	public static Player getPlayer(String playerId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -119,7 +180,7 @@ public class Database {
 	 * Puts the playerId into the the random queue
 	 */
 	public static void putIntoPlayerQueue(String playerId) {
-		//We should maybe check if the player is already in queue
+		//TODO We should maybe check if the player is already in queue
 
 		ParseObject queue = new ParseObject("RandomQueue");
 		queue.put("player", playerId);
@@ -127,11 +188,14 @@ public class Database {
 	}
 
 	/**
-	 * Registers invitation
+	 * Send an invite to another player
+	 * 
+	 * @param thisPlayerId the inviter
+	 * @param otherPlayerId the invitee
 	 */
 	public static void invitePlayer(String thisPlayerId, String otherPlayerId) {
 		ParseObject invite = new ParseObject("Invite");
-		invite.put("invitor", thisPlayerId);
+		invite.put("inviter", thisPlayerId);
 		invite.put("invitee", otherPlayerId);
 		invite.saveInBackground();
 	}

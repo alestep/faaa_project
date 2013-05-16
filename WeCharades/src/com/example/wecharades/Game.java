@@ -12,7 +12,7 @@ import java.util.Date;
  *
  */
 public class Game {
-	private static int gameId;
+	private String gameId;
 	private String playerId1;
 	private String playerId2;
 	private String currentPlayer;
@@ -38,7 +38,7 @@ public class Game {
 		this.lastPlayed = lastPlayed;
 	}
 
-	public static int getGameId() {
+	public String getGameId() {
 		return gameId;
 	}
 
@@ -50,6 +50,10 @@ public class Game {
 		return playerId2;
 	}
 
+	/**
+	 * Returns the game's current player id
+	 * @return
+	 */
 	public String getCurrentPlayer() {
 		return currentPlayer;
 	}

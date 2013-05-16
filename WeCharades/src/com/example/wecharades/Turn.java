@@ -18,6 +18,8 @@ package com.example.wecharades;
  *
  */
 public class Turn {
+	private String gameId;
+	private int turnNumber;
 	private String word;
 	private Player rec, ans, activePlayer;
 	private int recScore = 0, ansScore = 0;
@@ -27,7 +29,7 @@ public class Turn {
 							VIDEO  = 1,
 							FINISH = 2;
 	
-	public Turn(Player rec, Player ans, String word){
+	public Turn(String gameId, int turnNumber, Player rec, Player ans, String word){
 		this.rec = rec;
 		this.activePlayer = rec;
 		this.ans = ans;
@@ -35,6 +37,14 @@ public class Turn {
 		this.state = INIT;
 	}
 	
+	public String getGameId() {
+		return gameId;
+	}
+
+	public int getTurnNumber() {
+		return turnNumber;
+	}
+
 	/**
 	 * Play the next turn - this should probably delegate to some other classes later.
 	 *
