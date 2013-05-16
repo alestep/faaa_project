@@ -51,11 +51,11 @@ public class Database {
 			newTurn.put("turn",i);
 			newTurn.put("state","1");
 			newTurn.put("word",getWord());
-			newTurn.put("videoLink","N/A");
-			newTurn.put("videoPlayer",playerId1);
-			newTurn.put("videoPlayerScore",0);
-			newTurn.put("answerPlayer",playerId2);
-			newTurn.put("answerPlayerScore",0);
+			newTurn.put("videoLink","");
+			newTurn.put("recPlayer",playerId1);
+			newTurn.put("recPlayerScore",0);
+			newTurn.put("ansPlayer",playerId2);
+			newTurn.put("ansPlayerScore",0);
 		}
 		ParseObject.saveAllInBackground(parseList);
 	}
@@ -73,53 +73,50 @@ public class Database {
 			return null;
 		}
 	}
+	
+	//A method to parse ParseObject turns into turns
+	private static Turn parseTurn(ParseObject turn){
+		if(turn.getClassName().equals("Turn")){
+			return new Turn(turn.getString("game"), 
+					turn.getInt("turn"), 
+					turn.getInt("state"), 
+					turn.getString("word"), 
+					turn.getString("videoLink"), 
+					turn.getString("recPlayer"), 
+					turn.getInt("recPlayerScore"), 
+					turn.getString("ansPlayer"), 
+					turn.getInt("ansPlayerScore") 
+					);
+		} else{
+			return null;
+		}
+	}
 
 	/**
 	 * A method to get a single game
 	 * @param gameId
 	 * @return The game with gameId
+	 * @throws ParseException 
 	 */
-	public static Game getGame(String gameId){
+	public static Game getGame(String gameId) throws ParseException{
 		ParseQuery query = new ParseQuery("Game");
-		query.getInBackground(gameId, new GetCallback() {
-			public void done(ParseObject object, ParseException e){
-				if(e == null){
-					queryReturn = object;
-				} else{
-					//TODO Fix exceptions
-				}
-			}
-		});
-		Game game = parseGame((ParseObject) queryReturn);
-		queryReturn = null;
-		return game;
+		return parseGame(query.get(gameId));
 	}
 
 	/**
 	 * Get a list of game-instances of the logged in player from the Parse server.
 	 * @param The user Id
 	 * @return an ArrayList with Game instances
+	 * @throws ParseException 
 	 */
-	public static ArrayList<Game> getGames(String usrId) {
+	public static ArrayList<Game> getGames(String usrId) throws ParseException {
+		ArrayList<Game> games = new ArrayList<Game>();
 		ParseQuery query = new ParseQuery("Game");
 		query.whereContains("player1", usrId);
 		query.whereContains("player2", usrId);
-		query.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> parseObjects, ParseException e){
-				if(e == null){
-					queryReturn = parseObjects;
-				} else{
-					//TODO Exceptions again!
-				}
-			}
-		});
-		ArrayList<Game> games = new ArrayList<Game>();
-		if (queryReturn != null && queryReturn instanceof List){ //check if we have stuff from the query
-			for(ParseObject dbGame : (List<ParseObject>) queryReturn){
-				games.add(parseGame(dbGame));
-			}
+		for(ParseObject game : query.find()){
+			games.add(parseGame(game));
 		}
-		queryReturn = null;
 		return games;
 	}
 
@@ -149,21 +146,33 @@ public class Database {
 	 * @param gameId - the game to which this turn belongs
 	 * @param turnNumber - the turn number
 	 * @return A Turn class representation of the retrieved data
+	 * @throws ParseException 
 	 */
-	public static Turn getTurn(String gameId, int turnNumber){
+	public static Turn getTurn(String gameId, int turnNumber) throws ParseException{
 		ParseQuery query = new ParseQuery("Turn");
 		query.whereEqualTo("game", gameId);
 		query.whereEqualTo("turn", turnNumber);
-		query.getInBackground(gameId, new GetCallback(){
-			public void done(ParseObject object, ParseException e){
+		ParseObject turn = query.getFirst();
+		return parseTurn(turn);
+	}
+	
+	public static void updateTurn(Turn theTurn){
+		final Turn turn = theTurn;
+		ParseQuery query = new ParseQuery("Turn");
+		query.whereEqualTo("game", turn.getGameId());
+		query.whereEqualTo("turn", turn.getTurnNumber());
+		query.getFirstInBackground(new GetCallback() {
+			public void done(ParseObject dbTurn, ParseException e){
 				if(e == null){
-					queryReturn = object;
+					dbTurn.put("state",turn.getState());
+					dbTurn.put("videoLink", turn.getVideoLink());
+					dbTurn.put("recPlayerScore", turn.getRecPlayerScore());
+					dbTurn.put("ansPlayerScore", turn.getAnsPlayerScore());
 				} else{
-					//TODO fix exception
+					//TODO exception
 				}
 			}
 		});
-		return null;
 	}
 	
 	/**
