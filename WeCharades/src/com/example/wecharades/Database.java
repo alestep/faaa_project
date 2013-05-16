@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.util.Log;
+
+import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
+import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -41,7 +47,17 @@ public class Database {
 
 		//Adds all the six turns
 		ParseObject newTurn;
+		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
+			if(i%2 == 0){
+				recP = playerId2;
+				ansP = playerId1;
+			} else{
+				recP = playerId1;
+				ansP = playerId2;
+			}
+			recP = (i%2 == 0) ? playerId2 : playerId1;
+			ansP = (i%2 == 0) ? playerId1 : playerId2;
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
@@ -52,8 +68,21 @@ public class Database {
 			newTurn.put("recPlayerScore",0);		//"STARTING_SCORE"
 			newTurn.put("ansPlayer",playerId2);
 			newTurn.put("ansPlayerScore",0);		//"STARTING_SCORE"
+			newTurn.put("recPlayer",recP);
+			newTurn.put("recPlayerScore",0);
+			newTurn.put("ansPlayer",ansP);
+			newTurn.put("ansPlayerScore",0);
+			parseList.add(newTurn);
 		}
-		ParseObject.saveAllInBackground(parseList);
+		ParseObject.saveAllInBackground(parseList, new SaveCallback(){
+			public void done(ParseException e){
+				if(e == null){
+					Log.d("Database", "Completed transaction");
+				} else{
+					Log.d("Database", "Transaction was catastrophic: " + e.getMessage());
+				}
+			}
+		});
 	}
 
 	//A private method to parse a ParseObject to a game
