@@ -46,7 +46,7 @@ public class RegisterActivity extends Activity {
 			public void onClick(View view) {
 				
 				//Showing the progress spinner
-				registerProgress.setVisibility(0);
+				showProgressSpinner();
 				String name = inputNickname.getText().toString();
 				String email = inputEmail.getText().toString().toLowerCase(); //To avoid case sensitivity problems...
 				String password = inputPassword.getText().toString();
@@ -55,20 +55,20 @@ public class RegisterActivity extends Activity {
 				//My own validation check...
 				//TODO: Check if it is possible to compare the two password inputs as an ParseException?
 				if(name == null || name.length() == 0) {
-					registerProgress.setVisibility(8);
+					hideProgressSpinner();
 					registerErrorMsg.setText("Please enter a valid name");
 				} else if (badPassword(password)) {
-					registerProgress.setVisibility(8);
+					hideProgressSpinner();
 					registerErrorMsg.setText("Please enter a valid password of minimum 6 characters");
 				} else if (!password.equals(repeatPassword)) {
-					registerProgress.setVisibility(8);
+					hideProgressSpinner();
 					registerErrorMsg.setText("You password doesn't match. Please try again!");
 				}  else {
 
 					ParseUser user = new ParseUser();
 					user.setUsername(name.toLowerCase());
-					user.put("naturalUsername", name);	//to keep the input username, e.g capital letter
-					user.put("globalScore", 0); 		//globalScore is set to zero when register
+					user.put("naturalUsername", name);		//to keep the input username, e.g capital letter
+					user.put("globalScore", 0); 			//globalScore is set to zero when register
 					user.setPassword(password);
 					user.setEmail(email);
 					
@@ -76,7 +76,7 @@ public class RegisterActivity extends Activity {
 					user.signUpInBackground(new SignUpCallback() {
 						@Override
 						public void done(ParseException e) {
-							registerProgress.setVisibility(8);
+							hideProgressSpinner();
 							if (e == null) {
 								// Successful registration - Launch Start Screen
 								Intent dashboard = new Intent(getApplicationContext(), StartScreen.class);
@@ -94,6 +94,8 @@ public class RegisterActivity extends Activity {
 									registerErrorMsg.setText("The email is already registered");
 								} else if (e.getCode() == 125) {
 									registerErrorMsg.setText("Please enter a valid e-mail");
+								} else if (e.getCode() == 100) {
+									registerErrorMsg.setText("Please check your internet connection!");
 								} else {
 									//Unknown error - Error code until all problems fixed...
 									registerErrorMsg.setText("Oops! Something went wrong. The server says: " + e.getMessage());
@@ -122,5 +124,31 @@ public class RegisterActivity extends Activity {
 		//Only two criterias for now...
 		//TODO Fix stronger restrictions??
 		return (password == null || password.length() < 5);
+	}
+	
+	//TODO: Where should we put these, they are used in both RegisterActivity and LoginActivity
+	//TODO: Consider using threads instead...
+	private void showProgressSpinner() {
+		//show the spinner
+		registerProgress.setVisibility(0);
+		//disable all clickable objects
+		btnRegister.setEnabled(false);
+		btnLinkToLogin.setEnabled(false);
+		inputNickname.setEnabled(false);
+		inputEmail.setEnabled(false);
+		inputPassword.setEnabled(false);
+		inputRepeatPassword.setEnabled(false);
+	}
+	
+	private void hideProgressSpinner() {
+		//hide the spinner
+		registerProgress.setVisibility(8);
+		//re-enable all clickable objects
+		btnRegister.setEnabled(true);
+		btnLinkToLogin.setEnabled(true);
+		inputNickname.setEnabled(true);
+		inputEmail.setEnabled(true);
+		inputPassword.setEnabled(true);
+		inputRepeatPassword.setEnabled(true);
 	}
 }
