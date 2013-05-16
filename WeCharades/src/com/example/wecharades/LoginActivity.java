@@ -58,7 +58,7 @@ public class LoginActivity extends Activity {
 					public void done(ParseUser user, ParseException e) {
 						if (user != null) {
 							// Successful login! - Launch dashboard screen
-							Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+							Intent dashboard = new Intent(getApplicationContext(), StartScreen.class);
 
 							// Close all views before launching Dashboard
 							dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
 							finish();
 						} else {
 							// Signup failed. Look at the ParseException to see what happened. - Error code submitted until all bugs fixed
-							loginErrorMsg.setText("Incorrect username, e-mail or password" + e.getCode());
+							loginErrorMsg.setText(e.getMessage());
 						}
 					}
 				});

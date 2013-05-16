@@ -66,7 +66,7 @@ public class RegisterActivity extends Activity {
 						public void done(ParseException e) {
 							if (e == null) {
 								// Successful registration - Launch Dashboard Screen
-								Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+								Intent dashboard = new Intent(getApplicationContext(), StartScreen.class);
 								// Close all views before launching Dashboard
 								dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(dashboard);

@@ -10,8 +10,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
@@ -52,7 +50,7 @@ public class PlayStreamedVideo extends Activity  {
 	final String TAG = "PlayStreamedVideo";
 	private VideoView videoView;
 	private MediaController mediaController;
-
+	private DownloadFile download;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,11 +59,13 @@ public class PlayStreamedVideo extends Activity  {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
 		AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
+		
 		Button b = (Button) findViewById(R.id.downloadButton);
         b.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	if(v.getId() == R.id.downloadButton)
-            		downloadFile();
+            		download = new DownloadFile(PlayStreamedVideo.this, mDBApi, SAVE_PATH, videoView);
+            		download.execute();
             }
         });
         Button vb = (Button) findViewById(R.id.videoButton);
@@ -114,44 +114,6 @@ public class PlayStreamedVideo extends Activity  {
 				Log.i(TAG, "Error authenticating", e);
 			}
 		}
-	}
-	private void downloadFile(){
-		Thread thread = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				try {
-					//Your code goes here
-					FileOutputStream outputStream = null;
-					try {
-						Log.d(TAG, Environment.getExternalStorageDirectory().getPath());
-						File file = new File(SAVE_PATH);
-						outputStream = new FileOutputStream(file);
-						Log.d(TAG, "Starting to Download");
-						DropboxFileInfo info = mDBApi.getFile(GAME_DIR +"PresentVideo.mp4", null, outputStream, null);
-						Log.d(TAG, "Downloaded!");
-					} 
-					catch (DropboxException e) {
-						Log.d(TAG, "Something went wrong: " + e.getMessage());
-					} 
-					finally {
-						if (outputStream != null) {
-							try {
-								outputStream.close();
-							} 
-							catch (IOException e) {
-
-							}
-						}
-					}
-					// And stops here
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		thread.start();
-		//playVideo(Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4");
 	}
 	/**
 	 * Shows keeping the access keys returned from Trusted Authenticator in a local

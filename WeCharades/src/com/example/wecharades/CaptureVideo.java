@@ -19,7 +19,7 @@ public class CaptureVideo extends Activity {
 
 	final static int REQUEST_VIDEO_CAPTURED = 1;
 	static Uri uriVideo = null;
-	
+	private Intent intentCamera;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -29,10 +29,10 @@ public class CaptureVideo extends Activity {
 		dispatchTakeVideoIntent();
 	}
 	private void dispatchTakeVideoIntent(){
-		Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-		intent.putExtra("android.intent.extra.durationLimit", 8);
-		intent.putExtra("android.intent.extra.videoQuality", 1);
-		startActivityForResult(intent, REQUEST_VIDEO_CAPTURED);
+		intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+		intentCamera.putExtra("android.intent.extra.durationLimit", 8);
+		intentCamera.putExtra("android.intent.extra.videoQuality", 1);
+		startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);
 	}
 
 	@Override
@@ -40,9 +40,10 @@ public class CaptureVideo extends Activity {
 		if(resultCode == RESULT_OK){
 			if(requestCode == REQUEST_VIDEO_CAPTURED){
 				uriVideo = data.getData();
-				Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(CaptureVideo.this, ShowVideo.class);
-				startActivity(intent);
+				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
+				//finishActivity(REQUEST_VIDEO_CAPTURED);
+				Intent intentShowVideo = new Intent(CaptureVideo.this, ShowVideo.class);
+				startActivity(intentShowVideo);
 			}
 		}
 		else if(resultCode == RESULT_CANCELED){
