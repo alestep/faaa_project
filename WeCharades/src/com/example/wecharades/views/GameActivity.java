@@ -1,4 +1,7 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
+
+import com.example.wecharades.R;
+import com.example.wecharades.R.layout;
 
 import android.os.Bundle;
 import android.app.Activity;

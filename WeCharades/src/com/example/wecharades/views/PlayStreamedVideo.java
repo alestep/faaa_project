@@ -1,16 +1,17 @@
-package com.example.wecharades;
-
-import java.io.File;
+package com.example.wecharades.views;
+/** TODO: Get the a video streamed from or dropbox.com 
+ * Next step is to get the right word and if the user guess right a score point should be logged in the game logic.
+ * 
+ * 
+ */
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,12 +24,13 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.TokenPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.dropbox.client2.session.TokenPair;
+import com.example.wecharades.DownloadFile;
+import com.example.wecharades.R;
 
 
-
-public class ShowVideo extends Activity{
+public class PlayStreamedVideo extends Activity  {
 	/** Dropbox Key and AccessType Information*/
 	final static private String APP_KEY = "qaf79ngsv26o0dd";
 	final static private String APP_SECRET = "4dz3ga69350v2ul";
@@ -38,78 +40,54 @@ public class ShowVideo extends Activity{
 	final static private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
 	/**--------------------------------------------------------------*/
 	private DropboxAPI<AndroidAuthSession> mDBApi;
+	private final String GAME_DIR = "/GAMES/GAME_BETWEEN_USER_A_USER_B/"; // THIS IS WHERE A UNIQUE FOLDERNAME MUST EXIST FOR EACH GAME.
+	private final String SAVE_PATH = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";
 
-	UploadFile upload;
-	static String path = "";
-	public static String fileName;
-	private VideoView ww;
+	final String TAG = "PlayStreamedVideo";
+	private VideoView videoView;
+	private MediaController mediaController;
+	private DownloadFile download;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces landscape orientation which is what the camera uses.
-		setContentView(R.layout.showvideo);
-		Button yesButton = (Button) findViewById(R.id.yesButton);
-		Button noButton  = (Button) findViewById(R.id.NoButton);
-		Button dbButton = (Button) findViewById(R.id.dropboxButton);
-		dbButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
-			if(v.getId() == R.id.dropboxButton)
-				mDBApi.getSession().startAuthentication(ShowVideo.this);
-			}
-		});
-		
-		yesButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if(v.getId() == R.id.yesButton){
-				UploadFile upload = new UploadFile(ShowVideo.this,mDBApi,path);
-				upload.execute();
-				}
-			}
-		});
-		/*noButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View w) {
-						File file = new File(path);
-						boolean deleted = false;
-						deleted = file.delete();
-						Log.d("TAG", Boolean.toString(deleted));
-						Intent intent = new Intent(ShowVideo.this, CaptureVideo.class);
-						startActivity(intent);
-
-			}
-		});*/
-
-		ww = (VideoView) findViewById(R.id.satisfiedVideoView);
-		path = getRealPathFromURI(CaptureVideo.uriVideo);
-		fileName = getFileNameFromUrl(path);
-
+		setContentView(R.layout.guessvideo);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
 		AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
+		
+		Button b = (Button) findViewById(R.id.downloadButton);
+        b.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	if(v.getId() == R.id.downloadButton)
+            		download = new DownloadFile(PlayStreamedVideo.this, mDBApi, SAVE_PATH, videoView);
+            		download.execute();
+            }
+        });
+        Button vb = (Button) findViewById(R.id.videoButton);
+        vb.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	if(v.getId() == R.id.videoButton)
+            		playVideo(SAVE_PATH);
+            }
+        });
 		mDBApi = new DropboxAPI<AndroidAuthSession>(session);
-	}
-	public void onTaskCompleted (){
-		Log.d("TAG", "DIN MAMMA");
-	}
-	private void playVideo(){
-		ww.setVideoURI(CaptureVideo.uriVideo);
-		ww.setMediaController(new MediaController(this));
-		ww.start();
-		ww.requestFocus();
-	}
-	public static String getFileNameFromUrl(String path) {
-		String[] pathArray = path.split("/");
-		return pathArray[pathArray.length - 1];
+		mDBApi.getSession().startAuthentication(PlayStreamedVideo.this);
 	}
 
-	public String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-		cursor.moveToFirst();
-		return cursor.getString(column_index);
+
+	private void playVideo(String path) {
+		try {
+			videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
+			mediaController = new MediaController(this);
+			videoView.setVideoURI(Uri.parse(path));
+			videoView.setMediaController(mediaController);
+			videoView.start();
+		} catch (Exception e) {
+			// Log.e(TAG, "error: " + e.getMessage(), e);
+		}
 	}
 
-	/**DROPBOX-METHOD------------------------------------------*/
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -129,7 +107,7 @@ public class ShowVideo extends Activity{
 				//setLoggedIn(true);
 			} catch (IllegalStateException e) {
 				showToast("Couldn't authenticate with Dropbox:" + e.getLocalizedMessage());
-				Log.i("TAG", "Error authenticating", e);
+				Log.i(TAG, "Error authenticating", e);
 			}
 		}
 	}
@@ -153,7 +131,6 @@ public class ShowVideo extends Activity{
 			return null;
 		}
 	}
-
 	/**
 	 * Shows keeping the access keys returned from Trusted Authenticator in a local
 	 * store, rather than storing user name & password, and re-authenticating each
@@ -196,3 +173,4 @@ public class ShowVideo extends Activity{
 
 
 }
+

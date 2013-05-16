@@ -4,31 +4,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-       	<Button
-	        android:id="@+id/button1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="5dip"
-            android:layout_marginTop="10dip"
-	        android:background="@drawable/btn_default_normal"
-	        android:text="@string/account" />
 
-       	<ImageButton
-       	    android:id="@+id/imageButton1"
-       	    android:layout_width="wrap_content"
-       	    android:layout_height="wrap_content"
-       	    android:layout_marginRight="5dip"
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
             android:layout_marginTop="10dip"
-       	    android:layout_alignParentRight="true"
-       	    android:layout_alignParentTop="true"
-       	    android:background="@drawable/btn_default_normal"
-       	    android:src="@android:drawable/btn_star" />
+            android:background="@drawable/btn_default_normal"
+            android:text="@string/account"
+            android:onClick="createGame" />
 
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/btn_default_normal"
+            android:src="@android:drawable/btn_star" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button1"
+            android:layout_toRightOf="@+id/button1"
+            android:text="Logout!" />
+
+        <TextView
+            android:id="@+id/viewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/imageButton1"
+            android:textSize="20dp" />
+        
     </RelativeLayout>
 
     <Button

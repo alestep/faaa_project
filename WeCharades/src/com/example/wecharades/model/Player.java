@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.model;
 
 /**
  * Information about players that is stored locally.
@@ -8,10 +8,11 @@ package com.example.wecharades;
  *
  */
 public class Player {
-	private int id;
+	private String id;
 	private long globalScore;
-	private String name;	
-	public int getId() {
+	private String name;
+	
+	public String getId() {
 		return id;
 	}
 	public long getGlobalScore() {

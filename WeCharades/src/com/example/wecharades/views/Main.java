@@ -1,7 +1,14 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
+
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
+import com.example.wecharades.R.menu;
+import com.example.wecharades.controller.Database;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +27,21 @@ public class Main extends Activity implements OnClickListener{
 		b1.setOnClickListener(this);
 		Button b2 = (Button) findViewById(R.id.button2);
 		b2.setOnClickListener(this);
-		Button b3 = (Button) findViewById(R.id.gameviewButton);
-		b3.setOnClickListener(this);
+
+		//Copy and Paste this into every onCreate method to be able to use Parse
+		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R"); 
+
+		//Check if the user is logged in or saved in the cache
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if(currentUser == null ) {
+			// user is not logged in, show login screen
+			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(login);
+			// Closing dashboard screen
+			finish();
+		}
+
 	}
 	@Override
 	public void onClick(View v) {
@@ -34,10 +54,7 @@ public class Main extends Activity implements OnClickListener{
 			Intent intentTwo = new Intent(Main.this, PlayStreamedVideo.class);
 			startActivity(intentTwo);
 		}
-		if(v.getId()==R.id.gameviewButton){
-			Log.d("TAG","Pressed GameviewButton");
-			startGameview();
-		}
+
 	}	
 
 	@Override
@@ -46,13 +63,13 @@ public class Main extends Activity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	/**
 	 * Called when user clicks gameview-button
 	 */
-	public void startGameview(){
-		Intent intent = new Intent(Main.this, GameActivity.class);
-		startActivity(intent);
+
+	public void createGame(View view){
+		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 
 }
