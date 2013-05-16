@@ -24,9 +24,10 @@ import android.widget.Toast;
 
 public class StartScreen extends ListActivity {
 
-	Button btnLogout;
-	TextView username;
+	private Button btnLogout;
+	private TextView username;
 	private ArrayList<Item> items = new ArrayList<Item>();
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +35,6 @@ public class StartScreen extends ListActivity {
 		View header = View.inflate(this, R.layout.new_game_header, null);
 		ListView lv = getListView();
 		lv.addHeaderView(header);
-
 
 		//Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R"); 
@@ -61,8 +61,8 @@ public class StartScreen extends ListActivity {
 		EntryAdapter adapter = new EntryAdapter(this, items);
 		setListAdapter(adapter);
 
-		createGames();			// Made by Alex
-		items = queryGames();	// Made by Alex
+//		createGames();			// Made by Alex
+//		items = queryGames();	// Made by Alex
 
 		Button b = (Button) findViewById(R.id.new_game_button);
 		b.setOnClickListener(new OnClickListener() {
@@ -180,7 +180,7 @@ public class StartScreen extends ListActivity {
 		game.put("turn", "finished");
 		game.put("score", "4 - 3");
 		game.put("gameID", 4);
-		game.put("player2", "Robert");
+		game.put("player", "Robert");
 		game.put("status", "finished");
 		game.put("score", "3 - 3");
 		game.saveInBackground();

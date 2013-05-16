@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/button1"
             android:layout_toRightOf="@+id/button1"
+            android:background="@drawable/btn_default_normal"
             android:text="Logout!" />
 
         <TextView
