@@ -7,6 +7,7 @@ import com.parse.ParseException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,23 +54,14 @@ public class LoginActivity extends Activity {
 				finish();
 			}
 		});
-
-		// Link to Forgot Password
-		btnForgotPassword.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				Intent i = new Intent(getApplicationContext(),
-						ResetPasswordActivity.class);
-				startActivity(i);
-				finish();
-			}
-		});
 	}
 
-	// Login button Click Event
-	private void onClickLogin(View view) {
-
+	/**
+	 * On click login button - if success go to StartActivity, on fail show error messages
+	 * TODO: maybe not a good method, create smaller method with more specific tasks
+	 * @param view
+	 */
+	public void onClickLogin(View view) {
 		//Show the progress spinner
 		showProgressSpinner();
 
@@ -106,10 +98,31 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	//TODO: Where should we put these, they are used in both RegisterActivity and LoginActivity
-	//TODO: Consider using threads instead...
+	/**
+	 * Link to the screen to get a new password
+	 * @param view
+	 */
+	public void onClickForgotPassword(View view) {
+		Intent i = new Intent(getApplicationContext(),
+				ResetPasswordActivity.class);
+		startActivity(i);
+		finish();
+	}
+	/**
+	 * Link to register screen
+	 * @param view
+	 */
+	public void onClickRegister(View view) {
+		Intent i = new Intent(getApplicationContext(),
+				RegisterActivity.class);
+		startActivity(i);
+		finish();
+	}
+	
 	/**
 	 * Called to show progress spinning when waiting for the server
+	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
+	 * TODO: Consider using threads instead...
 	 */
 	private void showProgressSpinner() {
 		//show the spinner

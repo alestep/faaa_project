@@ -85,7 +85,8 @@
                 android:background="@null"
                 android:text="Forgot your password? - Get a new one!"
                 android:textColor="#000000"
-                android:textSize="15dip" />
+                android:textSize="15dip"
+                android:onClick="onClickForgotPassword" />
 
             <!-- Link to Registration Screen -->
 
@@ -97,7 +98,8 @@
                 android:background="@null"
                 android:text="Not Registered? Click here!"
                 android:textColor="#000000"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="onClickRegister" />
         </LinearLayout>
 
         <ProgressBar
