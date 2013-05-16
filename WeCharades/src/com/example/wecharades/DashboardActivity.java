@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public class DashboardActivity extends Activity {
 	Button btnLogout;
-	TextView name;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,14 +24,6 @@ public class DashboardActivity extends Activity {
         if (currentUser != null) {
         	//The user is logged in - show dashboard
         	setContentView(R.layout.dashboard);
-        	name = (TextView) findViewById(R.id.name);
-        	String username = ParseUser.getCurrentUser().getUsername();
-        	
-        	//First letter capital since the username is stored in 
-        	username = Character.toUpperCase(username.charAt(0)) + username.substring(1);
-        	name.setText(username);
-        	
-        	
         	
         	btnLogout = (Button) findViewById(R.id.btnLogout);
         	btnLogout.setOnClickListener(new View.OnClickListener() {
