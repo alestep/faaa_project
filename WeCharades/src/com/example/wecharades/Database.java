@@ -47,16 +47,26 @@ public class Database {
 
 		//Adds all the six turns
 		ParseObject newTurn;
+		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
+			if(i%2 == 0){
+				recP = playerId2;
+				ansP = playerId1;
+			} else{
+				recP = playerId1;
+				ansP = playerId2;
+			}
+			recP = (i%2 == 0) ? playerId2 : playerId1;
+			ansP = (i%2 == 0) ? playerId1 : playerId2;
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
 			newTurn.put("state","1");
 			newTurn.put("word",getWord());
 			newTurn.put("videoLink","");
-			newTurn.put("recPlayer",playerId1);
+			newTurn.put("recPlayer",recP);
 			newTurn.put("recPlayerScore",0);
-			newTurn.put("ansPlayer",playerId2);
+			newTurn.put("ansPlayer",ansP);
 			newTurn.put("ansPlayerScore",0);
 			parseList.add(newTurn);
 		}
