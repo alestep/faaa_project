@@ -1,8 +1,10 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
 
 import java.io.File;
 
-import com.example.wecharades.views.CaptureVideo;
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;

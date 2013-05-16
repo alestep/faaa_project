@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
 /** TODO: Get the a video streamed from or dropbox.com 
  * Next step is to get the right word and if the user guess right a score point should be logged in the game logic.
  * 
@@ -34,6 +34,9 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
 import com.dropbox.client2.session.TokenPair;
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
 
 
 public class PlayStreamedVideo extends Activity  {
