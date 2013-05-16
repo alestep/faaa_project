@@ -20,6 +20,8 @@ public class Main extends Activity implements OnClickListener{
 		b1.setOnClickListener(this);
 		Button b2 = (Button) findViewById(R.id.button2);
 		b2.setOnClickListener(this);
+		Button b3 = (Button) findViewById(R.id.gameviewButton);
+		b3.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
@@ -31,6 +33,10 @@ public class Main extends Activity implements OnClickListener{
 			Log.d("TAG","tryckt");
 			Intent intentTwo = new Intent(Main.this, PlayStreamedVideo.class);
 			startActivity(intentTwo);
+		}
+		if(v.getId()==R.id.gameviewButton){
+			Log.d("TAG","Pressed GameviewButton");
+			startGameview();
 		}
 	}	
 
@@ -44,8 +50,8 @@ public class Main extends Activity implements OnClickListener{
 	/**
 	 * Called when user clicks gameview-button
 	 */
-	public void startGameview(View view){
-		Intent intent = new Intent(this, GameActivity.class);
+	public void startGameview(){
+		Intent intent = new Intent(Main.this, GameActivity.class);
 		startActivity(intent);
 	}
 

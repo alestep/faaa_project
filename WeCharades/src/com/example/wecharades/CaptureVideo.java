@@ -10,7 +10,11 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
-/** The is now on forced to use the camera in landscape mode. Working on a fix */
+/**
+ * 
+ * @author Adam Lewestam
+ *Fix isIntentAvailable Method
+ */
 public class CaptureVideo extends Activity {
 
 	final static int REQUEST_VIDEO_CAPTURED = 1;
