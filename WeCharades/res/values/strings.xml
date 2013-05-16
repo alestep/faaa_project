@@ -17,9 +17,10 @@
     <string name="game">Let\'s play</string>
     <string name="account">Account</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="game_view_button_text">Start Gameview</string>
     <!-- The label for use as a searchable item -->
     <string name="search_label">Dictionary</string>
+    <string name="game_view_button_text">Create random game</string>
+
 
     <!-- The hint text that appears in the search box. -->
     <string name="search_hint">Search the dictionary</string>

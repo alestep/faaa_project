@@ -15,7 +15,8 @@
             android:layout_marginLeft="5dip"
             android:layout_marginTop="10dip"
             android:background="@drawable/btn_default_normal"
-            android:text="@string/account" />
+            android:text="@string/account"
+            android:onClick="createGame" />
 
         <ImageButton
             android:id="@+id/imageButton1"

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ public class ResetPasswordActivity extends Activity {
 	Button btnLinkToLoginScreen;
 	EditText emailInput;
 	TextView errorMsg;
+	ProgressBar resetProgress;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,20 +35,29 @@ public class ResetPasswordActivity extends Activity {
 		setContentView(R.layout.resetpassword);
 
 		//Getting some info...
-		emailInput = (EditText) findViewById(R.id.resetPassword);
-		errorMsg = (TextView) findViewById(R.id.error);
+		emailInput				= (EditText) findViewById(R.id.resetPassword);
+		errorMsg				= (TextView) findViewById(R.id.error);
 		btnLinkToRegisterScreen = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-		btnLinkToLoginScreen = (Button) findViewById(R.id.btnLinkToLoginScreen);
+		btnLinkToLoginScreen	= (Button) findViewById(R.id.btnLinkToLoginScreen);
+		resetProgress			= (ProgressBar) findViewById(R.id.progress);
+		resetProgress.setVisibility(4); //set to invisible
+
 		btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
 		btnResetPassword.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				//Showing the progress spinner
+				showProgressSpinner();
 
 				String email = emailInput.getText().toString();
 				ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
 					@Override
 					public void done(ParseException e) {
+
+						//Hiding the progress spinner
+						hideProgressSpinner();
+
 						if (e == null) {
 							// Success
 							// TODO Use a Toast instead ...
@@ -60,9 +72,11 @@ public class ResetPasswordActivity extends Activity {
 								errorMsg.setText("Please enter a valid email");
 							} else if (e.getCode() == 205) {
 								errorMsg.setText("Email not found - Please register");
+							} else if (e.getCode() == 100) {
+								errorMsg.setText("Please check your internet connection");
 							} else {
 								//Unknown error - Error code in the end for the developing stage
-								errorMsg.setText("Oops! Something went wrong. Please try again." + e.getCode());
+								errorMsg.setText("Oops! Something went wrong. The server says: " + e.getMessage());
 							}
 						}
 					}
@@ -95,5 +109,28 @@ public class ResetPasswordActivity extends Activity {
 				finish();
 			}
 		});
+	}
+
+	//TODO: Where should we put these, they are used in both RegisterActivity and LoginActivity
+	//TODO: Consider using threads instead...
+	private void showProgressSpinner() {
+		//show the spinner
+		resetProgress.setVisibility(0);
+		//disable all clickable objects
+		btnResetPassword.setEnabled(false);
+		btnLinkToRegisterScreen.setEnabled(false);
+		btnLinkToLoginScreen.setEnabled(false);
+		emailInput.setEnabled(false);
+
+	}
+
+	private void hideProgressSpinner() {
+		//hide the spinner
+		resetProgress.setVisibility(8);
+		//re-enable all clickable objects
+		btnResetPassword.setEnabled(true);
+		btnLinkToRegisterScreen.setEnabled(true);
+		btnLinkToLoginScreen.setEnabled(true);
+		emailInput.setEnabled(true);
 	}
 }

@@ -61,9 +61,8 @@ public class Main extends Activity implements OnClickListener{
 	/**
 	 * Called when user clicks gameview-button
 	 */
-	public void startGameview(View view){
-		Intent intent = new Intent(this, GameActivity.class);
-		startActivity(intent);
+	public void createGame(View view){
+		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 
 }
