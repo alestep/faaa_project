@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +21,9 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
 import com.dropbox.client2.session.TokenPair;
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
 
 public class UploadVideo extends Activity implements OnClickListener {
    

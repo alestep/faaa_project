@@ -1,9 +1,17 @@
-package com.example.wecharades;
+package com.example.wecharades.views;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.example.wecharades.ActiveGameItem;
+import com.example.wecharades.Database;
+import com.example.wecharades.DatabaseConnector;
+import com.example.wecharades.EntryAdapter;
+import com.example.wecharades.Item;
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;

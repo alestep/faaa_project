@@ -1,8 +1,10 @@
 package com.example.wecharades;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import android.util.Log;
 
@@ -23,8 +25,27 @@ import com.parse.SaveCallback;
  */
 public class Database {
 
-	private static String getWord(){
-		return "Testord"; //TODO This should be implemented later.
+	/**
+	 * Randomly get 6 unique word from the database 
+	 * @return an ArrayList with 6 words 
+	 */
+	private static Stack<String> getWords(){
+		Stack<String> list = new Stack<String>();
+		ParseQuery query = new ParseQuery("WordList");
+		ArrayList<String> w = new ArrayList<String>();
+		w.add("word");
+		query.selectKeys(w);
+		List<ParseObject> dblist = null;
+		try {
+			dblist = query.find();
+		} catch (ParseException e) {
+			Log.d("Database",e.getMessage());
+		}
+		for(ParseObject word : dblist){
+			list.add(word.getString("word"));
+		}
+		Collections.shuffle(list);
+		return list;
 	}
 
 	/**
@@ -46,6 +67,7 @@ public class Database {
 		parseList.add(newGame);
 
 		//Adds all the six turns
+		Stack<String> wordList = getWords();
 		ParseObject newTurn;
 		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
@@ -56,13 +78,11 @@ public class Database {
 				recP = playerId1;
 				ansP = playerId2;
 			}
-			recP = (i%2 == 0) ? playerId2 : playerId1;
-			ansP = (i%2 == 0) ? playerId1 : playerId2;
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
-			newTurn.put("state","1");
-			newTurn.put("word",getWord());
+			newTurn.put("state","1");				//TODO Create global constants perhaps?
+			newTurn.put("word",wordList.pop());
 			newTurn.put("videoLink","");
 			newTurn.put("recPlayer",recP);
 			newTurn.put("recPlayerScore",0);
@@ -255,5 +275,14 @@ public class Database {
 		}
 		return returnList;
 	}
+	
+	public static void acceptInvitation () {
+		//TODO
+	}
+	
+	public static void declineInvitation () {
+		//TODO
+	}
+	
 
 }
