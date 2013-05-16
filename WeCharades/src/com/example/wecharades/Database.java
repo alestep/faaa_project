@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -17,9 +16,6 @@ import com.parse.ParseQuery;
  *
  */
 public class Database {
-
-	//A variable to temporarily save a query result. Should be deleted after use (set to null)
-	private static Object queryReturn;
 
 	private static String getWord(){
 		return "Testord"; //TODO This should be implemented later.
@@ -156,6 +152,10 @@ public class Database {
 		return parseTurn(turn);
 	}
 	
+	/**
+	 * Updates a specific game according to its local version
+	 * @param theTurn - the Turn object that should be used as a reference
+	 */
 	public static void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery("Turn");

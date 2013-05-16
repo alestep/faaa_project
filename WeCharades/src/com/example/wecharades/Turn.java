@@ -17,17 +17,7 @@ package com.example.wecharades;
  * @author Anton Dahlström
  *
  */
-public class Turn {/*
-	newTurn.put("game",newGame);
-	newTurn.put("turn",i);
-	newTurn.put("state","1");
-	newTurn.put("word",getWord());
-	newTurn.put("videoLink","N/A");
-	newTurn.put("videoPlayer",playerId1);
-	newTurn.put("videoPlayerScore",0);
-	newTurn.put("answerPlayer",playerId2);
-	newTurn.put("answerPlayerScore",0);
-	*/
+public class Turn {
 	private String gameId;
 	private int turnNumber;
 	private int state;
@@ -39,8 +29,8 @@ public class Turn {/*
 	private int ansPlayerScore;
 	
 	public static final int INIT   = 0,	
-	VIDEO  = 1,
-	FINISH = 2;
+							VIDEO  = 1,
+							FINISH = 2;
 
 	public Turn(String gameId, int turnNumber, int state, String word,
 			String videoLink, String recPlayer, int recPlayerScore,
