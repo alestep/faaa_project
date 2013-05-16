@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.model;
 
 /**
  * Information about players that is stored locally.

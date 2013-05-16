@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.model;
 
 /**
  * This class represents a turn in a game.
