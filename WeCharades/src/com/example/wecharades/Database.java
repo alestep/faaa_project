@@ -56,18 +56,12 @@ public class Database {
 				recP = playerId1;
 				ansP = playerId2;
 			}
-			recP = (i%2 == 0) ? playerId2 : playerId1;
-			ansP = (i%2 == 0) ? playerId1 : playerId2;
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
-			newTurn.put("state","1");				//Create global constants perhaps?
+			newTurn.put("state","1");				//TODO Create global constants perhaps?
 			newTurn.put("word",getWord());
 			newTurn.put("videoLink","");
-			newTurn.put("recPlayer",playerId1);
-			newTurn.put("recPlayerScore",0);		//"STARTING_SCORE"
-			newTurn.put("ansPlayer",playerId2);
-			newTurn.put("ansPlayerScore",0);		//"STARTING_SCORE"
 			newTurn.put("recPlayer",recP);
 			newTurn.put("recPlayerScore",0);
 			newTurn.put("ansPlayer",ansP);
