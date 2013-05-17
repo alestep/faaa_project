@@ -32,14 +32,14 @@ public class RegisterActivity extends Activity {
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 
 		// Importing all assets like buttons, text fields
-		inputNickname = (EditText) findViewById(R.id.registerName);
-		inputEmail = (EditText) findViewById(R.id.registerEmail);
-		inputPassword = (EditText) findViewById(R.id.registerPassword);
-		inputRepeatPassword = (EditText) findViewById(R.id.registerRepeatPassword);
-		btnRegister = (Button) findViewById(R.id.btnRegister);
-		btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
-		registerErrorMsg = (TextView) findViewById(R.id.register_error);
-		registerProgress = (ProgressBar) findViewById(R.id.progress);
+		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
+		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
+		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
+		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
+		btnRegister			=	(Button) 		findViewById(R.id.btnRegister);
+		btnLinkToLogin 		=	(Button) 		findViewById(R.id.btnLinkToLoginScreen);
+		registerErrorMsg 	=	(TextView) 		findViewById(R.id.register_error);
+		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		registerProgress.setVisibility(4); //set to invisible
 
 	}

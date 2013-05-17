@@ -6,7 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
+import android.view.View;
 
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Player;
@@ -15,6 +17,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 /**
@@ -23,24 +26,21 @@ import com.parse.SaveCallback;
  * @author Anton Dahlström
  *
  */
+@SuppressLint("DefaultLocale")
 public class Database {
 
 	/**
 	 * Randomly get 6 unique word from the database 
 	 * @return an ArrayList with 6 words 
+	 * @throws ParseException 
 	 */
-	private static Stack<String> getWords(){
+	private static Stack<String> getWords() throws ParseException{
 		Stack<String> list = new Stack<String>();
 		ParseQuery query = new ParseQuery("WordList");
 		ArrayList<String> w = new ArrayList<String>();
 		w.add("word");
 		query.selectKeys(w);
-		List<ParseObject> dblist = null;
-		try {
-			dblist = query.find();
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-		}
+		List<ParseObject> dblist = query.find();
 		for(ParseObject word : dblist){
 			list.add(word.getString("word"));
 		}
@@ -53,8 +53,9 @@ public class Database {
 	 * 
 	 * @param 	playerId1: The player who created the game
 	 * 			playerId2: The player who received the game
+	 * @throws ParseException 
 	 */
-	public static void createGame(String playerId1, String playerId2) {
+	public static void createGame(String playerId1, String playerId2) throws ParseException {
 		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
 
 		ParseObject newGame = new ParseObject("Game");
@@ -81,7 +82,7 @@ public class Database {
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
-			newTurn.put("state","1");				//TODO Create global constants perhaps?
+			newTurn.put("state",Turn.INIT);
 			newTurn.put("word",wordList.pop());
 			newTurn.put("videoLink","");
 			newTurn.put("recPlayer",recP);
@@ -114,7 +115,7 @@ public class Database {
 			return null;
 		}
 	}
-	
+
 	//A method to parse ParseObject turns into turns
 	private static Turn parseTurn(ParseObject turn){
 		if(turn.getClassName().equals("Turn")){
@@ -174,14 +175,15 @@ public class Database {
 					//Updates the game on the server with the latest info
 					object.put("playerTurn", game.getCurrentPlayer());
 					object.put("turn", game.getTurn());
-					object.saveInBackground();
+					object.saveEventually();
 				} else{
-					//TODO Fix exceptions
+					//TODO FIX toast or something here
+					Log.d("Database",e.getMessage());
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Retrieves a turn from the database
 	 * @param gameId - the game to which this turn belongs
@@ -196,7 +198,7 @@ public class Database {
 		ParseObject turn = query.getFirst();
 		return parseTurn(turn);
 	}
-	
+
 	/**
 	 * Updates a specific game according to its local version
 	 * @param theTurn - the Turn object that should be used as a reference
@@ -219,7 +221,7 @@ public class Database {
 			}
 		});
 	}
-	
+
 	/**
 	 * Gets the player with player Id from the database
 	 * @param playerId the Player's id
@@ -234,8 +236,6 @@ public class Database {
 	 * Puts the playerId into the the random queue
 	 */
 	public static void putIntoPlayerQueue(String playerId) {
-		//TODO We should maybe check if the player is already in queue
-
 		ParseObject queue = new ParseObject("RandomQueue");
 		queue.put("player", playerId);
 		queue.saveInBackground();
@@ -276,13 +276,60 @@ public class Database {
 		return returnList;
 	}
 	
+	
+	//TODO this should be one level above
+	/*
 	public static void acceptInvitation () {
 		//TODO
 	}
-	
+
 	public static void declineInvitation () {
 		//TODO
 	}
-	
+	*/
 
+	/**
+	 * A method to register a user
+	 * @param view - the view of origin
+	 * @param inputNickname - the nickname of choice
+	 * @param inputEmail - Email address
+	 * @param inputPassword - password
+	 * @param inputRepeatPassword - controll password
+	 * @throws ParseException - thrown if the database transferr fails
+	 */
+	public static void onClickRegister(View view, 
+			String inputNickname, 
+			String inputEmail, 
+			String inputPassword, 
+			String inputRepeatPassword) throws ParseException{
+	
+		if(inputNickname == null || inputNickname.length() == 0) {
+			throw new ParseException(1,"Invalid nickname");
+		} else if( inputPassword == null || inputPassword.length() <5 ){
+			throw new ParseException(1,"Weak password");
+		} else if(!inputPassword.equals(inputRepeatPassword)){
+			throw new ParseException(1,"Unrepeated password");
+		}
+		
+		ParseUser user = new ParseUser();
+		user.setUsername(inputNickname.toLowerCase());
+		user.put("naturalUsername", inputNickname);	//to keep the input username, e.g capital letter
+		user.put("globalScore", 0); //globalScore is set to zero when register
+		user.setPassword(inputPassword);
+		user.setEmail(inputEmail);
+		user.signUp();
+	}
+	
+	/**
+	 * Login activity
+	 * @param view - the origin view //TODO Not needed?
+	 * @param username - the user
+	 * @param password - the password
+	 * @throws ParseException - if something went wrong
+	 */
+	public static void onClickLogin(View view, String username, String password) throws ParseException{
+		//login through parse.com's standard function
+		//Using lowercase at login and registration to avoid case sensitivity problem
+		ParseUser.logIn(username.toLowerCase(), password);
+	}
 }
