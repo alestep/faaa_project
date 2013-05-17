@@ -2,16 +2,23 @@ package com.example.wecharades.views;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.wecharades.ActiveGameItem;
 import com.example.wecharades.Database;
-import com.example.wecharades.DatabaseConnector;
 import com.example.wecharades.EntryAdapter;
 import com.example.wecharades.Item;
+import com.example.wecharades.SectionItem;
+import com.example.wecharades.GameItem;
 import com.example.wecharades.R;
 import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
+import com.example.wecharades.SeparatedListAdapter;
+
+import com.example.wecharades.model.Game;
+
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -25,17 +32,44 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class StartScreen extends ListActivity {
-
+	
+	protected static final String TAG = "StartScreen";
 	private Button btnLogout;
 	private TextView username;
 	private ArrayList<Item> items = new ArrayList<Item>();
-	
+    public final static String ITEM_TITLE = "title";
+    public final static String ITEM_CAPTION = "caption";
+
+    // SectionHeaders
+    private final static String[] days = new String[]{"Mon", "Tue", "Wed", "Thur", "Fri"};
+
+    // Section Contents
+    private final static String[] notes = new String[]{"Ate Breakfast", "Ran a Marathan ...yah really", "Slept all day"};
+
+    // MENU - ListView
+    private ListView addJournalEntryItem;
+
+    // Adapter for ListView Contents
+    private SeparatedListAdapter adapter;
+
+    // ListView Contents
+    private ListView journalListView;
+
+    public Map<String, ?> createItem(String title, String caption){
+            Map<String, String> item = new HashMap<String, String>();
+            item.put(ITEM_TITLE, title);
+            item.put(ITEM_CAPTION, caption);
+            return item;
+    }
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,14 +96,52 @@ public class StartScreen extends ListActivity {
 //		username = (TextView) findViewById(R.id.viewName);
 //		String name = (String) currentUser.getString("naturalUsername");
 //		username.setText(name); 
+        // Interactive Tools
+        final ArrayAdapter<String> journalEntryAdapter = new ArrayAdapter<String>(this, R.layout.add_journalentry_menuitem, new String[]{"Add Journal Entry"});
 
-		items = DatabaseConnector.getList(); //Här kan vi skicka med användarnamneet så vi vet vems data som skall hämtas.
+        // AddJournalEntryItem
+        addJournalEntryItem = (ListView) this.findViewById(R.id.add_journalentry_menuitem);
+        addJournalEntryItem.setAdapter(journalEntryAdapter);
+        addJournalEntryItem.setOnItemClickListener(new OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long duration)
+                    {
+                        String item = journalEntryAdapter.getItem(position);
+                        Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+                    }
+            });
+
+        // Create the ListView Adapter
+        adapter = new SeparatedListAdapter(this);
+        ArrayAdapter<String> listadapter = new ArrayAdapter<String>(this, R.layout.list_item, notes);
+
+        // Add Sections
+        for (int i = 0; i < days.length; i++)
+            {
+                adapter.addSection(days[i], listadapter);
+            }
+
+        // Get a reference to the ListView holder
+        journalListView = (ListView) this.findViewById(R.id.list_journal);
+
+        // Set the adapter on the ListView holder
+        journalListView.setAdapter(adapter);
+
+        // Listen for Click events
+        journalListView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+                    String item = (String) adapter.getItem(position);
+                    Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+				}
+            });
+        
+		items = getGameList(); //Här kan vi skicka med användarnamneet så vi vet vems data som skall hämtas.
 
 		EntryAdapter adapter = new EntryAdapter(this, items);
 		setListAdapter(adapter);
-
-//		createGames();			// Made by Alex
-//		items = queryGames();	// Made by Alex
 
 		Button b = (Button) findViewById(R.id.new_game_button);
 		b.setOnClickListener(new OnClickListener() {
@@ -95,105 +167,22 @@ public class StartScreen extends ListActivity {
 		});
 	}
 
-//	private ArrayList<Item> queryGames() {
-//		ArrayList<Item> items = new ArrayList<Item>();
-//		items.addAll(getYourTurn());
-//		items.addAll(getOpponentsTurn());
-//		items.addAll(getFinishedGames());
-//
-//		return items;
-//
-//	}
-//
-//	private Collection<? extends Item> getOpponentsTurn() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryOpponent = new ParseQuery("Game");
-//		queryOpponent.whereEqualTo("turn", "opponent");
-//		queryOpponent.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> OpponentList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : OpponentList) {
-//						items.add(new ActiveGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//
-//	}
-//
-//	private Collection<? extends Item> getFinishedGames() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryFinished = new ParseQuery("Game");
-//		queryFinished.whereEqualTo("turn", "finished");
-//		queryFinished.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> FinishedList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : FinishedList) {
-//						items.add(new FinishedGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//	}
-//
-//	private Collection<? extends Item> getYourTurn() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryYour = new ParseQuery("Game");
-//		queryYour.whereEqualTo("turn", "your");
-//		queryYour.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> YourList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : YourList) {
-//						items.add(new ActiveGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//	}
-//
-//	private void createGames() {
-//		ParseObject game = new ParseObject("Game");
-//		game.put("gameID", 1);
-//		game.put("player", "Fredrik");
-//		game.put("turn", "opponent");
-//		game.put("score", "7 - 3");
-//		game.put("gameID", 2);
-//		game.put("player", "Patrik");
-//		game.put("turn", "your");
-//		game.put("score", "3 - 7");
-//		game.put("gameID", 3);
-//		game.put("player", "Marcus");
-//		game.put("turn", "finished");
-//		game.put("score", "4 - 3");
-//		game.put("gameID", 4);
-//		game.put("player2", "Robert");
-//		game.put("status", "finished");
-//		game.put("score", "3 - 3");
-//		game.saveInBackground();
-//	}
+	private ArrayList<Item> getGameList() {
+		ArrayList<Item> items = new ArrayList<Item>();
+		
+		try {
+			ArrayList<Game> games = Database.getGames(ParseUser.getCurrentUser().getUsername());
+			items.add(new SectionItem("Your turn"));
+			for (Game g : games) {
+				
+			}
+		}catch (ParseException e){
+			Log.d(TAG, e.getMessage());
+		}
 
-
+		return items;
+	}
+/*
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
@@ -211,6 +200,7 @@ public class StartScreen extends ListActivity {
 
 		super.onListItemClick(l, v, position-1, id);
 	}
+*/
 
 	public void createGame(View view){
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
