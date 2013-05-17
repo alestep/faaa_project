@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -25,6 +26,7 @@ public class ResetPasswordActivity extends Activity {
 	EditText emailInput;
 	TextView errorMsg;
 	ProgressBar resetProgress;
+	ScrollView myScrollView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ResetPasswordActivity extends Activity {
 		btnLinkToLoginScreen	= (Button) findViewById(R.id.btnLinkToLoginScreen);
 		btnResetPassword 		= (Button) findViewById(R.id.btnResetPassword);
 		resetProgress			= (ProgressBar) findViewById(R.id.progress);
+		myScrollView		= 	(ScrollView)	findViewById(R.id.scrollView);
 		resetProgress.setVisibility(4); //set to invisible
 	}
 

@@ -1,4 +1,4 @@
-package com.example.wecharades.controller;
+package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
