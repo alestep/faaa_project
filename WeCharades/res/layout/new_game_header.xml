@@ -33,6 +33,7 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_alignBottom="@+id/btnAcount"
             android:layout_toRightOf="@+id/btnAcount"
             android:onClick="onClickLogout"

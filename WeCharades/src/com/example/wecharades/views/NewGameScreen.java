@@ -26,7 +26,7 @@ public class NewGameScreen extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(NewGameScreen.this, Friends.class));
+				startActivity(new Intent(NewGameScreen.this, SearchActivity.class));
 			}
 		});
 	}

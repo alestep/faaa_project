@@ -1,11 +1,11 @@
 package com.example.wecharades;
 
-public abstract class EntryItem implements Item{
+public abstract class GameItem implements Item{
 
 	private final String title;
 	private final String subtitle;
 
-	public EntryItem(String title, String subtitle) {
+	public GameItem(String title, String subtitle) {
 		this.title = title;
 		this.subtitle = subtitle;
 	}
