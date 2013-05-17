@@ -54,6 +54,7 @@ public class Main extends Activity implements OnClickListener{
 			Intent intentTwo = new Intent(Main.this, PlayStreamedVideo.class);
 			startActivity(intentTwo);
 		}
+
 	}	
 
 	@Override
@@ -66,6 +67,7 @@ public class Main extends Activity implements OnClickListener{
 	/**
 	 * Called when user clicks gameview-button
 	 */
+
 	public void createGame(View view){
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}

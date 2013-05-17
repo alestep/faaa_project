@@ -20,7 +20,7 @@ public class GameActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
-
+	/** VARFÖR ÄR NEDANSTÅENDE MED? MVH ADAM */
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
