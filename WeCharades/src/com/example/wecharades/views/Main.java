@@ -4,7 +4,8 @@ import com.example.wecharades.R;
 import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
 import com.example.wecharades.R.menu;
-import com.example.wecharades.controller.Database;
+import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.presenter.Database;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -68,9 +69,10 @@ public class Main extends Activity implements OnClickListener{
 	/**
 	 * Called when user clicks gameview-button
 	 * @throws ParseException 
+	 * @throws DatabaseException 
 	 */
 
-	public void createGame(View view) throws ParseException{
+	public void createGame(View view) throws ParseException, DatabaseException{
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 

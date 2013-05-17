@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.Presenter;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -126,7 +127,7 @@ public class LoginActivity extends Activity {
 		//show the spinner
 		loginProgress.setVisibility(0);
 		//Enable buttons
-		enableOrDisableViews();
+		Presenter.enableOrDisableViews(myView);
 	}
 
 	/**
@@ -136,43 +137,6 @@ public class LoginActivity extends Activity {
 		//hide the spinner
 		loginProgress.setVisibility(8);
 		//disable buttons
-		enableOrDisableViews();
-	}
-	
-	public void enableOrDisableViews() {
-		ArrayList<View> allViewObject = getAllChildren(myView);
-		for (View child : allViewObject) {
-			if (child instanceof TextView) {
-				if(child.isEnabled()) {
-				child.setEnabled(false);
-				} else {
-					child.setEnabled(true);
-				}
-			}
-		}
-	}
-
-	private ArrayList<View> getAllChildren(View v) {
-
-		if (!(v instanceof ViewGroup)) {
-			ArrayList<View> viewArrayList = new ArrayList<View>();
-			viewArrayList.add(v);
-			return viewArrayList;
-		}
-
-		ArrayList<View> result = new ArrayList<View>();
-
-		ViewGroup vg = (ViewGroup) v;
-		for (int i = 0; i < vg.getChildCount(); i++) {
-
-			View child = vg.getChildAt(i);
-
-			ArrayList<View> viewArrayList = new ArrayList<View>();
-			viewArrayList.add(v);
-			viewArrayList.addAll(getAllChildren(child));
-
-			result.addAll(viewArrayList);
-		}
-		return result;
+		Presenter.enableOrDisableViews(myView);
 	}
 }

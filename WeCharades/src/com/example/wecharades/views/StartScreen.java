@@ -16,7 +16,9 @@ import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
 import com.example.wecharades.SeparatedListAdapter;
 
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.presenter.Database;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -41,7 +43,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wecharades.controller.Database;
 
 
 public class StartScreen extends Activity {
@@ -69,21 +70,21 @@ public class StartScreen extends Activity {
 		}
 	}
 
-	private ArrayList<Item> getGameList() {
-		ArrayList<Item> items = new ArrayList<Item>();
-		
-		try {
-			ArrayList<Game> games = Database.getGames(ParseUser.getCurrentUser().getUsername());
-			items.add(new SectionItem("Your turn"));
-			for (Game g : games) {
-				
-			}
-		}catch (ParseException e){
-			Log.d("TEXT", e.getMessage());
-		}
-
-		return items;
-	}
+//	private ArrayList<Item> getGameList() {
+//		ArrayList<Item> items = new ArrayList<Item>();
+//		
+//		try {
+//			ArrayList<Game> games = Database.getGames(ParseUser.getCurrentUser().getUsername());
+//			items.add(new SectionItem("Your turn"));
+//			for (Game g : games) {
+//				
+//			}
+//		}catch (ParseException e){
+//			Log.d("TEXT", e.getMessage());
+//		}
+//
+//		return items;
+//	}
 	
 	/**
 	 * Logout and go back to login screen
@@ -137,7 +138,7 @@ public class StartScreen extends Activity {
 	}
 */
 
-	public void createGame(View view) throws ParseException{
+	public void createGame(View view) throws ParseException, DatabaseException{
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 }

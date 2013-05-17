@@ -1,4 +1,4 @@
-package com.example.wecharades.controller;
+package com.example.wecharades.presenter;
 
 import com.parse.ParseException;
 
