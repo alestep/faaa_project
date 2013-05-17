@@ -28,19 +28,15 @@ public class Database {
 	/**
 	 * Randomly get 6 unique word from the database 
 	 * @return an ArrayList with 6 words 
+	 * @throws ParseException 
 	 */
-	private static Stack<String> getWords(){
+	private static Stack<String> getWords() throws ParseException{
 		Stack<String> list = new Stack<String>();
 		ParseQuery query = new ParseQuery("WordList");
 		ArrayList<String> w = new ArrayList<String>();
 		w.add("word");
 		query.selectKeys(w);
-		List<ParseObject> dblist = null;
-		try {
-			dblist = query.find();
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-		}
+		List<ParseObject> dblist = query.find();
 		for(ParseObject word : dblist){
 			list.add(word.getString("word"));
 		}
@@ -53,8 +49,9 @@ public class Database {
 	 * 
 	 * @param 	playerId1: The player who created the game
 	 * 			playerId2: The player who received the game
+	 * @throws ParseException 
 	 */
-	public static void createGame(String playerId1, String playerId2) {
+	public static void createGame(String playerId1, String playerId2) throws ParseException {
 		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
 
 		ParseObject newGame = new ParseObject("Game");
@@ -81,7 +78,7 @@ public class Database {
 			newTurn = new ParseObject("Turn");
 			newTurn.put("game",newGame);
 			newTurn.put("turn",i);
-			newTurn.put("state","1");				//TODO Create global constants perhaps?
+			newTurn.put("state",Turn.INIT);
 			newTurn.put("word",wordList.pop());
 			newTurn.put("videoLink","");
 			newTurn.put("recPlayer",recP);
@@ -174,9 +171,10 @@ public class Database {
 					//Updates the game on the server with the latest info
 					object.put("playerTurn", game.getCurrentPlayer());
 					object.put("turn", game.getTurn());
-					object.saveInBackground();
+					object.saveEventually();
 				} else{
-					//TODO Fix exceptions
+					//TODO FIX toast or something here
+					Log.d("Database",e.getMessage());
 				}
 			}
 		});
@@ -234,8 +232,6 @@ public class Database {
 	 * Puts the playerId into the the random queue
 	 */
 	public static void putIntoPlayerQueue(String playerId) {
-		//TODO We should maybe check if the player is already in queue
-
 		ParseObject queue = new ParseObject("RandomQueue");
 		queue.put("player", playerId);
 		queue.saveInBackground();
