@@ -66,6 +66,11 @@ public abstract class Presenter {
 		return result;
 	}
 	
+	/**
+	 * A method to show a toast
+	 * @param context
+	 * @param msg
+	 */
 	protected static void showToast(Context context, String msg) {
 		Toast error = Toast.makeText(context, msg, Toast.LENGTH_LONG);
 		error.show();

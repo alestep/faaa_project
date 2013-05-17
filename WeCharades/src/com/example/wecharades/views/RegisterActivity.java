@@ -1,9 +1,5 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-import com.parse.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +9,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.example.wecharades.R;
+import com.example.wecharades.presenter.RegisterPresenter;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class RegisterActivity extends Activity {
 	Button btnRegister;
@@ -29,9 +32,7 @@ public class RegisterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		RegisterPresenter.initialize(this);
 
 		// Importing all assets like buttons, text fields
 		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
@@ -51,7 +52,11 @@ public class RegisterActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickRegister(View view) {
-
+		RegisterPresenter.registerUser(
+				inputNickname.getText().toString(),
+				inputEmail.getText().toString().toLowerCase(),
+				inputPassword.getText().toString(),
+				inputRepeatPassword.getText().toString());
 		//Showing the progress spinner
 		showProgressSpinner();
 		String name = inputNickname.getText().toString();

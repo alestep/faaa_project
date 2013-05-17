@@ -342,15 +342,15 @@ public class Database {
 			String inputEmail, 
 			String inputPassword, 
 			String inputRepeatPassword
-			) throws ParseException{
+			) throws DatabaseException{
 		
 		//Some checks that are done locally
 		if(inputNickname == null || inputNickname.length() == 0) {
-			throw new ParseException(1,"Invalid nickname");
+			throw new DatabaseException(101,"Invalid nickname");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
-			throw new ParseException(1,"Weak password");
+			throw new DatabaseException(102,"Weak password");
 		} else if(!inputPassword.equals(inputRepeatPassword)){
-			throw new ParseException(1,"Unrepeated password");
+			throw new DatabaseException(103,"Unrepeated password");
 		}
 
 		ParseUser user = new ParseUser();
@@ -359,7 +359,12 @@ public class Database {
 		user.put("globalScore", 0); //globalScore is set to zero when register
 		user.setPassword(inputPassword);
 		user.setEmail(inputEmail);
-		user.signUp();
+		try {
+			user.signUp();
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(104, e.getMessage());
+		}
 	}
 
 	/**
