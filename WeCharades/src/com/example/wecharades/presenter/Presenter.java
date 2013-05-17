@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,13 @@ public abstract class Presenter {
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	private Context context;
-	public Presenter(Context context) {
-		this.context = context;
+	private Activity activity;
+	public Presenter(Activity activity) {
+		this.activity = activity;
 	}
 	
 	public void initialize(){
-		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
 	/**

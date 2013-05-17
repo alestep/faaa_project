@@ -4,18 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.LoginPresenter;
-import com.example.wecharades.presenter.Presenter;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+
 
 public class LoginActivity extends Activity {
 	EditText inputUsername;
@@ -31,7 +25,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login);
 		
 		//initializing the presenter
-		presenter = new LoginPresenter(getApplicationContext());
+		presenter = new LoginPresenter(this);
 		
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();

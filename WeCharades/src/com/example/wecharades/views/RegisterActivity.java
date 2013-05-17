@@ -27,7 +27,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 		//initializing the presenter
-		presenter = new RegisterPresenter(getApplicationContext());
+		presenter = new RegisterPresenter(this);
 
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();

@@ -35,7 +35,7 @@ public class ResetPasswordActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.resetpassword);
 		//initializing the presenter
-		presenter = new ResetPresenter(getApplicationContext());
+		presenter = new ResetPresenter(this);
 
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();

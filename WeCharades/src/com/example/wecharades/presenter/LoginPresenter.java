@@ -1,23 +1,23 @@
 package com.example.wecharades.presenter;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.example.wecharades.model.DatabaseException;
 
 public class LoginPresenter extends Presenter{
-	private Context context;
-	public LoginPresenter(Context context) {
+	private Activity activity;
+	public LoginPresenter(Activity activity) {
 		//TODO: not sure if this is correct...@anton
-		super(context);
-		this.context = context;
+		super(activity);
+		this.activity = activity;
 	}
-	
+	//TODO: FIND A WAY TO SEND THE USER TO ANOTHER INTENT IF SUCCESSFUL OR FAIL!!!!
 	public void login(String username, String password){
 			try {
 				Database.loginPlayer(username, password);
 			} catch (DatabaseException e) {
 				//TODO: better error managing
-				showToast(context, e.getMessage());
+				showToast(activity.getApplicationContext(), e.getMessage());
 			}
 	}
 }

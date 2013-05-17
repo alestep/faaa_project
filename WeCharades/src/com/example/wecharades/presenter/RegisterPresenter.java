@@ -1,16 +1,16 @@
 package com.example.wecharades.presenter;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.example.wecharades.model.DatabaseException;
 
 public class RegisterPresenter extends Presenter {
 	
-	private Context context;
-	public RegisterPresenter(Context context) {
+	private Activity activity;
+	public RegisterPresenter(Activity activity) {
 		//TODO: not sure if this is correct... @anton
-		super(context);
-		this.context = context;
+		super(activity);
+		this.activity = activity;
 	}
 	
 
@@ -27,7 +27,7 @@ public class RegisterPresenter extends Presenter {
 			Database.registerPlayer(inputNickname, inputEmail, inputPassword, inputRepeatPassword);
 		} catch (DatabaseException e) {
 			//TODO: better error managing
-			showToast(context, e.getMessage());
+			showToast(activity.getApplicationContext() , e.getMessage());
 		}
 	}
 }
