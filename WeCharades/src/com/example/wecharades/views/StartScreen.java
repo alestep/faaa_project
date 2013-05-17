@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.wecharades.ActiveGameItem;
-import com.example.wecharades.Database;
 import com.example.wecharades.EntryAdapter;
 import com.example.wecharades.Item;
 import com.example.wecharades.SectionItem;
@@ -34,10 +33,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.wecharades.controller.Database;
+
 
 public class StartScreen extends ListActivity {
 	
@@ -84,7 +88,6 @@ public class StartScreen extends ListActivity {
 		//TODO: Fixa en central isLoggedIn()-funktion senare?
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if(currentUser == null ) {
-
 			// user is not logged in, show login screen
 			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
 			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -92,18 +95,13 @@ public class StartScreen extends ListActivity {
 			finish();
 		}
 
-		//Temporary show username field...
-//		username = (TextView) findViewById(R.id.viewName);
-//		String name = (String) currentUser.getString("naturalUsername");
-//		username.setText(name); 
         // Interactive Tools
-        final ArrayAdapter<String> journalEntryAdapter = new ArrayAdapter<String>(this, R.layout.add_journalentry_menuitem, new String[]{"Add Journal Entry"});
+        final ArrayAdapter<String> journalEntryAdapter = new ArrayAdapter<String>(this, R.layout.list_header, new String[]{"Add Journal Entry"});
 
         // AddJournalEntryItem
-        addJournalEntryItem = (ListView) this.findViewById(R.id.add_journalentry_menuitem);
+        addJournalEntryItem = (ListView) this.findViewById(R.id.list_header);
         addJournalEntryItem.setAdapter(journalEntryAdapter);
-        addJournalEntryItem.setOnItemClickListener(new OnItemClickListener()
-            {
+        addJournalEntryItem.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long duration)
                     {
@@ -117,8 +115,7 @@ public class StartScreen extends ListActivity {
         ArrayAdapter<String> listadapter = new ArrayAdapter<String>(this, R.layout.list_item, notes);
 
         // Add Sections
-        for (int i = 0; i < days.length; i++)
-            {
+        for (int i = 0; i < days.length; i++) {
                 adapter.addSection(days[i], listadapter);
             }
 
@@ -138,7 +135,10 @@ public class StartScreen extends ListActivity {
 				}
             });
         
-		items = getGameList(); //HŠr kan vi skicka med anvŠndarnamneet sŒ vi vet vems data som skall hŠmtas.
+		username = (TextView) findViewById(R.id.viewName);
+		String name = (String) currentUser.getString("naturalUsername");
+		username.setText(name); 
+
 
 		EntryAdapter adapter = new EntryAdapter(this, items);
 		setListAdapter(adapter);
@@ -182,6 +182,39 @@ public class StartScreen extends ListActivity {
 
 		return items;
 	}
+	
+	/**
+	 * Logout and go back to login screen
+	 * @param view
+	 */
+	public void onClickLogout(View view) {
+		ParseUser.logOut();
+		//Redirecting to LoginActivity
+		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(login);
+		// Closing start screen
+		finish();
+	}
+	
+	/**
+	 * Go to New Game screen
+	 * @param view
+	 */
+	public void onClickNewGame(View view) {
+		Intent intent = new Intent(StartScreen.this, NewGameScreen.class);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Nothing happens so far...
+	 * @param view
+	 */
+	public void onClickAccount(View view) {
+		Log.d("Clicked", "Account");
+	}
+	
+	
 /*
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
