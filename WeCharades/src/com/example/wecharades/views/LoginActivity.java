@@ -35,7 +35,7 @@ public class LoginActivity extends Activity {
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		LoginPresenter.initialize(this);
 
-		//Testing to get the view associated with login.xml
+		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.loginUsername);
@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
 		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
 		myScrollView		= (ScrollView)findViewById(R.id.scrollView);
-		loginProgress.setVisibility(4); //set to invisible
+		Presenter.setProgressSpinnerInvisible(loginProgress);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
 	 */
 	public void onClickLogin(View view) {
 		//Show the progress spinner
-		showProgressSpinner();
+		Presenter.showProgressSpinner(myView, loginProgress);
 		
 		//Using lowercase at login and registration to avoid case sensitivity problems
 		String username = inputUsername.getText().toString().toLowerCase();
@@ -67,7 +67,7 @@ public class LoginActivity extends Activity {
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
 			@Override
 			public void done(ParseUser user, ParseException e) {
-				hideProgressSpinner();
+				Presenter.hideProgressSpinner(myView, loginProgress);
 				if (user != null) {
 					// Successful login! - Launch StartScreen
 					Intent startscreen = new Intent(getApplicationContext(), StartScreen.class);
@@ -110,27 +110,5 @@ public class LoginActivity extends Activity {
 				RegisterActivity.class);
 		startActivity(i);
 		finish();
-	}
-
-	/**
-	 * Called to show progress spinning when waiting for the server
-	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
-	 * TODO: Consider using threads instead...
-	 */
-	public void showProgressSpinner() {
-		//show the spinner
-		loginProgress.setVisibility(0);
-		//Enable buttons
-		Presenter.enableOrDisableViews(myView);
-	}
-
-	/**
-	 * Called to hide progress spinning when the server has responded
-	 */
-	public void hideProgressSpinner() {
-		//hide the spinner
-		loginProgress.setVisibility(8);
-		//disable buttons
-		Presenter.enableOrDisableViews(myView);
 	}
 }

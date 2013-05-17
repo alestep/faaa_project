@@ -3,6 +3,7 @@ package com.example.wecharades.views;
 import com.example.wecharades.R;
 import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
+import com.example.wecharades.presenter.Presenter;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -26,12 +27,15 @@ public class ResetPasswordActivity extends Activity {
 	EditText emailInput;
 	TextView errorMsg;
 	ProgressBar resetProgress;
-	ScrollView myScrollView;
+	View myView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.resetpassword);
+
+		//Getting the view associated with this Activity
+		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 
 		//Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
@@ -42,8 +46,7 @@ public class ResetPasswordActivity extends Activity {
 		btnLinkToLoginScreen	= (Button) findViewById(R.id.btnLinkToLoginScreen);
 		btnResetPassword 		= (Button) findViewById(R.id.btnResetPassword);
 		resetProgress			= (ProgressBar) findViewById(R.id.progress);
-		myScrollView		= 	(ScrollView)	findViewById(R.id.scrollView);
-		resetProgress.setVisibility(4); //set to invisible
+		Presenter.setProgressSpinnerInvisible(resetProgress);
 	}
 
 	/**
@@ -52,7 +55,8 @@ public class ResetPasswordActivity extends Activity {
 	 */
 	public void onClickResetPassword(View arg0) {
 		//Showing the progress spinner
-		showProgressSpinner();
+		Presenter.showProgressSpinner(myView, resetProgress);
+
 
 		String email = emailInput.getText().toString();
 		ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
@@ -60,7 +64,7 @@ public class ResetPasswordActivity extends Activity {
 			public void done(ParseException e) {
 
 				//Hiding the progress spinner
-				hideProgressSpinner();
+				Presenter.hideProgressSpinner(myView, resetProgress);
 
 				if (e == null) {
 					// Success
@@ -107,28 +111,5 @@ public class ResetPasswordActivity extends Activity {
 				LoginActivity.class);
 		startActivity(i);
 		finish();
-	}
-
-	//TODO: Where should we put these, they are used in both RegisterActivity and LoginActivity
-	//TODO: Consider using threads instead...
-	private void showProgressSpinner() {
-		//show the spinner
-		resetProgress.setVisibility(0);
-		//disable all clickable objects
-		btnResetPassword.setEnabled(false);
-		btnLinkToRegisterScreen.setEnabled(false);
-		btnLinkToLoginScreen.setEnabled(false);
-		emailInput.setEnabled(false);
-
-	}
-
-	private void hideProgressSpinner() {
-		//hide the spinner
-		resetProgress.setVisibility(8);
-		//re-enable all clickable objects
-		btnResetPassword.setEnabled(true);
-		btnLinkToRegisterScreen.setEnabled(true);
-		btnLinkToLoginScreen.setEnabled(true);
-		emailInput.setEnabled(true);
 	}
 }

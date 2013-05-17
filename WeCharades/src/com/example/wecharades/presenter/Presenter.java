@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.Parse;
 
 public abstract class Presenter {
-	
+
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
@@ -19,7 +20,7 @@ public abstract class Presenter {
 	public static void initialize(Context context){
 		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
-	
+
 	/**
 	 * Enable or disable all clickable objects in view
 	 * @param view
@@ -29,14 +30,14 @@ public abstract class Presenter {
 		for (View child : allViewObject) {
 			if (child instanceof TextView) {
 				if(child.isEnabled()) {
-				child.setEnabled(false);
+					child.setEnabled(false);
 				} else {
 					child.setEnabled(true);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * To get all clickable objects in a list from a view
 	 * @param view
@@ -65,9 +66,36 @@ public abstract class Presenter {
 		}
 		return result;
 	}
-	
+
 	protected static void showToast(Context context, String msg) {
 		Toast error = Toast.makeText(context, msg, Toast.LENGTH_LONG);
 		error.show();
+	}
+
+	public static void setProgressSpinnerInvisible(ProgressBar loginProgress) {
+		loginProgress.setVisibility(4);
+	}
+
+	/**
+	 * Called to show progress spinning when waiting for the server
+	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
+	 * TODO: Consider using threads instead...
+	 */
+	public static void showProgressSpinner(View view, ProgressBar loginProgress) {
+		//show the spinner
+		loginProgress.setVisibility(0);
+		//Enable buttons
+		enableOrDisableViews(view);
+	}
+
+	/**
+	 * Called to hide progress spinning when the server has responded
+	 */
+	public static void hideProgressSpinner(View view, ProgressBar loginProgress) {
+		//hide the progress spinner
+		loginProgress.setVisibility(8);
+		//disable buttons
+		enableOrDisableViews(view);
+		
 	}
 }
