@@ -1,17 +1,16 @@
 package com.example.wecharades.views;
 
+import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -25,6 +24,7 @@ public class LoginActivity extends Activity {
 	EditText inputPassword;
 	TextView loginErrorMsg;
 	ProgressBar loginProgress;
+//	HorizontalScrollView myScrollView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,8 @@ public class LoginActivity extends Activity {
 		btnForgotPassword	= (Button) findViewById(R.id.btnForgotPassword);
 		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
+//		myScrollView		= (HorizontalScrollView)findViewById(R.id.scrollView);
 		loginProgress.setVisibility(4); //set to invisible
-
 	}
 
 	/**
@@ -117,6 +117,13 @@ public class LoginActivity extends Activity {
 		//show the spinner
 		loginProgress.setVisibility(0);
 		//disable all clickable objects
+//		ArrayList<View> touchables = myScrollView.getTouchables();
+//		for(View touchable : touchables){
+//		    if( touchable instanceof Button )
+//		        ((Button)touchable).setEnabled(false);
+//		}
+//		
+		
 		btnLogin.setEnabled(false);
 		btnLinkToRegister.setEnabled(false);
 		btnForgotPassword.setEnabled(false);
