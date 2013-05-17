@@ -1,15 +1,14 @@
 package com.example.wecharades.views;
 
-import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.example.wecharades.R;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -32,7 +31,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login);
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
-
+		
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.loginUsername);
 		inputPassword		= (EditText) findViewById(R.id.loginPassword);
@@ -48,7 +47,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * On click login button - if success go to StartActivity, on fail show error messages
 	 * TODO: maybe not a good method, create smaller method with more specific tasks
-	 * @param view
+	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
 		//Show the progress spinner
