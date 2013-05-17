@@ -1,12 +1,10 @@
 package com.example.wecharades.views;
 
 import com.example.wecharades.R;
-import com.example.wecharades.presenter.Presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,16 +19,21 @@ public class RegisterActivity extends Activity {
 	TextView registerErrorMsg;
 	ProgressBar registerProgress;
 	View myView;
+	RegisterPresenter presenter; //TODO: Presenter presenter = new RegisterPresenter(...) ???
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
+		//initializing the presenter
+		presenter = new RegisterPresenter(getApplicationContext());
+
+		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
+		presenter.initialize();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
-		//initializing parse.com connection
-		RegisterPresenter.initialize(this);
 
 		// Importing all assets like buttons, text fields
 		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
@@ -39,10 +42,10 @@ public class RegisterActivity extends Activity {
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
 		registerErrorMsg 	=	(TextView) 		findViewById(R.id.register_error);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
-		Presenter.setProgressSpinnerInvisible(registerProgress);
+		presenter.setProgressSpinnerInvisible(registerProgress);
 
 	}
-	
+
 	/**
 	 * Registers a new user - if success go to the StartScreen, if fail show error messages
 	 * @param view
@@ -50,14 +53,16 @@ public class RegisterActivity extends Activity {
 	public void onClickRegister(View view) {
 
 		//Show the progress spinner
-		Presenter.showProgressSpinner(myView, registerProgress);
-		RegisterPresenter.registerUser(
-				getBaseContext(), inputNickname.getText().toString(),
+		presenter.showProgressSpinner(myView, registerProgress);
+		//TODO: make a thread or something here to be able to run the progress spinner meanwhile logging in...
+		//TODO: ... right now it's disappearing immediately
+		presenter.registerUser(
+				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString());
 		//Hide the progress spinner
-		Presenter.hideProgressSpinner(myView, registerProgress);
+		presenter.hideProgressSpinner(myView, registerProgress);
 	}
 
 	/**

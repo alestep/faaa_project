@@ -3,7 +3,9 @@ package com.example.wecharades.views;
 import com.example.wecharades.R;
 import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
+import com.example.wecharades.presenter.LoginPresenter;
 import com.example.wecharades.presenter.Presenter;
+import com.example.wecharades.presenter.ResetPresenter;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -21,32 +23,29 @@ import android.widget.TextView;
 
 
 public class ResetPasswordActivity extends Activity {
-	Button btnResetPassword;
-	Button btnLinkToRegisterScreen;
-	Button btnLinkToLoginScreen;
+
 	EditText emailInput;
 	TextView errorMsg;
 	ProgressBar resetProgress;
 	View myView;
+	ResetPresenter presenter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.resetpassword);
+		//initializing the presenter
+		presenter = new ResetPresenter(getApplicationContext());
+
+		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
+		presenter.initialize();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
-
-		//Copy and Paste this into every onCreate method to be able to use Parse
-		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
-
 		emailInput				= (EditText) findViewById(R.id.resetPassword);
 		errorMsg				= (TextView) findViewById(R.id.error);
-		btnLinkToRegisterScreen = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-		btnLinkToLoginScreen	= (Button) findViewById(R.id.btnLinkToLoginScreen);
-		btnResetPassword 		= (Button) findViewById(R.id.btnResetPassword);
 		resetProgress			= (ProgressBar) findViewById(R.id.progress);
-		Presenter.setProgressSpinnerInvisible(resetProgress);
+		presenter.setProgressSpinnerInvisible(resetProgress);
 	}
 
 	/**
@@ -55,7 +54,7 @@ public class ResetPasswordActivity extends Activity {
 	 */
 	public void onClickResetPassword(View arg0) {
 		//Showing the progress spinner
-		Presenter.showProgressSpinner(myView, resetProgress);
+		presenter.showProgressSpinner(myView, resetProgress);
 
 
 		String email = emailInput.getText().toString();
@@ -64,7 +63,7 @@ public class ResetPasswordActivity extends Activity {
 			public void done(ParseException e) {
 
 				//Hiding the progress spinner
-				Presenter.hideProgressSpinner(myView, resetProgress);
+				presenter.hideProgressSpinner(myView, resetProgress);
 
 				if (e == null) {
 					// Success

@@ -17,7 +17,12 @@ public abstract class Presenter {
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	public static void initialize(Context context){
+	private Context context;
+	public Presenter(Context context) {
+		this.context = context;
+	}
+	
+	public void initialize(){
 		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
@@ -25,7 +30,7 @@ public abstract class Presenter {
 	 * Enable or disable all clickable objects in view
 	 * @param view
 	 */
-	public static void enableOrDisableViews(View view) {
+	private void enableOrDisableViews(View view) {
 		ArrayList<View> allViewObject = getAllChildren(view);
 		for (View child : allViewObject) {
 			if (child instanceof TextView) {
@@ -43,7 +48,7 @@ public abstract class Presenter {
 	 * @param view
 	 * @return an ArrayList with all Views within the parameter view
 	 */
-	private static ArrayList<View> getAllChildren(View view) {
+	private ArrayList<View> getAllChildren(View view) {
 
 		if (!(view instanceof ViewGroup)) {
 			ArrayList<View> viewArrayList = new ArrayList<View>();
@@ -72,12 +77,12 @@ public abstract class Presenter {
 	 * @param context
 	 * @param msg
 	 */
-	protected static void showToast(Context context, String msg) {
+	protected void showToast(Context context, String msg) {
 		Toast error = Toast.makeText(context, msg, Toast.LENGTH_LONG);
 		error.show();
 	}
 
-	public static void setProgressSpinnerInvisible(ProgressBar progressSpinner) {
+	public void setProgressSpinnerInvisible(ProgressBar progressSpinner) {
 		progressSpinner.setVisibility(4);
 	}
 
@@ -86,7 +91,7 @@ public abstract class Presenter {
 	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
 	 * TODO: Consider using threads instead...
 	 */
-	public static void showProgressSpinner(View view, ProgressBar progressSpinner) {
+	public void showProgressSpinner(View view, ProgressBar progressSpinner) {
 		//show the spinner
 		progressSpinner.setVisibility(0);
 		//Enable buttons
@@ -96,7 +101,7 @@ public abstract class Presenter {
 	/**
 	 * Called to hide progress spinning when the server has responded
 	 */
-	public static void hideProgressSpinner(View view, ProgressBar progressSpinner) {
+	public void hideProgressSpinner(View view, ProgressBar progressSpinner) {
 		//hide the progress spinner
 		progressSpinner.setVisibility(8);
 		//disable buttons
