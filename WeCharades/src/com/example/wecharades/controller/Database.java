@@ -137,7 +137,7 @@ public class Database {
 		try {
 			game = parseGame(query.get(gameId));
 		} catch (ParseException e) {
-			Log.d("Database","Failed to get game");
+			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1003,"Failed to fetch game data");
 		}
 		return game;
@@ -159,7 +159,7 @@ public class Database {
 			games.add(parseGame(game));
 		}
 		} catch(ParseException e){
-			Log.d("Database","Failed to get games");
+			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1004,"Failed to fetch games");
 		}
 		return games;
@@ -222,7 +222,7 @@ public class Database {
 		try {
 			turn = query.getFirst();
 		} catch (ParseException e) {
-			Log.d("Database","Failed to get Turn");
+			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1005, "Failed to get turn");
 		}
 		return parseTurn(turn);
@@ -245,7 +245,7 @@ public class Database {
 					dbTurn.put("recPlayerScore", turn.getRecPlayerScore());
 					dbTurn.put("ansPlayerScore", turn.getAnsPlayerScore());
 				} else{
-					Log.d("Database","Failed to update turn");
+					Log.d("Database",e.getMessage());
 				}
 			}
 		});
@@ -366,14 +366,19 @@ public class Database {
 	 * Login activity
 	 * @param username - the user
 	 * @param password - the password
-	 * @throws ParseException - if something went wrong
+	 * @throws DatabaseException - if something went wrong
 	 */
 	public static void loginPlayer(
 			String username, 
 			String password
-			) throws ParseException{
+			) throws DatabaseException{
 		//login through parse.com's standard function
 		//Using lowercase at login and registration to avoid case sensitivity problem
-		ParseUser.logIn(username.toLowerCase(), password);
+		try {
+			ParseUser.logIn(username.toLowerCase(), password);
+		} catch (ParseException e) {
+			Log.d("Database",e.getMessage());
+			throw new DatabaseException(1007, "Login failed");
+		}
 	}
 }

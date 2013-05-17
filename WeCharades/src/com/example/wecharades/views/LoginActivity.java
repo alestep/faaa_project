@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.controller.LoginPresenter;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -29,8 +30,9 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		LoginPresenter.initialize(this);
 		
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.loginUsername);
@@ -52,7 +54,7 @@ public class LoginActivity extends Activity {
 	public void onClickLogin(View view) {
 		//Show the progress spinner
 		showProgressSpinner();
-
+		
 		//Using lowercase at login and registration to avoid case sensitivity problems
 		String username = inputUsername.getText().toString().toLowerCase();
 		//Should be case sensitive
