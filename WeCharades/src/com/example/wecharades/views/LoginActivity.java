@@ -1,6 +1,7 @@
 package com.example.wecharades.views;
 
 import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.example.wecharades.R;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -56,7 +57,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * On click login button - if success go to StartActivity, on fail show error messages
 	 * TODO: maybe not a good method, create smaller method with more specific tasks
-	 * @param view
+	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
 		//Show the progress spinner
