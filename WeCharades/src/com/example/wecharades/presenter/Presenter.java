@@ -66,14 +66,19 @@ public abstract class Presenter {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * A method to show a toast
+	 * @param context
+	 * @param msg
+	 */
 	protected static void showToast(Context context, String msg) {
 		Toast error = Toast.makeText(context, msg, Toast.LENGTH_LONG);
 		error.show();
 	}
 
-	public static void setProgressSpinnerInvisible(ProgressBar loginProgress) {
-		loginProgress.setVisibility(4);
+	public static void setProgressSpinnerInvisible(ProgressBar progressSpinner) {
+		progressSpinner.setVisibility(4);
 	}
 
 	/**
@@ -81,9 +86,9 @@ public abstract class Presenter {
 	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
 	 * TODO: Consider using threads instead...
 	 */
-	public static void showProgressSpinner(View view, ProgressBar loginProgress) {
+	public static void showProgressSpinner(View view, ProgressBar progressSpinner) {
 		//show the spinner
-		loginProgress.setVisibility(0);
+		progressSpinner.setVisibility(0);
 		//Enable buttons
 		enableOrDisableViews(view);
 	}
@@ -91,11 +96,10 @@ public abstract class Presenter {
 	/**
 	 * Called to hide progress spinning when the server has responded
 	 */
-	public static void hideProgressSpinner(View view, ProgressBar loginProgress) {
+	public static void hideProgressSpinner(View view, ProgressBar progressSpinner) {
 		//hide the progress spinner
-		loginProgress.setVisibility(8);
+		progressSpinner.setVisibility(8);
 		//disable buttons
 		enableOrDisableViews(view);
-		
 	}
 }

@@ -93,9 +93,9 @@ public class Database {
 	 * @throws DatabaseException 
 	 */
 	public static void createGame(String playerId1, String playerId2) throws DatabaseException{
-		
+
 		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
-		
+
 		ParseObject newGame = new ParseObject("Game");
 		newGame.put("player1", playerId1);
 		newGame.put("player2", playerId2);
@@ -124,7 +124,7 @@ public class Database {
 			throw new DatabaseException(1002,"Failed to create game");
 		}
 	}
-	
+
 	/**
 	 * A method to get a single game
 	 * @param gameId
@@ -155,9 +155,9 @@ public class Database {
 		query.whereContains("player1", usrId);
 		query.whereContains("player2", usrId);
 		try{
-		for(ParseObject game : query.find()){
-			games.add(parseGame(game));
-		}
+			for(ParseObject game : query.find()){
+				games.add(parseGame(game));
+			}
 		} catch(ParseException e){
 			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1004,"Failed to fetch games");
@@ -305,7 +305,7 @@ public class Database {
 		}
 		return returnList;
 	}
-	
+
 	/**
 	 * Removes an invitation from the database - called when a user declines or accepts an invitation.
 	 * 	This is a complete deletion - there is no need to call the method with different 
@@ -334,23 +334,23 @@ public class Database {
 	 * @param inputNickname - the nickname of choice
 	 * @param inputEmail - Email address
 	 * @param inputPassword - password
-	 * @param inputRepeatPassword - controll password
-	 * @throws ParseException - thrown if the database transferr fails
+	 * @param inputRepeatPassword - control password
+	 * @throws ParseException - thrown if the database transfer fails
 	 */
 	public static void registerPlayer(
 			String inputNickname, 
 			String inputEmail, 
 			String inputPassword, 
 			String inputRepeatPassword
-			) throws ParseException{
-		
+			) throws DatabaseException{
+
 		//Some checks that are done locally
 		if(inputNickname == null || inputNickname.length() == 0) {
-			throw new ParseException(1,"Invalid nickname");
+			throw new DatabaseException(101,"Invalid nickname");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
-			throw new ParseException(1,"Weak password");
+			throw new DatabaseException(102,"Weak password");
 		} else if(!inputPassword.equals(inputRepeatPassword)){
-			throw new ParseException(1,"Unrepeated password");
+			throw new DatabaseException(103,"Unrepeated password");
 		}
 
 		ParseUser user = new ParseUser();
@@ -359,7 +359,12 @@ public class Database {
 		user.put("globalScore", 0); //globalScore is set to zero when register
 		user.setPassword(inputPassword);
 		user.setEmail(inputEmail);
-		user.signUp();
+		try {
+			user.signUp();
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(104, e.getMessage());
+		}
 	}
 
 	/**
