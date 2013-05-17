@@ -137,7 +137,7 @@ public class StartScreen extends Activity {
 	}
 */
 
-	public void createGame(View view){
+	public void createGame(View view) throws ParseException{
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 }

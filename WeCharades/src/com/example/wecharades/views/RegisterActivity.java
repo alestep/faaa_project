@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class RegisterActivity extends Activity {
@@ -22,6 +23,7 @@ public class RegisterActivity extends Activity {
 	EditText inputRepeatPassword;
 	TextView registerErrorMsg;
 	ProgressBar registerProgress;
+	ScrollView myScrollView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class RegisterActivity extends Activity {
 		btnLinkToLogin 		=	(Button) 		findViewById(R.id.btnLinkToLoginScreen);
 		registerErrorMsg 	=	(TextView) 		findViewById(R.id.register_error);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
+		myScrollView		= 	(ScrollView)	findViewById(R.id.scrollView);
 		registerProgress.setVisibility(4); //set to invisible
 
 	}

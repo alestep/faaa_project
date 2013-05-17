@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.example.wecharades.R;
 import com.parse.LogInCallback;
@@ -24,14 +27,19 @@ public class LoginActivity extends Activity {
 	EditText inputPassword;
 	TextView loginErrorMsg;
 	ProgressBar loginProgress;
-//	HorizontalScrollView myScrollView;
+	ScrollView myScrollView;
+	View myView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+
+		//Testing to get the view associated with login.xml
+		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.loginUsername);
@@ -41,7 +49,7 @@ public class LoginActivity extends Activity {
 		btnForgotPassword	= (Button) findViewById(R.id.btnForgotPassword);
 		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
-//		myScrollView		= (HorizontalScrollView)findViewById(R.id.scrollView);
+		myScrollView		= (ScrollView)findViewById(R.id.scrollView);
 		loginProgress.setVisibility(4); //set to invisible
 	}
 
@@ -107,41 +115,63 @@ public class LoginActivity extends Activity {
 		startActivity(i);
 		finish();
 	}
-	
+
 	/**
 	 * Called to show progress spinning when waiting for the server
 	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
 	 * TODO: Consider using threads instead...
 	 */
-	private void showProgressSpinner() {
+	public void showProgressSpinner() {
 		//show the spinner
 		loginProgress.setVisibility(0);
-		//disable all clickable objects
-//		ArrayList<View> touchables = myScrollView.getTouchables();
-//		for(View touchable : touchables){
-//		    if( touchable instanceof Button )
-//		        ((Button)touchable).setEnabled(false);
-//		}
-//		
-		
-		btnLogin.setEnabled(false);
-		btnLinkToRegister.setEnabled(false);
-		btnForgotPassword.setEnabled(false);
-		inputUsername.setEnabled(false);
-		inputPassword.setEnabled(false);
+		//Enable buttons
+		enableOrDisableViews();
 	}
 
 	/**
 	 * Called to hide progress spinning when the server has responded
 	 */
-	private void hideProgressSpinner() {
+	public void hideProgressSpinner() {
 		//hide the spinner
 		loginProgress.setVisibility(8);
-		//re-enable all clickable objects
-		btnLogin.setEnabled(true);
-		btnLinkToRegister.setEnabled(true);
-		btnForgotPassword.setEnabled(true);
-		inputUsername.setEnabled(true);
-		inputPassword.setEnabled(true);
+		//disable buttons
+		enableOrDisableViews();
+	}
+	
+	public void enableOrDisableViews() {
+		ArrayList<View> allViewObject = getAllChildren(myView);
+		for (View child : allViewObject) {
+			if (child instanceof TextView) {
+				if(child.isEnabled()) {
+				child.setEnabled(false);
+				} else {
+					child.setEnabled(true);
+				}
+			}
+		}
+	}
+
+	private ArrayList<View> getAllChildren(View v) {
+
+		if (!(v instanceof ViewGroup)) {
+			ArrayList<View> viewArrayList = new ArrayList<View>();
+			viewArrayList.add(v);
+			return viewArrayList;
+		}
+
+		ArrayList<View> result = new ArrayList<View>();
+
+		ViewGroup vg = (ViewGroup) v;
+		for (int i = 0; i < vg.getChildCount(); i++) {
+
+			View child = vg.getChildAt(i);
+
+			ArrayList<View> viewArrayList = new ArrayList<View>();
+			viewArrayList.add(v);
+			viewArrayList.addAll(getAllChildren(child));
+
+			result.addAll(viewArrayList);
+		}
+		return result;
 	}
 }
