@@ -28,7 +28,7 @@ import com.parse.SaveCallback;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
-	
+
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game){
 		if(game.getClassName().equals("Game")){
@@ -60,7 +60,7 @@ public class Database {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Randomly get 6 unique word from the database 
 	 * @return an ArrayList with 6 words 
@@ -172,7 +172,7 @@ public class Database {
 			}
 		});
 	}
-	
+
 	/**
 	 * A private method to create a new Turn. Should not be reachable outside this class!
 	 * @param game - the Game ParseObject
@@ -286,33 +286,44 @@ public class Database {
 		return returnList;
 	}
 	
-	
-	//TODO this should be one level above
-	/*
-	public static void acceptInvitation () {
-		//TODO
+	/**
+	 * Removes an invitation from the database - called when a user declines or accepts an invitation.
+	 * 	This is a complete deletion - there is no need to call the method with different 
+	 * 	combinations of the players, as this is done automatically.
+	 * 
+	 * @param player1 - one player
+	 * @param player2 - another player
+	 * @throws ParseException
+	 */
+	public static void removeInvitation(String player1, String player2) throws ParseException{
+		ParseQuery query = new ParseQuery("Invite");
+		query.whereEqualTo("Invitor", player1);
+		query.whereEqualTo("Invitee", player2);
+		List<ParseObject> objectList = query.find();
+		query = new ParseQuery("Invite");
+		query.whereEqualTo("Invitor", player2);
+		query.whereEqualTo("Invitee", player1);
+		objectList.addAll(query.find());
+		for(ParseObject object : objectList){
+			object.delete();
+		}
 	}
-
-	public static void declineInvitation () {
-		//TODO
-	}
-	*/
 
 	/**
 	 * A method to register a user
-	 * @param view - the view of origin
 	 * @param inputNickname - the nickname of choice
 	 * @param inputEmail - Email address
 	 * @param inputPassword - password
 	 * @param inputRepeatPassword - controll password
 	 * @throws ParseException - thrown if the database transferr fails
 	 */
-	public static void onClickRegister(View view, 
+	public static void onClickRegister(
 			String inputNickname, 
 			String inputEmail, 
 			String inputPassword, 
-			String inputRepeatPassword) throws ParseException{
-	
+			String inputRepeatPassword
+			) throws ParseException{
+
 		if(inputNickname == null || inputNickname.length() == 0) {
 			throw new ParseException(1,"Invalid nickname");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
@@ -320,7 +331,7 @@ public class Database {
 		} else if(!inputPassword.equals(inputRepeatPassword)){
 			throw new ParseException(1,"Unrepeated password");
 		}
-		
+
 		ParseUser user = new ParseUser();
 		user.setUsername(inputNickname.toLowerCase());
 		user.put("naturalUsername", inputNickname);	//to keep the input username, e.g capital letter
@@ -329,15 +340,18 @@ public class Database {
 		user.setEmail(inputEmail);
 		user.signUp();
 	}
-	
+
 	/**
 	 * Login activity
-	 * @param view - the origin view //TODO Not needed?
 	 * @param username - the user
 	 * @param password - the password
 	 * @throws ParseException - if something went wrong
 	 */
-	public static void onClickLogin(View view, String username, String password) throws ParseException{
+	public static void onClickLogin(
+			View view, 
+			String username, 
+			String password
+			) throws ParseException{
 		//login through parse.com's standard function
 		//Using lowercase at login and registration to avoid case sensitivity problem
 		ParseUser.logIn(username.toLowerCase(), password);
