@@ -28,7 +28,39 @@ import com.parse.SaveCallback;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
+	
+	//A private method to parse a ParseObject to a game
+	private static Game parseGame(ParseObject game){
+		if(game.getClassName().equals("Game")){
+			return new Game(game.getString("player1"), 
+					game.getString("player2"),
+					game.getString("currentPlayer"), 
+					game.getInt("turn"), 
+					game.getBoolean("finished"), 
+					game.getUpdatedAt());
+		} else{
+			return null;
+		}
+	}
 
+	//A method to parse ParseObject turns into turns
+	private static Turn parseTurn(ParseObject turn){
+		if(turn.getClassName().equals("Turn")){
+			return new Turn(turn.getString("game"), 
+					turn.getInt("turn"), 
+					turn.getInt("state"), 
+					turn.getString("word"), 
+					turn.getString("videoLink"), 
+					turn.getString("recPlayer"), 
+					turn.getInt("recPlayerScore"), 
+					turn.getString("ansPlayer"), 
+					turn.getInt("ansPlayerScore") 
+					);
+		} else{
+			return null;
+		}
+	}
+	
 	/**
 	 * Randomly get 6 unique word from the database 
 	 * @return an ArrayList with 6 words 
@@ -69,7 +101,6 @@ public class Database {
 
 		//Adds all the six turns
 		Stack<String> wordList = getWords();
-		ParseObject newTurn;
 		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
 			if(i%2 == 0){
@@ -79,17 +110,7 @@ public class Database {
 				recP = playerId1;
 				ansP = playerId2;
 			}
-			newTurn = new ParseObject("Turn");
-			newTurn.put("game",newGame);
-			newTurn.put("turn",i);
-			newTurn.put("state",Turn.INIT);
-			newTurn.put("word",wordList.pop());
-			newTurn.put("videoLink","");
-			newTurn.put("recPlayer",recP);
-			newTurn.put("recPlayerScore",0);
-			newTurn.put("ansPlayer",ansP);
-			newTurn.put("ansPlayerScore",0);
-			parseList.add(newTurn);
+			createTurn(newGame, i, wordList.pop(), recP, ansP);
 		}
 		ParseObject.saveAllInBackground(parseList, new SaveCallback(){
 			public void done(ParseException e){
@@ -100,38 +121,6 @@ public class Database {
 				}
 			}
 		});
-	}
-
-	//A private method to parse a ParseObject to a game
-	private static Game parseGame(ParseObject game){
-		if(game.getClassName().equals("Game")){
-			return new Game(game.getString("player1"), 
-					game.getString("player2"),
-					game.getString("currentPlayer"), 
-					game.getInt("turn"), 
-					game.getBoolean("finished"), 
-					game.getUpdatedAt());
-		} else{
-			return null;
-		}
-	}
-
-	//A method to parse ParseObject turns into turns
-	private static Turn parseTurn(ParseObject turn){
-		if(turn.getClassName().equals("Turn")){
-			return new Turn(turn.getString("game"), 
-					turn.getInt("turn"), 
-					turn.getInt("state"), 
-					turn.getString("word"), 
-					turn.getString("videoLink"), 
-					turn.getString("recPlayer"), 
-					turn.getInt("recPlayerScore"), 
-					turn.getString("ansPlayer"), 
-					turn.getInt("ansPlayerScore") 
-					);
-		} else{
-			return null;
-		}
 	}
 
 	/**
@@ -183,6 +172,27 @@ public class Database {
 			}
 		});
 	}
+	
+	/**
+	 * A private method to create a new Turn. Should not be reachable outside this class!
+	 * @param game - the Game ParseObject
+	 * @param turnNumber - an integer representation of the turn number
+	 * @param word - the word of the turn
+	 * @param recPlayer - the player that should record
+	 * @param ansPlayer - the player that should answer
+	 */
+	private static void createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer){
+		ParseObject newTurn = new ParseObject("Turn");
+		newTurn.put("game",game);
+		newTurn.put("turn",turnNumber);
+		newTurn.put("state",Turn.INIT);
+		newTurn.put("word",word);
+		newTurn.put("videoLink","");
+		newTurn.put("recPlayer",recPlayer);
+		newTurn.put("recPlayerScore",0);
+		newTurn.put("ansPlayer",ansPlayer);
+		newTurn.put("ansPlayerScore",0);
+	}
 
 	/**
 	 * Retrieves a turn from the database
@@ -200,7 +210,7 @@ public class Database {
 	}
 
 	/**
-	 * Updates a specific game according to its local version
+	 * Updates a specific turn according to its local version
 	 * @param theTurn - the Turn object that should be used as a reference
 	 */
 	public static void updateTurn(Turn theTurn){
