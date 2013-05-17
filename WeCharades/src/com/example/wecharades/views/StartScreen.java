@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +42,6 @@ public class StartScreen extends ListActivity {
 		//TODO: Fixa en central isLoggedIn()-funktion senare?
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if(currentUser == null ) {
-
 			// user is not logged in, show login screen
 			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
 			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -51,9 +50,9 @@ public class StartScreen extends ListActivity {
 		}
 
 		//Temporary show username field...
-//		username = (TextView) findViewById(R.id.viewName);
-//		String name = (String) currentUser.getString("naturalUsername");
-//		username.setText(name); 
+		username = (TextView) findViewById(R.id.viewName);
+		String name = (String) currentUser.getString("naturalUsername");
+		username.setText(name); 
 
 		items = DatabaseConnector.getList(); //Här kan vi skicka med användarnamneet så vi vet vems data som skall hämtas.
 
@@ -63,28 +62,6 @@ public class StartScreen extends ListActivity {
 //		createGames();			// Made by Alex
 //		items = queryGames();	// Made by Alex
 
-		Button b = (Button) findViewById(R.id.new_game_button);
-		b.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(StartScreen.this, NewGameScreen.class);
-				startActivity(intent);
-			}
-		});
-
-		btnLogout = (Button) findViewById(R.id.btnLogout);
-		btnLogout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				ParseUser.logOut();
-				//Redirecting to LoginActivity
-				Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-				login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(login);
-				// Closing start screen
-				finish();
-			}
-		});
 	}
 
 //	private ArrayList<Item> queryGames() {
@@ -184,8 +161,39 @@ public class StartScreen extends ListActivity {
 //		game.put("score", "3 - 3");
 //		game.saveInBackground();
 //	}
-
-
+	
+	/**
+	 * Logout and go back to login screen
+	 * @param view
+	 */
+	public void onClickLogout(View view) {
+		ParseUser.logOut();
+		//Redirecting to LoginActivity
+		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(login);
+		// Closing start screen
+		finish();
+	}
+	
+	/**
+	 * Go to New Game screen
+	 * @param view
+	 */
+	public void onClickNewGame(View view) {
+		Intent intent = new Intent(StartScreen.this, NewGameScreen.class);
+		startActivity(intent);
+	}
+	
+	/**
+	 * Nothing happens so far...
+	 * @param view
+	 */
+	public void onClickAccount(View view) {
+		Log.d("Clicked", "Account");
+	}
+	
+	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 

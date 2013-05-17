@@ -89,6 +89,7 @@ public class ShowVideo extends Activity{
 	public void onTaskCompleted (){
 		Log.d("TAG", "DIN MAMMA");
 	}
+	
 	private void playVideo(){
 		ww.setVideoURI(CaptureVideo.uriVideo);
 		ww.setMediaController(new MediaController(this));

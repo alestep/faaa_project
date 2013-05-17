@@ -9,14 +9,14 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnAcount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginTop="10dip"
             android:background="@drawable/btn_default_normal"
             android:text="@string/account"
-            android:onClick="createGame" />
+            android:onClick="onClickAccount" />
 
         <ImageButton
             android:id="@+id/imageButton1"
@@ -33,8 +33,9 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button1"
-            android:layout_toRightOf="@+id/button1"
+            android:layout_alignBottom="@+id/btnAcount"
+            android:layout_toRightOf="@+id/btnAcount"
+            android:onClick="onClickLogout"
             android:text="Logout!" />
 
         <TextView
@@ -53,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_default_normal"
+        android:onClick="onClickNewGame"
         android:text="@string/new_game" />
 
 </LinearLayout>
