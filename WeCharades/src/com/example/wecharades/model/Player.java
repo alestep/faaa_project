@@ -28,4 +28,8 @@ public class Player {
 	public boolean equals(Player otherPlayer){
 		return this.getParseId() == otherPlayer.getParseId();
 	}
+	
+	public int hashCode(){
+		return getParseId().hashCode();	
+	}
 }

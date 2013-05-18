@@ -5,8 +5,6 @@ import java.util.Date;
 
 /**
  * This class represents a game.
- *  Each game has 6 turns that should be completed in order to finish a game.
- *  Each game has two players.
  * 
  * @author Anton Dahlström
  *
@@ -70,4 +68,21 @@ public class Game {
 		return (Date) lastPlayed.clone();
 	}
 	
+	public int hashCode(){
+		return getGameId().hashCode();
+	}
+	
+	/**
+	 * Two games are considered equal if they have the same 
+	 * 	id, current player, turn number, date-stamp and finished state
+	 * @param otherGame - the game to compare
+	 * @return if the games are equal
+	 */
+	public boolean equals(Game otherGame){
+		return this.getGameId() == otherGame.getGameId() &&
+				this.getCurrentPlayer().equals(otherGame.getCurrentPlayer()) &&
+				this.getTurn() == otherGame.getTurn() &&
+				this.getLastPlayed().equals(otherGame.getLastPlayed()) &&
+				this.isFinished()== otherGame.isFinished();
+	}
 }

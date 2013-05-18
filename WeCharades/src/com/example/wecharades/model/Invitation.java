@@ -2,6 +2,11 @@ package com.example.wecharades.model;
 
 import java.util.Date;
 
+/**
+ * This class represents an invitation
+ * @author Anton Dahlström
+ *
+ */
 public class Invitation {
 	Player inviter;
 	Player invitee;

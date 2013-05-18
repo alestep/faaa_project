@@ -28,7 +28,9 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
-
+	
+	//Helper methods -----------------------------------------------------------------------------------------//
+	
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals("Game")){
