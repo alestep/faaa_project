@@ -5,21 +5,19 @@ import java.util.Date;
 
 /**
  * This class represents a game.
- *  Each game has 6 turns that should be completed in order to finish a game.
- *  Each game has two players.
  * 
  * @author Anton Dahlström
  *
  */
 public class Game {
 	private String gameId;
-	private String playerId1;
-	private String playerId2;
-	private String currentPlayer;
+	private Player playerId1;
+	private Player playerId2;
+	private Player currentPlayer;
 	private int turn;
 	private boolean isFinished;
 	private Date lastPlayed;
-	
+
 	/**
 	 * Constructor for a local representation of a game
 	 * @param p1 - player 1
@@ -29,7 +27,7 @@ public class Game {
 	 * @param finished - whether the game is finished
 	 * @param lastPlayed - the date of last play
 	 */
-	public Game(String p1, String p2, String currentPlayer, int turn, boolean finished, Date lastPlayed){
+	public Game(Player p1, Player p2, Player currentPlayer, int turn, boolean finished, Date lastPlayed){
 		this.playerId1 = p1;
 		this.playerId2 = p2;
 		this.currentPlayer = currentPlayer;
@@ -42,19 +40,15 @@ public class Game {
 		return gameId;
 	}
 
-	public String getPlayerId1() {
+	public Player getPlayerId1() {
 		return playerId1;
 	}
 
-	public String getPlayerId2() {
+	public Player getPlayerId2() {
 		return playerId2;
 	}
 
-	/**
-	 * Returns the game's current player id
-	 * @return
-	 */
-	public String getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
@@ -69,5 +63,44 @@ public class Game {
 	public Date getLastPlayed() {
 		return (Date) lastPlayed.clone();
 	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		//Check if the player is part of this turn
+		if(currentPlayer.equals(playerId1) || currentPlayer.equals(playerId2))
+			this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * Increments the turn number. If it is the last turn, the value will be set to 0
+	 */
+	public void inclementTurn() {
+		if(turn == 6){
+			isFinished = true;
+			turn = 0;
+		}
+		else
+			turn ++;
+	}
+
+	public void setLastPlayed(Date lastPlayed) {
+		this.lastPlayed = lastPlayed;
+	}
 	
+	public int hashCode(){
+		return getGameId().hashCode();
+	}
+
+	/**
+	 * Two games are considered equal if they have the same 
+	 * 	id, current player, turn number, date-stamp and finished state
+	 * @param otherGame - the game to compare
+	 * @return if the games are equal
+	 */
+	public boolean equals(Game otherGame){
+		return this.getGameId() == otherGame.getGameId() &&
+				this.getCurrentPlayer().equals(otherGame.getCurrentPlayer()) &&
+				this.getTurn() == otherGame.getTurn() &&
+				this.getLastPlayed().equals(otherGame.getLastPlayed()) &&
+				this.isFinished()== otherGame.isFinished();
+	}
 }
