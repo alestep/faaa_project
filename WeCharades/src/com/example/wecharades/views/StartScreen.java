@@ -7,19 +7,18 @@ import java.util.Map;
 import com.example.wecharades.GameAdapter;
 import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Game;
 
 import com.parse.Parse;
 import com.parse.ParseUser;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wecharades.controller.Database;
 
 
 public class StartScreen extends Activity {
@@ -52,11 +50,11 @@ public class StartScreen extends Activity {
 		item.put(ITEM_CAPTION, caption);
 		return item;
 	}
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Sets the View Layer
 		setContentView(R.layout.start_screen);
 
@@ -86,11 +84,16 @@ public class StartScreen extends Activity {
 			//TODO: Fixa så att det är natural username istället.
 			tv.setText(currentUser);
 		}
-
+		
 		// Följande rader representerar Game-objekt som finns i databasen.
-		Game g1 = new Game("Felix", "Alexander", "Alexander", 4, false, null);
-		Game g2 = new Game("Felix", "Robert", "Felix", 4, false, null);
-		Game g3 = new Game("Felix", "Marcus", "Felix", 4, true, null);
+		Player felix = new Player("1", "Felix");
+		Player alexander = new Player("2", "Alexander");
+		Player robert = new Player("3", "Robert");
+		Player marcus = new Player("4", "Marcus");
+		
+		Game g1 = new Game(felix, alexander, alexander, 4, false, null);
+		Game g2 = new Game(felix, robert, felix, 4, false, null);
+		Game g3 = new Game(felix, marcus, marcus, 4, true, null);
 
 		//Dessaa rader representerar ArrayList<Game>-listan som hämtas från databasen.
 		ArrayList<Game> gameList = new ArrayList<Game>();
@@ -131,7 +134,7 @@ public class StartScreen extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
 				Game item = (Game) adapter.getItem(position-1);
-				Toast.makeText(getApplicationContext(), item.getPlayerId2(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -144,7 +147,7 @@ public class StartScreen extends Activity {
 	private ArrayList<Game> getYourTurnList(ArrayList<Game> gameList) {
 		ArrayList<Game> yourTurnList = new ArrayList<Game>();
 		for (Game g : gameList){
-			if(g.getCurrentPlayer().toLowerCase().equals(currentUser) && !g.isFinished())
+			if(g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
 				yourTurnList.add(g);			
 		}
 		return yourTurnList;
@@ -158,7 +161,7 @@ public class StartScreen extends Activity {
 	private ArrayList<Game> getOpponentsTurnList(ArrayList<Game> gameList) {
 		ArrayList<Game> opponentsTurnList = new ArrayList<Game>();
 		for (Game g : gameList){
-			if(!g.getCurrentPlayer().toLowerCase().equals(currentUser) && !g.isFinished())
+			if(!g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
 				opponentsTurnList.add(g);			
 		}
 		return opponentsTurnList;
@@ -229,8 +232,9 @@ public class StartScreen extends Activity {
 		Button b = (Button) view;
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 	}
-
-	public void createGame(View view){
+/*
+	public void createGame(View view) throws ParseException, DatabaseException{
 		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
+*/
 }

@@ -2,19 +2,6 @@ package com.example.wecharades.model;
 
 /**
  * This class represents a turn in a game.
- *  Each turn has two players - one recording player and one answering player.
- *   There is also a pointer to the active player, although this might not be necessary.
- *  Each turn also has one of three states (stored in static variables)
- *  Each turn has a video instance
- *  
- *  It is the turns responsibility to do the game-related stuff, like record
- *   videos and possibility to guess. This can be implemented by delegation, although
- *   this is a later problem.
- *   
- *  The Turn data is stored in the online database:
- *   The turn state, score and video link  is stored here and synced in a later stage.
- * 
- * @author Anton Dahlström
  *
  */
 public class Turn {
@@ -23,9 +10,9 @@ public class Turn {
 	private int state;
 	private String word;
 	private String videoLink;
-	private String recPlayer;
+	private Player recPlayer;
 	private int recPlayerScore;
-	private String ansPlayer;
+	private Player ansPlayer;
 	private int ansPlayerScore;
 	
 	public static final int INIT   = 0,	
@@ -33,8 +20,8 @@ public class Turn {
 							FINISH = 2;
 
 	public Turn(String gameId, int turnNumber, int state, String word,
-			String videoLink, String recPlayer, int recPlayerScore,
-			String ansPlayer, int ansPlayerScore) {
+			String videoLink, Player recPlayer, int recPlayerScore,
+			Player ansPlayer, int ansPlayerScore) {
 		this.gameId = gameId;
 		this.turnNumber = turnNumber;
 		this.state = state;
@@ -66,7 +53,7 @@ public class Turn {
 		return videoLink;
 	}
 
-	public String getRecPlayer() {
+	public Player getRecPlayer() {
 		return recPlayer;
 	}
 
@@ -74,7 +61,7 @@ public class Turn {
 		return recPlayerScore;
 	}
 
-	public String getAnsPlayer() {
+	public Player getAnsPlayer() {
 		return ansPlayer;
 	}
 

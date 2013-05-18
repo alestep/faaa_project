@@ -36,7 +36,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 				
 				if (title != null)
 					//TODO: Bestäm hur vi ska göra med detta. Skall vi skicka med username till denna klass eller ej?
-					title.setText( true ? i.getPlayerId2() : i.getPlayerId1()); 
+					title.setText( true ? i.getPlayerId2().getName() : i.getPlayerId1().getName()); 
 				if(subtitle != null)
 					//TODO: Undersök hur vi kan hämta score här.
 					subtitle.setText("The score is 5-6");

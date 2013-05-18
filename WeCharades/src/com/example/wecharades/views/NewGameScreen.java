@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class NewGameScreen extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
