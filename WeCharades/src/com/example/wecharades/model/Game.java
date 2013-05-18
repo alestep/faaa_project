@@ -17,7 +17,7 @@ public class Game {
 	private int turn;
 	private boolean isFinished;
 	private Date lastPlayed;
-	
+
 	/**
 	 * Constructor for a local representation of a game
 	 * @param p1 - player 1
@@ -48,10 +48,6 @@ public class Game {
 		return playerId2;
 	}
 
-	/**
-	 * Returns the game's current player id
-	 * @return the player
-	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -67,11 +63,33 @@ public class Game {
 	public Date getLastPlayed() {
 		return (Date) lastPlayed.clone();
 	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		//Check if the player is part of this turn
+		if(currentPlayer.equals(playerId1) || currentPlayer.equals(playerId2))
+			this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * Increments the turn number. If it is the last turn, the value will be set to 0
+	 */
+	public void inclementTurn() {
+		if(turn == 6){
+			isFinished = true;
+			turn = 0;
+		}
+		else
+			turn ++;
+	}
+
+	public void setLastPlayed(Date lastPlayed) {
+		this.lastPlayed = lastPlayed;
+	}
 	
 	public int hashCode(){
 		return getGameId().hashCode();
 	}
-	
+
 	/**
 	 * Two games are considered equal if they have the same 
 	 * 	id, current player, turn number, date-stamp and finished state

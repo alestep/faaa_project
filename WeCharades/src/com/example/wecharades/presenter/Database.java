@@ -247,9 +247,9 @@ public class Database {
 	 * @return A Turn class representation of the retrieved data
 	 * @throws DatabaseException 
 	 */
-	public static Turn getTurn(String gameId, int turnNumber) throws DatabaseException{
+	public static Turn getTurn(Game game, int turnNumber) throws DatabaseException{
 		ParseQuery query = new ParseQuery("Turn");
-		query.whereEqualTo("game", gameId);
+		query.whereEqualTo("game", game.getGameId());
 		query.whereEqualTo("turn", turnNumber);
 		ParseObject turn = null;
 		try {
@@ -259,6 +259,29 @@ public class Database {
 			throw new DatabaseException(1005, "Failed to get turn");
 		}
 		return parseTurn(turn);
+	}
+	
+	/**
+	 * Returns a list of all games associated with a game
+	 * @param game - the game to fetch
+	 * @return an ArrayList of turns
+	 * @throws DatabaseException
+	 */
+	public static ArrayList<Turn> getTurns(Game game) throws DatabaseException{
+		ParseQuery query = new ParseQuery("Turn");
+		query.whereEqualTo("game", game.getGameId());
+		List<ParseObject> dbList = null;
+		try{
+			dbList = query.find();
+		} catch(ParseException e){
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1009, "Failed to get turns");
+		}
+		ArrayList<Turn> turnList = new ArrayList<Turn>();
+		for(ParseObject turn : dbList){
+			turnList.add(parseTurn(turn));
+		}
+		return turnList;
 	}
 
 	/**
