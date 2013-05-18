@@ -13,6 +13,17 @@ import java.util.NoSuchElementException;
 public class Model {
 	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
 	private HashSet<Player> storedPlayers = new HashSet<Player>();
+	
+	//Singleton
+	private static Model singleModel;
+	private Model(){
+	}
+	public Model getModelInstance(){
+		if (singleModel == null){
+			singleModel = new Model();
+		}
+		return singleModel;
+	}
 
 	/**
 	 * Updates a list of games. If a game is not existant, it will be added to the list. 
