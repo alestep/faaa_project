@@ -16,8 +16,11 @@ public class Model {
 	
 	//Singleton
 	private static Model singleModel;
+	
 	private Model(){
+		//TODO initiate the model: load from memory?
 	}
+
 	public Model getModelInstance(){
 		if (singleModel == null){
 			singleModel = new Model();
@@ -25,6 +28,8 @@ public class Model {
 		return singleModel;
 	}
 
+	//Games ---------------------------------------------------------------
+	
 	/**
 	 * Updates a list of games. If a game is not existant, it will be added to the list. 
 	 * @param games
@@ -79,6 +84,7 @@ public class Model {
 		}
 	}
 	
+	//Players ---------------------------------------------------------------
 	//TODO Maybe we have no need for these...
 	/**
 	 * Puts a player in stored players 
@@ -100,7 +106,7 @@ public class Model {
 		for(Player player : storedPlayers){
 			if (player.getName().equalsIgnoreCase(username)){
 				retPlayer = player;
-				break; // we only have one instace in the array
+				break; // we only have one instance in the array
 			}
 		}
 		return retPlayer;
@@ -114,4 +120,5 @@ public class Model {
 	public boolean playerIsCached(Player player){
 		return storedPlayers.contains(player);
 	}
+	
 }

@@ -30,4 +30,8 @@ public class Invitation {
 		return timeOfInvite;
 	}
 	
+	public int hashCode(){
+		return (inviter.getParseId() + invitee.getParseId()).hashCode();
+	}
+	
 }
