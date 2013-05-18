@@ -10,6 +10,11 @@ public class Player {
 	private int globalScore;
 	private String username;
 	
+	public Player(String parseId, String username){
+		this.parseId = parseId;
+		this.username= username; 
+	}
+	
 	public Player(String parseId, String username, int globalScore){
 		this.parseId = parseId;
 		this.username = username;
@@ -25,6 +30,11 @@ public class Player {
 	public String getName() {
 		return username;
 	}
+	
+	public void setGlobalScore(int globalScore){
+		this.globalScore =globalScore;  
+	}
+	
 	public boolean equals(Player otherPlayer){
 		return this.getParseId() == otherPlayer.getParseId();
 	}
