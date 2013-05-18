@@ -3,25 +3,29 @@ package com.example.wecharades.model;
 /**
  * Information about players that is stored locally.
  *  The session of the native player should also be stored in SharedPreferences
- *  
- * @author Anton Dahlström
  *
  */
 public class Player {
-	private String id;
-	private long globalScore;
-	private String name;
+	private String parseId;
+	private int globalScore;
+	private String username;
 	
-	public String getId() {
-		return id;
+	public Player(String parseId, String username, int globalScore){
+		this.parseId = parseId;
+		this.username = username;
+		this.globalScore = globalScore;
 	}
-	public long getGlobalScore() {
+	
+	public String getParseId() {
+		return parseId;
+	}
+	public int getGlobalScore() {
 		return globalScore;
 	}
 	public String getName() {
-		return name;
+		return username;
 	}
 	public boolean equals(Player otherPlayer){
-		return this.getId() == otherPlayer.getId();
+		return this.getParseId() == otherPlayer.getParseId();
 	}
 }

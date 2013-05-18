@@ -23,9 +23,9 @@ public class Turn {
 	private int state;
 	private String word;
 	private String videoLink;
-	private String recPlayer;
+	private Player recPlayer;
 	private int recPlayerScore;
-	private String ansPlayer;
+	private Player ansPlayer;
 	private int ansPlayerScore;
 	
 	public static final int INIT   = 0,	
@@ -33,8 +33,8 @@ public class Turn {
 							FINISH = 2;
 
 	public Turn(String gameId, int turnNumber, int state, String word,
-			String videoLink, String recPlayer, int recPlayerScore,
-			String ansPlayer, int ansPlayerScore) {
+			String videoLink, Player recPlayer, int recPlayerScore,
+			Player ansPlayer, int ansPlayerScore) {
 		this.gameId = gameId;
 		this.turnNumber = turnNumber;
 		this.state = state;
@@ -66,7 +66,7 @@ public class Turn {
 		return videoLink;
 	}
 
-	public String getRecPlayer() {
+	public Player getRecPlayer() {
 		return recPlayer;
 	}
 
@@ -74,7 +74,7 @@ public class Turn {
 		return recPlayerScore;
 	}
 
-	public String getAnsPlayer() {
+	public Player getAnsPlayer() {
 		return ansPlayer;
 	}
 

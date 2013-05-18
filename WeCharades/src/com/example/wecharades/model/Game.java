@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class Game {
 	private String gameId;
-	private String playerId1;
-	private String playerId2;
-	private String currentPlayer;
+	private Player playerId1;
+	private Player playerId2;
+	private Player currentPlayer;
 	private int turn;
 	private boolean isFinished;
 	private Date lastPlayed;
@@ -29,7 +29,7 @@ public class Game {
 	 * @param finished - whether the game is finished
 	 * @param lastPlayed - the date of last play
 	 */
-	public Game(String p1, String p2, String currentPlayer, int turn, boolean finished, Date lastPlayed){
+	public Game(Player p1, Player p2, Player currentPlayer, int turn, boolean finished, Date lastPlayed){
 		this.playerId1 = p1;
 		this.playerId2 = p2;
 		this.currentPlayer = currentPlayer;
@@ -42,19 +42,19 @@ public class Game {
 		return gameId;
 	}
 
-	public String getPlayerId1() {
+	public Player getPlayerId1() {
 		return playerId1;
 	}
 
-	public String getPlayerId2() {
+	public Player getPlayerId2() {
 		return playerId2;
 	}
 
 	/**
 	 * Returns the game's current player id
-	 * @return
+	 * @return the player
 	 */
-	public String getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
