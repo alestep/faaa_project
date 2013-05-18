@@ -2,19 +2,6 @@ package com.example.wecharades.model;
 
 /**
  * This class represents a turn in a game.
- *  Each turn has two players - one recording player and one answering player.
- *   There is also a pointer to the active player, although this might not be necessary.
- *  Each turn also has one of three states (stored in static variables)
- *  Each turn has a video instance
- *  
- *  It is the turns responsibility to do the game-related stuff, like record
- *   videos and possibility to guess. This can be implemented by delegation, although
- *   this is a later problem.
- *   
- *  The Turn data is stored in the online database:
- *   The turn state, score and video link  is stored here and synced in a later stage.
- * 
- * @author Anton Dahlström
  *
  */
 public class Turn {
