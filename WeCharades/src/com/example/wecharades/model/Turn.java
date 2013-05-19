@@ -33,6 +33,22 @@ public class Turn {
 		this.ansPlayerScore = ansPlayerScore;
 	}
 
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public void setVideoLink(String videoLink) {
+		this.videoLink = videoLink;
+	}
+
+	public void setRecPlayerScore(int recPlayerScore) {
+		this.recPlayerScore = recPlayerScore;
+	}
+
+	public void setAnsPlayerScore(int ansPlayerScore) {
+		this.ansPlayerScore = ansPlayerScore;
+	}
+
 	public String getGameId() {
 		return gameId;
 	}
