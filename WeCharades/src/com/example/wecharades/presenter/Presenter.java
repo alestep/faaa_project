@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wecharades.model.ErrorMessage;
 import com.parse.Parse;
 
 public abstract class Presenter {
@@ -23,6 +24,7 @@ public abstract class Presenter {
 		this.activity = activity;
 	}
 	
+	//TODO - this should be moved to the database - we should also make the database an object (possibly singleton)!
 	public void initialize(){
 		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
@@ -107,5 +109,9 @@ public abstract class Presenter {
 		progressSpinner.setVisibility(8);
 		//disable buttons
 		enableOrDisableViews(view);
+	}
+	
+	public String generateErrorMessage(int code) {
+		return ErrorMessage.generateErrorMessage(code);
 	}
 }
