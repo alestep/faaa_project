@@ -12,8 +12,14 @@ public class DatabaseException extends Exception{
 	 * @param code - the chosen error code
 	 * @param message - the message to display
 	 */
+	private int code;
 	public DatabaseException(int code, String message){
 		super("Error code " + code + ": " + message);
+		code = this.code;
+	}
+
+	public int getCode() {
+		return code;
 	}
 	
 }

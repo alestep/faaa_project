@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.RegisterPresenter;
 
 
@@ -19,7 +21,7 @@ public class RegisterActivity extends Activity {
 	TextView registerErrorMsg;
 	ProgressBar registerProgress;
 	View myView;
-	RegisterPresenter presenter; //TODO: Presenter presenter = new RegisterPresenter(...) ???
+	RegisterPresenter presenter;
 
 
 	@Override
@@ -51,16 +53,18 @@ public class RegisterActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickRegister(View view) {
-
+		//TODO: progress spinners doesn't work yet!
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, registerProgress);
-		//TODO: make a thread or something here to be able to run the progress spinner meanwhile logging in...
-		//TODO: ... right now it's disappearing immediately
-		presenter.registerUser(
-				inputNickname.getText().toString(),
-				inputEmail.getText().toString().toLowerCase(),
-				inputPassword.getText().toString(),
-				inputRepeatPassword.getText().toString());
+		try {
+			presenter.registerUser(
+					inputNickname.getText().toString(),
+					inputEmail.getText().toString().toLowerCase(),
+					inputPassword.getText().toString(),
+					inputRepeatPassword.getText().toString());
+		} catch (DatabaseException e) {
+			registerErrorMsg.setText(presenter.generateErrorMessage(e.getCode()));
+		}
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, registerProgress);
 	}

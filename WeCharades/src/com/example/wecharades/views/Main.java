@@ -73,7 +73,7 @@ public class Main extends Activity implements OnClickListener{
 	 */
 
 	public void createGame(View view) throws ParseException, DatabaseException{
-		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
+		//Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
 	}
 
 }
