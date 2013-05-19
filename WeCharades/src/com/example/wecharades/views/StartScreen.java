@@ -27,8 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class StartScreen extends Activity {
 
 	protected static final String TAG = "StartScreen";
