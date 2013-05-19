@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Context;
 import android.util.Log;
 
 import com.example.wecharades.model.DatabaseException;
@@ -16,11 +16,11 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -30,7 +30,20 @@ import com.parse.RequestPasswordResetCallback;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
-	//TODO Make Database an instance-class!
+	//TODO Make Database an instance-class! Uncomment this and change all method to instance-methods
+	/*
+	private Database singleton;
+	
+	private Database(Context context){
+		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+	}
+	
+	public Database getDatabase(Context context){
+		if(singleton == null)
+			singleton = new Database(context);
+		return singleton;
+	}
+	*/
 	
 	//Helper methods -----------------------------------------------------------------------------------------//
 	//TODO These should be moved to a separate class!
@@ -40,7 +53,7 @@ public class Database {
 	private static Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals("Game")){
 			//Save player locally to avoid multiple fetches. //TODO have a local list of players??
-			Player p1 = getPlayer(game.getString("player1")); 
+			Player p1 = getPlayer(game.getString("player1")); //TODO these are high coupling - cannot move easily
 			Player p2 = getPlayer(game.getString("player2"));
 			Player current = (game.getString("currentPlayer").equals(p1.getParseId())) ? p1 : p2 ;
 			return new Game(
