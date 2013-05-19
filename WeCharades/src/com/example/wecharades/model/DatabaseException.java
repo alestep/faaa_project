@@ -10,15 +10,9 @@ public class DatabaseException extends Exception{
 	private String prettyMessage;
 
 	/**
-	 * Generate a message, with e.getMessage() will give: codes + message
+	 * Generate an error message
 	 * @param code - the chosen error code (based on parse.com's exceptions)
 	 * @param message - the message to display
-	 */
-	
-	/**
-	 * 
-	 * @param code
-	 * @param message
 	 */
 	public DatabaseException(int code, String message){
 		super(message);
@@ -26,6 +20,11 @@ public class DatabaseException extends Exception{
 		this.prettyMessage = setPrettyPrint(message);
 	}
 
+	/**
+	 * Ge a pretty message
+	 * @param message
+	 * @return
+	 */
 	private String setPrettyPrint(String message) {
 		//TODO Swtich case check code
 		switch (code) {
@@ -54,10 +53,18 @@ public class DatabaseException extends Exception{
 		return message;
 	}
 
+	/**
+	 * Returns a pretty message
+	 * @return
+	 */
 	public String prettyPrint() {
 		return prettyMessage;
 	}
 
+	/**
+	 * Get the error code
+	 * @return
+	 */
 	public int getCode() {
 		return code;
 	}

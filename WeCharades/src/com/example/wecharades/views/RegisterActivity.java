@@ -1,7 +1,5 @@
 package com.example.wecharades.views;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,18 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.wecharades.R;
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.RegisterPresenter;
 import com.parse.ParseUser;
 
 
 public class RegisterActivity extends GenericActivity {
 
-
-	private final String TAG = "RegisterActivity";
-	private ParseUser user;
 
 	Button btnRegister;
 	Button btnLinkToLogin;
@@ -57,8 +50,6 @@ public class RegisterActivity extends GenericActivity {
 		registerErrorMsg 	=	(TextView) 		findViewById(R.id.register_error);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		presenter.setProgressSpinnerInvisible(registerProgress);
-
-
 	}
 
 	/**
@@ -77,9 +68,6 @@ public class RegisterActivity extends GenericActivity {
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString());
-
-		// TODO fix error msg
-
 
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, registerProgress);

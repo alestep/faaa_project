@@ -75,7 +75,7 @@ public class StartScreen extends Activity {
                         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(login);
                         finish();
-                }else {
+                } else {
                         //Sets the current user's user name
                         currentUser = ParseUser.getCurrentUser().getUsername();
                         TextView tv = (TextView) findViewById(R.id.textView1);
