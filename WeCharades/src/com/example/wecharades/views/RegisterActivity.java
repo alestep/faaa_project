@@ -13,7 +13,7 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.RegisterPresenter;
 
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends GenericActivity {
 	EditText inputNickname;
 	EditText inputEmail;
 	EditText inputPassword;
@@ -56,6 +56,7 @@ public class RegisterActivity extends Activity {
 		//TODO: progress spinners doesn't work yet!
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, registerProgress);
+
 		try {
 			presenter.registerUser(
 					inputNickname.getText().toString(),
@@ -63,8 +64,10 @@ public class RegisterActivity extends Activity {
 					inputPassword.getText().toString(),
 					inputRepeatPassword.getText().toString());
 		} catch (DatabaseException e) {
-			registerErrorMsg.setText(presenter.generateErrorMessage(e.getCode()));
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, registerProgress);
 	}
@@ -78,5 +81,11 @@ public class RegisterActivity extends Activity {
 		startActivity(i);
 		// Close Registration View
 		finish();
+	}
+
+	@Override
+	public TextView getErrorArea() {
+		// TODO Auto-generated method stub
+		return registerErrorMsg;
 	}
 }

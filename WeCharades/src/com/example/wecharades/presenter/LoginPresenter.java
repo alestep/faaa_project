@@ -18,7 +18,7 @@ public class LoginPresenter extends Presenter{
 
 
 	}
-	public void login(String username, String password) throws DatabaseException{
+	public void login(String username, String password){
 		
 		//TODO: couldn't find a better solution at this point - remove this comment if it's "good enough"
 		boolean loginSucceeded = false;
@@ -26,8 +26,7 @@ public class LoginPresenter extends Presenter{
 			Database.loginPlayer(username, password);
 			loginSucceeded = true;
 		} catch (DatabaseException e) {
-			//TODO: e.getCode() not working atm. - Want it to work to be able to use ErrorMessage.java in the model package
-			throw new DatabaseException(e.getCode(), e.getMessage());
+			activity.showErrorMessage(e.prettyPrint());
 		} finally {
 			if(loginSucceeded) {
 				Intent i = new Intent(activity.getApplicationContext(), StartScreen.class);

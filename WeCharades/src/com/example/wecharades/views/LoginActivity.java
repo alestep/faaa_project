@@ -1,6 +1,5 @@
 package com.example.wecharades.views;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +13,7 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.LoginPresenter;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends GenericActivity {
 	EditText inputUsername;
 	EditText inputPassword;
 	TextView loginErrorMsg;
@@ -53,45 +52,40 @@ public class LoginActivity extends Activity {
 
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, loginProgress);
-		
+
 		//login
-		try {
-			presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
-		} catch (DatabaseException e) {
-			//maybe not proberly implemented "design pattern-wise" ... @anton
-			//e.getCode() doesn't work - not sure why. I want to use an "universal" error handling system through ErrorMessage.java
-			Log.d("Error Code", Integer.toString(e.getCode()));
-			loginErrorMsg.setText(presenter.generateErrorMessage(e.getCode()));
-		}
+		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
+
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, loginProgress);
 	}
 
 
-/**
- * Link to the screen to get a new password
- * @param view
- */
-public void onClickForgotPassword(View view) {
-	Intent i = new Intent(getApplicationContext(),
-			ResetPasswordActivity.class);
-	startActivity(i);
-	finish();
-}
-/**
- * Link to register screen
- * @param view
- */
-public void onClickRegister(View view) {
-	Intent i = new Intent(getApplicationContext(),
-			RegisterActivity.class);
-	startActivity(i);
-	finish();
-}
+	/**
+	 * Link to the screen to get a new password
+	 * @param view
+	 */
+	public void onClickForgotPassword(View view) {
+		Intent i = new Intent(getApplicationContext(),
+				ResetPasswordActivity.class);
+		startActivity(i);
+		finish();
+	}
+	
+	/**
+	 * Link to register screen
+	 * @param view
+	 */
+	public void onClickRegister(View view) {
+		Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+		startActivity(i);
+		finish();
+	}
 
 
-public String catchException(String exception) {
-	// TODO Auto-generated method stub
-	return exception;
-}
+	@Override
+	public TextView getErrorArea() {
+		// TODO Auto-generated method stub
+		return loginErrorMsg;
+	}
 }
