@@ -1,67 +1,132 @@
 package com.example.wecharades.views;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wecharades.ActiveGameItem;
-import com.example.wecharades.DatabaseConnector;
-import com.example.wecharades.EntryAdapter;
-import com.example.wecharades.Item;
+import com.example.wecharades.GameAdapter;
 import com.example.wecharades.R;
-import com.example.wecharades.controller.Database;
+import com.example.wecharades.SeparatedListAdapter;
+import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-public class StartScreen extends ListActivity {
 
-	Button btnLogout;
-	TextView username;
-	private ArrayList<Item> items = new ArrayList<Item>();
+
+public class StartScreen extends Activity {
+
+	protected static final String TAG = "StartScreen";
+	public final static String ITEM_TITLE = "title";
+	public final static String ITEM_CAPTION = "caption";
+
+	// Adapter for ListView Contents
+	private SeparatedListAdapter adapter;
+
+	// ListView Contents
+	private ListView journalListView;
+	
+	// String which represents the user's user name
+	private String currentUser;
+
+	public Map<String, ?> createItem(String title, String caption){
+		Map<String, String> item = new HashMap<String, String>();
+		item.put(ITEM_TITLE, title);
+		item.put(ITEM_CAPTION, caption);
+		return item;
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View header = View.inflate(this, R.layout.new_game_header, null);
-		ListView lv = getListView();
-		lv.addHeaderView(header);
 
+		// Sets the View Layer
+		setContentView(R.layout.start_screen);
+
+		// Get a reference to the ListView holder
+		journalListView = (ListView) this.findViewById(R.id.list_journal);
+
+		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, journalListView, false);
+
+		journalListView.addHeaderView(header);
 
 		//Copy and Paste this into every onCreate method to be able to use Parse
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R"); 
-
+		
 		//Check if the user is logged in or saved in the cache
 		//TODO: Fixa en central isLoggedIn()-funktion senare?
-		ParseUser currentUser = ParseUser.getCurrentUser();
-		if(currentUser == null ) {
-
+		ParseUser user = ParseUser.getCurrentUser();
+		if(user == null ) {
 			// user is not logged in, show login screen
 			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
 			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(login);
 			finish();
+		}else {
+			//Sets the current user's user name
+			currentUser = ParseUser.getCurrentUser().getUsername();
+			TextView tv = (TextView) findViewById(R.id.textView1);
+			//TODO: Fixa så att det är natural username istället.
+			tv.setText(currentUser);
+		}
+		
+		// Följande rader representerar Game-objekt som finns i databasen.
+		Player felix = new Player("1", "Felix");
+		Player alexander = new Player("2", "Alexander");
+		Player robert = new Player("3", "Robert");
+		Player marcus = new Player("4", "Marcus");
+		
+		Game g1 = new Game(felix, alexander, alexander, 4, false, null);
+		Game g2 = new Game(felix, robert, felix, 4, false, null);
+		Game g3 = new Game(felix, marcus, marcus, 4, true, null);
+
+		//Dessaa rader representerar ArrayList<Game>-listan som hämtas från databasen.
+		ArrayList<Game> gameList = new ArrayList<Game>();
+
+		gameList.add(g1);
+		gameList.add(g2);
+		gameList.add(g3);
+
+		// Create the ListView Adapter
+		adapter = new SeparatedListAdapter(this);
+
+		// Create the Adapters for ListView items
+		ArrayList<Game> yourTurnList = getYourTurnList(gameList);
+		ArrayList<Game> opponentsTurnList = getOpponentsTurnList(gameList);
+		ArrayList<Game> finishedList = getFinishedList(gameList);
+
+		if (yourTurnList!=null) {
+			GameAdapter yourTurnAdapter = new GameAdapter(this, yourTurnList);
+			adapter.addSection("Your turn", yourTurnAdapter);
+		}
+				
+		if (opponentsTurnList!=null) {
+			GameAdapter opponentsTurnAdapter = new GameAdapter(this, opponentsTurnList);
+			adapter.addSection("Opponent's turn", opponentsTurnAdapter);
 		}
 
-		//Temporary show username field...
-//		username = (TextView) findViewById(R.id.viewName);
-//		String name = (String) currentUser.getString("naturalUsername");
-//		username.setText(name); 
+		if (finishedList!=null) {
+			GameAdapter finishedAdapter = new GameAdapter(this, finishedList);
+			adapter.addSection("Finished games", finishedAdapter);
+		}
 
-		items = DatabaseConnector.getList(); //Här kan vi skicka med användarnamneet så vi vet vems data som skall hämtas.
+		// Set the adapter on the ListView holder
+		journalListView.setAdapter(adapter);
 
-		EntryAdapter adapter = new EntryAdapter(this, items);
-		setListAdapter(adapter);
-
-//		createGames();			// Made by Alex
-//		items = queryGames();	// Made by Alex
 
 		Button b = (Button) findViewById(R.id.new_game_button);
 		b.setOnClickListener(new OnClickListener() {
@@ -81,139 +146,114 @@ public class StartScreen extends ListActivity {
 			}
 		});
 
-		btnLogout = (Button) findViewById(R.id.btnLogout);
-		btnLogout.setOnClickListener(new View.OnClickListener() {
+		// Listen for Click events
+		journalListView.setOnItemClickListener(new OnItemClickListener() {
+
+
 			@Override
-			public void onClick(View arg0) {
-				ParseUser.logOut();
-				//Redirecting to LoginActivity
-				Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-				login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(login);
-				// Closing start screen
-				finish();
+			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+				Game item = (Game) adapter.getItem(position-1);
+				Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
 
-//	private ArrayList<Item> queryGames() {
-//		ArrayList<Item> items = new ArrayList<Item>();
-//		items.addAll(getYourTurn());
-//		items.addAll(getOpponentsTurn());
-//		items.addAll(getFinishedGames());
-//
-//		return items;
-//
-//	}
-//
-//	private Collection<? extends Item> getOpponentsTurn() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryOpponent = new ParseQuery("Game");
-//		queryOpponent.whereEqualTo("turn", "opponent");
-//		queryOpponent.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> OpponentList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : OpponentList) {
-//						items.add(new ActiveGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//
-//	}
-//
-//	private Collection<? extends Item> getFinishedGames() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryFinished = new ParseQuery("Game");
-//		queryFinished.whereEqualTo("turn", "finished");
-//		queryFinished.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> FinishedList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : FinishedList) {
-//						items.add(new FinishedGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//	}
-//
-//	private Collection<? extends Item> getYourTurn() {
-//		final ArrayList<Item> items = new ArrayList<Item>();
-//		ParseQuery queryYour = new ParseQuery("Game");
-//		queryYour.whereEqualTo("turn", "your");
-//		queryYour.findInBackground(new FindCallback() {
-//
-//			@Override
-//			public void done(List<ParseObject> YourList, ParseException e) {
-//				if (e != null) {
-//					Log.d("score", "Error: " + e.getMessage());
-//				}else {
-//					items.add(new SectionItem("Opponent's turn"));
-//					for (ParseObject po : YourList) {
-//						items.add(new ActiveGameItem((po.getString("player")), po.getString("score")));
-//					}
-//				}
-//
-//			}
-//		});
-//		return items;
-//	}
-//
-//	private void createGames() {
-//		ParseObject game = new ParseObject("Game");
-//		game.put("gameID", 1);
-//		game.put("player", "Fredrik");
-//		game.put("turn", "opponent");
-//		game.put("score", "7 - 3");
-//		game.put("gameID", 2);
-//		game.put("player", "Patrik");
-//		game.put("turn", "your");
-//		game.put("score", "3 - 7");
-//		game.put("gameID", 3);
-//		game.put("player", "Marcus");
-//		game.put("turn", "finished");
-//		game.put("score", "4 - 3");
-//		game.put("gameID", 4);
-//		game.put("player2", "Robert");
-//		game.put("status", "finished");
-//		game.put("score", "3 - 3");
-//		game.saveInBackground();
-//	}
+	/**
+	 * Returns a list containing the Game-objects where it is the current user's turn
+	 * @param gameList
+	 * @return yourTurnList
+	 */
+	private ArrayList<Game> getYourTurnList(ArrayList<Game> gameList) {
+		ArrayList<Game> yourTurnList = new ArrayList<Game>();
+		for (Game g : gameList){
+			if(g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
+				yourTurnList.add(g);			
+		}
+		return yourTurnList;
+	}
+	
+	/**
+	 * Returns a list containing the Game-objects where it is NOT the current user's turn
+	 * @param gameList
+	 * @return opponentsTurnList
+	 */
+	private ArrayList<Game> getOpponentsTurnList(ArrayList<Game> gameList) {
+		ArrayList<Game> opponentsTurnList = new ArrayList<Game>();
+		for (Game g : gameList){
+			if(!g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
+				opponentsTurnList.add(g);			
+		}
+		return opponentsTurnList;
+	}
+	
+	
+	/**
+	 * Returns a list containing the Game-objects where games are finished
+	 * @param gameList
+	 * @return finishedList
+	 */
+	private ArrayList<Game> getFinishedList(ArrayList<Game> gameList) {
+		ArrayList<Game> finishedList = new ArrayList<Game>();
+		for (Game g : gameList){
+			if(g.isFinished())
+				finishedList.add(g);			
+		}
+		return finishedList;
+	}
+	
+	/*
+	private ArrayList<Item> getGameList() {
+		ArrayList<Item> items = new ArrayList<Item>();
 
+		try {
+			ArrayList<Game> games = Database.getGames(ParseUser.getCurrentUser().getUsername());
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-
-		if(!items.get(position-1).isSection() && items.get(position-1).isActive()){
-			ActiveGameItem item = (ActiveGameItem) items.get(position-1);
-			Intent intent = new Intent(StartScreen.this, GameScreen.class);
-			intent.putExtra("username", item.getTitle());
-			startActivity(intent);
-
-
-			Toast.makeText
-			(this, "You clicked " + item.getTitle() , Toast.LENGTH_SHORT).show();
-
+		}catch (ParseException e){
+			Log.d(TAG, e.getMessage());
 		}
 
-		super.onListItemClick(l, v, position-1, id);
+		return items;
+	}
+	*/
+
+	/**
+	 * Logout and go back to login screen
+	 * @param view
+	 */
+	public void onClickLogout(View view) {
+		ParseUser.logOut();
+		//Redirecting to LoginActivity
+		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(login);
+		// Closing start screen
+		finish();
 	}
 
-	public void createGame(View view){
-		Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
+	/**
+	 * Go to New Game screen
+	 * @param view
+	 */
+	public void onClickNewGame(View view) {
+		Log.d("Clicked", "New Game");
+		Button b = (Button) view;
+		Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
+		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+		startActivity(intent);
 	}
+
+	/**
+	 * Nothing happens so far...
+	 * @param view
+	 */
+	public void onClickAccount(View view) {
+		Log.d("Clicked", "Account");
+		Button b = (Button) view;
+		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+	}
+/*
+	public void createGame(View view) throws ParseException, DatabaseException{
+		//Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
+	}
+*/
 }

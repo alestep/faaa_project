@@ -19,6 +19,7 @@ import android.widget.VideoView;
 import com.example.wecharades.R;
 import com.example.wecharades.controller.UploadVideo;
 
+
 /**
  * 
  * @author Adam
@@ -67,7 +68,6 @@ public class ShowVideo extends Activity{
 			}
 		});
 	}
-
 	private void playVideo(){
 		ww.setVideoURI(CaptureVideo.uriVideo);
 		ww.setMediaController(new MediaController(this));
