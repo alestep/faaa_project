@@ -15,6 +15,7 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -199,11 +200,19 @@ public class Database {
 	 */
 	public static ArrayList<Game> getGames(Player player) throws DatabaseException {
 		ArrayList<Game> games = new ArrayList<Game>();
-		ParseQuery query = new ParseQuery("Game");
-		//query.whereContains("player1", player.getName());
-		query.whereContains("player2", player.getParseId());
+		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
+		ParseQuery query1 = new ParseQuery("Game");
+		query1.whereContains("player1", player.getParseId());
+		ParseQuery query2 = new ParseQuery("Game");
+		query2.whereContains("player2", player.getParseId());
+		
+		queries.add(query1);
+		queries.add(query2);
+		
+		ParseQuery mainQuery = ParseQuery.or(queries);
+		
 		try{
-			List<ParseObject> dbResult = query.find();
+			List<ParseObject> dbResult = mainQuery.find();
 			for(ParseObject game : dbResult){
 				games.add(parseGame(game));
 			}
