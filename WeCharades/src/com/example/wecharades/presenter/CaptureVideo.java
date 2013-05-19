@@ -1,4 +1,4 @@
-package com.example.wecharades.views;
+package com.example.wecharades.presenter;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
+import com.example.wecharades.views.VideoUploadActivity;
 /**
  * 
  * @author Adam Lewestam
@@ -54,14 +55,14 @@ public class CaptureVideo extends Activity {
 		}
 
 	}
-	
+
 	public static boolean isIntentAvailable(Context context, String action) {
-	    final PackageManager packageManager = context.getPackageManager();
-	    final Intent intent = new Intent(action);
-	    List<ResolveInfo> list =
-	        packageManager.queryIntentActivities(intent,
-	            PackageManager.MATCH_DEFAULT_ONLY);
-	    return list.size() > 0;
+		final PackageManager packageManager = context.getPackageManager();
+		final Intent intent = new Intent(action);
+		List<ResolveInfo> list =
+				packageManager.queryIntentActivities(intent,
+						PackageManager.MATCH_DEFAULT_ONLY);
+		return list.size() > 0;
 	}
 }
 

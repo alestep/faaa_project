@@ -5,6 +5,7 @@ import com.example.wecharades.R.id;
 import com.example.wecharades.R.layout;
 import com.example.wecharades.R.menu;
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.presenter.CaptureVideo;
 import com.example.wecharades.presenter.Database;
 import com.parse.Parse;
 import com.parse.ParseException;

@@ -14,7 +14,6 @@ import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.example.wecharades.views.CaptureVideo;
 import com.example.wecharades.views.StartScreen;
 import com.example.wecharades.views.VideoUploadActivity;
 

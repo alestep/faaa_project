@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.VideoView;
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.CaptureVideo;
 import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
