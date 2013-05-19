@@ -71,6 +71,15 @@ public class StartScreen extends ListActivity {
 				startActivity(intent);
 			}
 		});
+		
+		Button b1 = (Button) findViewById(R.id.button1);
+		b1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(StartScreen.this, Main.class);
+				startActivity(intent);
+			}
+		});
 
 		btnLogout = (Button) findViewById(R.id.btnLogout);
 		btnLogout.setOnClickListener(new View.OnClickListener() {

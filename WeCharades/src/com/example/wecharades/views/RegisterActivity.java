@@ -1,19 +1,36 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-import com.parse.*;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.session.AccessTokenPair;
+import com.dropbox.client2.session.AppKeyPair;
+import com.dropbox.client2.session.TokenPair;
+import com.dropbox.client2.session.Session.AccessType;
+import com.example.wecharades.R;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class RegisterActivity extends Activity {
+
+	private final String TAG = "RegisterActivity";
+	private ParseUser user;
+
 	Button btnRegister;
 	Button btnLinkToLogin;
 	EditText inputNickname;
@@ -28,10 +45,10 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
+		/*Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse*/
 		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 
-		// Importing all assets like buttons, text fields
+		/*Importing all assets like buttons, text fields*/
 		inputNickname = (EditText) findViewById(R.id.registerName);
 		inputEmail = (EditText) findViewById(R.id.registerEmail);
 		inputPassword = (EditText) findViewById(R.id.registerPassword);
@@ -69,7 +86,7 @@ public class RegisterActivity extends Activity {
 			registerErrorMsg.setText("You password doesn't match. Please try again!");
 		}  else {
 
-			ParseUser user = new ParseUser();
+			user = new ParseUser();
 			user.setUsername(name.toLowerCase());
 			user.put("naturalUsername", name);		//to keep the input username, e.g capital letter
 			user.put("globalScore", 0); 			//globalScore is set to zero when register
@@ -84,7 +101,7 @@ public class RegisterActivity extends Activity {
 					if (e == null) {
 						// Successful registration - Launch Start Screen
 						Intent dashboard = new Intent(getApplicationContext(), StartScreen.class);
-						//Close all views befora launching start screen
+						//Close all views before launching start screen
 						dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(dashboard);
 						// Close Registration Screen
@@ -109,7 +126,7 @@ public class RegisterActivity extends Activity {
 			});
 		}
 	}
-	
+
 	/**
 	 * Go to login screen
 	 * @param view
@@ -120,7 +137,7 @@ public class RegisterActivity extends Activity {
 		// Close Registration View
 		finish();
 	}
-
+	
 	private boolean badPassword(String password) {
 		//Only two criterias for now...
 		//TODO Fix stronger restrictions??

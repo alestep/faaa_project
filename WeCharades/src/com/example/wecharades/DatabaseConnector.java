@@ -2,7 +2,7 @@ package com.example.wecharades;
 
 import java.util.ArrayList;
 public class DatabaseConnector {
-/*
+
 	public static ArrayList<Item> getList() {
 		ArrayList<Item> items = new ArrayList<Item>();
 
@@ -38,6 +38,6 @@ public class DatabaseConnector {
 		items.add(new FinishedGameItem("Anton", "You lost 4-5"));
 		items.add(new FinishedGameItem("Felix", "You won 6-4"));
 		return items;
-	}*/
+	}
 }
 
