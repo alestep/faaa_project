@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 
 import com.example.wecharades.model.DatabaseException;
@@ -16,7 +15,6 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -55,7 +53,7 @@ public class Database {
 			//Save player locally to avoid multiple fetches. //TODO have a local list of players??
 			Player p1 = getPlayer(game.getString("player1")); //TODO these are high coupling - cannot move easily
 			Player p2 = getPlayer(game.getString("player2"));
-			Player current = (game.getString("currentPlayer").equals(p1.getParseId())) ? p1 : p2 ;
+			Player current = (game.getString("currentPlayer").equals(p1.getName().toLowerCase())) ? p1 : p2 ;
 			return new Game(
 					game.getObjectId(),
 					p1,
@@ -90,7 +88,7 @@ public class Database {
 
 	//A method to parse ParseObject players to players
 	private static Player parsePlayer(ParseObject player){
-		if(player.getClassName().equals("User")){
+		if(player.getClassName().equals("_User")) {
 			return new Player(
 					player.getObjectId(), 
 					player.getString("naturalUsername"), 
@@ -202,14 +200,15 @@ public class Database {
 	public static ArrayList<Game> getGames(Player player) throws DatabaseException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		ParseQuery query = new ParseQuery("Game");
-		query.whereContains("player1", player.getParseId());
+		//query.whereContains("player1", player.getName());
 		query.whereContains("player2", player.getParseId());
 		try{
-			for(ParseObject game : query.find()){
+			List<ParseObject> dbResult = query.find();
+			for(ParseObject game : dbResult){
 				games.add(parseGame(game));
 			}
 		} catch(ParseException e){
-			Log.d("Database",e.getMessage());
+			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1004,"Failed to fetch games");
 		}
 		return games;

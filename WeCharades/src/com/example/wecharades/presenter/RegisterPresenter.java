@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.RegisterActivity;
-import com.example.wecharades.views.StartScreen;
+import com.example.wecharades.views.StartActivity;
 
 public class RegisterPresenter extends Presenter {
 
@@ -31,7 +31,7 @@ public class RegisterPresenter extends Presenter {
 			activity.showErrorMessage(e.prettyPrint());
 		} finally {
 			if(loginSucceeded) {
-				Intent i = new Intent(activity.getApplicationContext(), StartScreen.class);
+				Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(i);
 				activity.finish();
 			}

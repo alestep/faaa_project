@@ -7,14 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.RegisterPresenter;
-import com.parse.ParseUser;
 
 
 public class RegisterActivity extends GenericActivity {
-
-
+	
 	Button btnRegister;
 	Button btnLinkToLogin;
 	EditText inputNickname;

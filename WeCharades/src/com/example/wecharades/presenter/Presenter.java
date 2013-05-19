@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.Parse;
+import com.parse.ParseUser;
 
 public abstract class Presenter {
 
@@ -26,7 +27,15 @@ public abstract class Presenter {
 	public void initialize(){
 		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
-
+	
+	/**
+	 * Enables access to username
+	 * @return the current user's username
+	 */
+	public String getCurrentUser(){
+		return ParseUser.getCurrentUser().getUsername();
+	}
+	
 	/**
 	 * Enable or disable all clickable objects in view
 	 * @param view

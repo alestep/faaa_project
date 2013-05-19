@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_default_normal"
         android:text="@string/search"
+        android:onClick="onClickSearch"
          />
 
 </LinearLayout>

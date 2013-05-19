@@ -26,7 +26,7 @@
        
         <!-- Start screen Activity -->
         <activity
-            android:name=".views.StartScreen"
+            android:name=".views.StartActivity"
             android:label="@string/menu" >
 
     		<!-- DEFAULT STARTING SCREEN -->
