@@ -19,7 +19,7 @@ import com.parse.ParseUser;
 public class RegisterActivity extends GenericActivity {
 
 
-	private final String TAG = "RegisterActivity";
+	private static final String TAG = "RegisterActivity";
 	private ParseUser user;
 
 	Button btnRegister;
