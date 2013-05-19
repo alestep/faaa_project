@@ -13,30 +13,32 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.controller.DownloadVideo;
+import com.example.wecharades.presenter.GuessCharadePresenter;
+import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
 
-public class PlayStreamedVideo extends Activity  {
+public class GuessCharadeActivity extends Activity  {
 
-	private final String GAME_DIR = "/GAMES/GAME_BETWEEN_USER_A_USER_B/"; // THIS IS WHERE A UNIQUE FOLDERNAME MUST EXIST FOR EACH GAME. GET GAME_ID FROM PARSE AND LATER CREATE AN UNIQUE FOLDER
-	private final String SAVE_PATH = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";
+	
 
 	final String TAG = "PlayStreamedVideo";
 	private VideoView videoView;
-	private MediaController mediaController;
-	private DownloadVideo download;
+	private GuessCharadePresenter presenter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
+		
+		presenter = new GuessCharadePresenter(this);
+		presenter.downloadVideo(GuessCharadeActivity.this, videoView);
 
-		download = new DownloadVideo(PlayStreamedVideo.this, SAVE_PATH, videoView);
-		download.execute();
+		//download = new DownloadVideo(GuessCharadeActivity.this, SAVE_PATH, videoView);
+		//download.execute();
 
 	}
 

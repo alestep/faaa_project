@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.util.Log;
 
 import com.example.wecharades.model.DatabaseException;
@@ -16,11 +15,11 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -30,8 +29,21 @@ import com.parse.RequestPasswordResetCallback;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
-	//TODO Make Database an instance-class!
 
+	//TODO Make Database an instance-class! Uncomment this and change all method to instance-methods
+	/*
+	private Database singleton;
+	
+	private Database(Context context){
+		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+	}
+	
+	public Database getDatabase(Context context){
+		if(singleton == null)
+			singleton = new Database(context);
+		return singleton;
+	}
+	*/
 	//Helper methods -----------------------------------------------------------------------------------------//
 	//TODO These should be moved to a separate class!
 
@@ -40,9 +52,9 @@ public class Database {
 	private static Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals("Game")){
 			//Save player locally to avoid multiple fetches. //TODO have a local list of players??
-			Player p1 = getPlayer(game.getString("player1")); 
-			Player p2 = getPlayer(game.getString("player2"));
-			Player current = (game.getString("currentPlayer").equals(p1.getParseId())) ? p1 : p2 ;
+			Player p1 = getPlayerById(game.getString("player1")); //TODO these are high coupling - cannot move easily
+			Player p2 = getPlayerById(game.getString("player2"));
+			Player current = (game.getString("currentPlayer").equals(p1.getName().toLowerCase())) ? p1 : p2 ;
 			return new Game(
 					game.getObjectId(),
 					p1,
@@ -65,9 +77,9 @@ public class Database {
 					turn.getInt("state"), 
 					turn.getString("word"), 
 					turn.getString("videoLink"), 
-					getPlayer(turn.getString("recPlayer")), 
+					getPlayerById(turn.getString("recPlayer")), 
 					turn.getInt("recPlayerScore"), 
-					getPlayer(turn.getString("ansPlayer")), 
+					getPlayerById(turn.getString("ansPlayer")), 
 					turn.getInt("ansPlayerScore") 
 					);
 		} else{
@@ -77,7 +89,7 @@ public class Database {
 
 	//A method to parse ParseObject players to players
 	private static Player parsePlayer(ParseObject player){
-		if(player.getClassName().equals("User")){
+		if(player.getClassName().equals("_User")) {
 			return new Player(
 					player.getObjectId(), 
 					player.getString("naturalUsername"), 
@@ -89,7 +101,7 @@ public class Database {
 
 	private static Invitation parseInvitation(ParseObject invitation) throws DatabaseException{
 		if(invitation.getClassName().equals("Invite")){
-			return new Invitation(getPlayer(invitation.getString("inviter")), getPlayer(invitation.getString("invitee")), invitation.getCreatedAt());
+			return new Invitation(getPlayerById(invitation.getString("inviter")), getPlayerById(invitation.getString("invitee")), invitation.getCreatedAt());
 		} else{
 			return null;
 		}
@@ -188,15 +200,24 @@ public class Database {
 	 */
 	public static ArrayList<Game> getGames(Player player) throws DatabaseException {
 		ArrayList<Game> games = new ArrayList<Game>();
-		ParseQuery query = new ParseQuery("Game");
-		query.whereContains("player1", player.getParseId());
-		query.whereContains("player2", player.getParseId());
+		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
+		ParseQuery query1 = new ParseQuery("Game");
+		query1.whereContains("player1", player.getParseId());
+		ParseQuery query2 = new ParseQuery("Game");
+		query2.whereContains("player2", player.getParseId());
+		
+		queries.add(query1);
+		queries.add(query2);
+		
+		ParseQuery mainQuery = ParseQuery.or(queries);
+		
 		try{
-			for(ParseObject game : query.find()){
+			List<ParseObject> dbResult = mainQuery.find();
+			for(ParseObject game : dbResult){
 				games.add(parseGame(game));
 			}
 		} catch(ParseException e){
-			Log.d("Database",e.getMessage());
+			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1004,"Failed to fetch games");
 		}
 		return games;
@@ -327,6 +348,18 @@ public class Database {
 		ParseObject dbPlayer;
 		try {
 			dbPlayer = query.getFirst();
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch user");
+		}
+		return parsePlayer(dbPlayer);
+	}
+	
+	public static Player getPlayerById(String parseId) throws DatabaseException {
+		ParseQuery query = ParseUser.getQuery();
+		ParseObject dbPlayer;
+		try {
+			dbPlayer = query.get(parseId);
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1010,"Failed to fetch user");

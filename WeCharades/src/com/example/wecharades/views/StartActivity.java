@@ -3,36 +3,39 @@ package com.example.wecharades.views;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
- 
-import com.example.wecharades.GameAdapter;
-import com.example.wecharades.R;
-import com.example.wecharades.SeparatedListAdapter;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Game;
- 
-import com.parse.Parse;
-import com.parse.ParseUser;
- 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
- 
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
- 
-public class StartScreen extends Activity {
+
+import com.example.wecharades.GameAdapter;
+import com.example.wecharades.R;
+import com.example.wecharades.SeparatedListAdapter;
+import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
+import com.example.wecharades.presenter.Database;
+import com.example.wecharades.presenter.StartPresenter;
+import com.parse.Parse;
+import com.parse.ParseUser;
+
+
+public class StartActivity extends Activity {
  
         protected static final String TAG = "StartScreen";
         public final static String ITEM_TITLE = "title";
         public final static String ITEM_CAPTION = "caption";
- 
+        
+        private StartPresenter presenter;
+        
         // Adapter for ListView Contents
         private SeparatedListAdapter adapter;
  
@@ -41,6 +44,7 @@ public class StartScreen extends Activity {
  
         // String which represents the user's user name
         private String currentUser;
+        private String currentUserId;
  
         public Map<String, ?> createItem(String title, String caption){
                 Map<String, String> item = new HashMap<String, String>();
@@ -52,7 +56,12 @@ public class StartScreen extends Activity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
- 
+                
+                // Sets the presenter
+                presenter = new StartPresenter (this);
+                
+                presenter.initialize();
+                
                 // Sets the View Layer
                 setContentView(R.layout.start_screen);
  
@@ -62,6 +71,9 @@ public class StartScreen extends Activity {
                 View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, journalListView, false);
  
                 journalListView.addHeaderView(header);
+                
+                // Create the ListView Adapter
+                adapter = new SeparatedListAdapter(this);
  
                 //Copy and Paste this into every onCreate method to be able to use Parse
                 Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
@@ -82,44 +94,26 @@ public class StartScreen extends Activity {
                         //TODO: Fixa så att det är natural username istället.
                         tv.setText(currentUser);
                 }
- 
-                // Följande rader representerar Game-objekt som finns i databasen.
-                Player felix = new Player("1", "Felix");
-                Player alexander = new Player("2", "Alexander");
-                Player robert = new Player("3", "Robert");
-                Player marcus = new Player("4", "Marcus");
- 
-                //Fake games;
-                Game g1 = new Game("1",felix, alexander, alexander, 4, false, null);
-                Game g2 = new Game("2",felix, robert, felix, 4, false, null);
-                Game g3 = new Game("3",felix, marcus, marcus, 4, true, null);
-               
-                //Dessaa rader representerar ArrayList<Game>-listan som hämtas från databasen.
-                ArrayList<Game> gameList = new ArrayList<Game>();
- 
-                gameList.add(g1);
-                gameList.add(g2);
-                gameList.add(g3);
- 
-                // Create the ListView Adapter
-                adapter = new SeparatedListAdapter(this);
- 
-                // Create the Adapters for ListView items
-                ArrayList<Game> yourTurnList = getYourTurnList(gameList);
-                ArrayList<Game> opponentsTurnList = getOpponentsTurnList(gameList);
-                ArrayList<Game> finishedList = getFinishedList(gameList);
- 
-                if (yourTurnList!=null) {
+                
+                presenter.parseGameLists(currentUser); 
+                
+                ArrayList<Game> yourTurnList = presenter.getYourTurnList();
+                Log.d(TAG, " " + yourTurnList.isEmpty());
+                ArrayList<Game> opponentsTurnList = presenter.getOpponentsTurnList();
+                ArrayList<Game> finishedList = presenter.getFinishedList();
+                
+                
+                if (!yourTurnList.isEmpty()) {
                         GameAdapter yourTurnAdapter = new GameAdapter(this, yourTurnList);
                         adapter.addSection("Your turn", yourTurnAdapter);
                 }
- 
-                if (opponentsTurnList!=null) {
+                               
+                if (!opponentsTurnList.isEmpty()) {
                         GameAdapter opponentsTurnAdapter = new GameAdapter(this, opponentsTurnList);
                         adapter.addSection("Opponent's turn", opponentsTurnAdapter);
                 }
  
-                if (finishedList!=null) {
+                if (!finishedList.isEmpty()) {
                         GameAdapter finishedAdapter = new GameAdapter(this, finishedList);
                         adapter.addSection("Finished games", finishedAdapter);
                 }
@@ -137,64 +131,6 @@ public class StartScreen extends Activity {
                         }
                 });
         }
- 
-        /**
-         * Returns a list containing the Game-objects where it is the current user's turn
-         * @param gameList
-         * @return yourTurnList
-         */
-        private ArrayList<Game> getYourTurnList(ArrayList<Game> gameList) {
-                ArrayList<Game> yourTurnList = new ArrayList<Game>();
-                for (Game g : gameList){
-                        if(g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
-                                yourTurnList.add(g);                  
-                }
-                return yourTurnList;
-        }
- 
-        /**
-         * Returns a list containing the Game-objects where it is NOT the current user's turn
-         * @param gameList
-         * @return opponentsTurnList
-         */
-        private ArrayList<Game> getOpponentsTurnList(ArrayList<Game> gameList) {
-                ArrayList<Game> opponentsTurnList = new ArrayList<Game>();
-                for (Game g : gameList){
-                        if(!g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
-                                opponentsTurnList.add(g);                      
-                }
-                return opponentsTurnList;
-        }
- 
- 
-        /**
-         * Returns a list containing the Game-objects where games are finished
-         * @param gameList
-         * @return finishedList
-         */
-        private ArrayList<Game> getFinishedList(ArrayList<Game> gameList) {
-                ArrayList<Game> finishedList = new ArrayList<Game>();
-                for (Game g : gameList){
-                        if(g.isFinished())
-                                finishedList.add(g);                  
-                }
-                return finishedList;
-        }
- 
-        /*
-        private ArrayList<Item> getGameList() {
-                ArrayList<Item> items = new ArrayList<Item>();
- 
-                try {
-                        ArrayList<Game> games = Database.getGames(ParseUser.getCurrentUser().getUsername());
- 
-                }catch (ParseException e){
-                        Log.d(TAG, e.getMessage());
-                }
- 
-                return items;
-        }
-         */
  
         /**
          * Logout and go back to login screen
@@ -215,8 +151,19 @@ public class StartScreen extends Activity {
          * @param view
          */
         public void onClickNewGame(View view) {
-                Log.d("Clicked", "New Game");
                 Button b = (Button) view;
+//                try {
+//                Player p1 = Database.getPlayer(currentUser);
+//                Player p2 = Database.getPlayer("adam");
+//                Database.createGame(p1, p2);
+//                Database.createGame(p2, p1);
+//                
+//                }catch (Exception e) {
+//                	
+//                }
+                
+                
+                //presenter.showToast(getApplicationContext(), b.getText().toString());
                 Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
                 Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
@@ -233,9 +180,5 @@ public class StartScreen extends Activity {
                 Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
                 startActivity(intent);
         }
-        /*
-        public void createGame(View view) throws ParseException, DatabaseException{
-                Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
-        }
-         */
+
 }
