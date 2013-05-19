@@ -15,11 +15,10 @@ public class LoginPresenter extends Presenter{
 		//TODO: implement some kind of if( activity instnaceof LoginActivity) function here, not sure how to do it right
 		super(activity);
 		this.activity = (LoginActivity) activity;
-
-
 	}
+
 	public void login(String username, String password){
-		
+
 		//TODO: couldn't find a better solution at this point - remove this comment if it's "good enough"
 		boolean loginSucceeded = false;
 		try {

@@ -71,16 +71,15 @@ public class RegisterActivity extends GenericActivity {
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, registerProgress);
 
-		try {
-			presenter.registerUser(
-					inputNickname.getText().toString(),
-					inputEmail.getText().toString().toLowerCase(),
-					inputPassword.getText().toString(),
-					inputRepeatPassword.getText().toString());
-		} catch (DatabaseException e) {
-			// TODO fix error msg
-			e.printStackTrace();
-		}
+
+		presenter.registerUser(
+				inputNickname.getText().toString(),
+				inputEmail.getText().toString().toLowerCase(),
+				inputPassword.getText().toString(),
+				inputRepeatPassword.getText().toString());
+
+		// TODO fix error msg
+
 
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, registerProgress);
