@@ -24,23 +24,40 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/SectionListViewTheme" >
+       
+        <!-- Start screen Activity -->
         <activity
             android:name=".views.StartScreen"
             android:label="@string/menu" >
 
-            <!-- DEFAULT STARTING SCREEN -->
+    		<!-- DEFAULT STARTING SCREEN -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".views.NewGameScreen"
             android:label="@string/new_game" />
+        
         <activity
-            android:name=".views.Friends"
-            android:label="@string/friends" />
+            android:name=".views.SearchPlayerScreen"
+            android:label="@string/player">
+            <meta-data 
+                android:name="android.app.searchable"
+            	android:resource="@xml/searchable" />
+     	</activity>
+     	
+        <activity 
+            android:name=".SearchResultsActivity" 
+            android:label="@string/search_result">
+   			<intent-filter>
+        		<action android:name="android.intent.action.SEARCH" />
+    		</intent-filter>
+		</activity>
+        
         <activity
             android:name=".views.GameScreen"
             android:label="@string/game" />

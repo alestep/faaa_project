@@ -6,30 +6,25 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/friend"
+        android:id="@+id/search_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/facebook"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="201dp"
         android:background="@drawable/btn_default_normal"
-        android:text="@string/friends" />
+        android:onClick="onClickSearchPlayer"
+        android:text="@string/search_player" />
 
     <Button
         android:id="@+id/random"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/facebook"
+        android:layout_alignBottom="@+id/search_player"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="52dp"
         android:background="@drawable/btn_default_normal"
+        android:onClick="onClickRandom"
         android:text="@string/random" />
-
-    <Button
-        android:id="@+id/facebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/btn_default_normal"
-        android:text="@string/facebook" />
 
 </RelativeLayout>

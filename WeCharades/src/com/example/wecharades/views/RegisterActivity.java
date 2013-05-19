@@ -1,19 +1,29 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.RegisterPresenter;
+import com.parse.ParseUser;
 
 
 public class RegisterActivity extends GenericActivity {
+
+
+	private final String TAG = "RegisterActivity";
+	private ParseUser user;
+
+	Button btnRegister;
+	Button btnLinkToLogin;
 	EditText inputNickname;
 	EditText inputEmail;
 	EditText inputPassword;
@@ -31,6 +41,8 @@ public class RegisterActivity extends GenericActivity {
 		//initializing the presenter
 		presenter = new RegisterPresenter(this);
 
+
+
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();
 
@@ -46,6 +58,7 @@ public class RegisterActivity extends GenericActivity {
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		presenter.setProgressSpinnerInvisible(registerProgress);
 
+
 	}
 
 	/**
@@ -53,6 +66,7 @@ public class RegisterActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickRegister(View view) {
+
 		//TODO: progress spinners doesn't work yet!
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, registerProgress);
@@ -64,7 +78,7 @@ public class RegisterActivity extends GenericActivity {
 					inputPassword.getText().toString(),
 					inputRepeatPassword.getText().toString());
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
+			// TODO fix error msg
 			e.printStackTrace();
 		}
 

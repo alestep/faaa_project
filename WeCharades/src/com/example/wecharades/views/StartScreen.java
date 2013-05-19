@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.wecharades.GameAdapter;
-import com.example.wecharades.R;
-import com.example.wecharades.SeparatedListAdapter;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Game;
-
-import com.parse.Parse;
-import com.parse.ParseUser;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.wecharades.GameAdapter;
+import com.example.wecharades.R;
+import com.example.wecharades.SeparatedListAdapter;
+import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 
 
@@ -126,10 +125,30 @@ public class StartScreen extends Activity {
 		}
 
 		// Set the adapter on the ListView holder
-		journalListView.setAdapter(adapter);
+		//journalListView.setAdapter(adapter);
+
+
+		Button b = (Button) findViewById(R.id.new_game_button);
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(StartScreen.this, NewGameScreen.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button b1 = (Button) findViewById(R.id.button1);
+		b1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(StartScreen.this, Main.class);
+				startActivity(intent);
+			}
+		});
 
 		// Listen for Click events
 		journalListView.setOnItemClickListener(new OnItemClickListener() {
+
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {

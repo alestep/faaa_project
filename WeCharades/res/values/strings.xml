@@ -13,9 +13,13 @@
 	<string name="logout">Logout</string>
    
     <!-- Search screen buttons -->
-    <string name="random">Find random opponent</string>
+    <string name="random">Find random player</string>
     <string name="facebook">Find through Facebook</string>
-    <string name="friends">Find friend</string>
+    <string name="player">Find player</string>
+    <string name="search">Search</string>
+    <string name="search_player">Find player</string>
+    <string name="search_hint">Enter username</string>
+    <string name="search_result">Search result</string>
     
     <!-- The label for use as a searchable item -->
     <string name="game_view_button_text">Create random game</string>
