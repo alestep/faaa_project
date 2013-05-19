@@ -125,7 +125,7 @@ public class StartScreen extends Activity {
 		}
 
 		// Set the adapter on the ListView holder
-		journalListView.setAdapter(adapter);
+		//journalListView.setAdapter(adapter);
 
 
 		Button b = (Button) findViewById(R.id.new_game_button);
