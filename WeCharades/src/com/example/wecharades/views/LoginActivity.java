@@ -1,32 +1,34 @@
 package com.example.wecharades.views;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.example.wecharades.R;
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.LoginPresenter;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends GenericActivity {
 	EditText inputUsername;
 	EditText inputPassword;
 	TextView loginErrorMsg;
 	ProgressBar loginProgress;
 	View myView;
-	LoginPresenter presenter; //TODO: Presenter presenter = new LoginPresenter(...) ???
+	LoginPresenter presenter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		
+
 		//initializing the presenter
 		presenter = new LoginPresenter(this);
-		
+
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();
 
@@ -46,15 +48,18 @@ public class LoginActivity extends Activity {
 	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
+		//TODO: the spinners doesn't work properly yet :(
+
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, loginProgress);
-		//TODO: make a thread or something here to be able to run the progress spinner meanwhile logging in...
-		//TODO: ... right now it's disappearing immediately
+
+		//login
 		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
-		
+
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, loginProgress);
 	}
+
 
 	/**
 	 * Link to the screen to get a new password
@@ -66,14 +71,21 @@ public class LoginActivity extends Activity {
 		startActivity(i);
 		finish();
 	}
+	
 	/**
 	 * Link to register screen
 	 * @param view
 	 */
 	public void onClickRegister(View view) {
-		Intent i = new Intent(getApplicationContext(),
-				RegisterActivity.class);
+		Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
 		startActivity(i);
 		finish();
+	}
+
+
+	@Override
+	public TextView getErrorArea() {
+		// TODO Auto-generated method stub
+		return loginErrorMsg;
 	}
 }

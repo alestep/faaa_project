@@ -1,17 +1,29 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.wecharades.R;
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.RegisterPresenter;
+import com.parse.ParseUser;
 
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends GenericActivity {
+
+
+	private final String TAG = "RegisterActivity";
+	private ParseUser user;
+
+	Button btnRegister;
+	Button btnLinkToLogin;
 	EditText inputNickname;
 	EditText inputEmail;
 	EditText inputPassword;
@@ -19,7 +31,7 @@ public class RegisterActivity extends Activity {
 	TextView registerErrorMsg;
 	ProgressBar registerProgress;
 	View myView;
-	RegisterPresenter presenter; //TODO: Presenter presenter = new RegisterPresenter(...) ???
+	RegisterPresenter presenter;
 
 
 	@Override
@@ -28,6 +40,8 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.register);
 		//initializing the presenter
 		presenter = new RegisterPresenter(this);
+
+
 
 		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
 		presenter.initialize();
@@ -44,6 +58,7 @@ public class RegisterActivity extends Activity {
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		presenter.setProgressSpinnerInvisible(registerProgress);
 
+
 	}
 
 	/**
@@ -52,15 +67,20 @@ public class RegisterActivity extends Activity {
 	 */
 	public void onClickRegister(View view) {
 
+		//TODO: progress spinners doesn't work yet!
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, registerProgress);
-		//TODO: make a thread or something here to be able to run the progress spinner meanwhile logging in...
-		//TODO: ... right now it's disappearing immediately
+
+
 		presenter.registerUser(
 				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString());
+
+		// TODO fix error msg
+
+
 		//Hide the progress spinner
 		presenter.hideProgressSpinner(myView, registerProgress);
 	}
@@ -74,5 +94,11 @@ public class RegisterActivity extends Activity {
 		startActivity(i);
 		// Close Registration View
 		finish();
+	}
+
+	@Override
+	public TextView getErrorArea() {
+		// TODO Auto-generated method stub
+		return registerErrorMsg;
 	}
 }

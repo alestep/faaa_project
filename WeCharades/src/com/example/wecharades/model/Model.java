@@ -58,6 +58,23 @@ public class Model {
 	}
 	
 	/**
+	 * Return an ArrayList with current games
+	 * @return - an arraylist containing games
+	 */
+	public ArrayList<Game> getGames(){
+		return new ArrayList<Game>(gameList.keySet());
+	}
+	
+	/**
+	 * Removes a game form the model
+	 * @param game - the game to be deleted
+	 * @return - true if the game was in the list, false otherwise
+	 */
+	public boolean removeGame(Game game){
+		return gameList.remove(game) != null;
+	}
+	
+	/**
 	 * Use to update a single turn of a game. This will add a turn if it does not exist,
 	 * 	as well as update its state if it is existant.
 	 * @param game - the game in question
@@ -82,6 +99,15 @@ public class Model {
 		for(Turn turn : turnList){
 			updateTurn(game, turn);
 		}
+	}
+	
+	/**
+	 * Get a list of turns for a game
+	 * @param game - the game
+	 * @return - an arraylist of turns
+	 */
+	public ArrayList<Turn> getTurns(Game game){
+		return gameList.get(game);
 	}
 	
 	//Players ---------------------------------------------------------------

@@ -1,23 +1,37 @@
 package com.example.wecharades.presenter;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
 
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.model.ErrorMessage;
+import com.example.wecharades.views.LoginActivity;
+import com.example.wecharades.views.StartScreen;
 
 public class LoginPresenter extends Presenter{
-	private Activity activity;
+	private LoginActivity activity;
 	public LoginPresenter(Activity activity) {
-		//TODO: not sure if this is correct...@anton
+		//TODO: implement some kind of if( activity instnaceof LoginActivity) function here, not sure how to do it right
 		super(activity);
-		this.activity = activity;
+		this.activity = (LoginActivity) activity;
 	}
-	//TODO: FIND A WAY TO SEND THE USER TO ANOTHER INTENT IF SUCCESSFUL OR FAIL!!!!
+
 	public void login(String username, String password){
-			try {
-				Database.loginPlayer(username, password);
-			} catch (DatabaseException e) {
-				//TODO: better error managing
-				showToast(activity.getApplicationContext(), e.getMessage());
+
+		//TODO: couldn't find a better solution at this point - remove this comment if it's "good enough"
+		boolean loginSucceeded = false;
+		try {
+			Database.loginPlayer(username, password);
+			loginSucceeded = true;
+		} catch (DatabaseException e) {
+			activity.showErrorMessage(e.prettyPrint());
+		} finally {
+			if(loginSucceeded) {
+				Intent i = new Intent(activity.getApplicationContext(), StartScreen.class);
+				activity.startActivity(i);
+				activity.finish();
 			}
+		}
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.example.wecharades.model.DatabaseException;
@@ -19,6 +20,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -28,9 +30,12 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
+	//TODO Make Database an instance-class!
 	
 	//Helper methods -----------------------------------------------------------------------------------------//
+	//TODO These should be moved to a separate class!
 	
+
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals("Game")){
@@ -260,7 +265,7 @@ public class Database {
 		}
 		return parseTurn(turn);
 	}
-	
+
 	/**
 	 * Returns a list of all games associated with a game
 	 * @param game - the game to fetch
@@ -452,8 +457,17 @@ public class Database {
 		try {
 			ParseUser.logIn(username.toLowerCase(), password);
 		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1007, "Login failed");
+			Log.d("Database",e.getMessage() + ". Code: " + Integer.toString(e.getCode()));
+			//TODO: it doesn't store e.getCode() properly - check DatabaseException ...
+			throw new DatabaseException(e.getCode(), e.getMessage());
+		}
+	}
+
+	public static void resetPassword(String email) throws DatabaseException {
+		try {
+			ParseUser.requestPasswordReset(email);
+		} catch (ParseException e) {
+			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
 }
