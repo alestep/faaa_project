@@ -89,10 +89,11 @@ public class StartScreen extends Activity {
 		Player robert = new Player("3", "Robert");
 		Player marcus = new Player("4", "Marcus");
 
-		Game g1 = new Game(felix, alexander, alexander, 4, false, null);
-		Game g2 = new Game(felix, robert, felix, 4, false, null);
-		Game g3 = new Game(felix, marcus, marcus, 4, true, null);
-
+		//Fake games;
+		Game g1 = new Game("1",felix, alexander, alexander, 4, false, null);
+		Game g2 = new Game("2",felix, robert, felix, 4, false, null);
+		Game g3 = new Game("3",felix, marcus, marcus, 4, true, null);
+		
 		//Dessaa rader representerar ArrayList<Game>-listan som hämtas från databasen.
 		ArrayList<Game> gameList = new ArrayList<Game>();
 
@@ -229,6 +230,8 @@ public class StartScreen extends Activity {
 		Log.d("Clicked", "Account");
 		Button b = (Button) view;
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent (getApplicationContext(), Main.class);
+		startActivity(intent);
 	}
 	/*
         public void createGame(View view) throws ParseException, DatabaseException{
