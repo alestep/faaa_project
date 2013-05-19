@@ -62,17 +62,10 @@ public class GameDashboardPresenter extends Presenter {
 	
 	//TODO: test this!!!
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
-		HashMap<String, Button> map = new HashMap<String, Button>();
-		int i = 0;
-		
+		//This requires that the lists are equally long, which they always should be (not tested)
 		for(Turn turn : turnList) {
-			map.put(getButtonText(turn), buttonList.remove(i));
-			i++;
-		}
-		for (Map.Entry<String, Button> entry : map.entrySet()) {
-			String s = entry.getKey();
-			Button b = entry.getValue();
-			b.setText(s); //TODO: here you need to figure out if the buttons should be clickable ... maybe 
+			Button button = (Button) buttonList.remove(0);
+			updateButton(turn, button);
 		}
 	}
 
@@ -80,14 +73,16 @@ public class GameDashboardPresenter extends Presenter {
 	 * Makes a string based on if it's the current player's turn to answer, to record video or if the turn was already played
 	 * @param turn
 	 */
-	private String getButtonText(Turn turn) {
+	private void updateButton(Turn turn, Button button) {
+		//TODO: button.setId() or similar, probably based on turn.getId -ish...
+		//TODO: look up setTag() and getTag();
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
 			if(turn.getAnsPlayer().getParseId() == getCurrentUser().getObjectId()) {
-				//TODO disable button
 				string = turn.getAnsPlayerScore() + " points";
+				button.setEnabled(false);
 			} else {
-				//TODO disable button
+				button.setEnabled(false);
 				string = turn.getRecPlayerScore() + " points";
 			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
@@ -97,11 +92,10 @@ public class GameDashboardPresenter extends Presenter {
 				string = "Record Video";
 			}
 		} else {
-			//TODO disable button
+			button.setEnabled(false);
 			string = "Locked";
 		}
-		// activity.updateButton(string);
-		return string;
+		button.setText(string);
 	} 
 
 	private void generateTitle() {
