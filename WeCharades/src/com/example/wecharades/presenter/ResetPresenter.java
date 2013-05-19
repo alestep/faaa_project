@@ -21,7 +21,7 @@ public class ResetPresenter extends Presenter {
 			Database.resetPassword(email);
 			success = true;
 		} catch (DatabaseException e) {
-			activity.showErrorMessage(e.prettyPrint());
+			activity.showMessage(e.prettyPrint());
 		} finally {
 			if(success) {
 				activity.showSuccessMessage("You got mail!");

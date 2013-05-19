@@ -28,7 +28,7 @@ public class RegisterPresenter extends Presenter {
 			Database.registerPlayer(inputNickname, inputEmail, inputPassword, inputRepeatPassword);
 			loginSucceeded = true;
 		} catch (DatabaseException e) {
-			activity.showErrorMessage(e.prettyPrint());
+			activity.showMessage(e.prettyPrint());
 		} finally {
 			if(loginSucceeded) {
 				Intent i = new Intent(activity.getApplicationContext(), StartScreen.class);

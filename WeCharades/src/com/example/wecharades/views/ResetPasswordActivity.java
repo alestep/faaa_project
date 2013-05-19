@@ -90,7 +90,7 @@ public class ResetPasswordActivity extends GenericActivity {
 	}
 
 	@Override
-	public TextView getErrorArea() {
+	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return errorMsg;
 	}

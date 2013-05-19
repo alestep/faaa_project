@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.Parse;
+import com.parse.ParseUser;
 
 public abstract class Presenter {
 
@@ -107,5 +108,9 @@ public abstract class Presenter {
 		progressSpinner.setVisibility(8);
 		//disable buttons
 		enableOrDisableViews(view);
+	}
+	
+	public ParseUser getCurrentUser() {
+		return ParseUser.getCurrentUser();
 	}
 }

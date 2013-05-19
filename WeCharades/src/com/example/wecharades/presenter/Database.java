@@ -31,10 +31,10 @@ import com.parse.RequestPasswordResetCallback;
 @SuppressLint("DefaultLocale")
 public class Database {
 	//TODO Make Database an instance-class!
-	
+
 	//Helper methods -----------------------------------------------------------------------------------------//
 	//TODO These should be moved to a separate class!
-	
+
 
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game) throws DatabaseException{
@@ -225,7 +225,7 @@ public class Database {
 
 	//Turn -----------------------------------------------------------------------------------------//	
 
-	/*
+	/**
 	 * A PRIVATE method to create a new Turn. Should not be reachable outside this class!
 	 * @param game - the Game ParseObject
 	 * @param turnNumber - an integer representation of the turn number
@@ -442,7 +442,7 @@ public class Database {
 			user.signUp();
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(104, e.getMessage());
+			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
 
