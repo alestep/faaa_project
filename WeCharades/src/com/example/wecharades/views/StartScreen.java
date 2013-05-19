@@ -38,7 +38,7 @@ public class StartScreen extends Activity {
  
         // ListView Contents
         private ListView journalListView;
-       
+ 
         // String which represents the user's user name
         private String currentUser;
  
@@ -48,7 +48,7 @@ public class StartScreen extends Activity {
                 item.put(ITEM_CAPTION, caption);
                 return item;
         }
-       
+ 
         @Override
         public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -65,7 +65,7 @@ public class StartScreen extends Activity {
  
                 //Copy and Paste this into every onCreate method to be able to use Parse
                 Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
-               
+ 
                 //Check if the user is logged in or saved in the cache
                 //TODO: Fixa en central isLoggedIn()-funktion senare?
                 ParseUser user = ParseUser.getCurrentUser();
@@ -75,24 +75,25 @@ public class StartScreen extends Activity {
                         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(login);
                         finish();
-                } else {
+                }else {
                         //Sets the current user's user name
                         currentUser = ParseUser.getCurrentUser().getUsername();
                         TextView tv = (TextView) findViewById(R.id.textView1);
                         //TODO: Fixa så att det är natural username istället.
                         tv.setText(currentUser);
                 }
-               
+ 
                 // Följande rader representerar Game-objekt som finns i databasen.
                 Player felix = new Player("1", "Felix");
                 Player alexander = new Player("2", "Alexander");
                 Player robert = new Player("3", "Robert");
                 Player marcus = new Player("4", "Marcus");
-               
-                Game g1 = new Game(felix, alexander, alexander, 4, false, null);
-                Game g2 = new Game(felix, robert, felix, 4, false, null);
-                Game g3 = new Game(felix, marcus, marcus, 4, true, null);
  
+                //Fake games;
+                Game g1 = new Game("1",felix, alexander, alexander, 4, false, null);
+                Game g2 = new Game("2",felix, robert, felix, 4, false, null);
+                Game g3 = new Game("3",felix, marcus, marcus, 4, true, null);
+               
                 //Dessaa rader representerar ArrayList<Game>-listan som hämtas från databasen.
                 ArrayList<Game> gameList = new ArrayList<Game>();
  
@@ -112,7 +113,7 @@ public class StartScreen extends Activity {
                         GameAdapter yourTurnAdapter = new GameAdapter(this, yourTurnList);
                         adapter.addSection("Your turn", yourTurnAdapter);
                 }
-                               
+ 
                 if (opponentsTurnList!=null) {
                         GameAdapter opponentsTurnAdapter = new GameAdapter(this, opponentsTurnList);
                         adapter.addSection("Opponent's turn", opponentsTurnAdapter);
@@ -146,11 +147,11 @@ public class StartScreen extends Activity {
                 ArrayList<Game> yourTurnList = new ArrayList<Game>();
                 for (Game g : gameList){
                         if(g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
-                                yourTurnList.add(g);                   
+                                yourTurnList.add(g);                  
                 }
                 return yourTurnList;
         }
-       
+ 
         /**
          * Returns a list containing the Game-objects where it is NOT the current user's turn
          * @param gameList
@@ -164,8 +165,8 @@ public class StartScreen extends Activity {
                 }
                 return opponentsTurnList;
         }
-       
-       
+ 
+ 
         /**
          * Returns a list containing the Game-objects where games are finished
          * @param gameList
@@ -175,11 +176,11 @@ public class StartScreen extends Activity {
                 ArrayList<Game> finishedList = new ArrayList<Game>();
                 for (Game g : gameList){
                         if(g.isFinished())
-                                finishedList.add(g);                   
+                                finishedList.add(g);                  
                 }
                 return finishedList;
         }
-       
+ 
         /*
         private ArrayList<Item> getGameList() {
                 ArrayList<Item> items = new ArrayList<Item>();
@@ -193,7 +194,7 @@ public class StartScreen extends Activity {
  
                 return items;
         }
-        */
+         */
  
         /**
          * Logout and go back to login screen
@@ -229,10 +230,12 @@ public class StartScreen extends Activity {
                 Log.d("Clicked", "Account");
                 Button b = (Button) view;
                 Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent (getApplicationContext(), Main.class);
+                startActivity(intent);
         }
-/*
+        /*
         public void createGame(View view) throws ParseException, DatabaseException{
                 Database.createGame(ParseUser.getCurrentUser().getUsername(), "felix");
         }
-*/
+         */
 }
