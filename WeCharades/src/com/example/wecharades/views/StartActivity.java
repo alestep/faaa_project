@@ -21,6 +21,8 @@ import com.example.wecharades.GameAdapter;
 import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
+import com.example.wecharades.presenter.Database;
 import com.example.wecharades.presenter.StartPresenter;
 import com.parse.Parse;
 import com.parse.ParseUser;
@@ -149,8 +151,18 @@ public class StartActivity extends Activity {
          * @param view
          */
         public void onClickNewGame(View view) {
-                Log.d("Clicked", "New Game");
                 Button b = (Button) view;
+//                try {
+//                Player p1 = Database.getPlayer(currentUser);
+//                Player p2 = Database.getPlayer("adam");
+//                Database.createGame(p1, p2);
+//                Database.createGame(p2, p1);
+//                
+//                }catch (Exception e) {
+//                	
+//                }
+                
+                
                 //presenter.showToast(getApplicationContext(), b.getText().toString());
                 Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
                 Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();

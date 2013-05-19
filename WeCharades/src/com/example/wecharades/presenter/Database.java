@@ -51,8 +51,8 @@ public class Database {
 	private static Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals("Game")){
 			//Save player locally to avoid multiple fetches. //TODO have a local list of players??
-			Player p1 = getPlayer(game.getString("player1")); //TODO these are high coupling - cannot move easily
-			Player p2 = getPlayer(game.getString("player2"));
+			Player p1 = getPlayerById(game.getString("player1")); //TODO these are high coupling - cannot move easily
+			Player p2 = getPlayerById(game.getString("player2"));
 			Player current = (game.getString("currentPlayer").equals(p1.getName().toLowerCase())) ? p1 : p2 ;
 			return new Game(
 					game.getObjectId(),
@@ -76,9 +76,9 @@ public class Database {
 					turn.getInt("state"), 
 					turn.getString("word"), 
 					turn.getString("videoLink"), 
-					getPlayer(turn.getString("recPlayer")), 
+					getPlayerById(turn.getString("recPlayer")), 
 					turn.getInt("recPlayerScore"), 
-					getPlayer(turn.getString("ansPlayer")), 
+					getPlayerById(turn.getString("ansPlayer")), 
 					turn.getInt("ansPlayerScore") 
 					);
 		} else{
@@ -100,7 +100,7 @@ public class Database {
 
 	private static Invitation parseInvitation(ParseObject invitation) throws DatabaseException{
 		if(invitation.getClassName().equals("Invite")){
-			return new Invitation(getPlayer(invitation.getString("inviter")), getPlayer(invitation.getString("invitee")), invitation.getCreatedAt());
+			return new Invitation(getPlayerById(invitation.getString("inviter")), getPlayerById(invitation.getString("invitee")), invitation.getCreatedAt());
 		} else{
 			return null;
 		}
@@ -339,6 +339,18 @@ public class Database {
 		ParseObject dbPlayer;
 		try {
 			dbPlayer = query.getFirst();
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch user");
+		}
+		return parsePlayer(dbPlayer);
+	}
+	
+	public static Player getPlayerById(String parseId) throws DatabaseException {
+		ParseQuery query = ParseUser.getQuery();
+		ParseObject dbPlayer;
+		try {
+			dbPlayer = query.get(parseId);
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1010,"Failed to fetch user");
