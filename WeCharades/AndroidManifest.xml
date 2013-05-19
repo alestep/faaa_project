@@ -127,9 +127,9 @@
                 android:value=".Main" />
         </activity>
 
-        <!-- PlayStreamedVideo Activity -->
+        <!-- GuessCharadeActivity Activity -->
         <activity
-            android:name=".views.PlayStreamedVideo"
+            android:name=".views.GuessCharadeActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" />
     </application>
