@@ -23,6 +23,7 @@ public abstract class Presenter {
 		this.activity = activity;
 	}
 	
+	//TODO - this should be moved to the database - we should also make the database an object (possibly singleton)!
 	public void initialize(){
 		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}

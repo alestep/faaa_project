@@ -28,8 +28,10 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
+	//TODO Make Database an instance-class!
 	
 	//Helper methods -----------------------------------------------------------------------------------------//
+	//TODO These should be moved to a separate class!
 	
 	//A private method to parse a ParseObject to a game
 	private static Game parseGame(ParseObject game) throws DatabaseException{
