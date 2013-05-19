@@ -2,9 +2,6 @@ package com.example.wecharades.views;
 
 import java.util.List;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.layout;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +10,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.wecharades.R;
 /**
  * 
  * @author Adam Lewestam
@@ -21,7 +20,7 @@ import android.widget.Toast;
 public class CaptureVideo extends Activity {
 
 	final static int REQUEST_VIDEO_CAPTURED = 1;
-	static Uri uriVideo = null;
+	public static Uri uriVideo = null;
 	private Intent intentCamera;
 
 	/** Called when the activity is first created. */
@@ -45,7 +44,7 @@ public class CaptureVideo extends Activity {
 				uriVideo = data.getData();
 				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
 				//finishActivity(REQUEST_VIDEO_CAPTURED);
-				Intent intentShowVideo = new Intent(CaptureVideo.this, ShowVideo.class);
+				Intent intentShowVideo = new Intent(CaptureVideo.this, VideoUploadActivity.class);
 				startActivity(intentShowVideo);
 			}
 		}

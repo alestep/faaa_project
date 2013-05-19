@@ -99,9 +99,9 @@
         <!-- Not default anymore... -->
         <activity android:name=".views.Main" />
 
-        <!-- ShowVideo Activity -->
+        <!-- VideoUploadActivity -->
         <activity
-            android:name=".views.ShowVideo"
+            android:name=".views.VideoUploadActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" />
 
