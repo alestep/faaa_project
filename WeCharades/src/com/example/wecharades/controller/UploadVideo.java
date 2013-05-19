@@ -11,6 +11,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.wecharades.model.Game;
+/**
+ * TODO: Få en instans av Game när denna är klass är klaar.
+ */
 public class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 
 	private final String TAG = "UploadVideo";
@@ -19,12 +23,15 @@ public class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 	Context mContext;
 	private String SAVE_PATH;
 	private String fileName;
+	//private Game currentGame;
+	private String GAME_DIR;
 
 	public UploadVideo(Context context, String path, String fileName){
 		mContext = context;
 		SAVE_PATH = path;
 		this.fileName = fileName;
 		mDialog = new ProgressDialog(mContext);
+		//currentGame = game;
 	}
 	@Override
 	protected void onPreExecute(){
@@ -58,7 +65,6 @@ public class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 			}
 		return null;
 	}
-
 
 	@Override
 	protected void onPostExecute(Boolean result){

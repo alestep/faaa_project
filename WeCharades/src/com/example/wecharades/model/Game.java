@@ -27,7 +27,8 @@ public class Game {
 	 * @param finished - whether the game is finished
 	 * @param lastPlayed - the date of last play
 	 */
-	public Game(Player p1, Player p2, Player currentPlayer, int turn, boolean finished, Date lastPlayed){
+	public Game(String gameId, Player p1, Player p2, Player currentPlayer, int turn, boolean finished, Date lastPlayed){
+		this.gameId = gameId;
 		this.playerId1 = p1;
 		this.playerId2 = p2;
 		this.currentPlayer = currentPlayer;
