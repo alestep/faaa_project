@@ -66,6 +66,7 @@ public class Main extends Activity implements OnClickListener{
 		return true;
 	}
 
+
 	/**
 	 * Called when user clicks gameview-button
 	 * @throws ParseException 

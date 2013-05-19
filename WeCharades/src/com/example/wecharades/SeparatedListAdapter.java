@@ -9,19 +9,18 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
  
-public class SeparatedListAdapter extends BaseAdapter
-    {
+public class SeparatedListAdapter extends BaseAdapter 
+	{
         public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();
         public final ArrayAdapter<String> headers;
         public final static int TYPE_SECTION_HEADER = 0;
  
-        public SeparatedListAdapter(Context context)
-            {
+        public SeparatedListAdapter(Context context) 
+        	{
                 headers = new ArrayAdapter<String>(context, R.layout.list_header);
             }
  
-        public void addSection(String section, Adapter adapter)
-            {
+        public void addSection(String section, Adapter adapter) {
                 this.headers.add(section);
                 this.sections.put(section, adapter);
             }

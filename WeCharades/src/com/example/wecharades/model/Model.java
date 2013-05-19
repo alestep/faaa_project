@@ -16,8 +16,11 @@ public class Model {
 	
 	//Singleton
 	private static Model singleModel;
+	
 	private Model(){
+		//TODO initiate the model: load from memory?
 	}
+
 	public Model getModelInstance(){
 		if (singleModel == null){
 			singleModel = new Model();
@@ -25,6 +28,8 @@ public class Model {
 		return singleModel;
 	}
 
+	//Games ---------------------------------------------------------------
+	
 	/**
 	 * Updates a list of games. If a game is not existant, it will be added to the list. 
 	 * @param games
@@ -50,6 +55,23 @@ public class Model {
 			gameList.put(game, new ArrayList<Turn>(7));
 		}
 
+	}
+	
+	/**
+	 * Return an ArrayList with current games
+	 * @return - an arraylist containing games
+	 */
+	public ArrayList<Game> getGames(){
+		return new ArrayList<Game>(gameList.keySet());
+	}
+	
+	/**
+	 * Removes a game form the model
+	 * @param game - the game to be deleted
+	 * @return - true if the game was in the list, false otherwise
+	 */
+	public boolean removeGame(Game game){
+		return gameList.remove(game) != null;
 	}
 	
 	/**
@@ -79,6 +101,16 @@ public class Model {
 		}
 	}
 	
+	/**
+	 * Get a list of turns for a game
+	 * @param game - the game
+	 * @return - an arraylist of turns
+	 */
+	public ArrayList<Turn> getTurns(Game game){
+		return gameList.get(game);
+	}
+	
+	//Players ---------------------------------------------------------------
 	//TODO Maybe we have no need for these...
 	/**
 	 * Puts a player in stored players 
@@ -100,7 +132,7 @@ public class Model {
 		for(Player player : storedPlayers){
 			if (player.getName().equalsIgnoreCase(username)){
 				retPlayer = player;
-				break; // we only have one instace in the array
+				break; // we only have one instance in the array
 			}
 		}
 		return retPlayer;
@@ -114,4 +146,5 @@ public class Model {
 	public boolean playerIsCached(Player player){
 		return storedPlayers.contains(player);
 	}
+	
 }

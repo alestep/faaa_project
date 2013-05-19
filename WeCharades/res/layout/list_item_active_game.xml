@@ -11,7 +11,7 @@
         android:id="@+id/list_item_entry_drawable"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:src="@android:drawable/ic_menu_preferences"
+        android:src="@drawable/ic_launcher"
         android:paddingLeft="9dp"/>
     
     <RelativeLayout
@@ -23,7 +23,7 @@
         android:layout_marginBottom="6dip"
         android:layout_weight="1">
     
-        <TextView android:id="@+id/list_item_entry_title"
+        <TextView android:id="@+id/opponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -31,11 +31,11 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal" />
             
-        <TextView android:id="@+id/list_item_entry_summary"
+        <TextView android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/list_item_entry_title"
-            android:layout_alignLeft="@id/list_item_entry_title"
+            android:layout_below="@id/opponent"
+            android:layout_alignLeft="@id/opponent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:singleLine="true"
             android:textColor="?android:attr/textColorSecondary" />

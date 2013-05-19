@@ -3,11 +3,11 @@ package com.example.wecharades.presenter;
 import com.example.wecharades.model.DatabaseException;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
 import android.app.Activity;
+	
 
 public class ResetPresenter extends Presenter {
-	
+
 	private Activity activity;
 	public ResetPresenter(Activity activity) {
 		super(activity);
