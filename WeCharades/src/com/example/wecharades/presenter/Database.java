@@ -57,6 +57,7 @@ public class Database {
 			Player p2 = getPlayer(game.getString("player2"));
 			Player current = (game.getString("currentPlayer").equals(p1.getParseId())) ? p1 : p2 ;
 			return new Game(
+					game.getObjectId(),
 					p1,
 					p2,
 					current,

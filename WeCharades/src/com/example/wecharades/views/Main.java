@@ -1,15 +1,5 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-import com.example.wecharades.R.menu;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.presenter.Database;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +9,13 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.example.wecharades.R;
+import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.presenter.CaptureVideo;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class Main extends Activity implements OnClickListener{
 
@@ -55,7 +52,7 @@ public class Main extends Activity implements OnClickListener{
 		}
 		if(v.getId()==R.id.button2){
 			Log.d("TAG","tryckt");
-			Intent intentTwo = new Intent(Main.this, PlayStreamedVideo.class);
+			Intent intentTwo = new Intent(Main.this, GuessCharadeActivity.class);
 			startActivity(intentTwo);
 		}
 

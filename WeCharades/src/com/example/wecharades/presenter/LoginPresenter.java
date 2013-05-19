@@ -2,10 +2,7 @@ package com.example.wecharades.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.View;
-
 import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.ErrorMessage;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartScreen;
 

@@ -23,7 +23,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-public class ResetPasswordActivity extends Activity {
+public class ResetPasswordActivity extends GenericActivity {
 
 	EditText emailInput;
 	TextView errorMsg;
@@ -53,22 +53,18 @@ public class ResetPasswordActivity extends Activity {
 	 * The user should enter it's e-mail to receive a new password
 	 * @param arg0
 	 */
-	public void onClickResetPassword(View arg0) {
+	public void onClickResetPassword(View view) {
 		//TODO: progress spinner not working :(
-		
+
 		//Showing the progress spinner
 		presenter.showProgressSpinner(myView, resetProgress);
 
-		try {
-			presenter.resetPassword(emailInput.getText().toString());
-		} catch (DatabaseException e) {
-			errorMsg.setText(presenter.generateErrorMessage(e.getCode()));
-		}
-		
+		presenter.resetPassword(emailInput.getText().toString());
+
 		//Hiding the progress spinner
 		presenter.hideProgressSpinner(myView, resetProgress);
-		
-		
+
+
 	}
 
 	/**
@@ -91,5 +87,16 @@ public class ResetPasswordActivity extends Activity {
 				LoginActivity.class);
 		startActivity(i);
 		finish();
+	}
+
+	@Override
+	public TextView getErrorArea() {
+		// TODO Auto-generated method stub
+		return errorMsg;
+	}
+
+	public void showSuccessMessage(String message) {
+		errorMsg.setTextColor(Color.parseColor("#458B00"));
+		errorMsg.setText(message);
 	}
 }

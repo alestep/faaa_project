@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.wecharades.model.ErrorMessage;
 import com.parse.Parse;
 
 public abstract class Presenter {
@@ -109,9 +107,5 @@ public abstract class Presenter {
 		progressSpinner.setVisibility(8);
 		//disable buttons
 		enableOrDisableViews(view);
-	}
-	
-	public String generateErrorMessage(int code) {
-		return ErrorMessage.generateErrorMessage(code);
 	}
 }

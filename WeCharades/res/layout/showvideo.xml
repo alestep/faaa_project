@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/satisfiedText"
         android:layout_below="@id/satisfiedText"
+        android:onClick="onClickNo"
         android:text="No, re-record" />
 
     <Button
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/satisfiedText"
         android:layout_below="@+id/satisfiedText"
+        android:onClick="onClickYes"
         android:text="Yes" />
 
     <VideoView
