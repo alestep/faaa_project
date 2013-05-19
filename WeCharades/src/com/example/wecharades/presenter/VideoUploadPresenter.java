@@ -14,7 +14,7 @@ import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.example.wecharades.views.StartScreen;
+import com.example.wecharades.views.StartActivity;
 import com.example.wecharades.views.VideoUploadActivity;
 
 public class VideoUploadPresenter extends Presenter {
@@ -114,7 +114,7 @@ public class VideoUploadPresenter extends Presenter {
 				mDialog.dismiss();
 				
 				//Send to startscreen on success
-				Intent intent = new Intent(activity.getApplicationContext(), StartScreen.class);
+				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
 				
