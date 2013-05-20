@@ -96,7 +96,7 @@ public class Model {
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void updateTurns(Game game, ArrayList<Turn> turnList) throws NoSuchElementException{
-		for(Turn turn : turnList){
+		for(Turn turn : turnList) {
 			updateTurn(game, turn);
 		}
 	}

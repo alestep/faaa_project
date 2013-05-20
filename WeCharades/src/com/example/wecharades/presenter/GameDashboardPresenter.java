@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -23,15 +24,17 @@ public class GameDashboardPresenter extends Presenter {
 	public void createDashboard(Game game, TableLayout table) {
 		this.game = game;
 		generateTitle();
-
-		//TODO: This needs to be tested: look at GameDashboardActivity!
-		//ArrayList<Turn> turnList = getTurnList();
-		//ArrayList<Button> buttonList = getAllButtons(table);
-		//updateButtons(turnList, buttonList);
+		ArrayList<Turn> turnList = getTurnList();
+		ArrayList<Button> buttonList = getAllButtons(table);
+		updateButtons(turnList, buttonList);
 	}
 
+	/**
+	 * Returns an ArrayList with Turns
+	 * @return
+	 */
 	private ArrayList<Turn> getTurnList() {
-		ArrayList<Turn> turnList = new ArrayList<Turn>();
+		ArrayList<Turn> turnList = null;
 		try {
 			turnList = Database.getTurns(game);
 		} catch (DatabaseException e) {
@@ -40,7 +43,7 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		return turnList;
 	}
-	
+
 	/**
 	 * This method runs through all buttons in the current table
 	 * @param table
@@ -57,13 +60,17 @@ public class GameDashboardPresenter extends Presenter {
 		return buttonList;
 	}
 
-	
-	//TODO: test this!!!
+
+	/**
+	 * Update buttons with relevant information form the Turn object
+	 * @param turnList
+	 * @param buttonList
+	 */
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
-		//This requires that the lists are equally long, which they always should be (not tested)
+		//This requires that the lists are equally long, which they always should be
 		for(Turn turn : turnList) {
 			Button button = (Button) buttonList.remove(0);
-			updateButton(turn, button);
+			updateButtonInformation(turn, button);
 		}
 	}
 
@@ -71,20 +78,22 @@ public class GameDashboardPresenter extends Presenter {
 	 * Makes a string based on if it's the current player's turn to answer, to record video or if the turn was already played
 	 * @param turn
 	 */
-	private void updateButton(Turn turn, Button button) {
+	private void updateButtonInformation(Turn turn, Button button) {
 		//TODO: button.setId() or similar, probably based on turn.getId -ish...
-		//TODO: look up setTag() and getTag();
+		//TODO: look up setTag() and getTag(); 
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
-			if(turn.getAnsPlayer().getParseId() == getCurrentUser().getObjectId()) {
+			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
 				string = turn.getAnsPlayerScore() + " points";
 				button.setEnabled(false);
-			} else {
+			} else if (turn.getRecPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
 				button.setEnabled(false);
 				string = turn.getRecPlayerScore() + " points";
+			} else {
+				string = "error";
 			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
-			if(turn.getAnsPlayer().getParseId() == getCurrentUser().getObjectId()) {
+			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
 				string = "Guess word!";
 			} else {
 				string = "Record Video";
@@ -95,12 +104,12 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		button.setText(string);
 	} 
-
+ 
 	private void generateTitle() {
 		String opponent;
-		if(getCurrentUser().getObjectId() == game.getPlayerId1().getParseId()) {
+		if(getCurrentUser().getObjectId().equals(game.getPlayerId1().getParseId())) {
 			opponent = game.getPlayerId2().getName();
-		} else if (getCurrentUser().getObjectId() == game.getPlayerId2().getParseId()){
+		} else if (getCurrentUser().getObjectId().equals(game.getPlayerId2().getParseId())){
 			opponent = game.getPlayerId1().getName();
 		} else {
 			opponent = "unknown";

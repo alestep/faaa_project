@@ -164,7 +164,7 @@ public class Database {
 				recP = player1.getParseId();
 				ansP = player2.getParseId();
 			}
-			createTurn(newGame, i, wordList.pop(), recP, ansP);
+			parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
 		}
 		try {
 			ParseObject.saveAll(parseList);
@@ -254,7 +254,7 @@ public class Database {
 	 * @param recPlayer - the parseId of the player that should record
 	 * @param ansPlayer - the parseId of the player that should answer
 	 */
-	private static void createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer){
+	private static ParseObject createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer) throws DatabaseException {
 		ParseObject newTurn = new ParseObject("Turn");
 		newTurn.put("game",game);
 		newTurn.put("turn",turnNumber);
@@ -265,6 +265,7 @@ public class Database {
 		newTurn.put("recPlayerScore",0);
 		newTurn.put("ansPlayer",ansPlayer);
 		newTurn.put("ansPlayerScore",0);
+		return newTurn;
 	}
 
 	/**
@@ -296,7 +297,8 @@ public class Database {
 	 */
 	public static ArrayList<Turn> getTurns(Game game) throws DatabaseException{
 		ParseQuery query = new ParseQuery("Turn");
-		query.whereEqualTo("game", game.getGameId());
+		query.whereEqualTo("game", getParseObject(game.getGameId()));
+		query.addAscendingOrder("turn");
 		List<ParseObject> dbList = null;
 		try{
 			dbList = query.find();
@@ -309,6 +311,20 @@ public class Database {
 			turnList.add(parseTurn(turn));
 		}
 		return turnList;
+	}
+
+	private static ParseObject getParseObject(String gameId) throws DatabaseException {
+		ParseObject object = null;
+		ParseQuery query = new ParseQuery("Game");
+		try {
+			object = query.get(gameId);
+		} catch(ParseException e){
+			Log.d("Database", e.getMessage());
+			//TODO: fix error message
+			throw new DatabaseException(1112, "Failed to get ParseObject");
+		}
+		
+		return object;
 	}
 
 	/**
