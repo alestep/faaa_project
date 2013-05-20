@@ -16,19 +16,17 @@ import com.parse.Parse;
 import com.parse.ParseUser;
 
 public abstract class Presenter {
-
+	
+	private Database db;
+	private Activity activity;
+	
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	private Activity activity;
 	public Presenter(Activity activity) {
 		this.activity = activity;
-	}
-	
-	//TODO - this should be moved to the database - we should also make the database an object (possibly singleton)!
-	public void initialize(){
-		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		this.db = Database.getDatabaseConnection(activity);
 	}
 	
 	/**
