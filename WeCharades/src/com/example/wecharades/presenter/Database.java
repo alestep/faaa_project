@@ -52,7 +52,7 @@ public class Database {
 							TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
 							PLAYER_USERNAME			= "username",
 							PLAYER_USERNAME_NATURAL	= "naturalUsername",
-							PLAYER_GLOBALSCORE		= "globalscore",
+							PLAYER_GLOBALSCORE		= "globalScore",
 							RANDOMQUEUE				= "RandomQueue",
 							RANDOMQUEUE_PLAYER		= "player",
 							INVITE 					= "invite",
