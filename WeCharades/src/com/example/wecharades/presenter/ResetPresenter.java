@@ -2,9 +2,11 @@ package com.example.wecharades.presenter;
 
 
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 	
 
 public class ResetPresenter extends Presenter {
@@ -21,11 +23,19 @@ public class ResetPresenter extends Presenter {
 			Database.resetPassword(email);
 			success = true;
 		} catch (DatabaseException e) {
-			activity.showErrorMessage(e.prettyPrint());
+			activity.showMessage(e.prettyPrint());
 		} finally {
 			if(success) {
 				activity.showSuccessMessage("You got mail!");
 			}
 		}
+	}
+
+	public void goToRegisterActivity() {
+		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(i);
+		// Close Registration View
+		activity.finish();
 	}	
 }

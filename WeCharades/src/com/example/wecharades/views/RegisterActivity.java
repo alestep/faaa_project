@@ -77,14 +77,11 @@ public class RegisterActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickLogin(View view) {
-		Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-		startActivity(i);
-		// Close Registration View
-		finish();
+		presenter.goToLoginActivity();
 	}
 
 	@Override
-	public TextView getErrorArea() {
+	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return registerErrorMsg;
 	}

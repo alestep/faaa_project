@@ -72,10 +72,7 @@ public class ResetPasswordActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickLoginScreen(View view) {
-		Intent i = new Intent(getApplicationContext(),
-				LoginActivity.class);
-		startActivity(i);
-		finish();
+		presenter.goToLoginActivity();
 	}
 
 	/**
@@ -83,14 +80,11 @@ public class ResetPasswordActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickRegistrationScreen(View view) {
-		Intent i = new Intent(getApplicationContext(),
-				LoginActivity.class);
-		startActivity(i);
-		finish();
+		presenter.goToRegisterActivity();
 	}
 
 	@Override
-	public TextView getErrorArea() {
+	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return errorMsg;
 	}

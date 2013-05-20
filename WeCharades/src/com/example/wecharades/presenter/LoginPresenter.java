@@ -22,7 +22,7 @@ public class LoginPresenter extends Presenter{
 			Database.loginPlayer(username, password);
 			loginSucceeded = true;
 		} catch (DatabaseException e) {
-			activity.showErrorMessage(e.prettyPrint());
+			activity.showMessage(e.prettyPrint());
 		} finally {
 			if(loginSucceeded) {
 				Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);

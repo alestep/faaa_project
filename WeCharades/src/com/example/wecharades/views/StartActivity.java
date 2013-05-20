@@ -127,7 +127,7 @@ public class StartActivity extends Activity {
                 Log.d("Clicked", "Account");
                 Button b = (Button) view;
                 Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent (getApplicationContext(), Main.class);
+                Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
                 startActivity(intent);
         }
 

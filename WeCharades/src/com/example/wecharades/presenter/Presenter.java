@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import com.example.wecharades.views.LoginActivity;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
@@ -29,12 +32,13 @@ public abstract class Presenter {
 	}
 	
 	/**
-	 * Enables access to username
+	 * Enables access to username ------------------- use getCurrentuser.getUsername() instead! @alexander 
 	 * @return the current user's username
 	 */
+	/*
 	public String getCurrentUser(){
 		return ParseUser.getCurrentUser().getUsername();
-	}
+	}*/
 	
 	/**
 	 * Enable or disable all clickable objects in view
@@ -116,5 +120,21 @@ public abstract class Presenter {
 		progressSpinner.setVisibility(8);
 		//disable buttons
 		enableOrDisableViews(view);
+	}
+	
+	public ParseUser getCurrentUser() {
+		return ParseUser.getCurrentUser();
+	}
+	
+	/**
+	 * Go to the login screen
+	 */
+	public void goToLoginActivity() {
+		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(i);
+		// Close Registration View
+		activity.finish();
+		
 	}
 }
