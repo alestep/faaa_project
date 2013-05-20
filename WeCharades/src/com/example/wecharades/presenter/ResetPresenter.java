@@ -20,7 +20,7 @@ public class ResetPresenter extends Presenter {
 	public void resetPassword(String email) {
 		boolean success = false;
 		try {
-			Database.resetPassword(email);
+			db.resetPassword(email);
 			success = true;
 		} catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());

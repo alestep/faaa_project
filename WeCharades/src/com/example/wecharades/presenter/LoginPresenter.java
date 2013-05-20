@@ -19,7 +19,7 @@ public class LoginPresenter extends Presenter{
 		//TODO: couldn't find a better solution at this point - remove this comment if it's "good enough"
 		boolean loginSucceeded = false;
 		try {
-			Database.loginPlayer(username, password);
+			db.loginPlayer(username, password);
 			loginSucceeded = true;
 		} catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());

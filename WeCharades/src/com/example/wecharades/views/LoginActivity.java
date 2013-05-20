@@ -29,9 +29,6 @@ public class LoginActivity extends GenericActivity {
 		//initializing the presenter
 		presenter = new LoginPresenter(this);
 
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		presenter.initialize();
-
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		// Importing all assets like buttons, text fields

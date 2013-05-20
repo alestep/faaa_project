@@ -2,23 +2,17 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.wecharades.GameAdapter;
-import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
-import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseUser;
 
@@ -49,7 +43,8 @@ public class StartPresenter extends Presenter {
 	 */
 	private void parseGameLists() {
 		try {
-			ArrayList<Game> gameList = Database.getGames(Database.getPlayer(getCurrentUser().getUsername()));
+			//TODO This is ugly and should not be here later
+			ArrayList<Game> gameList = db.getGames(db.getPlayerById(getCurrentUser().getObjectId()));
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		putInList("Finished games", g);
@@ -96,6 +91,8 @@ public class StartPresenter extends Presenter {
 	    }else {
 	    	//Sets the current user's user name
 	    	((TextView) displayUser).setText(currentUser.get("naturalUsername").toString());
+	    	//TODO Temp fix to disable errors
+	    	//((TextView) displayUser).setText(currentUser.get("naturalUsername"));
 	    }
 		
 	}
