@@ -21,7 +21,7 @@ public class GameDashboardActivity extends GenericActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen);
 		//TODO it doesn't work with presenter.initialize() :S No clue why!
-		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R"); //TEMP
+		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 		//presenter.initialize();
 		presenter = new GameDashboardPresenter(this);
 		title = (TextView) findViewById(R.id.titleText);
