@@ -320,10 +320,22 @@ public class Database {
 		return DatabaseConverter.parsePlayer(dbPlayer);
 	}
 
+	/**
+	 * 
+	 * @param parseId
+	 * @return
+	 * @throws DatabaseException
+	 */
 	public Player getPlayerById(String parseId) throws DatabaseException {
 		return DatabaseConverter.parsePlayer(getPlayerObject(parseId));
 	}
 	
+	/**
+	 * 
+	 * @param parseId
+	 * @return
+	 * @throws DatabaseException
+	 */
 	private ParseObject getPlayerObject(String parseId) throws DatabaseException{
 		//TODO We should try and fetch this from the model first!
 		try {
@@ -332,6 +344,28 @@ public class Database {
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1010,"Failed to fetch user");
 		}
+	}
+	
+	/**
+	 * Get a list of player-instances containing all players 
+	 * @param searchString 
+	 * @return List containing all players
+	 * @throws DatabaseException
+	 */
+	public static ArrayList<Player> getPlayers() throws DatabaseException {
+		ArrayList<Player> players = new ArrayList<Player>();
+		ParseQuery query = ParseUser.getQuery();
+		
+		try {
+			List<ParseObject> dbResult = query.find();
+			for(ParseObject player : dbResult) {
+				players.add(DatabaseConverter.parsePlayer(player));
+			}
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch players");
+		}
+		return players;
 	}
 
 	/**
@@ -471,4 +505,5 @@ public class Database {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
+	
 }

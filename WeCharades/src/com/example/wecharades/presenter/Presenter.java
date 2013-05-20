@@ -15,6 +15,11 @@ import com.example.wecharades.views.LoginActivity;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public abstract class Presenter {
 	
 	protected Database db;

@@ -28,9 +28,13 @@ import com.example.wecharades.presenter.StartPresenter;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class StartActivity extends Activity {
-
+	
 	protected static final String TAG = "StartScreen";
 	public final static String ITEM_TITLE = "title";
 	public final static String ITEM_CAPTION = "caption";
@@ -56,7 +60,7 @@ public class StartActivity extends Activity {
 		presenter = new StartPresenter (this);
 		
 		//TODO This should not be here - the view should not be the store data
-		displayUser = (TextView) findViewById(R.id.displayUser); 
+		displayUser = (TextView) findViewById(R.id.user_display); 
 		
 		//TODO this should not be done here either
 		//Check if the user is logged in or saved in the cache
@@ -66,23 +70,24 @@ public class StartActivity extends Activity {
 		adapter = new SeparatedListAdapter(this);
 
 		// Get a reference to the ListView holder
-		gameListView = (ListView) this.findViewById(R.id.list_journal);
-
+        gameListView = (ListView) this.findViewById(R.id.game_list);
+		
+		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-
 		gameListView.addHeaderView(header);
 
 		// Set the adapter on the ListView holder
 		gameListView.setAdapter(presenter.setAdapter(adapter));
+        // Listen for Click events
+        gameListView.setOnItemClickListener(new OnItemClickListener() {
 
-		// Listen for Click events
-		gameListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-				Game item = (Game) adapter.getItem(position-1);
-				Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
-			}
-		});
+        	@Override
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+        		Game item = (Game) adapter.getItem(position-1);
+        		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
+        		intent.putExtra("GameId", item);
+            }
+        });
 	}
 
 	public void onStart(Bundle savedStateBundle){
@@ -135,5 +140,4 @@ public class StartActivity extends Activity {
 		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
 		startActivity(intent);
 	}
-
 }

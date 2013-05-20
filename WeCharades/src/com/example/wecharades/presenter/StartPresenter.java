@@ -16,12 +16,21 @@ import com.example.wecharades.model.Game;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseUser;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class StartPresenter extends Presenter {
 	
 	private static final String TAG = "Start Presenter";
 	private StartActivity activity;
 	private Map<String, ArrayList<Game>> separatedList;
 	
+	/**
+	 * 
+	 * @param activity
+	 */
 	public StartPresenter(Activity activity) {
 		super(activity);
 		this.activity = (StartActivity) activity;
@@ -55,6 +64,11 @@ public class StartPresenter extends Presenter {
 		separatedList.get(s).add(g);
 	}
 
+	/**
+	 * 
+	 * @param adapter
+	 * @return
+	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
 		parseGameLists();
 		// TODO: Sortera listan
@@ -65,6 +79,10 @@ public class StartPresenter extends Presenter {
 		return adapter;
 	}
 	
+	/**
+	 * 
+	 * @param displayUser
+	 */
 	public void checkLogin(View displayUser) {
 		ParseUser currentUser = getCurrentUser();
 	    if(currentUser == null ) {
@@ -72,9 +90,18 @@ public class StartPresenter extends Presenter {
 	    	goToLoginActivity();
 	    }else {
 	    	//Sets the current user's user name
+	    	((TextView) displayUser).setText(currentUser.get("naturalUsername").toString());
 	    	//TODO Temp fix to disable errors
 	    	//((TextView) displayUser).setText(currentUser.get("naturalUsername"));
 	    }
 		
+	}
+	
+	/**
+	 * 
+	 */
+	public void logOut() {
+		ParseUser.logOut();
+		goToLoginActivity();
 	}
 }
