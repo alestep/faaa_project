@@ -43,7 +43,7 @@ public class Database {
 							TURN					= "turn",
 							TURN_GAME				= "game",
 							TURN_TURN				= "turn",
-							TURN_STATE				= "state",
+							//TURN_STATE			= "state",
 							TURN_WORD				= "word",
 							TURN_VIDEOLINK			= "videoLink",
 							TURN_PLAYER_REC			= "recPlayer",
@@ -223,7 +223,7 @@ public class Database {
 		ParseObject newTurn = new ParseObject(TURN);
 		newTurn.put(TURN_GAME,game);
 		newTurn.put(TURN_TURN,turnNumber);
-		newTurn.put(TURN_STATE,Turn.INIT);
+		//newTurn.put(TURN_STATE,Turn.INIT);
 		newTurn.put(TURN_WORD,word);
 		newTurn.put(TURN_VIDEOLINK,"");
 		newTurn.put(TURN_PLAYER_REC,recPlayer);
@@ -288,7 +288,7 @@ public class Database {
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){
 				if(e == null){
-					dbTurn.put(TURN_STATE,turn.getState());
+					//dbTurn.put(TURN_STATE,turn.getState());
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
