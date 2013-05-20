@@ -133,7 +133,7 @@ public abstract class Presenter {
 		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
-		// Close Registration View
+		// Close current view
 		activity.finish();
 		
 	}
