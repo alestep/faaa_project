@@ -15,6 +15,11 @@ import com.example.wecharades.views.LoginActivity;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public abstract class Presenter {
 
 	/**
@@ -22,6 +27,7 @@ public abstract class Presenter {
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
 	private Activity activity;
+	
 	public Presenter(Activity activity) {
 		this.activity = activity;
 	}

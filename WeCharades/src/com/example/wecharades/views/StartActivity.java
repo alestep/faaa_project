@@ -28,7 +28,11 @@ import com.example.wecharades.presenter.StartPresenter;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class StartActivity extends Activity {
  
         protected static final String TAG = "StartScreen";
@@ -42,7 +46,6 @@ public class StartActivity extends Activity {
  
         // ListView Contents
         private ListView gameListView;
-        
         private TextView displayUser; 
  
         public Map<String, ?> createItem(String title, String caption){
@@ -64,7 +67,7 @@ public class StartActivity extends Activity {
                 
                 presenter.initialize();
                 
-                displayUser = (TextView) findViewById(R.id.displayUser); 
+                displayUser = (TextView) findViewById(R.id.user_display); 
                 
                 //Check if the user is logged in or saved in the cache
                 presenter.checkLogin(displayUser);
@@ -73,10 +76,10 @@ public class StartActivity extends Activity {
                 adapter = new SeparatedListAdapter(this);
                 
                 // Get a reference to the ListView holder
-                gameListView = (ListView) this.findViewById(R.id.list_journal);
- 
+                gameListView = (ListView) this.findViewById(R.id.game_list);
+                
+                // Inflate Start screen header in the ListView 
                 View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
- 
                 gameListView.addHeaderView(header);
 
                 // Set the adapter on the ListView holder
@@ -88,7 +91,8 @@ public class StartActivity extends Activity {
                 	@Override
                 	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
                 		Game item = (Game) adapter.getItem(position-1);
-                		Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
+                		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
+                		intent.putExtra("GameId", item);
                     }
                 });
         }
@@ -98,13 +102,7 @@ public class StartActivity extends Activity {
          * @param view
          */
         public void onClickLogout(View view) {
-                ParseUser.logOut();
-                //Redirecting to LoginActivity
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(login);
-                // Closing start screen
-                finish();
+                presenter.logOut();
         }
  
         /**

@@ -30,7 +30,8 @@ public class RegisterActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-		//initializing the presenter
+		
+		// Set the presenter
 		presenter = new RegisterPresenter(this);
 
 

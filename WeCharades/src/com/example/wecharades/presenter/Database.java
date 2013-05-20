@@ -355,6 +355,12 @@ public class Database {
 		return parsePlayer(dbPlayer);
 	}
 	
+	/**
+	 * 
+	 * @param parseId
+	 * @return
+	 * @throws DatabaseException
+	 */
 	public static Player getPlayerById(String parseId) throws DatabaseException {
 		ParseQuery query = ParseUser.getQuery();
 		ParseObject dbPlayer;
@@ -365,6 +371,28 @@ public class Database {
 			throw new DatabaseException(1010,"Failed to fetch user");
 		}
 		return parsePlayer(dbPlayer);
+	}
+	
+	/**
+	 * Get a list of player-instances containing all players 
+	 * @param searchString 
+	 * @return List containing all players
+	 * @throws DatabaseException
+	 */
+	public static ArrayList<Player> getPlayers() throws DatabaseException {
+		ArrayList<Player> players = new ArrayList<Player>();
+		ParseQuery query = ParseUser.getQuery();
+		
+		try {
+			List<ParseObject> dbResult = query.find();
+			for(ParseObject player : dbResult) {
+				players.add(parsePlayer(player));
+			}
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch players");
+		}
+		return players;
 	}
 
 	/**
@@ -504,4 +532,5 @@ public class Database {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
+	
 }
