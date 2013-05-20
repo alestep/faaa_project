@@ -23,6 +23,7 @@ import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.presenter.Database;
+import com.example.wecharades.presenter.Presenter;
 import com.example.wecharades.presenter.StartPresenter;
 import com.parse.Parse;
 import com.parse.ParseUser;
@@ -40,11 +41,9 @@ public class StartActivity extends Activity {
         private SeparatedListAdapter adapter;
  
         // ListView Contents
-        private ListView journalListView;
- 
-        // String which represents the user's user name
-        private String currentUser;
-        private String currentUserId;
+        private ListView gameListView;
+        
+        private TextView displayUser; 
  
         public Map<String, ?> createItem(String title, String caption){
                 Map<String, String> item = new HashMap<String, String>();
@@ -57,78 +56,40 @@ public class StartActivity extends Activity {
         public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 
+                // Sets the View Layer
+                setContentView(R.layout.start_screen);
+                
                 // Sets the presenter
                 presenter = new StartPresenter (this);
                 
                 presenter.initialize();
                 
-                // Sets the View Layer
-                setContentView(R.layout.start_screen);
- 
-                // Get a reference to the ListView holder
-                journalListView = (ListView) this.findViewById(R.id.list_journal);
- 
-                View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, journalListView, false);
- 
-                journalListView.addHeaderView(header);
+                displayUser = (TextView) findViewById(R.id.displayUser); 
+                
+                //Check if the user is logged in or saved in the cache
+                presenter.checkLogin(displayUser);
                 
                 // Create the ListView Adapter
                 adapter = new SeparatedListAdapter(this);
- 
-                //Copy and Paste this into every onCreate method to be able to use Parse
-                Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
- 
-                //Check if the user is logged in or saved in the cache
-                //TODO: Fixa en central isLoggedIn()-funktion senare?
-                ParseUser user = ParseUser.getCurrentUser();
-                if(user == null ) {
-                        // user is not logged in, show login screen
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(login);
-                        finish();
-                }else {
-                        //Sets the current user's user name
-                        currentUser = ParseUser.getCurrentUser().getUsername();
-                        TextView tv = (TextView) findViewById(R.id.textView1);
-                        //TODO: Fixa så att det är natural username istället.
-                        tv.setText(currentUser);
-                }
                 
-                presenter.parseGameLists(currentUser); 
-                
-                ArrayList<Game> yourTurnList = presenter.getYourTurnList();
-                Log.d(TAG, " " + yourTurnList.isEmpty());
-                ArrayList<Game> opponentsTurnList = presenter.getOpponentsTurnList();
-                ArrayList<Game> finishedList = presenter.getFinishedList();
-                
-                
-                if (!yourTurnList.isEmpty()) {
-                        GameAdapter yourTurnAdapter = new GameAdapter(this, yourTurnList);
-                        adapter.addSection("Your turn", yourTurnAdapter);
-                }
-                               
-                if (!opponentsTurnList.isEmpty()) {
-                        GameAdapter opponentsTurnAdapter = new GameAdapter(this, opponentsTurnList);
-                        adapter.addSection("Opponent's turn", opponentsTurnAdapter);
-                }
+                // Get a reference to the ListView holder
+                gameListView = (ListView) this.findViewById(R.id.list_journal);
  
-                if (!finishedList.isEmpty()) {
-                        GameAdapter finishedAdapter = new GameAdapter(this, finishedList);
-                        adapter.addSection("Finished games", finishedAdapter);
-                }
+                View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
  
+                gameListView.addHeaderView(header);
+
                 // Set the adapter on the ListView holder
-                journalListView.setAdapter(adapter);
+                gameListView.setAdapter(presenter.setAdapter(adapter));
  
                 // Listen for Click events
-                journalListView.setOnItemClickListener(new OnItemClickListener() {
+                gameListView.setOnItemClickListener(new OnItemClickListener() {
  
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-                                Game item = (Game) adapter.getItem(position-1);
-                                Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
-                        }
+                	@Override
+                	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+                		Game item = (Game) adapter.getItem(position-1);
+                		Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
+                    }
                 });
         }
  
@@ -152,17 +113,6 @@ public class StartActivity extends Activity {
          */
         public void onClickNewGame(View view) {
                 Button b = (Button) view;
-//                try {
-//                Player p1 = Database.getPlayer(currentUser);
-//                Player p2 = Database.getPlayer("adam");
-//                Database.createGame(p1, p2);
-//                Database.createGame(p2, p1);
-//                
-//                }catch (Exception e) {
-//                	
-//                }
-                
-                
                 //presenter.showToast(getApplicationContext(), b.getText().toString());
                 Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
                 Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();

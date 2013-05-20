@@ -1,72 +1,84 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListAdapter;
+import android.widget.TextView;
 
+import com.example.wecharades.GameAdapter;
+import com.example.wecharades.R;
+import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
+import com.parse.ParseUser;
 
 public class StartPresenter extends Presenter {
 	
 	private static final String TAG = "Start Presenter";
-	private StartActivity start;
-	private ArrayList<Game> yourTurnList;
-	private ArrayList<Game> opponentsTurnList;
-	private ArrayList<Game> finishedList;
+	private StartActivity activity;
+	private Map<String, ArrayList<Game>> separatedList;
 	
-	public StartPresenter(Activity start) {
-		super(start);
-		this.start = (StartActivity) start;
-		yourTurnList = new ArrayList<Game>();
-		opponentsTurnList = new ArrayList<Game>();
-		finishedList = new ArrayList<Game>();
+	public StartPresenter(Activity activity) {
+		super(activity);
+		this.activity = (StartActivity) activity;
+		separatedList = new HashMap<String, ArrayList<Game>>();
+
 	}
-	
-	/**
-	 * 
-	 * @return the list of games in which it is the current user's turn
-	 */
-    public ArrayList<Game> getYourTurnList() {
-    	return yourTurnList;
-    }
-    
-    /**
-     * 
-     * @return the list of games in which it is the current user's opponent's turn
-     */
-    public ArrayList<Game> getOpponentsTurnList() {
-    	return opponentsTurnList;
-    }
-    
-    /**
-     * 
-     * @return the list of the current user's finished games
-     */
-    public ArrayList<Game> getFinishedList() {
-    	return finishedList;
-    }
     
 	/**
 	 * 
 	 */
-	public void parseGameLists(String currentUser) {
+	private void parseGameLists() {
 		try {
-			ArrayList<Game> gameList = new ArrayList<Game>();
-			gameList = Database.getGames(Database.getPlayer(currentUser));
-			Log.d(TAG, " " + gameList.isEmpty());
+			ArrayList<Game> gameList = Database.getGames(Database.getPlayer(getCurrentUser()));
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
-	        		finishedList.add(g);
-	        	else if (g.getCurrentPlayer().getName().toLowerCase().equals(currentUser) && !g.isFinished())
-	        		yourTurnList.add(g);                   
+	        		putInList("Finished games", g);
+	        	else if (g.getCurrentPlayer().getName().toLowerCase().equals(getCurrentUser()) && !g.isFinished())
+	        		putInList("Opponent's turn", g);        
 	        	else
-	        		opponentsTurnList.add(g);
+	        		putInList("Your turn", g);
 	        }
+	        
 		} catch (DatabaseException e){
 			Log.d(TAG, e.getMessage());
 		}
+	}
+
+	private void putInList(String s, Game g) {
+		separatedList.put(s, new ArrayList<Game>());
+		separatedList.get(s).add(g);
+	}
+
+	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
+		parseGameLists();
+		// TODO: Sortera listan
+		for (String s : separatedList.keySet()) {
+			adapter.addSection(s, new GameAdapter(activity.getApplicationContext(), separatedList.get(s)));		
+		}
+	
+		return adapter;
+	}
+	
+	public void checkLogin(View displayUser) {
+		ParseUser currentUser = getCurrentUser();
+	    if(currentUser == null ) {
+	    	// user is not logged in, show login screen
+	    	goToLogin();
+	    }else {
+	    	//Sets the current user's user name
+	    	((TextView) displayUser).setText(currentUser.get("naturalUsername"));
+	    }
+		
 	}
 }
