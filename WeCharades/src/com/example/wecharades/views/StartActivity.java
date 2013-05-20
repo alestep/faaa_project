@@ -1,9 +1,7 @@
 package com.example.wecharades.views;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,16 +14,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.wecharades.GameAdapter;
 import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.presenter.Database;
-import com.example.wecharades.presenter.Presenter;
 import com.example.wecharades.presenter.StartPresenter;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 /**
@@ -51,36 +43,38 @@ public class StartActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
-
+		
 		// Sets the View Layer
 		setContentView(R.layout.start_screen);
-
-		// Sets the presenter
-		presenter = new StartPresenter (this);
 		
-		//TODO This should not be here - the view should not be the store data
-		displayUser = (TextView) findViewById(R.id.user_display); 
+		// Gat a reference to the dispalyUser field
+		displayUser = (TextView) findViewById(R.id.user_display);
 		
-		//TODO this should not be done here either
-		//Check if the user is logged in or saved in the cache
-		presenter.checkLogin(displayUser);
-
-		// Create the ListView Adapter
-		adapter = new SeparatedListAdapter(this);
-
 		// Get a reference to the ListView holder
         gameListView = (ListView) this.findViewById(R.id.game_list);
 		
 		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
+		
+		
+	//---------	
+		// Sets the presenter
+		presenter = new StartPresenter (this);
+		//TODO this should not be done here either - there should be a separate method
+		//Check if the user is logged in or saved in the cache
+		//presenter.checkLogin();		
 
-		// Set the adapter on the ListView holder
+		//TODO All this should probably be done in PRESENTER
+		// Create the ListView Adapter
+		adapter = new SeparatedListAdapter(this);
+
+		// Set the adapter on the ListView holder //TODO Assign adapter in presenter - 
 		gameListView.setAdapter(presenter.setAdapter(adapter));
         // Listen for Click events
         gameListView.setOnItemClickListener(new OnItemClickListener() {
-
         	@Override
         	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
         		Game item = (Game) adapter.getItem(position-1);
@@ -92,8 +86,8 @@ public class StartActivity extends Activity {
 
 	public void onStart(Bundle savedStateBundle){
 		super.onStart();
-
-
+		
+		
 	}
 
 	/**
@@ -139,5 +133,9 @@ public class StartActivity extends Activity {
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
 		startActivity(intent);
+	}
+	
+	public void setDisplayName(String user){
+		displayUser.setText(user);
 	}
 }

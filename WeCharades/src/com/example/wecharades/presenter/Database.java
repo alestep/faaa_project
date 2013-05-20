@@ -30,35 +30,35 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database {
-	
+
 	//This is used to avoid problems with using plain strings when calling the database.
-	private final String 	WORDLIST				= "WordList",
-							WORDLIST_WORD			= "word",
-							GAME 					= "Game",
-							GAME_PLAYER_1 			= "player1",
-							GAME_PLAYER_2 			= "player2",
-							GAME_PLAYER_CURRENT 	= "currentPlayer",
-							GAME_TURN 				= "turn",
-							GAME_FINISH 			= "finished",
-							TURN					= "turn",
-							TURN_GAME				= "game",
-							TURN_TURN				= "turn",
-							//TURN_STATE			= "state",
-							TURN_WORD				= "word",
-							TURN_VIDEOLINK			= "videoLink",
-							TURN_PLAYER_REC			= "recPlayer",
-							TURN_PLAYER_REC_SCORE	= "recPlayerScore",
-							TURN_PLAYER_ANS			= "ansPlayer",
-							TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
-							PLAYER_USERNAME			= "username",
-							PLAYER_USERNAME_NATURAL	= "naturalUsername",
-							PLAYER_GLOBALSCORE		= "globalScore",
-							RANDOMQUEUE				= "RandomQueue",
-							RANDOMQUEUE_PLAYER		= "player",
-							INVITE 					= "invite",
-							INVITE_INVITER 			= "inviter",
-							INVITE_INVITEE 			= "invitee";
-	
+	public static final String 	WORDLIST				= "WordList",
+								WORDLIST_WORD			= "word",
+								GAME 					= "Game",
+								GAME_PLAYER_1 			= "player1",
+								GAME_PLAYER_2 			= "player2",
+								GAME_PLAYER_CURRENT 	= "currentPlayer",
+								GAME_TURN 				= "turn",
+								GAME_FINISH 			= "finished",
+								TURN					= "turn",
+								TURN_GAME				= "game",
+								TURN_TURN				= "turn",
+								//TURN_STATE			= "state",
+								TURN_WORD				= "word",
+								TURN_VIDEOLINK			= "videoLink",
+								TURN_PLAYER_REC			= "recPlayer",
+								TURN_PLAYER_REC_SCORE	= "recPlayerScore",
+								TURN_PLAYER_ANS			= "ansPlayer",
+								TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
+								PLAYER_USERNAME			= "username",
+								PLAYER_USERNAME_NATURAL	= "naturalUsername",
+								PLAYER_GLOBALSCORE		= "globalScore",
+								RANDOMQUEUE				= "RandomQueue",
+								RANDOMQUEUE_PLAYER		= "player",
+								INVITE 					= "invite",
+								INVITE_INVITER 			= "inviter",
+								INVITE_INVITEE 			= "invitee";
+
 	private static Database singleton;
 
 	private Database(Context context){
@@ -329,7 +329,7 @@ public class Database {
 	public Player getPlayerById(String parseId) throws DatabaseException {
 		return DatabaseConverter.parsePlayer(getPlayerObject(parseId));
 	}
-	
+
 	/**
 	 * 
 	 * @param parseId
@@ -345,7 +345,7 @@ public class Database {
 			throw new DatabaseException(1010,"Failed to fetch user");
 		}
 	}
-	
+
 	/**
 	 * Get a list of player-instances containing all players 
 	 * @param searchString 
@@ -355,7 +355,7 @@ public class Database {
 	public static ArrayList<Player> getPlayers() throws DatabaseException {
 		ArrayList<Player> players = new ArrayList<Player>();
 		ParseQuery query = ParseUser.getQuery();
-		
+
 		try {
 			List<ParseObject> dbResult = query.find();
 			for(ParseObject player : dbResult) {
@@ -505,5 +505,5 @@ public class Database {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
-	
+
 }
