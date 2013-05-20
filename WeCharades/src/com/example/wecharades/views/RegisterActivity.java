@@ -33,11 +33,6 @@ public class RegisterActivity extends GenericActivity {
 		//initializing the presenter
 		presenter = new RegisterPresenter(this);
 
-
-
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		presenter.initialize();
-
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 

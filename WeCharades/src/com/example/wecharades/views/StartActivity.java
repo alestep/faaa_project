@@ -54,9 +54,6 @@ public class StartActivity extends Activity {
 
 		// Sets the presenter
 		presenter = new StartPresenter (this);
-
-		//This should be done in database (or presenter)
-		presenter.initialize();
 		
 		//TODO This should not be here - the view should not be the store data
 		displayUser = (TextView) findViewById(R.id.displayUser); 

@@ -38,9 +38,6 @@ public class ResetPasswordActivity extends GenericActivity {
 		//initializing the presenter
 		presenter = new ResetPresenter(this);
 
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		presenter.initialize();
-
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		emailInput				= (EditText) findViewById(R.id.resetPassword);

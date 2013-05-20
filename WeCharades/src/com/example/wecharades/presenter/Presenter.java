@@ -17,8 +17,8 @@ import com.parse.ParseUser;
 
 public abstract class Presenter {
 	
-	private Database db;
-	private Activity activity;
+	protected Database db;
+	protected Activity activity;
 	
 	/**
 	 * Needed in order to use parse commands

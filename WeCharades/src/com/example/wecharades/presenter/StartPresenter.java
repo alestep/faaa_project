@@ -35,7 +35,7 @@ public class StartPresenter extends Presenter {
 	private void parseGameLists() {
 		try {
 			//TODO This is ugly and should not be here later
-			ArrayList<Game> gameList = Database.getGames(Database.getPlayerById(getCurrentUser().getObjectId()));
+			ArrayList<Game> gameList = db.getGames(db.getPlayerById(getCurrentUser().getObjectId()));
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		putInList("Finished games", g);
