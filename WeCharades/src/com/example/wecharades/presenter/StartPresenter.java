@@ -3,8 +3,10 @@ package com.example.wecharades.presenter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import android.app.Activity;
 import android.util.Log;
+
 import com.example.wecharades.GameAdapter;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.DatabaseException;
@@ -27,11 +29,14 @@ public class StartPresenter extends Presenter {
 	public StartPresenter(Activity activity) {
 		super(activity);
 		this.activity = (StartActivity) activity;
+		separatedList = new HashMap<String, ArrayList<Game>>();
 		
 		//Checks if the there is any user logged in
 		checkLogin();
-		
-		separatedList = new HashMap<String, ArrayList<Game>>();
+	}
+	
+	public void update(){
+		activity.setDisplayName(model.getCurrentPlayer().getName());
 	}
 	
 	/**
@@ -40,12 +45,11 @@ public class StartPresenter extends Presenter {
 	 * 
 	 */
 	public void checkLogin() {
-		if(model.getCurrentPlayer() == null){
+		if(getCurrentUser() == null){
 			goToLoginActivity();
-		} else {
-	    	//Sets the current user's user name
-	    	activity.setDisplayName(model.getCurrentPlayer().getName());
-	    }
+		} else{
+			model.setCurrentPlayer();//TODO should this be removed after we have created a more persistent model?
+		}
 	}
     
 	/**
@@ -90,10 +94,12 @@ public class StartPresenter extends Presenter {
 	}
 	
 	/**
-	 * 
+	 * Log out the current user
 	 */
 	public void logOut() {
 		ParseUser.logOut();
+		model.logOutCurrentPlayer();
 		goToLoginActivity();
 	}
+	
 }

@@ -10,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-
 import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 /**
@@ -123,7 +120,7 @@ public abstract class Presenter {
 		//disable buttons
 		enableOrDisableViews(view);
 	}
-
+	
 	/**
 	 * Go to the login screen
 	 */
@@ -132,7 +129,7 @@ public abstract class Presenter {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close Registration View
+		//TODO I do not think we should do this, at least not for the start screen!
 		activity.finish();
-
 	}
 }

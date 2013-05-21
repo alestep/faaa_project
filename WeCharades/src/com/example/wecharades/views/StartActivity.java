@@ -2,6 +2,7 @@ package com.example.wecharades.views;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +15,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.StartPresenter;
-import com.parse.ParseUser;
 
 /**
  * 
@@ -63,15 +64,23 @@ public class StartActivity extends Activity {
 	//---------	
 		// Sets the presenter
 		presenter = new StartPresenter (this);
-		//TODO this should not be done here either - there should be a separate method
+		
 		//Check if the user is logged in or saved in the cache
 		//presenter.checkLogin();		
 
-		//TODO All this should probably be done in PRESENTER
+		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter
 		adapter = new SeparatedListAdapter(this);
 
-		// Set the adapter on the ListView holder //TODO Assign adapter in presenter - 
+	}
+
+	public void onStart(Bundle savedStateBundle){
+		super.onStart();
+		
+		//TODO here the code for updating the view should be included.
+		presenter.update();
+		
+		// Set the adapter on the ListView holder //TODO Assign adapter in presenter?
 		gameListView.setAdapter(presenter.setAdapter(adapter));
         // Listen for Click events
         gameListView.setOnItemClickListener(new OnItemClickListener() {
@@ -84,22 +93,17 @@ public class StartActivity extends Activity {
         });
 	}
 
-	public void onStart(Bundle savedStateBundle){
-		super.onStart();
-		
-		
-	}
-
 	/**
 	 * Logout and go back to login screen
 	 * @param view
 	 */
 	public void onClickLogout(View view) {
-		ParseUser.logOut();
+		//TODO some of this code should probably be moved to the presenter.
+		presenter.logOut();
 		//Redirecting to LoginActivity
-		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(login);
+//		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+//		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		startActivity(login);
 		// Closing start screen
 		finish();
 	}

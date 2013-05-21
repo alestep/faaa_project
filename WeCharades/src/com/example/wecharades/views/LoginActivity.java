@@ -2,14 +2,12 @@ package com.example.wecharades.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.presenter.LoginPresenter;
 
 
@@ -26,16 +24,18 @@ public class LoginActivity extends GenericActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		//initializing the presenter
-		presenter = new LoginPresenter(this);
-
-		//Getting the view associated with this Activity
-		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.loginUsername);
 		inputPassword		= (EditText) findViewById(R.id.loginPassword);
 		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
+		
+		//Getting the view associated with this Activity
+		myView = getWindow().getDecorView().findViewById(android.R.id.content);
+		
+		//initializing the presenter
+		presenter = new LoginPresenter(this);
+
 		presenter.setProgressSpinnerInvisible(loginProgress);
 	}
 
@@ -46,7 +46,8 @@ public class LoginActivity extends GenericActivity {
 	 */
 	public void onClickLogin(View view) {
 		//TODO: the spinners doesn't work properly yet :(
-
+		//TODO 2: The showProgressSpinner should be in the presenter, but methods should be present in the views.
+		
 		//Show the progress spinner
 		presenter.showProgressSpinner(myView, loginProgress);
 
@@ -85,4 +86,5 @@ public class LoginActivity extends GenericActivity {
 		// TODO Auto-generated method stub
 		return loginErrorMsg;
 	}
+	
 }
