@@ -83,8 +83,6 @@ public class GameDashboardPresenter extends Presenter {
 	 * @param turn
 	 */
 	private void updateButtonInformation(Turn turn, Button button) {
-		//TODO: button.setId() or similar, probably based on turn.getId -ish...
-		//TODO: look up setTag() and getTag(); 
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
 			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
@@ -126,13 +124,13 @@ public class GameDashboardPresenter extends Presenter {
 				if(isAnsPLayer) {
 					//Go to GuessCharadeActivity
 					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
-					intent.putExtra("turn", theTurn);
+					intent.putExtra("Turn", theTurn);
 					activity.startActivity(intent);
 				}
 				else {
 					//Go to CaptureVideo
 					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
-					intent.putExtra("turn", theTurn);
+					intent.putExtra("Turn", theTurn);
 					activity.startActivity(intent);
 				}
 			}

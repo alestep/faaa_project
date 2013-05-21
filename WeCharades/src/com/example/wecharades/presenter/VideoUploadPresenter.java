@@ -31,7 +31,7 @@ public class VideoUploadPresenter extends Presenter {
 	public VideoUploadPresenter(VideoUploadActivity activity) {
 		super(activity);
 		this.activity = activity;
-		this.turn = (Turn) activity.getIntent().getExtras().getSerializable("turn");
+		this.turn = (Turn) activity.getIntent().getSerializableExtra("Turn");
 	}
 	
 	/**
