@@ -27,7 +27,6 @@ public class VideoUploadActivity extends Activity{
 	private VideoView videoView;
 	private VideoUploadPresenter presenter;
 
-	// TODO: onStart();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
