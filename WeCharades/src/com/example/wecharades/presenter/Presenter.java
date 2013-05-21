@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
 import com.parse.ParseUser;

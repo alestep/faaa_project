@@ -1,12 +1,11 @@
 package com.example.wecharades.presenter;
 
 
+import android.content.Intent;
+
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
-
-import android.app.Activity;
-import android.content.Intent;
 	
 
 public class ResetPresenter extends Presenter {

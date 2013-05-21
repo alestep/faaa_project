@@ -26,6 +26,10 @@ public class Model {
 		//TODO initiate the model: load from memory?
 	}
 
+	/**
+	 * Use this method to get the singleton instance of the model where necessary.
+	 * @return the Model
+	 */
 	public static Model getModelInstance(){
 		if (singleModel == null){
 			singleModel = new Model();
@@ -116,7 +120,6 @@ public class Model {
 	}
 
 	//Players ---------------------------------------------------------------
-	//TODO Maybe we have no need for these...
 
 	/**
 	 * Puts a player in stored players 

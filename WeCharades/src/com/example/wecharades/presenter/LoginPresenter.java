@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import android.content.Intent;
+
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
@@ -16,9 +17,9 @@ public class LoginPresenter extends Presenter{
 
 	public void login(String username, String password){
 		try {
-			//If this fails, the user will get a message
+			//If this fails, the user will get a message and the subsequent code will not be run
 			db.loginPlayer(username, password);
-			//saves the current player in the model!
+			//saves the current player in the model if successfull!
 			model.setCurrentPlayer();
 			Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
 			activity.startActivity(i);
