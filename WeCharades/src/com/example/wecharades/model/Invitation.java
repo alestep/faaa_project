@@ -1,5 +1,6 @@
 package com.example.wecharades.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,11 @@ import java.util.Date;
  * @author Anton Dahlström
  *
  */
-public class Invitation {
+public class Invitation implements Serializable {
+	/**
+	 * auto-generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -5910239110421116360L;
 	Player inviter;
 	Player invitee;
 	Date timeOfInvite;

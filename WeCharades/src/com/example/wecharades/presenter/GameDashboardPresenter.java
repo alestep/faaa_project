@@ -2,6 +2,9 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -10,6 +13,7 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
+import com.example.wecharades.views.GuessCharadeActivity;
 public class GameDashboardPresenter extends Presenter {
 
 	private GameDashboardActivity activity;
@@ -20,8 +24,9 @@ public class GameDashboardPresenter extends Presenter {
 		this.activity = activity;
 	}
 
-	public void createDashboard(Game game, TableLayout table) {
-		this.game = game;
+	public void createDashboard(TableLayout table) {
+		//Get the game from the clicked object in StartActivity
+		this.game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
 		generateTitle();
 		ArrayList<Turn> turnList = getTurnList();
 		ArrayList<Button> buttonList = getAllButtons(table);
@@ -35,9 +40,9 @@ public class GameDashboardPresenter extends Presenter {
 	private ArrayList<Turn> getTurnList() {
 		ArrayList<Turn> turnList = null;
 		try {
+			//TODO: Get from Model instead?
 			turnList = db.getTurns(game);
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return turnList;
@@ -78,8 +83,6 @@ public class GameDashboardPresenter extends Presenter {
 	 * @param turn
 	 */
 	private void updateButtonInformation(Turn turn, Button button) {
-		//TODO: button.setId() or similar, probably based on turn.getId -ish...
-		//TODO: look up setTag() and getTag(); 
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
 			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
@@ -92,10 +95,18 @@ public class GameDashboardPresenter extends Presenter {
 				string = "error";
 			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
+			//TODO: add at state: "waiting for opponent"
 			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
 				string = "Guess word!";
+				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
+			} 
+			// Checks if you are the "RecPlayer" AND already has uploaded a video
+			else if (turn.getRecPlayer().getParseId().equals(getCurrentUser().getObjectId()) && !turn.getVideoLink().isEmpty()) {
+				string = "Waiting...";
+				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
 			} else {
 				string = "Record Video";
+				button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 			}
 		} else {
 			button.setEnabled(false);
@@ -103,13 +114,36 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		button.setText(string);
 	} 
- 
+
+	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
+		OnClickListener buttonListener = new View.OnClickListener() {
+			boolean isAnsPLayer = ansPlayer;
+			Turn theTurn = turn;
+			@Override
+			public void onClick(View v) {
+				if(isAnsPLayer) {
+					//Go to GuessCharadeActivity
+					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
+					intent.putExtra("Turn", theTurn);
+					activity.startActivity(intent);
+				}
+				else {
+					//Go to CaptureVideo
+					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
+					intent.putExtra("Turn", theTurn);
+					activity.startActivity(intent);
+				}
+			}
+		};
+		return buttonListener;
+	}
+
 	private void generateTitle() {
 		String opponent;
-		if(getCurrentUser().getObjectId().equals(game.getPlayerId1().getParseId())) {
-			opponent = game.getPlayerId2().getName();
-		} else if (getCurrentUser().getObjectId().equals(game.getPlayerId2().getParseId())){
-			opponent = game.getPlayerId1().getName();
+		if(getCurrentUser().getObjectId().equals(game.getPlayer1().getParseId())) {
+			opponent = game.getPlayer2().getName();
+		} else if (getCurrentUser().getObjectId().equals(game.getPlayer2().getParseId())){
+			opponent = game.getPlayer1().getName();
 		} else {
 			opponent = "unknown";
 		}

@@ -30,7 +30,11 @@ public abstract class Presenter {
 		this.db = Database.getDatabaseConnection(activity);
 		this.model = Model.getModelInstance();
 	}
-
+	
+	/**
+	 * Get current user
+	 * @return current user
+	 */
 	public ParseUser getCurrentUser() {
 		return ParseUser.getCurrentUser();
 	}

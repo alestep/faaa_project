@@ -1,11 +1,17 @@
 package com.example.wecharades.model;
 
+import java.io.Serializable;
+
 /**
  * Information about players that is stored locally.
  *  The session of the native player should also be stored in SharedPreferences
  *
  */
-public class Player {
+public class Player implements Serializable {
+	/**
+	 * auto-generated serialVersionUID
+	 */
+	private static final long serialVersionUID = 2165036941490853727L;
 	private String parseId;
 	private int globalScore;
 	private String username;

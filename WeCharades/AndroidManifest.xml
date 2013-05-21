@@ -28,17 +28,15 @@
         <activity
             android:name=".views.StartActivity"
             android:label="@string/menu" >
+
             <!-- DEFAULT STARTING SCREEN -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <!-- New Game Activity -->
         <activity
             android:name=".views.NewGameActivity"
-            android:label="@string/new_game">
+            android:label="@string/new_game" >
         </activity>
 
         <!-- Search Player Activity -->
@@ -91,6 +89,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.START_VIDEO_CAMERA" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
