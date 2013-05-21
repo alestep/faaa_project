@@ -1,12 +1,9 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.presenter.SearchResultPresenter;
-
 import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.wecharades.presenter.SearchResultPresenter;
 
 public class SearchResultActivity extends ListActivity {
 	SearchResultPresenter presenter;
