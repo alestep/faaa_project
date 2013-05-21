@@ -23,11 +23,6 @@ public class GameDashboardActivity extends GenericActivity {
 		presenter.createDashboard(myTable);
 	}
 
-	public void updateButton(String string) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub

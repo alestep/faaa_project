@@ -11,6 +11,10 @@ import java.util.Date;
  *
  */
 public class Game implements Serializable { //TODO make this class truly Serializable later
+	/**
+	 * auto-generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -3649758045030316767L;
 	private String 	gameId;
 	private Player 	playerId1;
 	private Player 	playerId2;
