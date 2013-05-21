@@ -15,11 +15,6 @@ import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
 import com.parse.ParseUser;
 
-/**
- * 
- * @author Alexander
- *
- */
 public abstract class Presenter {
 
 	protected Database db;
@@ -129,7 +124,7 @@ public abstract class Presenter {
 		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
-		// Close Registration View
+		// Close current view
 		//TODO I do not think we should do this, at least not for the start screen!
 		activity.finish();
 	}

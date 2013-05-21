@@ -1,14 +1,16 @@
 package com.example.wecharades.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Player;
+import com.example.wecharades.presenter.Database;
 import com.example.wecharades.presenter.GameDashboardPresenter;
-import com.parse.Parse;
+import com.parse.ParseUser;
 
 public class GameDashboardActivity extends GenericActivity {
 
@@ -20,27 +22,50 @@ public class GameDashboardActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen);
-		//TODO it doesn't work with presenter.initialize() :S No clue why!
-		Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
-		//presenter.initialize();
 		presenter = new GameDashboardPresenter(this);
 		title = (TextView) findViewById(R.id.titleText);
 		myTable = (TableLayout) findViewById(R.id.table);	
 
-		//TODO: Get game from the DB instead to be able to check if the Turn-functions work! 
-		
+
 		// TEMPORARY GAMES AND PLAYERS
-		Player p1 = new Player("id1", "Felix");
-		Player p2 = new Player("id2", "Alex");
+//		Player p1 = null;
+//		try {
+//			p1 = Database.getPlayerById("86MJ08m46V");
+//		} catch (DatabaseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Player p2 = null;
+//		try {
+//			p2 = Database.getPlayerById("GNR2rDKDly");
+//		} catch (DatabaseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		if(p1 != null || p2 != null) {
+//			try {
+//				Database.createGame(p1, p2);
+//			} catch (DatabaseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		} else {
+//			Log.d("null", "p1 eller p2 Šr null");
+//		} 
 		
-		Game g = new Game("unique_id", p1, p2, p1, 1, false, null);
-		presenter.createDashboard(g, myTable);
-		
+//		Game g = null;
+//		try {
+//			g = Database.getGame("sgdgYN1nNG");
+//		} catch (DatabaseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		presenter.createDashboard(g, myTable);
 	}
 
 	public void updateButton(String string) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

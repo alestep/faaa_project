@@ -29,33 +29,34 @@
             android:name=".views.StartActivity"
             android:label="@string/menu" >
             <!-- DEFAULT STARTING SCREEN -->
-        </activity>
-        	
-        <!-- New Game Activity -->
-        <activity
-            android:name=".views.NewGameActivity"
-            android:label="@string/new_game">
-           	<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
+        <!-- New Game Activity -->
+        <activity
+            android:name=".views.NewGameActivity"
+            android:label="@string/new_game">
+        </activity>
+
         <!-- Search Player Activity -->
         <activity
             android:name=".views.SearchPlayerActivity"
             android:label="@string/player" >
         </activity>
-        
+
         <!-- Search Result Activity -->
         <activity
             android:name=".views.SearchResultActivity"
             android:label="@string/game" >
         </activity>
-        
+
         <!-- Game Dashboard Activity -->
         <activity
             android:name=".views.GameDashboardActivity"
+            android:configChanges="orientation"
             android:label="@string/game" >
         </activity>
 
