@@ -221,7 +221,7 @@ public class Database {
 	 * @param recPlayer - the parseId of the player that should record
 	 * @param ansPlayer - the parseId of the player that should answer
 	 */
-	private static ParseObject createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer) {
+	private ParseObject createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer) {
 		ParseObject newTurn = new ParseObject("Turn");
 		newTurn.put("game",game);
 		newTurn.put("turn",turnNumber);
@@ -262,7 +262,7 @@ public class Database {
 	 * @return an ArrayList of turns
 	 * @throws DatabaseException
 	 */
-	public static ArrayList<Turn> getTurns(Game game) throws DatabaseException{
+	public ArrayList<Turn> getTurns(Game game) throws DatabaseException{
 		ParseQuery query = new ParseQuery("Turn");
 		query.whereEqualTo(TURN_GAME, getParseObject(game.getGameId()));
 		query.addAscendingOrder("turn");
@@ -276,7 +276,7 @@ public class Database {
 		}
 		ArrayList<Turn> turnList = new ArrayList<Turn>();
 		for(ParseObject turn : dbList){
-			turnList.add(DatabaseConverter.parseTurn(singleton, turn)); //Had to change "this" to "singleton" to get it to work. @anton
+			turnList.add(DatabaseConverter.parseTurn(this, turn));
 		}
 		return turnList;
 	}
