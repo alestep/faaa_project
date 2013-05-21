@@ -1,9 +1,5 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.presenter.Database;
-import com.example.wecharades.presenter.SearchPlayerPresenter;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +7,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.example.wecharades.R;
+import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**
  * 

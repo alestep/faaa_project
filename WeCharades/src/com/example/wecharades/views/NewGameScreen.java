@@ -1,17 +1,14 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.wecharades.R;
 
 public class NewGameScreen extends Activity {
 	
