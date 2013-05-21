@@ -28,12 +28,9 @@
         <activity
             android:name=".views.StartActivity"
             android:label="@string/menu" >
-            <!-- DEFAULT STARTING SCREEN -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- DEFAULT STARTING SCREEN -->
+
         </activity>
         <activity
             android:name=".views.NewGameScreen"
@@ -93,7 +90,13 @@
         </activity>
 
         <!-- Not default anymore... -->
-        <activity android:name=".views.Main" />
+        <activity android:name=".views.Main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- VideoUploadActivity -->
         <activity

@@ -63,10 +63,10 @@ public class StartActivity extends Activity {
 		
 	//---------	
 		// Sets the presenter
-		presenter = new StartPresenter (this);
+		presenter = new StartPresenter(this);
 		
 		//Check if the user is logged in or saved in the cache
-		//presenter.checkLogin();		
+		presenter.checkLogin();		
 
 		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter
