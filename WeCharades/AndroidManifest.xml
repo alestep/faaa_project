@@ -28,14 +28,12 @@
         <activity
             android:name=".views.StartActivity"
             android:label="@string/menu" >
+
+            <!-- DEFAULT STARTING SCREEN -->
             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                <!-- DEFAULT STARTING SCREEN -->
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
-import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
 /**
@@ -82,7 +82,7 @@ public class StartActivity extends Activity {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
         		Game item = (Game) adapter.getItem(position-1);
         		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
-        		intent.putExtra("GameId", item);
+        		intent.putExtra("game", item);
             }
         });
 	}

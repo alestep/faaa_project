@@ -1,7 +1,10 @@
-package com.example.wecharades;
+package com.example.wecharades.presenter;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.example.wecharades.R;
+import com.example.wecharades.R.layout;
 
 import android.content.Context;
 import android.view.View;

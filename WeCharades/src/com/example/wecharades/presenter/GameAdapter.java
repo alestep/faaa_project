@@ -1,4 +1,4 @@
-package com.example.wecharades;
+package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
 import com.example.wecharades.model.Game;
 
 public class GameAdapter extends ArrayAdapter<Game> {
