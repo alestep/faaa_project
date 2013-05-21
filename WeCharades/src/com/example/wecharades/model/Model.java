@@ -2,7 +2,6 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 import com.example.wecharades.presenter.Database;
@@ -168,6 +167,15 @@ public class Model {
 	 */
 	public Player getCurrentPlayer(){
 		return currentPlayer;
+	}
+	
+	/**
+	 * Deletes the current player entirely from the model. Should be done when user logs out.
+	 */
+	public void logOutCurrentPlayer(){
+		storedPlayers.remove(currentPlayer.getParseId());
+		storedPlayerNames.remove(currentPlayer.getName());
+		currentPlayer = null;
 	}
 
 	/**
