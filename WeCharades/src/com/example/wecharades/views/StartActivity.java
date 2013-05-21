@@ -27,7 +27,6 @@ import com.example.wecharades.presenter.StartPresenter;
  *
  */
 public class StartActivity extends Activity {
-	
 	protected static final String TAG = "StartScreen";
 	public final static String ITEM_TITLE = "title";
 	public final static String ITEM_CAPTION = "caption";
@@ -41,12 +40,9 @@ public class StartActivity extends Activity {
 	private ListView gameListView;
 
 	private TextView displayUser; 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
-		
 		// Sets the View Layer
 		setContentView(R.layout.start_screen);
 		
@@ -96,15 +92,11 @@ public class StartActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickLogout(View view) {
-		//TODO some of this code should probably be moved to the presenter.
 		presenter.logOut();
 		//Redirecting to LoginActivity
-//		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-//		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(login);
-		// Closing start screen
-		finish();
+		finish(); //Should this be here? /Felix
 	}
+
 
 	public Map<String, ?> createItem(String title, String caption){
 		Map<String, String> item = new HashMap<String, String>();
@@ -120,10 +112,11 @@ public class StartActivity extends Activity {
 	public void onClickNewGame(View view) {
 		Button b = (Button) view;
 		//presenter.showToast(getApplicationContext(), b.getText().toString());
-		Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
+		Intent intent = new Intent (getApplicationContext(), NewGameActivity.class);
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		startActivity(intent);
 	}
+
 
 	/**
 	 * Nothing happens so far...
