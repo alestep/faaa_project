@@ -142,10 +142,10 @@ public class GameDashboardPresenter extends Presenter {
 
 	private void generateTitle() {
 		String opponent;
-		if(getCurrentUser().getObjectId().equals(game.getPlayerId1().getParseId())) {
-			opponent = game.getPlayerId2().getName();
-		} else if (getCurrentUser().getObjectId().equals(game.getPlayerId2().getParseId())){
-			opponent = game.getPlayerId1().getName();
+		if(getCurrentUser().getObjectId().equals(game.getPlayer1().getParseId())) {
+			opponent = game.getPlayer2().getName();
+		} else if (getCurrentUser().getObjectId().equals(game.getPlayer2().getParseId())){
+			opponent = game.getPlayer1().getName();
 		} else {
 			opponent = "unknown";
 		}

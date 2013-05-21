@@ -57,10 +57,10 @@ public class StartActivity extends Activity {
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
-		presenter = new StartPresenter (this);
+		presenter = new StartPresenter(this);
 		
 		//Check if the user is logged in or saved in the cache
-		//presenter.checkLogin();		
+		presenter.checkLogin();		
 
 		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter
@@ -96,14 +96,6 @@ public class StartActivity extends Activity {
 		presenter.logOut();
 		//Redirecting to LoginActivity
 		finish(); //Should this be here? /Felix
-	}
-
-
-	public Map<String, ?> createItem(String title, String caption){
-		Map<String, String> item = new HashMap<String, String>();
-		item.put(ITEM_TITLE, title);
-		item.put(ITEM_CAPTION, caption);
-		return item;
 	}
 
 	/**

@@ -54,15 +54,20 @@ public class StartPresenter extends Presenter {
 	 */
 	private void parseGameLists() {
 		try {
-			//TODO This is ugly and should not be here later
+			//TODO This should talk to the DataFetcher later.
 			ArrayList<Game> gameList = db.getGames(model.getCurrentPlayer());
+			
+			separatedList.put("Finished games", new ArrayList<Game>());
+			separatedList.put("Opponent's turn", new ArrayList<Game>());
+			separatedList.put("Your turn", new ArrayList<Game>());
+			
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
-	        		putInList("Finished games", g);
+	        		separatedList.get("Finished games").add(g);
 	        	else if (g.getCurrentPlayer().getName().toLowerCase().equals(getCurrentUser()) && !g.isFinished())
-	        		putInList("Opponent's turn", g);        
+	        		separatedList.get("Opponent's turn").add(g);
 	        	else
-	        		putInList("Your turn", g);
+	        		separatedList.get("Your turn").add(g);
 	        }
 	        
 		} catch (DatabaseException e){
@@ -70,10 +75,10 @@ public class StartPresenter extends Presenter {
 		}
 	}
 
-	private void putInList(String s, Game g) {
-		separatedList.put(s, new ArrayList<Game>());
-		separatedList.get(s).add(g);
-	}
+//	private void putInList(String s, Game g) {
+//		separatedList.put(s, (new ArrayList<Game>()).add(g));
+//		separatedList.get(s).add(g);
+//	}
 
 	/**
 	 * 
@@ -84,7 +89,7 @@ public class StartPresenter extends Presenter {
 		parseGameLists();
 		// TODO: Sortera listan
 		for (String s : separatedList.keySet()) {
-			adapter.addSection(s, new GameAdapter(activity.getApplicationContext(), separatedList.get(s)));		
+			adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), model.getCurrentPlayer()));		
 		}
 	
 		return adapter;
