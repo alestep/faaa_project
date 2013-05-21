@@ -6,6 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import android.app.Activity;
+import com.example.wecharades.presenter.SearchResultAdapter;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.SearchResultActivity;
 

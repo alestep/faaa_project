@@ -2,7 +2,6 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;

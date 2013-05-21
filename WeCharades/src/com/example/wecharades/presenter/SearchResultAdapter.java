@@ -9,7 +9,6 @@ import com.example.wecharades.model.Model;
 import com.example.wecharades.views.SearchResultActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
