@@ -1,6 +1,12 @@
-package com.example.wecharades;
+package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+
+import com.example.wecharades.R;
+import com.example.wecharades.R.id;
+import com.example.wecharades.R.layout;
+import com.example.wecharades.model.Model;
+import com.example.wecharades.views.SearchResultActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +21,19 @@ import android.widget.TextView;
 public class SearchResultAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;
 	private LayoutInflater li;
-
-	public SearchResultAdapter(Context context, ArrayList<String> resultList) {
-		super(context, 0, resultList);
+	private SearchResultActivity activity;
+	
+	/**
+	 * 
+	 * @param activity
+	 * @param resultList
+	 */
+	public SearchResultAdapter(SearchResultActivity activity, ArrayList<String> resultList) {
+		super(activity, 0, resultList);
+		
 		this.resultList = resultList;
-		li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.activity = activity;
+		this.li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -27,6 +41,7 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 		View v = convertView;
 
 		final String s = resultList.get(position);
+		
 		if (s != null) {
 			v = li.inflate(R.layout.result_list_item, null);
 			final TextView username = (TextView) v.findViewById(R.id.username);
@@ -36,12 +51,12 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 		else {
 			// TODO: LŠgg till en NoResults-screen
 		}
+		
 		final Button play = (Button) v.findViewById(R.id.play);
 		play.setOnClickListener(new OnClickListener(){ 
 			@Override
 			public void onClick(View v){
-				play.setText("Sent");
-				play.setEnabled(false);
+				activity.invite(s);	
 			}
 		});  
 		return v;

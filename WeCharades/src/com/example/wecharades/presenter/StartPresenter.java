@@ -7,8 +7,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.util.Log;
 
-import com.example.wecharades.GameAdapter;
-import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.views.StartActivity;
