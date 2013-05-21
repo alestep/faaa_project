@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- result_list_item.xml -->
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/result_list_item_entry"
-    android:gravity="left"
+<!-- Layout for result list items -->
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingTop="0dip"
-    android:paddingBottom="0dip"
-    android:paddingLeft="10dip"
-    android:textAppearance="?android:attr/textAppearanceLarge" />
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical"
+    android:paddingRight="?android:attr/scrollbarSize">
+
+      <RelativeLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+
+          <TextView
+              android:id="@+id/username"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_alignParentTop="true"
+              android:paddingLeft="5dp"
+              android:paddingTop="5dp"
+              android:textAppearance="?android:attr/textAppearanceLarge" />
+
+          <Button
+              android:id="@+id/play"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentTop="true"
+              android:background="@drawable/btn_default_normal"
+              android:paddingRight="5dp"
+              android:paddingTop="5dp"
+              android:onClick="onClickUser"
+              android:text="@string/play" />
+
+      </RelativeLayout>
+    
+</LinearLayout>

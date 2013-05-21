@@ -75,7 +75,7 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 	/**
 	 * Increments the turn number. If it is the last turn, the value will be set to 0
 	 */
-	public void inclementTurn() {
+	public void incrementTurn() {
 		if(turn == 6){
 			isFinished = true;
 			turn = 0;

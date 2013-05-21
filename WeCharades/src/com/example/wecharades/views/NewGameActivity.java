@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.wecharades.R;
 
-public class NewGameScreen extends Activity {
+public class NewGameActivity extends Activity {
 	
 	public final static String TAG = "NewGameScreen";
 	
@@ -26,7 +24,6 @@ public class NewGameScreen extends Activity {
 	 */
 	public void onClickRandom(View view) {
 		Log.d(TAG, "Clicked Find random player");
-
 	}
 	
 	/**
@@ -35,9 +32,7 @@ public class NewGameScreen extends Activity {
 	 */
 	public void onClickSearchPlayer(View view) {
 		Log.d(TAG, "Clicked Search for player");
-		Button b = (Button) view;
 		Intent intent = new Intent (getApplicationContext(), SearchPlayerActivity.class);
-		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		startActivity(intent);
 	}
 }

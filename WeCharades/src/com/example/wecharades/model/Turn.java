@@ -1,10 +1,12 @@
 package com.example.wecharades.model;
 
+import java.io.Serializable;
+
 /**
  * This class represents a turn in a game.
  *
  */
-public class Turn {
+public class Turn implements Serializable {
 	private String gameId;
 	private int turnNumber;
 	private int state;
