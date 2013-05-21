@@ -65,6 +65,7 @@ public class VideoUploadPresenter extends Presenter {
 		String turnNumber = String.valueOf(turn.getTurnNumber());
 		String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
 		turn.setVideoLink(serverPath + fileName);
+		//update videolink
 		return serverPath;
 	}
 	

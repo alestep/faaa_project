@@ -13,7 +13,9 @@ import com.parse.ParseUser;
  *
  */
 public class Model {
+	//Two maps for games for increased speed
 	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
+	private HashMap<String, Game> gameIdList = new HashMap<String, Game>();
 	//Two maps for player names and id:s. The second one is used for increased speed
 	private HashMap<String, Player> storedPlayers = new HashMap<String, Player>();
 	private HashMap<String, String> storedPlayerNames = new HashMap<String, String>();
@@ -60,8 +62,10 @@ public class Model {
 			tempTurns = gameList.get(game);
 			gameList.remove(game);
 			gameList.put(game,tempTurns);
+			gameIdList.put(game.getGameId(), game);
 		} else{
 			gameList.put(game, new ArrayList<Turn>(7));
+			gameIdList.put(game.getGameId(), game);
 		}
 
 	}
@@ -73,6 +77,15 @@ public class Model {
 	public ArrayList<Game> getGames(){
 		return new ArrayList<Game>(gameList.keySet());
 	}
+	
+	/**
+	 * Gets a game from its game id
+	 * @param parseId
+	 * @return a Game, or null it does not exist
+	 */
+	public Game getGame(String parseId){
+		return gameIdList.get(parseId);
+	}
 
 	/**
 	 * Removes a game form the model
@@ -80,6 +93,7 @@ public class Model {
 	 * @return - true if the game was in the list, false otherwise
 	 */
 	public boolean removeGame(Game game){
+		gameIdList.remove(game.getGameId());
 		return gameList.remove(game) != null;
 	}
 
@@ -145,8 +159,8 @@ public class Model {
 
 	/**
 	 * Used to get a player representation from a username
-	 * @param username - the player username
-	 * @return a Player
+	 * @param parseId - the player id
+	 * @return a Player or null if not found
 	 */
 	public Player getPlayerById(String parseId){
 		return storedPlayers.get(parseId);
@@ -179,15 +193,6 @@ public class Model {
 		storedPlayers.remove(currentPlayer.getParseId());
 		storedPlayerNames.remove(currentPlayer.getName());
 		currentPlayer = null;
-	}
-
-	/**
-	 * Called in order to check if a player exist on the internal memory
-	 * @param player
-	 * @return
-	 */
-	public boolean playerIsCached(Player player){
-		return storedPlayers.containsKey(player);
 	}
 
 }
