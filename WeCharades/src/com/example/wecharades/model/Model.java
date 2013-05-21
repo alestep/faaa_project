@@ -1,6 +1,7 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -45,9 +46,9 @@ public class Model {
 	 * Updates a list of games. If a game is not existant, it will be added to the list. 
 	 * @param games
 	 */
-	public void updateGameList(ArrayList<Game> games){
+	public void putGameList(ArrayList<Game> games){
 		for(Game game : games){
-			updateGame(game);
+			putGame(game);
 		}
 	}
 
@@ -55,7 +56,7 @@ public class Model {
 	 * Updates a game in the internal list of games. Will also create new games that does not exist.
 	 * @param game - the game to be updated
 	 */
-	public void updateGame(Game game) throws NoSuchElementException{
+	public void putGame(Game game){
 		//This is actually kind of fast, although it might look a bit weird.
 		ArrayList<Turn> tempTurns;
 		if(gameList.containsKey(game)){
@@ -92,9 +93,9 @@ public class Model {
 	 * @param game - the game to be deleted
 	 * @return - true if the game was in the list, false otherwise
 	 */
-	public boolean removeGame(Game game){
+	public void removeGame(Game game){
 		gameIdList.remove(game.getGameId());
-		return gameList.remove(game) != null;
+		gameList.remove(game);
 	}
 
 	/**
@@ -104,8 +105,9 @@ public class Model {
 	 * @param turn - the turn of the game
 	 * @throws NoSuchElementException if no game is found
 	 */
-	public void updateTurn(Game game, Turn turn){
-		if(!gameList.containsKey(game))
+	public void putTurn(Turn turn){
+		Game game = getGame(turn.getGameId());
+		if( !gameList.containsKey(game))
 			throw new NoSuchElementException();
 		ArrayList<Turn> listOfTurns = gameList.get(game);
 		listOfTurns.remove(turn.getTurnNumber()); //Removes the old copy of the turn
@@ -118,9 +120,9 @@ public class Model {
 	 * @param turnList
 	 * @throws NoSuchElementException if no game is found
 	 */
-	public void updateTurns(Game game, ArrayList<Turn> turnList) throws NoSuchElementException{
+	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
 		for(Turn turn : turnList) {
-			updateTurn(game, turn);
+			putTurn(turn);
 		}
 	}
 
@@ -132,16 +134,42 @@ public class Model {
 	public ArrayList<Turn> getTurns(Game game){
 		return gameList.get(game);
 	}
+	
+	/**
+	 * Returns the current turn from the model
+	 * @param game - the game to fetch from
+	 * @return a Turn
+	 */
+	public Turn getCurrentTurn(Game game){
+		return gameList.get(game).get(game.getTurn()-1);
+	}
 
 	//Players ---------------------------------------------------------------
-
+	
+	public boolean playerIsCached(Player player){
+		return storedPlayers.containsKey(player.getParseId());
+	}
+	
 	/**
 	 * Puts a player in stored players 
 	 * @param player - the player to be stored
+	 * @return if the player was added or not
 	 */
 	public void putPlayer(Player player){
-		storedPlayers.put(player.getParseId(),player);
-		storedPlayerNames.put(player.getName(), player.getParseId());
+		if(!playerIsCached(player)){
+			storedPlayers.put(player.getParseId(),player);
+			storedPlayerNames.put(player.getName(), player.getParseId());
+		}
+	}
+	
+	/**
+	 * Puts a collection of players into the model
+	 * @param players - a collection of players
+	 */
+	public void putPlayers(Collection<Player> players){
+		for(Player player : players){
+			putPlayer(player);
+		}
 	}
 
 	/**
@@ -170,7 +198,7 @@ public class Model {
 	 * Designates a player as the current player. If the player does not exist,  
 	 *  it gets added.
 	 */
-	public void setCurrentPlayer(){
+	public void setCurrentPlayer(Player player){
 		ParseUser parseUser = ParseUser.getCurrentUser();
 		currentPlayer = new Player(parseUser.getObjectId(), 
 				parseUser.getString(Database.PLAYER_USERNAME_NATURAL), 

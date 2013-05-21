@@ -27,7 +27,7 @@ public abstract class Presenter {
 	 */
 	public Presenter(Activity activity) {
 		this.activity = activity;
-		this.db = Database.getDatabaseConnection(activity);
+		this.db = Database.getDatabaseInstance(activity);
 		this.model = Model.getModelInstance();
 	}
 	
