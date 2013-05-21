@@ -131,6 +131,6 @@ public abstract class Presenter {
 		activity.startActivity(i);
 		// Close Registration View
 		//TODO I do not think we should do this, at least not for the start screen!
-		activity.finish();
+		//activity.finish();
 	}
 }

@@ -381,7 +381,7 @@ public class Database {
 	 * Send an invite to another player
 	 * 
 	 * @param inviter - the inviter
-	 * @param invitee - the player whe receives the invite
+	 * @param invitee - the player who receives the invite
 	 */
 	public void invitePlayer(Player inviter, Player invitee) {
 		ParseObject invite = new ParseObject(INVITE);

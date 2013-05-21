@@ -50,9 +50,6 @@ public class StartActivity extends Activity {
 		// Sets the View Layer
 		setContentView(R.layout.start_screen);
 		
-		// Gat a reference to the dispalyUser field
-		displayUser = (TextView) findViewById(R.id.user_display);
-		
 		// Get a reference to the ListView holder
         gameListView = (ListView) this.findViewById(R.id.game_list);
 		
@@ -60,8 +57,9 @@ public class StartActivity extends Activity {
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 		
+		// Gat a reference to the dispalyUser field
+		displayUser = (TextView) findViewById(R.id.user_display);
 		
-	//---------	
 		// Sets the presenter
 		presenter = new StartPresenter (this);
 		
@@ -74,7 +72,7 @@ public class StartActivity extends Activity {
 
 	}
 
-	public void onStart(Bundle savedStateBundle){
+	public void onStart(){
 		super.onStart();
 		
 		//TODO here the code for updating the view should be included.

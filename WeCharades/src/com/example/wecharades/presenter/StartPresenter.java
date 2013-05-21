@@ -26,9 +26,9 @@ public class StartPresenter extends Presenter {
 	private Map<String, ArrayList<Game>> separatedList;
 	
 	
-	public StartPresenter(Activity activity) {
+	public StartPresenter(StartActivity activity) {
 		super(activity);
-		this.activity = (StartActivity) activity;
+		this.activity = activity;
 		separatedList = new HashMap<String, ArrayList<Game>>();
 		
 		//Checks if the there is any user logged in
