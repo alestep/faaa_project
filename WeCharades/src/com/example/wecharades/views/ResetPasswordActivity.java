@@ -1,26 +1,14 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.presenter.LoginPresenter;
-import com.example.wecharades.presenter.Presenter;
-import com.example.wecharades.presenter.ResetPresenter;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.example.wecharades.R;
+import com.example.wecharades.presenter.ResetPresenter;
 
 
 public class ResetPasswordActivity extends GenericActivity {
@@ -37,9 +25,6 @@ public class ResetPasswordActivity extends GenericActivity {
 		setContentView(R.layout.resetpassword);
 		//initializing the presenter
 		presenter = new ResetPresenter(this);
-
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		presenter.initialize();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);

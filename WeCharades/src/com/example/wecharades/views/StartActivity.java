@@ -1,9 +1,9 @@
 package com.example.wecharades.views;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,16 +16,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wecharades.GameAdapter;
 import com.example.wecharades.R;
 import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.StartPresenter;
-import com.parse.ParseUser;
 
-
-public class StartActivity extends GenericActivity {
-
+/**
+ * 
+ * @author Alexander
+ *
+ */
+public class StartActivity extends Activity {
 	protected static final String TAG = "StartScreen";
 	public final static String ITEM_TITLE = "title";
 	public final static String ITEM_CAPTION = "caption";
@@ -36,11 +37,67 @@ public class StartActivity extends GenericActivity {
 	private SeparatedListAdapter adapter;
 
 	// ListView Contents
-	private ListView journalListView;
+	private ListView gameListView;
 
-	// String which represents the user's user name
-	private String currentUser;
-	private String currentUserId;
+	private TextView displayUser; 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// Sets the View Layer
+		setContentView(R.layout.start_screen);
+		// Gat a reference to the dispalyUser field
+		displayUser = (TextView) findViewById(R.id.user_display);
+		
+		// Get a reference to the ListView holder
+        gameListView = (ListView) this.findViewById(R.id.game_list);
+		
+		// Inflate Start screen header in the ListView
+		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
+		gameListView.addHeaderView(header);
+		
+		
+	//---------	
+		// Sets the presenter
+		presenter = new StartPresenter (this);
+		
+		//Check if the user is logged in or saved in the cache
+		//presenter.checkLogin();		
+
+		//TODO All this should probably be done in PRESENTER?
+		// Create the ListView Adapter
+		adapter = new SeparatedListAdapter(this);
+
+	}
+
+	public void onStart(Bundle savedStateBundle){
+		super.onStart();
+		
+		//TODO here the code for updating the view should be included.
+		presenter.update();
+		
+		// Set the adapter on the ListView holder //TODO Assign adapter in presenter?
+		gameListView.setAdapter(presenter.setAdapter(adapter));
+        // Listen for Click events
+        gameListView.setOnItemClickListener(new OnItemClickListener() {
+        	@Override
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+        		Game item = (Game) adapter.getItem(position-1);
+        		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
+        		intent.putExtra("GameId", item);
+            }
+        });
+	}
+
+	/**
+	 * Logout and go back to login screen
+	 * @param view
+	 */
+	public void onClickLogout(View view) {
+		presenter.logOut();
+		//Redirecting to LoginActivity
+		finish(); //Should this be here? /Felix
+	}
+
 
 	public Map<String, ?> createItem(String title, String caption){
 		Map<String, String> item = new HashMap<String, String>();
@@ -49,119 +106,17 @@ public class StartActivity extends GenericActivity {
 		return item;
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.start_screen);
-		
-		// Get a reference to the ListView holder
-		journalListView = (ListView) this.findViewById(R.id.list_journal);
-
-		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, journalListView, false);
-
-		journalListView.addHeaderView(header);
-
-		// Create the ListView Adapter
-		adapter = new SeparatedListAdapter(this);
-
-		// Sets the presenter
-		presenter = new StartPresenter (this);
-		presenter.initialize();
-
-
-		//Copy and Paste this into every onCreate method to be able to use Parse
-		//Parse.initialize(this, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
-
-		//Check if the user is logged in or saved in the cache
-		//TODO: Fixa en central isLoggedIn()-funktion senare?
-		ParseUser user = ParseUser.getCurrentUser();
-		if(user == null ) {
-			// user is not logged in, show login screen
-			Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-			login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(login);
-			finish();
-		}else {
-			//Sets the current user's user name
-			currentUser = ParseUser.getCurrentUser().getUsername();
-			TextView tv = (TextView) findViewById(R.id.textView1);
-			//TODO: Fixa så att det är natural username istället.
-			tv.setText(currentUser);
-		}
-
-		presenter.parseGameLists(currentUser); 
-
-		ArrayList<Game> yourTurnList = presenter.getYourTurnList();
-		Log.d(TAG, " " + yourTurnList.isEmpty());
-		ArrayList<Game> opponentsTurnList = presenter.getOpponentsTurnList();
-		ArrayList<Game> finishedList = presenter.getFinishedList();
-
-
-		if (!yourTurnList.isEmpty()) {
-			GameAdapter yourTurnAdapter = new GameAdapter(this, yourTurnList);
-			adapter.addSection("Your turn", yourTurnAdapter);
-		}
-
-		if (!opponentsTurnList.isEmpty()) {
-			GameAdapter opponentsTurnAdapter = new GameAdapter(this, opponentsTurnList);
-			adapter.addSection("Opponent's turn", opponentsTurnAdapter);
-		}
-
-		if (!finishedList.isEmpty()) {
-			GameAdapter finishedAdapter = new GameAdapter(this, finishedList);
-			adapter.addSection("Finished games", finishedAdapter);
-		}
-
-		// Set the adapter on the ListView holder
-		journalListView.setAdapter(adapter);
-
-		// Listen for Click events
-		journalListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-				Game item = (Game) adapter.getItem(position-1);
-				Toast.makeText(getApplicationContext(), item.getPlayerId2().getName(), Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
-
-	/**
-	 * Logout and go back to login screen
-	 * @param view
-	 */
-	public void onClickLogout(View view) {
-		ParseUser.logOut();
-		//Redirecting to LoginActivity
-		Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-		login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(login);
-		// Closing start screen
-		finish();
-	}
-
 	/**
 	 * Go to New Game screen
 	 * @param view
 	 */
 	public void onClickNewGame(View view) {
 		Button b = (Button) view;
-		//                try {
-		//                Player p1 = Database.getPlayer(currentUser);
-		//                Player p2 = Database.getPlayer("adam");
-		//                Database.createGame(p1, p2);
-		//                Database.createGame(p2, p1);
-		//                
-		//                }catch (Exception e) {
-		//                	
-		//                }
-
-
-		//presenter.showToast(getApplicationContext(), b.getText().toString());
 		Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		startActivity(intent);
 	}
+
 
 	/**
 	 * Nothing happens so far...
@@ -174,11 +129,8 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
 		startActivity(intent);
 	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void setDisplayName(String user){
+		displayUser.setText(user);
 	}
-
 }

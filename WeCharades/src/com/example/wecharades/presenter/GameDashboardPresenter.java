@@ -36,7 +36,7 @@ public class GameDashboardPresenter extends Presenter {
 	private ArrayList<Turn> getTurnList() {
 		ArrayList<Turn> turnList = null;
 		try {
-			turnList = Database.getTurns(game);
+			turnList = db.getTurns(game);
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

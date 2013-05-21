@@ -1,5 +1,6 @@
 package com.example.wecharades.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -9,14 +10,14 @@ import java.util.Date;
  * @author Anton Dahlström
  *
  */
-public class Game {
-	private String gameId;
-	private Player playerId1;
-	private Player playerId2;
-	private Player currentPlayer;
-	private int turn;
+public class Game implements Serializable { //TODO make this class truly Serializable later
+	private String 	gameId;
+	private Player 	playerId1;
+	private Player 	playerId2;
+	private Player 	currentPlayer;
+	private int 	turn;
 	private boolean isFinished;
-	private Date lastPlayed;
+	private Date 	lastPlayed;
 
 	/**
 	 * Constructor for a local representation of a game

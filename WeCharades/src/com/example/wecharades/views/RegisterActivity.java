@@ -1,6 +1,5 @@
 package com.example.wecharades.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,13 +29,9 @@ public class RegisterActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
-		//initializing the presenter
+		
+		// Set the presenter
 		presenter = new RegisterPresenter(this);
-
-
-
-		//Parse Stuff - Copy and Paste this into every onCreate method to be able to use Parse
-		presenter.initialize();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);

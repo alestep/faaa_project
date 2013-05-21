@@ -10,36 +10,31 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
+
+import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 public abstract class Presenter {
+
+	protected Database db;
+	protected Model model;
+	protected Activity activity;
 
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	private Activity activity;
 	public Presenter(Activity activity) {
 		this.activity = activity;
+		this.db = Database.getDatabaseConnection(activity);
+		this.model = Model.getModelInstance();
 	}
-	
-	//TODO - this should be moved to the database - we should also make the database an object (possibly singleton)!
-	public void initialize(){
-		Parse.initialize(activity.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+
+	public ParseUser getCurrentUser() {
+		return ParseUser.getCurrentUser();
 	}
-	
-	/**
-	 * Enables access to username ------------------- use getCurrentuser.getUsername() instead! @alexander 
-	 * @return the current user's username
-	 */
-	/*
-	public String getCurrentUser(){
-		return ParseUser.getCurrentUser().getUsername();
-	}*/
-	
+
 	/**
 	 * Enable or disable all clickable objects in view
 	 * @param view
@@ -85,7 +80,7 @@ public abstract class Presenter {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * A method to show a toast
 	 * @param context
@@ -122,10 +117,6 @@ public abstract class Presenter {
 		enableOrDisableViews(view);
 	}
 	
-	public ParseUser getCurrentUser() {
-		return ParseUser.getCurrentUser();
-	}
-	
 	/**
 	 * Go to the login screen
 	 */
@@ -134,7 +125,7 @@ public abstract class Presenter {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view
+		//TODO I do not think we should do this, at least not for the start screen!
 		activity.finish();
-		
 	}
 }

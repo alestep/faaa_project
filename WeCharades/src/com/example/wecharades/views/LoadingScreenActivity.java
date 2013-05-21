@@ -1,12 +1,11 @@
 package com.example.wecharades.views;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.layout;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import com.example.wecharades.R;
 
 public class LoadingScreenActivity extends Activity
 {

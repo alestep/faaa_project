@@ -23,7 +23,6 @@ public class GameDashboardActivity extends GenericActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen);
 		presenter = new GameDashboardPresenter(this);
-		presenter.initialize();
 		title = (TextView) findViewById(R.id.titleText);
 		myTable = (TableLayout) findViewById(R.id.table);	
 
@@ -54,14 +53,14 @@ public class GameDashboardActivity extends GenericActivity {
 //			Log.d("null", "p1 eller p2 Šr null");
 //		} 
 		
-		Game g = null;
-		try {
-			g = Database.getGame("sgdgYN1nNG");
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		presenter.createDashboard(g, myTable);
+//		Game g = null;
+//		try {
+//			g = Database.getGame("sgdgYN1nNG");
+//		} catch (DatabaseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		presenter.createDashboard(g, myTable);
 	}
 
 	public void updateButton(String string) {
