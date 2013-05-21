@@ -112,7 +112,8 @@ public class StartActivity extends Activity {
 	 */
 	public void onClickNewGame(View view) {
 		Button b = (Button) view;
-		Intent intent = new Intent (getApplicationContext(), NewGameScreen.class);
+		//presenter.showToast(getApplicationContext(), b.getText().toString());
+		Intent intent = new Intent (getApplicationContext(), NewGameActivity.class);
 		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		startActivity(intent);
 	}

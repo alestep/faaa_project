@@ -13,15 +13,15 @@ import com.example.wecharades.model.Game;
 
 public class GameAdapter extends ArrayAdapter<Game> {
 
-	private Context context;
 	private ArrayList<Game> items;
-	private LayoutInflater vi;
+	private LayoutInflater li;
+	private Context context;
 
 	public GameAdapter(Context context, ArrayList<Game> items) {
-		super(context,0, items);
-		this.context = context;
+		super(context, 0, items);
 		this.items = items;
-		vi = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.context = context;
+		li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 
 		final Game i = items.get(position);
 		if (i != null) {
-				v = vi.inflate(R.layout.list_item_active_game, null);
+				v = li.inflate(R.layout.list_item_active_game, null);
 				final TextView title = (TextView) v.findViewById(R.id.opponent);
 				final TextView subtitle = (TextView) v.findViewById(R.id.score);
 				

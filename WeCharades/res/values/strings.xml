@@ -20,6 +20,7 @@
     <string name="search_player">Find player</string>
     <string name="search_hint">Enter username</string>
     <string name="search_result">Search result</string>
+    <string name="play">Play</string>
     
     <!-- The label for use as a searchable item -->
     <string name="game_view_button_text">Create random game</string>
