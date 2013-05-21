@@ -28,6 +28,13 @@
         <activity
             android:name=".views.StartActivity"
             android:label="@string/menu" >
+
+            <!-- DEFAULT STARTING SCREEN -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- New Game Activity -->
@@ -53,13 +60,6 @@
             android:name=".views.GameDashboardActivity"
             android:configChanges="orientation"
             android:label="@string/game" >
-
-            <!-- DEFAULT STARTING SCREEN -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Login Activity -->

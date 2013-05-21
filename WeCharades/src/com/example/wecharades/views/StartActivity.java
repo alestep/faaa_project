@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
-import com.example.wecharades.SeparatedListAdapter;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
 /**
