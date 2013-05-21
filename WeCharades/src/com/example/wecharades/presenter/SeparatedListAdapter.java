@@ -3,15 +3,14 @@ package com.example.wecharades.presenter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.layout;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+
+import com.example.wecharades.R;
 
 public class SeparatedListAdapter extends BaseAdapter {
 	public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();

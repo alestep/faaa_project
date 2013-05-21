@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class Game implements Serializable { //TODO make this class truly Serializable later
 	private String 	gameId;
-	private Player 	playerId1;
-	private Player 	playerId2;
+	private Player 	player1;
+	private Player 	player2;
 	private Player 	currentPlayer;
 	private int 	turn;
 	private boolean isFinished;
@@ -30,8 +30,8 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 	 */
 	public Game(String gameId, Player p1, Player p2, Player currentPlayer, int turn, boolean finished, Date lastPlayed){
 		this.gameId = gameId;
-		this.playerId1 = p1;
-		this.playerId2 = p2;
+		this.player1 = p1;
+		this.player2 = p2;
 		this.currentPlayer = currentPlayer;
 		this.turn = turn;
 		this.isFinished = finished;
@@ -42,12 +42,12 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 		return gameId;
 	}
 
-	public Player getPlayerId1() {
-		return playerId1;
+	public Player getPlayer1() {
+		return player1;
 	}
 
-	public Player getPlayerId2() {
-		return playerId2;
+	public Player getPlayer2() {
+		return player2;
 	}
 
 	public Player getCurrentPlayer() {
@@ -68,7 +68,7 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 
 	public void setCurrentPlayer(Player currentPlayer) {
 		//Check if the player is part of this turn
-		if(currentPlayer.equals(playerId1) || currentPlayer.equals(playerId2))
+		if(currentPlayer.equals(player1) || currentPlayer.equals(player2))
 			this.currentPlayer = currentPlayer;
 	}
 

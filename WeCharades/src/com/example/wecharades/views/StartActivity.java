@@ -82,7 +82,7 @@ public class StartActivity extends Activity {
         	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
         		Game item = (Game) adapter.getItem(position-1);
         		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
-        		intent.putExtra("game", item);
+        		intent.putExtra("GameId", item);
             }
         });
 	}
@@ -95,14 +95,6 @@ public class StartActivity extends Activity {
 		presenter.logOut();
 		//Redirecting to LoginActivity
 		finish(); //Should this be here? /Felix
-	}
-
-
-	public Map<String, ?> createItem(String title, String caption){
-		Map<String, String> item = new HashMap<String, String>();
-		item.put(ITEM_TITLE, title);
-		item.put(ITEM_CAPTION, caption);
-		return item;
 	}
 
 	/**

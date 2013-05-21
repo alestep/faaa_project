@@ -10,21 +10,23 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
+import com.example.wecharades.views.StartActivity;
 
 public class GameAdapter extends ArrayAdapter<Game> {
 
 	private ArrayList<Game> games;
 	private LayoutInflater li;
-	private Context context;
+	private StartActivity activity;
+	private Player currentPlayer;
 
-	public GameAdapter(Context context, ArrayList<Game> items) {
-		super(context, 0, items);
-		this.games = items;
-		this.context = context;
-		li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public GameAdapter(StartActivity activity, ArrayList<Game> games, Player currentPlayer) {
+		super(activity, 0, games);
+		this.games = games;
+		this.activity = activity;
+		this.currentPlayer = currentPlayer;
+		li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -38,8 +40,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 				final TextView subtitle = (TextView) v.findViewById(R.id.score);
 				
 				if (title != null)
-					//TODO: Bestäm hur vi ska göra med detta. Skall vi skicka med username till denna klass eller ej?
-					title.setText( true ? game.getPlayerId2().getName() : game.getPlayerId1().getName()); 
+					title.setText(game.getPlayer1().equals(currentPlayer) ? game.getPlayer1().getName() : game.getPlayer2().getName());
 				if(subtitle != null)
 					//TODO: Undersök hur vi kan hämta score här.
 					subtitle.setText("The score is 5-6");
