@@ -26,17 +26,7 @@ public class GameDashboardPresenter extends Presenter {
 
 	public void createDashboard(TableLayout table) {
 		//Get the game from the clicked object in StartActivity
-		//TODO: use this later when StartActivity is implemented:
-		//this.game = (Game) activity.getIntent().getExtras().getSerializable("game"); //TODO: check if null?
-
-		//Temporary until StartActivity is implemented
-		Game g = null;
-		try {
-			g = db.getGame("sgdgYN1nNG");
-		} catch (DatabaseException e) {
-			e.printStackTrace();
-		}
-		this.game = g;
+		this.game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
 		generateTitle();
 		ArrayList<Turn> turnList = getTurnList();
 		ArrayList<Button> buttonList = getAllButtons(table);
