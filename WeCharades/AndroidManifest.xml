@@ -24,7 +24,7 @@
         android:label="@string/app_name"
         android:theme="@style/SectionListViewTheme" >
 
-        <!-- Start screen Activity -->
+        <!-- Start Screen Activity -->
         <activity
             android:name=".views.StartActivity"
             android:label="@string/menu" >
@@ -34,25 +34,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+        	
+        <!-- New Game Activity -->
         <activity
-            android:name=".views.NewGameScreen"
+            android:name=".views.NewGameActivity"
             android:label="@string/new_game">
         </activity>
         
-        <!-- Search player Activity -->
+        <!-- Search Player Activity -->
         <activity
             android:name=".views.SearchPlayerActivity"
             android:label="@string/player" >
         </activity>
         
-        <!-- Search result Activity -->
+        <!-- Search Result Activity -->
         <activity
             android:name=".views.SearchResultActivity"
             android:label="@string/game" >
         </activity>
         
-        <!-- Game dashboard Activity -->
+        <!-- Game Dashboard Activity -->
         <activity
             android:name=".views.GameDashboardActivity"
             android:label="@string/game" >
@@ -76,26 +77,6 @@
             android:label="Reset Password" >
         </activity>
 
-        <!-- DROPBOX Activity -->
-        <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
-            android:configChanges="orientation|keyboard"
-            android:launchMode="singleTask" >
-            <intent-filter>
-
-                <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-qaf79ngsv26o0dd" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- Not default anymore... -->
-        <activity android:name=".views.Main" />
-
         <!-- VideoUploadActivity -->
         <activity
             android:name=".views.VideoUploadActivity"
@@ -104,7 +85,7 @@
 
         <!-- CaptureVideo Activity -->
         <activity
-            android:name="com.example.wecharades.presenter.CaptureVideo"
+            android:name=".presenter.CaptureVideo"
             android:configChanges="orientation"
             android:label="@string/app_name" >
             <intent-filter>

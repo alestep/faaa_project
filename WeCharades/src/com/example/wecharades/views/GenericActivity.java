@@ -15,7 +15,9 @@ public abstract class GenericActivity extends Activity {
 		getTextArea().setText(error);
 	}
 	
-	//To be implemented
+	//To be implemented.
 	public abstract TextView getTextArea();
+	
+	//TODO insert spinners here? Also, could we add the spinner area in this class and have it included in the subclasses?
 	
 }

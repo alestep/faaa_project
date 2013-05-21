@@ -8,13 +8,10 @@ package com.example.wecharades.views;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Environment;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.GuessCharadePresenter;
-import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
 

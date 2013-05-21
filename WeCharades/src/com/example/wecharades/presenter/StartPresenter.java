@@ -6,8 +6,6 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.wecharades.GameAdapter;
 import com.example.wecharades.SeparatedListAdapter;
@@ -27,15 +25,31 @@ public class StartPresenter extends Presenter {
 	private StartActivity activity;
 	private Map<String, ArrayList<Game>> separatedList;
 	
-	/**
-	 * 
-	 * @param activity
-	 */
+	
 	public StartPresenter(Activity activity) {
 		super(activity);
 		this.activity = (StartActivity) activity;
 		separatedList = new HashMap<String, ArrayList<Game>>();
-
+		
+		//Checks if the there is any user logged in
+		checkLogin();
+	}
+	
+	public void update(){
+		activity.setDisplayName(model.getCurrentPlayer().getName());
+	}
+	
+	/**
+	 * Check if the there is a user logged in. 
+	 * 	Will call the activity and update username if this is true
+	 * 
+	 */
+	public void checkLogin() {
+		if(getCurrentUser() == null){
+			goToLoginActivity();
+		} else{
+			model.setCurrentPlayer();//TODO should this be removed after we have created a more persistent model?
+		}
 	}
     
 	/**
@@ -44,7 +58,7 @@ public class StartPresenter extends Presenter {
 	private void parseGameLists() {
 		try {
 			//TODO This is ugly and should not be here later
-			ArrayList<Game> gameList = db.getGames(db.getPlayerById(getCurrentUser().getObjectId()));
+			ArrayList<Game> gameList = db.getGames(model.getCurrentPlayer());
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		putInList("Finished games", g);
@@ -80,28 +94,12 @@ public class StartPresenter extends Presenter {
 	}
 	
 	/**
-	 * 
-	 * @param displayUser
-	 */
-	public void checkLogin(View displayUser) {
-		ParseUser currentUser = getCurrentUser();
-	    if(currentUser == null ) {
-	    	// user is not logged in, show login screen
-	    	goToLoginActivity();
-	    }else {
-	    	//Sets the current user's user name
-	    	((TextView) displayUser).setText(currentUser.get("naturalUsername").toString());
-	    	//TODO Temp fix to disable errors
-	    	//((TextView) displayUser).setText(currentUser.get("naturalUsername"));
-	    }
-		
-	}
-	
-	/**
-	 * 
+	 * Log out the current user
 	 */
 	public void logOut() {
 		ParseUser.logOut();
+		model.logOutCurrentPlayer();
 		goToLoginActivity();
 	}
+	
 }

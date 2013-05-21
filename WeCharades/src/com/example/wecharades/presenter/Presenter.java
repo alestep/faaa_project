@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
+
+import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 /**
@@ -21,10 +21,11 @@ import com.parse.ParseUser;
  *
  */
 public abstract class Presenter {
-	
+
 	protected Database db;
+	protected Model model;
 	protected Activity activity;
-	
+
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
@@ -32,17 +33,13 @@ public abstract class Presenter {
 	public Presenter(Activity activity) {
 		this.activity = activity;
 		this.db = Database.getDatabaseConnection(activity);
+		this.model = Model.getModelInstance();
 	}
-	
-	/**
-	 * Enables access to username ------------------- use getCurrentuser.getUsername() instead! @alexander 
-	 * @return the current user's username
-	 */
-	/*
-	public String getCurrentUser(){
-		return ParseUser.getCurrentUser().getUsername();
-	}*/
-	
+
+	public ParseUser getCurrentUser() {
+		return ParseUser.getCurrentUser();
+	}
+
 	/**
 	 * Enable or disable all clickable objects in view
 	 * @param view
@@ -88,7 +85,7 @@ public abstract class Presenter {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * A method to show a toast
 	 * @param context
@@ -125,10 +122,6 @@ public abstract class Presenter {
 		enableOrDisableViews(view);
 	}
 	
-	public ParseUser getCurrentUser() {
-		return ParseUser.getCurrentUser();
-	}
-	
 	/**
 	 * Go to the login screen
 	 */
@@ -137,7 +130,7 @@ public abstract class Presenter {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close Registration View
+		//TODO I do not think we should do this, at least not for the start screen!
 		activity.finish();
-		
 	}
 }
