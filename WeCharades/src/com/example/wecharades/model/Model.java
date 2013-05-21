@@ -17,10 +17,17 @@ public class Model {
 	//Two maps for games for increased speed
 	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
 	private HashMap<String, Game> gameIdList = new HashMap<String, Game>();
+	
 	//Two maps for player names and id:s. The second one is used for increased speed
 	private HashMap<String, Player> storedPlayers = new HashMap<String, Player>();
 	private HashMap<String, String> storedPlayerNames = new HashMap<String, String>();
 	private Player currentPlayer = null;
+	
+	/*
+	 * Invitations are stored locally, in order to check that two invites aren't sent to one person (weak check).
+	 */
+	private ArrayList<Invitation> sentInvitations = new ArrayList<Invitation>(); 
+	
 
 	//Singleton
 	private static Model singleModel;
@@ -221,6 +228,25 @@ public class Model {
 		storedPlayers.remove(currentPlayer.getParseId());
 		storedPlayerNames.remove(currentPlayer.getName());
 		currentPlayer = null;
+	}
+	
+	//Invitations ---------------------------------------------------------------
+	//Received invitations are not needed here, as they should allways be fetched from the database.
+	
+	/**
+	 * 
+	 * @param invitation
+	 */
+	public void setSentInvitation(Invitation invitation){
+		sentInvitations.add(invitation);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<Invitation> getSentInviations(){
+		return sentInvitations;
 	}
 
 }

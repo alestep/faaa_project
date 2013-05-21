@@ -53,6 +53,13 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 	public Player getPlayer2() {
 		return player2;
 	}
+	
+	public Player getOpponent(Player otherPlayer){
+		if(otherPlayer.equals(player1) || otherPlayer.equals(player2)){
+			return (otherPlayer.equals(getPlayer1())) ? getPlayer2() : getPlayer1();
+		}
+		else return null;
+	}
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;

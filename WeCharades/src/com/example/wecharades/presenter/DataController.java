@@ -1,12 +1,14 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.TreeSet;
 
 import android.content.Context;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Model;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
@@ -21,7 +23,7 @@ import com.example.wecharades.model.Turn;
  */
 public class DataController {
 	
-	private DataController dc = null;
+	private static DataController dc = null;
 	private Model m;
 	private Database db;
 	
@@ -30,7 +32,7 @@ public class DataController {
 		m = Model.getModelInstance();
 	}
 	
-	public DataController getDataController(Context context){
+	public static DataController getDataController(Context context){
 		if(dc == null){
 			dc = new DataController(context);
 		}
@@ -63,6 +65,7 @@ public class DataController {
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
+		//TODO maybe not the most optimal way of doing things
 		return m.getCurrentPlayer();
 	}
 	
@@ -83,6 +86,14 @@ public class DataController {
 		db.registerPlayer(inputNickname, inputEmail, inputPassword,inputRepeatPassword);
 	}
 	
+	/**
+	 * Resets the password connected to the provided email address
+	 * @param email - The email address connected to an account.
+	 * @throws DatabaseException - if the connection fails 
+	 */
+	public void resetPassword(String email) throws DatabaseException{
+		db.resetPassword(email);
+	}
 	
 	//Players -----------------------------------------------------------
 	
@@ -208,13 +219,61 @@ public class DataController {
 	
 	//Turn -----------------------------------------------------------
 	/**
-	 * Get all turns for a game. The latest turn is fetched from the database.
-	 * @param game
-	 * @return a list of turns
+	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
+	 * @param game - The game who's turns to fetch
+	 * @return An ArrayList of turns
 	 */
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
 	
-	//TODO Invitations
+	
+	//Invitation -----------------------------------------------------------
+	
+	/**
+	 * A method to get all current invitations from the database
+	 * @return
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Invitation> getInvitations() throws DatabaseException{
+		ArrayList<Invitation> invitations = db.getInvitations(getCurrentPlayer());
+		Date currentTime = new Date();
+		long timeDifference;
+		ArrayList<Invitation> oldInvitations = new ArrayList<Invitation>();
+		for(Invitation inv : invitations){
+			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
+			if(timeDifference > 72){ //if the invitations are considered to old
+				oldInvitations.add(inv);
+				invitations.remove(inv);
+			}
+		}
+		db.removeInvitations(oldInvitations);
+		return invitations;
+	}
+	
+	/**
+	 * Retrieves a list of all invitations sent form this device.
+	 * @return An ArrayList containing Invitations
+	 */
+	public ArrayList<Invitation> getSentInvitations(){
+		return m.getSentInviations();
+	}
+	
+	/**
+	 * Send an invitation to another player
+	 * @param invitation
+	 */
+	public void sendInvitation(Invitation invitation){
+		m.setSentInvitation(invitation);
+		db.sendInvitation(invitation);
+	}
+	
+	/**
+	 * Send an invitation to another Player (based on the Player class)
+	 * @param player The player-representation of the player
+	 */
+	public void sendInvitation(Player player){
+		sendInvitation(new Invitation(m.getCurrentPlayer(), player, new Date()));
+	}
+	
 }

@@ -1,9 +1,5 @@
 package com.example.wecharades.views;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +22,7 @@ import com.example.wecharades.presenter.StartPresenter;
  * @author Alexander
  *
  */
-public class StartActivity extends Activity {
+public class StartActivity extends GenericActivity {
 	protected static final String TAG = "StartScreen";
 	public final static String ITEM_TITLE = "title";
 	public final static String ITEM_CAPTION = "caption";
@@ -125,5 +121,11 @@ public class StartActivity extends Activity {
 	
 	public void setDisplayName(String user){
 		displayUser.setText(user);
+	}
+
+	@Override
+	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

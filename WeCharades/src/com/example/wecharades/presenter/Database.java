@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -396,17 +397,15 @@ public class Database {
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveInBackground();
 	}
-
+	
 	/**
-	 * Send an invite to another player
-	 * 
-	 * @param inviter - the inviter
-	 * @param invitee - the player who receives the invite
+	 * Send an invitation to another player
+	 * @param inv
 	 */
-	public void invitePlayer(Player inviter, Player invitee) {
+	public void sendInvitation(Invitation inv){
 		ParseObject invite = new ParseObject(INVITE);
-		invite.put(INVITE_INVITER, inviter.getParseId());
-		invite.put(INVITE_INVITEE, invitee.getParseId());
+		invite.put(INVITE_INVITER, inv.getInviter().getParseId());
+		invite.put(INVITE_INVITEE, inv.getInvitee().getParseId());
 		invite.saveInBackground();
 	}
 
@@ -435,30 +434,34 @@ public class Database {
 	}
 
 	/**
-	 * Removes an invitation from the database - called when a user declines or accepts an invitation.
-	 * 	This is a complete deletion - there is no need to call the method with different 
-	 * 	combinations of the players, as this is done automatically.
+	 * Removes an invitation from the database
 	 * 
-	 * @param player1 - one player
-	 * @param player2 - another player
+	 * @param inv - an invitation to delete
 	 * @throws DatabaseException
 	 */
-	public void removeInvitation(Player player1, Player player2) throws DatabaseException{
+	public void removeInvitation(Invitation inv) throws DatabaseException{
 		try{
 			ParseQuery query = new ParseQuery(INVITE);
-			query.whereEqualTo(INVITE_INVITER, player1.getParseId());
-			query.whereEqualTo(INVITE_INVITEE, player2.getParseId());
+			query.whereEqualTo(INVITE_INVITER, inv.getInviter().getParseId());
+			query.whereEqualTo(INVITE_INVITEE, inv.getInvitee().getParseId());
 			List<ParseObject> objectList = query.find();
-			query = new ParseQuery(INVITE);
-			query.whereEqualTo(INVITE_INVITER, player2.getParseId());
-			query.whereEqualTo(INVITE_INVITEE, player1.getParseId());
-			objectList.addAll(query.find());
 			for(ParseObject object : objectList){
 				object.delete();
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1008,"Error removing player from queue");
+		}
+	}
+	
+	/**
+	 * Removes the entire collection of Invites from the database
+	 * @param inv - a collection of invitations
+	 * @throws DatabaseException
+	 */
+	public void removeInvitations(Collection<Invitation> inv) throws DatabaseException{
+		for(Invitation invite : inv){
+			removeInvitation(invite);
 		}
 	}
 	

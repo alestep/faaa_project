@@ -2,15 +2,10 @@ package com.example.wecharades.views;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.RequestPresenter;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 

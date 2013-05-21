@@ -42,7 +42,8 @@ public class Player implements Serializable {
 	}
 	
 	public boolean equals(Player otherPlayer){
-		return this.getParseId() == otherPlayer.getParseId();
+		return otherPlayer != null 
+				&& this.getParseId() == otherPlayer.getParseId();
 	}
 	
 	public int hashCode(){
