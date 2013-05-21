@@ -62,6 +62,7 @@ public class GuessCharadePresenter extends Presenter {
 				videoView.stopPlayback();
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);//TODO: score registration: No score
+				//update score in database
 				activity.finishDialog();
 			}
 		};

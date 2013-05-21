@@ -3,6 +3,7 @@ package com.example.wecharades.presenter;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,10 +15,13 @@ import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
+import com.parse.ParseUser;
 public class GameDashboardPresenter extends Presenter {
 
 	private GameDashboardActivity activity;
 	private Game game;
+	private ArrayList<Turn> turnList;
+	private ArrayList<Button> buttonList;
 
 	public GameDashboardPresenter(GameDashboardActivity activity) {
 		super(activity);
@@ -27,10 +31,32 @@ public class GameDashboardPresenter extends Presenter {
 	public void createDashboard(TableLayout table) {
 		//Get the game from the clicked object in StartActivity
 		this.game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
+		this.turnList = getTurnList();
+		this.buttonList = getAllButtons(table);
+
 		generateTitle();
-		ArrayList<Turn> turnList = getTurnList();
-		ArrayList<Button> buttonList = getAllButtons(table);
+		updateScore();
+
 		updateButtons(turnList, buttonList);
+	}
+
+	/**
+	 * Total score per player at a specific game
+	 */
+	private void updateScore() {
+		int currentPLayersScore	= 0;
+		int opponentsScore		= 0;
+		for(Turn turn : turnList) {
+			if( turn.getAnsPlayer().getParseId().equals(model.getCurrentPlayer().getParseId()) ) {
+				currentPLayersScore += turn.getAnsPlayerScore();
+				opponentsScore		+= turn.getRecPlayerScore();
+			}  else {
+				currentPLayersScore += turn.getRecPlayerScore();
+				opponentsScore		+= turn.getAnsPlayerScore();
+			}
+				
+		}
+		activity.updateScore(currentPLayersScore, opponentsScore);
 	}
 
 	/**
@@ -79,12 +105,10 @@ public class GameDashboardPresenter extends Presenter {
 	}
 
 	/**
-	 * Makes a string based on if it's the current player's turn to answer, to record video or if the turn was already played
+	 * Update button information based on information from the Turn object
 	 * @param turn
 	 */
 	private void updateButtonInformation(Turn turn, Button button) {
-		//TODO: button.setId() or similar, probably based on turn.getId -ish...
-		//TODO: look up setTag() and getTag(); 
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
 			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
@@ -126,13 +150,13 @@ public class GameDashboardPresenter extends Presenter {
 				if(isAnsPLayer) {
 					//Go to GuessCharadeActivity
 					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
-					intent.putExtra("turn", theTurn);
+					intent.putExtra("Turn", theTurn);
 					activity.startActivity(intent);
 				}
 				else {
 					//Go to CaptureVideo
 					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
-					intent.putExtra("turn", theTurn);
+					intent.putExtra("Turn", theTurn);
 					activity.startActivity(intent);
 				}
 			}

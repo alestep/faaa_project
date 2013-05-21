@@ -7,6 +7,10 @@ import java.io.Serializable;
  *
  */
 public class Turn implements Serializable {
+	/**
+	 * auto-generated serialVersionUID
+	 */
+	private static final long serialVersionUID = 6616811397934106505L;
 	private String gameId;
 	private int turnNumber;
 	private int state;

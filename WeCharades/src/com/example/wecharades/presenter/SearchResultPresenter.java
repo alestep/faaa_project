@@ -43,11 +43,13 @@ public class SearchResultPresenter extends Presenter {
 		});
 		
 		for (Player p : players) {
-			usernames.add(p.getName());
+			if (!p.getName().equals(model.getCurrentPlayer().getName()))
+				usernames.add(p.getName());
 		}
 	}
 
 	public SearchResultAdapter performSearch(String searchString) {
+		setPlayersList();
 		SortedSet<String> resultList = usernames.subSet(searchString, searchString + Character.MAX_VALUE);
 		ArrayList<String> list = new ArrayList<String>(resultList);
 		//TODO: Kolla om det går att hämta ListViewn här. Dvs gör metoden till void!

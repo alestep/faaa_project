@@ -31,7 +31,7 @@ public class VideoUploadPresenter extends Presenter {
 	public VideoUploadPresenter(VideoUploadActivity activity) {
 		super(activity);
 		this.activity = activity;
-		this.turn = (Turn) activity.getIntent().getExtras().getSerializable("turn");
+		this.turn = (Turn) activity.getIntent().getSerializableExtra("Turn");
 	}
 	
 	/**
@@ -65,6 +65,7 @@ public class VideoUploadPresenter extends Presenter {
 		String turnNumber = String.valueOf(turn.getTurnNumber());
 		String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
 		turn.setVideoLink(serverPath + fileName);
+		//update videolink
 		return serverPath;
 	}
 	

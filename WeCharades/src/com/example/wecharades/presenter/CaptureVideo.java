@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.VideoUploadActivity;
 /**
  * 
@@ -23,12 +24,14 @@ public class CaptureVideo extends Activity {
 	final static int REQUEST_VIDEO_CAPTURED = 1;
 	public static Uri uriVideo = null;
 	private Intent intentCamera;
+	private Turn turn;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		this.turn = (Turn) getIntent().getSerializableExtra("Turn");
 		dispatchTakeVideoIntent();
 	}
 	private void dispatchTakeVideoIntent(){
@@ -46,6 +49,7 @@ public class CaptureVideo extends Activity {
 				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
 				//finishActivity(REQUEST_VIDEO_CAPTURED);
 				Intent intentShowVideo = new Intent(CaptureVideo.this, VideoUploadActivity.class);
+				intentShowVideo.putExtra("Turn", turn);
 				startActivity(intentShowVideo);
 			}
 		}
