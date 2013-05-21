@@ -29,7 +29,7 @@ public class DataController {
 	
 	private DataController(Context context){
 		db = Database.getDatabaseInstance(context);
-		m = Model.getModelInstance();
+		m = Model.getModelInstance(context);
 	}
 	
 	public static DataController getDataController(Context context){

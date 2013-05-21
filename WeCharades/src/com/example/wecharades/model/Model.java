@@ -1,9 +1,14 @@
 package com.example.wecharades.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+
+import android.content.Context;
 
 import com.example.wecharades.presenter.Database;
 import com.parse.ParseUser;
@@ -14,6 +19,8 @@ import com.parse.ParseUser;
  *
  */
 public class Model {
+	private static final String SAVE_FILE = "model.save";
+	
 	//Two maps for games for increased speed
 	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
 	private HashMap<String, Game> gameIdList = new HashMap<String, Game>();
@@ -32,19 +39,51 @@ public class Model {
 	//Singleton
 	private static Model singleModel;
 
-	private Model(){
-		//TODO initiate the model: load from memory?
+	private Model(Context context){
+		loadModel(context);
 	}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
 	 * @return the Model
 	 */
-	public static Model getModelInstance(){
+	public static Model getModelInstance(Context context){
 		if (singleModel == null){
-			singleModel = new Model();
+			singleModel = new Model(context);
 		}
 		return singleModel;
+	}
+	
+	/**
+	 * A method to save the current model to memory.
+	 * 	This should be done on every onDestroy
+	 * @param context
+	 */
+	public void saveModel(Context context){
+		try {
+			ObjectOutputStream oOut = new ObjectOutputStream(
+						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
+					);
+			oOut.writeObject(singleModel);
+			oOut.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void loadModel(Context context){
+		try {
+			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
+			Object obj = oIn.readObject();
+			if (obj.getClass().equals(Model.class)){
+				singleModel = (Model) obj;
+			}
+		} catch (IOException e){
+			//TODO Ändra här också
+		} catch (ClassNotFoundException e2){
+			//TODO Ändra även här
+		}
 	}
 
 	//Games ---------------------------------------------------------------
