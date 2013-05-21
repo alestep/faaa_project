@@ -44,16 +44,16 @@ public class StartActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Sets the View Layer
-		setContentView(R.layout.start_screen);
+		setContentView(R.layout.list_screen);
 		
 		// Get a reference to the ListView holder
-        gameListView = (ListView) this.findViewById(R.id.game_list);
+        gameListView = (ListView) this.findViewById(R.id.list);
 		
 		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 		
-		// Gat a reference to the dispalyUser field
+		// Get a reference to the dispalyUser field
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
