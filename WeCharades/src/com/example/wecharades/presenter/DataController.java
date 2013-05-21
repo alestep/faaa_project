@@ -216,7 +216,5 @@ public class DataController {
 		return m.getTurns(game);
 	}
 	
-	//TODO Hämta Turn om game har ändrats
-	
 	//TODO Invitations
 }
