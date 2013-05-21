@@ -14,7 +14,6 @@ public class SearchResultActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		presenter = new SearchResultPresenter(this);
-		
 	}
 	
 	/**
@@ -23,7 +22,6 @@ public class SearchResultActivity extends ListActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		presenter.setPlayersList();
 		getListView().setAdapter(presenter.performSearch(getIntent().getExtras().getString("username")));
 	}
 	
