@@ -29,29 +29,30 @@
             android:name=".views.StartActivity"
             android:label="@string/menu" >
             <!-- DEFAULT STARTING SCREEN -->
-            <intent-filter>
+                        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".views.NewGameScreen"
-            android:label="@string/new_game" />
+            android:label="@string/new_game">
+        </activity>
+        
+        <!-- Search player Activity -->
         <activity
-            android:name=".views.SearchPlayerScreen"
+            android:name=".views.SearchPlayerActivity"
             android:label="@string/player" >
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
+        
+        <!-- Search result Activity -->
         <activity
-            android:name=".SearchResultsActivity"
-            android:label="@string/search_result" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
+            android:name=".views.SearchResultActivity"
+            android:label="@string/game" >
         </activity>
+        
+        <!-- Game dashboard Activity -->
         <activity
             android:name=".views.GameDashboardActivity"
             android:label="@string/game" >
