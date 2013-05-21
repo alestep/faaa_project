@@ -1,16 +1,11 @@
 package com.example.wecharades.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.presenter.Database;
 import com.example.wecharades.presenter.GameDashboardPresenter;
-import com.parse.ParseUser;
 
 public class GameDashboardActivity extends GenericActivity {
 

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -400,7 +398,7 @@ public class Database {
 	 * Send an invite to another player
 	 * 
 	 * @param inviter - the inviter
-	 * @param invitee - the player whe receives the invite
+	 * @param invitee - the player who receives the invite
 	 */
 	public void invitePlayer(Player inviter, Player invitee) {
 		ParseObject invite = new ParseObject(INVITE);
