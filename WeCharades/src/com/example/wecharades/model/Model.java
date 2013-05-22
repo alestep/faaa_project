@@ -6,12 +6,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.util.Log;
 
 /**
  * This class stores all the data available in the game.

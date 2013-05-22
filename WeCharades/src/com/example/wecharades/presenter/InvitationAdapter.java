@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Player;
 import com.example.wecharades.views.InvitationActivity;
 
 public class InvitationAdapter extends ArrayAdapter<Invitation> {
