@@ -1,4 +1,4 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,11 +11,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
