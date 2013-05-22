@@ -1,10 +1,5 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
 import com.parse.ParseObject;
 
 public class DatabaseConverter {

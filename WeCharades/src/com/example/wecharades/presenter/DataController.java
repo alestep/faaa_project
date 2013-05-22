@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import android.content.Context;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
