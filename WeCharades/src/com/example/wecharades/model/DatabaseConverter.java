@@ -1,6 +1,5 @@
 package com.example.wecharades.model;
 
-import com.example.wecharades.presenter.DataController;
 import com.parse.ParseObject;
 
 public class DatabaseConverter {

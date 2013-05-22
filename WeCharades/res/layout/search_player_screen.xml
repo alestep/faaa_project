@@ -13,6 +13,9 @@
         android:layout_weight="1"
         android:background="@drawable/btn_default_normal"
         android:ems="10"
+        android:imeActionLabel="Search"
+        android:inputType="text"
+        android:singleLine="true"
         android:imeOptions="actionSearch"
         android:hint="@string/search_hint" >
         <requestFocus />

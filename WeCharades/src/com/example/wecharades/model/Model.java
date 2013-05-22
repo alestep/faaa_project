@@ -1,13 +1,14 @@
 package com.example.wecharades.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 
 import android.content.Context;
 
@@ -20,12 +21,12 @@ public class Model implements Serializable {
 	private static final String SAVE_FILE = "model.save";
 
 	//Two maps for games for increased speed
-	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
-	private HashMap<String, Game> gameIdList = new HashMap<String, Game>();
+	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
+	private TreeMap<String, Game> gameIdList = new TreeMap<String, Game>();
 
 	//Two maps for player names and id:s. The second one is used for increased speed
-	private HashMap<String, Player> storedPlayers = new HashMap<String, Player>();
-	private HashMap<String, String> storedPlayerNames = new HashMap<String, String>();
+	private TreeMap<String, Player> storedPlayers = new TreeMap<String, Player>();
+	private TreeMap<String, String> storedPlayerNames = new TreeMap<String, String>();
 	private Player currentPlayer = null;
 
 	/*
@@ -87,6 +88,11 @@ public class Model implements Serializable {
 			//TODO Ändra även här
 		}
 		return singleModel;
+	}
+	
+	private static void eraseModel(Context context){
+		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
+		modelFile.delete();
 	}
 
 	//Games ---------------------------------------------------------------
@@ -162,10 +168,10 @@ public class Model implements Serializable {
 			ArrayList<Turn> listOfTurns = gameList.get(game);
 			if(listOfTurns == null){
 				listOfTurns = new ArrayList<Turn>();
+				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
 				listOfTurns.remove(turn.getTurnNumber()-1); 
 			listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
-			gameList.put(game, listOfTurns);
 		}
 	}
 
@@ -269,10 +275,8 @@ public class Model implements Serializable {
 	/**
 	 * Deletes the current player entirely from the model. Should be done when user logs out.
 	 */
-	public void logOutCurrentPlayer(){
-		storedPlayers.remove(currentPlayer.getParseId());
-		storedPlayerNames.remove(currentPlayer.getName());
-		currentPlayer = null;
+	public void logOutCurrentPlayer(Context context){
+		eraseModel(context);
 	}
 
 	
@@ -295,10 +299,10 @@ public class Model implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Returns a set with all players the current player has sent invitations to. 
 	 * @return
 	 */
-	public ArrayList<Invitation> getSentInviations(){
+	public ArrayList<Invitation> getSentInvitations(){
 		return sentInvitations;
 	}
 }

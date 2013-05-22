@@ -49,7 +49,7 @@ public class AccountPresenter extends Presenter {
 	 * Log out the current user
 	 */
 	public void logOut() {
-		dc.logOutPlayer();
+		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
 }

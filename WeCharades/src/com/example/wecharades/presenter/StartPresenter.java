@@ -22,16 +22,13 @@ public class StartPresenter extends Presenter {
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		listMap = new LinkedHashMap<String, ArrayList<Game>>();
-
 	}
 	
 	public void update(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setDisplayName(string);
+		listMap = new LinkedHashMap<String, ArrayList<Game>>();
 		parseList();
-		
-		
 		//setInvitationStatus();
 	}
 	
@@ -102,7 +99,7 @@ public class StartPresenter extends Presenter {
 	 * Log out the current user
 	 */
 	public void logOut() {
-		dc.logOutPlayer();
+		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
 	

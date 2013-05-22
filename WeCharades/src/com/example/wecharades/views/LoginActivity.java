@@ -45,20 +45,10 @@ public class LoginActivity extends GenericActivity {
 	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
-		//TODO: the spinners doesn't work properly yet :(
-		//TODO 2: The showProgressSpinner should be in the presenter, but methods should be present in the views.
-		
-		//Show the progress spinner
-		presenter.showProgressSpinner(myView, loginProgress);
-
 		//login
-		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
+		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString(), myView, loginProgress);
 
-		//Hide the progress spinner
-		presenter.hideProgressSpinner(myView, loginProgress);
 	}
-
-
 	/**
 	 * Link to the screen to get a new password
 	 * @param view
@@ -79,7 +69,6 @@ public class LoginActivity extends GenericActivity {
 		startActivity(i);
 		finish();
 	}
-
 
 	@Override
 	public TextView getTextArea() {

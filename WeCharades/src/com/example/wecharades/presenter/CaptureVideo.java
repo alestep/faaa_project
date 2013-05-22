@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.VideoUploadActivity;
 /**
@@ -32,7 +33,7 @@ public class CaptureVideo extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		//TODO Can we do like this?
-		this.turn = (Turn) getIntent().getSerializableExtra("Turn");
+		this.turn = (Turn) getIntent().getSerializableExtra(Database.TURN);
 		dispatchTakeVideoIntent();
 	}
 	private void dispatchTakeVideoIntent(){

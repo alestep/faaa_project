@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Model;
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
 
@@ -45,7 +45,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		possibleLetters.setVisibility(4);
 		timerView = (TextView) findViewById(R.id.timerView);
 		timerView.setVisibility(4);
-		turn = (Turn) getIntent().getExtras().getSerializable("turn");
+		turn = (Turn) getIntent().getExtras().getSerializable(Database.TURN);
 		
 		presenter = (GuessCharadePresenter) super.getPresenter();
 		presenter.initializeTimer(timerView);

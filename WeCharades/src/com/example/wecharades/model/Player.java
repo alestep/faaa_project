@@ -37,23 +37,6 @@ public class Player implements Serializable {
 		this.globalScore = globalScore;
 	}
 
-	/**
-	 * Checks to Player objects are equal
-	 * @param otherPlayer
-	 * @return true or false
-	 */
-	public boolean equals(Player otherPlayer){
-		return otherPlayer != null 
-				&& this.getParseId() == otherPlayer.getParseId();
-	}
-
-	/**
-	 * Returns the hashcode
-	 * @return hashcode
-	 */
-	public int hashCode(){
-		return getParseId().hashCode();	
-	}
 
 	/**
 	 * Get the player id
@@ -161,5 +144,31 @@ public class Player implements Serializable {
 	 */
 	public void setNumberOfDrawGames() {
 		this.drawGames++;
+	}
+	
+	/**
+	 * Check if to Player objects are the same
+	 * @param otherPlayer
+	 * @return
+	 */
+	public boolean equals(Player otherPlayer){
+		return otherPlayer != null 
+				&& this.getParseId().equals(otherPlayer.getParseId());
+	}
+	
+	/**
+	 * Get the hashcode
+	 */
+	@Override
+	public int hashCode(){
+		return getParseId().hashCode();	
+	}
+	
+	/**
+	 * Player object to string
+	 */
+	@Override
+	public String toString(){
+		return getName();
 	}
 }

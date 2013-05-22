@@ -1,18 +1,12 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TreeSet;
 
 import android.content.Context;
 
-import com.example.wecharades.model.Database;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Model;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
 
 /**
  * This is a class intended as an interface to the model and database.
@@ -24,10 +18,9 @@ import com.example.wecharades.model.Turn;
  */
 public class DataController {
 
-	private static DataController dc = null;
+	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
-	private Database db;
-
+	private IDatabase db;
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
@@ -61,9 +54,9 @@ public class DataController {
 	/**
 	 * Log out the current player
 	 */
-	public void logOutPlayer(){
+	public void logOutPlayer(Context context){
+		m.logOutCurrentPlayer(context);
 		db.logOut();
-		m.logOutCurrentPlayer();
 	}
 
 	/**
@@ -163,10 +156,35 @@ public class DataController {
 	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>();
+		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
+		nameList.remove(getCurrentPlayer().getName());
+		return nameList;
+	}
+
+	/**
+	 * Returns a list with all player names. This list will also be cached locally.
+	 * @return an ArrayList containing 
+	 * @throws DatabaseException - if the connection to the database fails
+	 */
+	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
+		for(Player p : players){
+			nameList.add(p.getName());
+		}
+		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
 
@@ -175,7 +193,7 @@ public class DataController {
 	 * @return an ArrayList with Players
 	 */
 	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
-		
+
 		return db.getTopTenPlayers();
 	}
 
@@ -204,6 +222,8 @@ public class DataController {
 			//If the local game hasn't been created locally, fetch all turns and create the game
 			if(localGame == null){
 				m.putGame(game);
+			} 
+			if (m.getTurns(game) == null){
 				m.putTurns(db.getTurns(game));
 			} else if(Game.hasChanged(game, localGame)){
 				//Updates the current turn from the database
@@ -214,8 +234,8 @@ public class DataController {
 				}
 			}
 		}
-		m.putGameList(games);
-		return games;
+		//m.putGameList(games);
+		return m.getGames();
 	}
 
 	/**
@@ -293,7 +313,20 @@ public class DataController {
 	 * @return An ArrayList containing Invitations
 	 */
 	public ArrayList<Invitation> getSentInvitations(){
-		return m.getSentInviations();
+		return m.getSentInvitations();
+	}
+
+	/**
+	 * Returns a set with all players the current player has sent invitations to.
+	 * @return A TreeSet containing String (natural)usernames
+	 */
+	public TreeSet<String> getSentInvitationsAsUsernames(){
+		TreeSet<String> usernames = new TreeSet<String>();
+		ArrayList<Invitation> invitations = getSentInvitations();
+		for(Invitation invitation : invitations){
+			usernames.add(invitation.getInvitee().getName());
+		}
+		return usernames;
 	}
 
 	/**

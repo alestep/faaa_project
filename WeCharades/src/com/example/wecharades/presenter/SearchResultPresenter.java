@@ -1,19 +1,19 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import android.app.Activity;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.SearchResultActivity;
 
 public class SearchResultPresenter extends Presenter {
 	
 	private SearchResultActivity activity;
-	private TreeSet<String> usernames;
 	
 	
 	/**
@@ -28,37 +28,30 @@ public class SearchResultPresenter extends Presenter {
 	public void update(){
 		performSearch(activity.getIntent().getExtras().getString("username"));
 	}
-	
-	/**
-	 * 
-	 */
-	public void setPlayersList () {
-		usernames = new TreeSet<String>(new Comparator<String>() {
-			public int compare(String s1, String s2){
-				return s1.compareToIgnoreCase(s2);
-			}
-		});
-
-		try {
-			usernames = dc.getAllPlayerNames();//I removed getAllOtherPlayerNames for now... just to test some shitz
-		} catch (DatabaseException e) {
-			// TODO When GenericActivity implemented, activity.showMessage(e.prettyPrint());
-		}
-	}
 
 	private void performSearch(String searchString) {
-		setPlayersList();
-		SortedSet<String> resultList = usernames.subSet(searchString, searchString + Character.MAX_VALUE);
-		ArrayList<String> list = new ArrayList<String>(resultList);
-		activity.getListView().setAdapter(new SearchResultAdapter(activity, list));
+		try {
+
+			ListView view = (ListView) activity.findViewById(R.id.list);
+			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
+			text.setText("No results found!");
+			view.setEmptyView(text);
+			
+			SortedSet<String> resultList = dc.getAllOtherPlayerNames().subSet(searchString, searchString + Character.MAX_VALUE);
+			ArrayList<String> list = new ArrayList<String>(resultList);
+			if (!list.isEmpty())
+				view.setAdapter(new SearchResultAdapter(activity, list));
+		} catch (DatabaseException e) {
+			activity.showMessage(e.prettyPrint());
+		}
 		
 	}
 
 	public void invite(String invitee) {
 		try {
 			dc.sendInvitation(dc.getPlayer(invitee));
-		} catch (Exception e){
-			e.getMessage();
+		} catch (DatabaseException e){
+			activity.showMessage(e.prettyPrint());
 		}
 		
 	}
