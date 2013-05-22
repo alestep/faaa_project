@@ -11,12 +11,14 @@ public class HighScoreActivity extends GenericActivity {
 
 	private TableLayout myTable;
 	private HighScorePresenter presenter;
+	private TextView globalRanking;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new HighScorePresenter(this));
 		setContentView(R.layout.highscore);
 		presenter = (HighScorePresenter) super.getPresenter();
 		myTable = (TableLayout) findViewById(R.id.table);
+		globalRanking = (TextView) findViewById(R.id.globalRanking);
 		presenter.updateHighScores(myTable);
 	}
 	
@@ -24,6 +26,11 @@ public class HighScoreActivity extends GenericActivity {
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void updateGlobalRanking(int globalRankingPosition) {
+		globalRanking.setText("Your global ranking position is " + globalRankingPosition +" place");
+		
 	}
 
 }

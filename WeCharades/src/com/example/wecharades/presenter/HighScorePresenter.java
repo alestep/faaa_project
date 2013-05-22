@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,7 +19,7 @@ public class HighScorePresenter extends Presenter {
 		super(activity);
 		this.activity = activity;
 	}
-	
+
 	public void updateHighScores(TableLayout table) {
 		try {
 			updateHighScoreList(dc.getTopTenPlayers(), getAllTextViews(table));
@@ -26,12 +27,21 @@ public class HighScorePresenter extends Presenter {
 			//TODO: prettyPrint()!
 			e.printStackTrace();
 		}
+		
+		//Update field for global ranking
+		activity.updateGlobalRanking(dc.getCurrentPlayer().getGlobalRanking());
 	}
-	
+
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {
 		int i = 0;
+
 		for(Player p : playerList) {
 			i++;
+			if(p.equals(dc.getCurrentPlayer())) {
+				tvList.get(0).setTypeface(null, Typeface.BOLD);
+				tvList.get(1).setTypeface(null, Typeface.BOLD);
+				tvList.get(2).setTypeface(null, Typeface.BOLD);
+			}
 			tvList.get(0).setVisibility(View.VISIBLE);
 			tvList.remove(0).setText(i+".");
 			tvList.get(0).setVisibility(View.VISIBLE);
@@ -40,8 +50,8 @@ public class HighScorePresenter extends Presenter {
 			tvList.remove(0).setText(p.getGlobalScore() + " points");
 		}
 	}
-		
-	
+
+
 	private ArrayList<TextView> getAllTextViews(TableLayout table) {
 		ArrayList<TextView> tvList = new ArrayList<TextView>();
 		for(int i = 0; i < table.getChildCount(); i++) {
