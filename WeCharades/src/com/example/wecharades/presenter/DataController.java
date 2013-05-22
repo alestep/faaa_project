@@ -69,7 +69,10 @@ public class DataController {
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		return db.getCurrentPlayer();
+		if(m.getCurrentPlayer() == null){
+			m.setCurrentPlayer(db.getCurrentPlayer());
+		}
+		return m.getCurrentPlayer();
 	}
 	
 	/**

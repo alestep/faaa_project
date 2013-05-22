@@ -288,5 +288,4 @@ public class Model {
 	public ArrayList<Invitation> getSentInviations(){
 		return sentInvitations;
 	}
-
 }

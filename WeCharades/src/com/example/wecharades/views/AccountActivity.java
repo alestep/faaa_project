@@ -37,8 +37,8 @@ public class AccountActivity extends GenericActivity {
 		username.setText(newUsername);
 	}
 
-	public void updateRanking(int newGlobalRanking) {
-		globalRanking.setText("Global ranking: " + newGlobalRanking);
+	public void updateRanking(int newGlobalRanking, int globalScore) {
+		globalRanking.setText("Global ranking: " + newGlobalRanking + " ("+ globalScore +" points)");
 	}
 
 	public void updatePlayedGames(int newPlayedGames) {
