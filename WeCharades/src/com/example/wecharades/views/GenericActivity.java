@@ -11,13 +11,8 @@ public abstract class GenericActivity extends Activity {
 	//TODO this should prbably be referenced in the subclasses. 
 	protected Presenter presenter;
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-	}
-	
 	public void onCreate(Bundle savedInstanceState, Presenter presenter) {
-		onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 		this.presenter = presenter;
 	}
 	
@@ -30,7 +25,12 @@ public abstract class GenericActivity extends Activity {
 	
 	@Override
 	protected void onStop(){
+		super.onStop();
 		presenter.saveState();
+	}
+	
+	protected Presenter getPresenter(){
+		return presenter;
 	}
 	
 	//TODO insert spinners here? Also, could we add the spinner area in this class and have it included in the subclasses?

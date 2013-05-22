@@ -38,7 +38,7 @@ public class StartActivity extends GenericActivity {
 	private TextView displayUser; 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new StartPresenter(this));
 		// Sets the View Layer
 		setContentView(R.layout.list_screen);
 		
@@ -53,7 +53,7 @@ public class StartActivity extends GenericActivity {
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
-		presenter = new StartPresenter(this);	
+		presenter = (StartPresenter) super.getPresenter();
 
 		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter

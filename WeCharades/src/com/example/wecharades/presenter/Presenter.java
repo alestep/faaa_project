@@ -15,9 +15,6 @@ import com.example.wecharades.views.LoginActivity;
 
 public abstract class Presenter {
 
-	//TODO These are now removed in favour of the datacontroller
-	//protected Database db;
-	//protected Model model;
 	protected DataController dc;
 	protected Activity activity;
 

@@ -8,8 +8,10 @@ import com.example.wecharades.presenter.SearchResultPresenter;
 public class SearchResultActivity extends ListActivity {
 	SearchResultPresenter presenter;
 	
+	//TODO extending a listactivity causes a problem.. We CAN use a have-relation instead.
+	
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

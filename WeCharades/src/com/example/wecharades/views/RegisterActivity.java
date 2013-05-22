@@ -27,11 +27,11 @@ public class RegisterActivity extends GenericActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new RegisterPresenter(this));
 		setContentView(R.layout.register);
 		
 		// Set the presenter
-		presenter = new RegisterPresenter(this);
+		presenter = (RegisterPresenter) super.getPresenter();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
