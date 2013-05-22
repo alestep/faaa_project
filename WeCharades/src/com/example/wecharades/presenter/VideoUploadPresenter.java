@@ -5,9 +5,13 @@ package com.example.wecharades.presenter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -79,6 +83,14 @@ public class VideoUploadPresenter extends Presenter {
 		activity.startActivity(intent);
 		activity.finish();	
 	}
+	private void updateModel(){
+		try {
+			dc.updateGame(dc.getGame(turn.getGameId()));
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 
@@ -120,8 +132,23 @@ public class VideoUploadPresenter extends Presenter {
 					ftp.disconnect();
 				}
 			}
+			catch (SocketException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (UnknownHostException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (FTPConnectionClosedException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (CopyStreamException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (IOException e){
+				Log.v("download result", e.getMessage());
+			}
 			catch (Exception e){
-				e.printStackTrace();
+				Log.v("download result","failed " + e.getMessage());
 			}
 			return null;
 		}
@@ -142,12 +169,7 @@ public class VideoUploadPresenter extends Presenter {
 	            }); */
 				mDialog.dismiss();
 				turn.setVideoLink(setServerStorageLocation() + fileName);
-				try {
-					dc.updateGame(dc.getGame(turn.getGameId()));
-				} catch (DatabaseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				updateModel();
 
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);

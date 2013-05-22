@@ -13,6 +13,7 @@ public class NewGameActivity extends Activity {
 	
 	private NewGamePresenter presenter;
 	
+	//TODO Implement a presenter and extend generic activity if possible
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

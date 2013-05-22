@@ -3,6 +3,7 @@ package com.example.wecharades.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import com.parse.ParseUser;
  * @author Anton Dahlström
  *
  */
-public class Model {
+public class Model implements Serializable {
 	private static final String SAVE_FILE = "model.save";
 	
 	//Two maps for games for increased speed

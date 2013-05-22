@@ -21,10 +21,10 @@ public class ResetPasswordActivity extends GenericActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new ResetPresenter(this));
 		setContentView(R.layout.resetpassword);
 		//initializing the presenter
-		presenter = new ResetPresenter(this);
+		presenter = (ResetPresenter) super.getPresenter();
 
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);

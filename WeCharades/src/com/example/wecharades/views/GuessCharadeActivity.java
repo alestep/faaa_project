@@ -35,10 +35,9 @@ public class GuessCharadeActivity extends GenericActivity  {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
 		
 		answerWord = (EditText) findViewById(R.id.editAnswerCharade);
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
@@ -47,7 +46,8 @@ public class GuessCharadeActivity extends GenericActivity  {
 		timerView = (TextView) findViewById(R.id.timerView);
 		timerView.setVisibility(4);
 		turn = (Turn) getIntent().getExtras().getSerializable("turn");
-		presenter = new GuessCharadePresenter(this);
+		
+		presenter = (GuessCharadePresenter) super.getPresenter();
 		presenter.initializeTimer(timerView);
 		presenter.downloadVideo(GuessCharadeActivity.this, videoView, turn);
 		
@@ -69,7 +69,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			gameState = GAME_FINISHED;
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
-			presenter.updateModel();
+			presenter.update();
 			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
 			mDialog.setTitle("Charade");
 			mDialog
@@ -155,7 +155,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			public void onClick(DialogInterface dialog, int id) {
 				turn.setRecPlayerScore(1);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-				presenter.updateModel();
+				presenter.update();
 				dialog.cancel();
 				finish();
 			}
