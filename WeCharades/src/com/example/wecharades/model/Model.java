@@ -270,6 +270,13 @@ public class Model {
 		currentPlayer = null;
 	}
 	
+	/**
+	 * Delete the account that belongs to the current player
+	 */
+	public void deleteAccount() {
+		//TODO: implement this shit!
+	}
+	
 	//Invitations ---------------------------------------------------------------
 	//Received invitations are not needed here, as they should allways be fetched from the database.
 	

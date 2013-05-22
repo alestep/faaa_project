@@ -41,8 +41,8 @@ public class AccountPresenter extends Presenter {
 	 * Called when Delete Account button is clicked
 	 */
 	public void deleteAccount() {
-		// TODO IMPLEMENT! - validation check
-
+		//This doesn't do anything atm. TODO: fix!
+		dc.deleteAccount();
 	}
 	
 	/**

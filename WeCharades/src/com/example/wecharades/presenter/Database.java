@@ -552,5 +552,12 @@ public class Database {
 	public void logOut(){
 		ParseUser.logOut();
 	}
+	
+	/**
+	 * A method to delete an account
+	 */
+	public void deleteAccount() {
+		//TODO: implement!
+	}
 
 }
