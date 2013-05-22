@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.app.Activity;
 import android.widget.ListView;
@@ -36,10 +37,11 @@ public class SearchResultPresenter extends Presenter {
 			text.setText("No results found!");
 			view.setEmptyView(text);
 			
-			SortedSet<String> resultList = dc.getAllOtherPlayerNames().subSet(searchString, searchString + Character.MAX_VALUE);
-			ArrayList<String> list = new ArrayList<String>(resultList);
+			SortedSet<String> list = dc.getAllOtherPlayerNames().subSet(searchString, searchString + Character.MAX_VALUE);
+			TreeSet<String> sentInvitations = dc.getSentInvitationsAsUsernames();
+			ArrayList<String> resultList = new ArrayList<String>(list);
 			if (!list.isEmpty())
-				view.setAdapter(new SearchResultAdapter(activity, list));
+				view.setAdapter(new SearchResultAdapter(activity, resultList, sentInvitations));
 		} catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());
 		}

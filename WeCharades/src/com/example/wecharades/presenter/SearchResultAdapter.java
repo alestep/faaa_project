@@ -1,6 +1,8 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,15 +20,17 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;
 	private LayoutInflater li;
 	private SearchResultActivity activity;
+	private TreeSet<String> sentInvitations;
 	
 	/**
 	 * 
 	 * @param activity
 	 * @param resultList
+	 * @param sentInvitations
 	 */
-	public SearchResultAdapter(SearchResultActivity activity, ArrayList<String> resultList) {
+	public SearchResultAdapter(SearchResultActivity activity, ArrayList<String> resultList, TreeSet<String> sentInvitations) {
 		super(activity, 0, resultList);
-		
+		this.sentInvitations = sentInvitations;
 		this.resultList = resultList;
 		this.activity = activity;
 		this.li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,26 +43,32 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 		final String s = resultList.get(position);
 
 		if (s != null) {
-
-			v = li.inflate(R.layout.result_list_item, null);
-			final TextView username = (TextView) v.findViewById(R.id.username);
-			if (username != null)
-				username.setText(s); 
-
+				v = li.inflate(R.layout.result_list_item, null);
+				final TextView username = (TextView) v.findViewById(R.id.username);
+				if (username != null)
+					username.setText(s); 
 		}
+
 		final Button play = (Button) v.findViewById(R.id.play);
+
+		if (sentInvitations.contains(s)) {
+			play.setText("Sent");
+			play.setEnabled(false);
+		}
+
 		play.setOnClickListener(new OnClickListener(){ 
 
 			@Override
 			public void onClick(View v){
+				activity.invite(s);	
 				play.setText("Sent");
 				play.setEnabled(false);
-				activity.invite(s);	
 			}
-
 		}); 
-
-
+		
 		return v;
 	}
+
+
+
 }
