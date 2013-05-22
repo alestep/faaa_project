@@ -279,4 +279,23 @@ public class DataController {
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
 	}
 	
+	/**
+	 * Called in order to accept an invitation and automatically create a game.
+	 * @param invitation - The invitation to accept
+	 * @throws DatabaseException
+	 */
+	public void acceptInvitation(Invitation invitation) throws DatabaseException{
+		createGame(invitation.getInviter(), invitation.getInvitee());
+		db.removeInvitation(invitation);
+	}
+	
+	/**
+	 * Called to reject an invitation, which is then deleted form the database
+	 * @param invitaiton - The invitation to reject
+	 * @throws DatabaseException
+	 */
+	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
+		db.removeInvitation(invitaiton);
+	}
+	
 }
