@@ -35,10 +35,9 @@ public class GuessCharadeActivity extends GenericActivity  {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
 		
 		answerWord = (EditText) findViewById(R.id.editAnswerCharade);
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
@@ -47,7 +46,8 @@ public class GuessCharadeActivity extends GenericActivity  {
 		timerView = (TextView) findViewById(R.id.timerView);
 		timerView.setVisibility(4);
 		turn = (Turn) getIntent().getExtras().getSerializable("turn");
-		presenter = new GuessCharadePresenter(this);
+		
+		presenter = (GuessCharadePresenter) super.getPresenter();
 		presenter.initializeTimer(timerView);
 		presenter.downloadVideo(GuessCharadeActivity.this, videoView, turn);
 		

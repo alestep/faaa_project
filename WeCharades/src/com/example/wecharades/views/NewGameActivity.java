@@ -12,6 +12,7 @@ public class NewGameActivity extends Activity {
 	
 	public final static String TAG = "NewGameScreen";
 	
+	//TODO Implement a presenter and extend generic activity if possible
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

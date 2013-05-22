@@ -19,7 +19,7 @@ public class SearchPlayerActivity extends Activity {
 	
 	/**
 	 * 
-	 */
+	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
