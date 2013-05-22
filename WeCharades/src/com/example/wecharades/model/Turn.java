@@ -90,5 +90,18 @@ public class Turn implements Serializable {
 	public int getAnsPlayerScore() {
 		return ansPlayerScore;
 	}
-
+	
+	/**
+	 * Returns this players score for this turn.
+	 * @param player - The player whos score to fetch
+	 * @return - an integer score value, or -1 if the player is not part of this turn.
+	 */
+	public int getPlayerScore(Player player){
+		if(player.equals(getAnsPlayer()))
+			return getAnsPlayerScore();
+		else if(player.equals(getRecPlayer()))
+			return getRecPlayerScore();
+		else
+			return 0;
+	}
 }

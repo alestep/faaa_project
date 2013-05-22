@@ -3,6 +3,7 @@ package com.example.wecharades.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import android.content.Context;
@@ -225,6 +226,26 @@ public class DataController {
 			m.putGame(game);
 		}
 		return game;
+	}
+	
+	public TreeMap<Player, Integer> getGameScore(Game game){
+		TreeMap<Player, Integer> returnMap = new TreeMap<Player, Integer>();
+		ArrayList<Turn> turnList = getTurns(game);
+		if(turnList != null){
+			Player p1 = game.getPlayer1();
+			Player p2 = game.getPlayer2();
+			int p1s = 0;
+			int p2s = 0;
+			Turn currentTurn;
+			for(int i=0; i < game.getTurn(); i++){
+				currentTurn = turnList.get(i);
+				p1s += currentTurn.getPlayerScore(p1);
+				p2s += currentTurn.getPlayerScore(p2);
+			}
+			returnMap.put(p1, p1s);
+			returnMap.put(p2, p2s);
+		}
+		return returnMap;
 	}
 	
 	/**
