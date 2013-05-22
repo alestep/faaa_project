@@ -55,8 +55,8 @@ public class DataController {
 	/**
 	 * Log out the current player
 	 */
-	public void logOutPlayer(){
-		m.logOutCurrentPlayer();
+	public void logOutPlayer(Context context){
+		m.logOutCurrentPlayer(context);
 		db.logOut();
 	}
 	

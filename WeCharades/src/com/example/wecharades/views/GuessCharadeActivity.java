@@ -5,6 +5,8 @@ package com.example.wecharades.views;
  * 
  */
 
+import java.util.Locale;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
