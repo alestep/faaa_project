@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
@@ -18,6 +17,8 @@ public class GameDashboardPresenter extends Presenter {
 
 	private GameDashboardActivity activity;
 	private Game game;
+	private ArrayList<Turn> turnList;
+	private ArrayList<Button> buttonList;
 
 	public GameDashboardPresenter(GameDashboardActivity activity) {
 		super(activity);
@@ -26,26 +27,34 @@ public class GameDashboardPresenter extends Presenter {
 
 	public void createDashboard(TableLayout table) {
 		//Get the game from the clicked object in StartActivity
-		this.game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
+		game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
+		turnList = dc.getTurns(game);
+		buttonList = getAllButtons(table);
+
 		generateTitle();
-		ArrayList<Turn> turnList = getTurnList();
-		ArrayList<Button> buttonList = getAllButtons(table);
+		updateScore();
+
 		updateButtons(turnList, buttonList);
 	}
 
 	/**
-	 * Returns an ArrayList with Turns
-	 * @return
+	 * Total score per player at a specific game
 	 */
-	private ArrayList<Turn> getTurnList() {
-		ArrayList<Turn> turnList = null;
-		try {
-			//TODO: Get from Model instead?
-			turnList = db.getTurns(game);
-		} catch (DatabaseException e) {
-			e.printStackTrace();
+	private void updateScore() {
+		int currentPLayersScore	= 0;
+		int opponentsScore		= 0;
+		for(Turn turn : turnList) {
+			//TODO we could add a method "getPlayerScore(Player player)" in turn to get rid of this
+			if( turn.getAnsPlayer().equals(dc.getCurrentPlayer()) ) {
+				currentPLayersScore += turn.getAnsPlayerScore();
+				opponentsScore		+= turn.getRecPlayerScore();
+			}  else {
+				currentPLayersScore += turn.getRecPlayerScore();
+				opponentsScore		+= turn.getAnsPlayerScore();
+			}
+				
 		}
-		return turnList;
+		activity.updateScore(currentPLayersScore, opponentsScore);
 	}
 
 	/**
@@ -77,18 +86,19 @@ public class GameDashboardPresenter extends Presenter {
 			updateButtonInformation(turn, button);
 		}
 	}
-
+	
 	/**
-	 * Makes a string based on if it's the current player's turn to answer, to record video or if the turn was already played
+	 * Update button information based on information from the Turn object
 	 * @param turn
 	 */
 	private void updateButtonInformation(Turn turn, Button button) {
+		//TODO This method is a bit elaborate
 		String string = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
-			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
+			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
 				string = turn.getAnsPlayerScore() + " points";
 				button.setEnabled(false);
-			} else if (turn.getRecPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
+			} else if (turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
 				button.setEnabled(false);
 				string = turn.getRecPlayerScore() + " points";
 			} else {
@@ -96,12 +106,12 @@ public class GameDashboardPresenter extends Presenter {
 			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
 			//TODO: add at state: "waiting for opponent"
-			if(turn.getAnsPlayer().getParseId().equals(getCurrentUser().getObjectId())) {
+			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
 				string = "Guess word!";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
 			} 
 			// Checks if you are the "RecPlayer" AND already has uploaded a video
-			else if (turn.getRecPlayer().getParseId().equals(getCurrentUser().getObjectId()) && !turn.getVideoLink().isEmpty()) {
+			else if (turn.getRecPlayer().equals(dc.getCurrentPlayer()) && !turn.getVideoLink().isEmpty()) {
 				string = "Waiting...";
 				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
 			} else {
@@ -114,7 +124,8 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		button.setText(string);
 	} 
-
+	
+	//TODO this method is a bit special.
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
 		OnClickListener buttonListener = new View.OnClickListener() {
 			boolean isAnsPLayer = ansPlayer;
@@ -139,14 +150,6 @@ public class GameDashboardPresenter extends Presenter {
 	}
 
 	private void generateTitle() {
-		String opponent;
-		if(getCurrentUser().getObjectId().equals(game.getPlayer1().getParseId())) {
-			opponent = game.getPlayer2().getName();
-		} else if (getCurrentUser().getObjectId().equals(game.getPlayer2().getParseId())){
-			opponent = game.getPlayer1().getName();
-		} else {
-			opponent = "unknown";
-		}
-		activity.showMessage("Game between you and " + opponent);
+		activity.showMessage("Game between you and " + game.getOpponent(dc.getCurrentPlayer()));
 	}
 }

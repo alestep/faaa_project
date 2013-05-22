@@ -25,7 +25,7 @@ public class RegisterPresenter extends Presenter {
 	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword) {
 		boolean loginSucceeded = false;
 		try {
-			db.registerPlayer(inputNickname, inputEmail, inputPassword, inputRepeatPassword);
+			dc.registerPlayer(inputNickname, inputEmail, inputPassword, inputRepeatPassword);
 			loginSucceeded = true;
 		} catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());

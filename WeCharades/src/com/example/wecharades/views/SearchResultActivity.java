@@ -2,6 +2,7 @@ package com.example.wecharades.views;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+
 import com.example.wecharades.presenter.SearchResultPresenter;
 
 public class SearchResultActivity extends ListActivity {

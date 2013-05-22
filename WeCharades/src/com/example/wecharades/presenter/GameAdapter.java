@@ -19,7 +19,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 	private ArrayList<Game> games;
 	private LayoutInflater li;
 	private StartActivity activity;
-	private Player currentPlayer;
+	private Player currentPlayer; //TODO This may be moved to our generic activity later
 
 	public GameAdapter(StartActivity activity, ArrayList<Game> games, Player currentPlayer) {
 		super(activity, 0, games);

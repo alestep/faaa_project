@@ -1,6 +1,6 @@
 package com.example.wecharades.views;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
@@ -25,7 +25,7 @@ import com.example.wecharades.presenter.StartPresenter;
  * @author Alexander
  *
  */
-public class StartActivity extends Activity {
+public class StartActivity extends GenericActivity {
 	protected static final String TAG = "StartScreen";
 	public final static String ITEM_TITLE = "title";
 	public final static String ITEM_CAPTION = "caption";
@@ -57,15 +57,15 @@ public class StartActivity extends Activity {
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
-		presenter = new StartPresenter(this);
-		
-		//Check if the user is logged in or saved in the cache
-		presenter.checkLogin();		
+		presenter = new StartPresenter(this);	
 
 		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter
 		adapter = new SeparatedListAdapter(this);
-
+		
+		//Check if the user is logged in or saved in the cache
+		presenter.checkLogin();
+		
 	}
 
 	public void onStart(){
@@ -123,20 +123,26 @@ public class StartActivity extends Activity {
 	 */
 	public void onClickAccount(View view) {
 		Log.d("Clicked", "Account");
-		Button b = (Button) view;
-		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
-		startActivity(intent);
+//		Button b = (Button) view;
+//		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+//		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
+//		startActivity(intent);
 	}
 	
 	public void setDisplayName(String user){
 		displayUser.setText(user);
 	}
-	
+
 	public void setInvitations(int nrInvites){
 		if (nrInvites != 0) {
 			invitations.setText(nrInvites);
 			//invitations.setBackground(getResources().getDrawable(R.drawable.btn_default_normal));
 		}
+	}
+
+	@Override
+	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
