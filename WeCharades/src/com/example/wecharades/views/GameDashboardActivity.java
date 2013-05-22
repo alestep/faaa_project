@@ -11,6 +11,8 @@ public class GameDashboardActivity extends GenericActivity {
 
 	private TableLayout myTable;
 	private TextView title;
+	private TextView yourScore;
+	private TextView opponentsScore;
 	GameDashboardPresenter presenter;
 
 	@Override
@@ -19,6 +21,8 @@ public class GameDashboardActivity extends GenericActivity {
 		setContentView(R.layout.game_screen);
 		presenter = new GameDashboardPresenter(this);
 		title = (TextView) findViewById(R.id.titleText);
+		yourScore = (TextView) findViewById(R.id.yourScore);
+		opponentsScore = (TextView) findViewById(R.id.opponentScore);
 		myTable = (TableLayout) findViewById(R.id.table);
 		presenter.createDashboard(myTable);
 	}
@@ -27,5 +31,10 @@ public class GameDashboardActivity extends GenericActivity {
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return title;
+	}
+	
+	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
+		yourScore.setText("Your score: "+ currentPlayersScore + " points");
+		opponentsScore.setText("Opponent's score: "+ otherPlayerScore + " points");
 	}
 }

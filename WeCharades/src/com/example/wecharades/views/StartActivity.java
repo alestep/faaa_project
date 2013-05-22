@@ -117,10 +117,10 @@ public class StartActivity extends Activity {
 	 */
 	public void onClickAccount(View view) {
 		Log.d("Clicked", "Account");
-		Button b = (Button) view;
-		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
-		startActivity(intent);
+//		Button b = (Button) view;
+//		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
+//		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
+//		startActivity(intent);
 	}
 	
 	public void setDisplayName(String user){
