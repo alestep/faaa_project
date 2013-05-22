@@ -102,15 +102,6 @@ public class DataController {
 		db.resetPassword(email);
 	}
 
-	/**
-	 * delete the account responding to the current user
-	 */
-	public void deleteAccount() {
-		//TODO: implement
-		/*m.deleteAccount();
-		db.deleteAccount();*/
-	}
-
 	//Players -----------------------------------------------------------
 
 	/**
