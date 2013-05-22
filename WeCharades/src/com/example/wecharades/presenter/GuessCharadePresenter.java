@@ -44,6 +44,9 @@ public class GuessCharadePresenter extends Presenter {
 		this.activity = activity;
 
 	}
+	public void updateModel(){
+		model.updateTurn(model.getGame(turn.getGameId()), turn);
+	}
 
 	/**
 	 * Creates a timer to controll the gameTime
@@ -62,7 +65,7 @@ public class GuessCharadePresenter extends Presenter {
 				videoView.stopPlayback();
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);//TODO: score registration: No score
-				//update score in database
+				updateModel();
 				activity.finishDialog();
 			}
 		};

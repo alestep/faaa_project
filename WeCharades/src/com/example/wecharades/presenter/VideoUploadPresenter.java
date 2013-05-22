@@ -27,6 +27,7 @@ public class VideoUploadPresenter extends Presenter {
 	private UploadVideo upload;
 	private Turn turn;
 	private String fileName = "PresentVideo.mp4";
+	private String serverPath;
 
 	public VideoUploadPresenter(VideoUploadActivity activity) {
 		super(activity);
@@ -53,7 +54,6 @@ public class VideoUploadPresenter extends Presenter {
 		videoView.setMediaController(new MediaController(activity));
 		videoView.start();
 		videoView.requestFocus();
-
 	}
 	
 	/**
@@ -64,8 +64,6 @@ public class VideoUploadPresenter extends Presenter {
 		String gameID = turn.getGameId();
 		String turnNumber = String.valueOf(turn.getTurnNumber());
 		String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
-		turn.setVideoLink(serverPath + fileName);
-		//update videolink
 		return serverPath;
 	}
 	
@@ -142,6 +140,8 @@ public class VideoUploadPresenter extends Presenter {
 	                }
 	            }); */
 				mDialog.dismiss();
+				turn.setVideoLink(setServerStorageLocation() + fileName);
+				model.updateTurn(model.getGame(turn.getGameId()), turn);
 
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
