@@ -12,8 +12,13 @@ public abstract class GenericActivity extends Activity {
 	protected Presenter presenter;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+	}
+	
+	public void onCreate(Bundle savedInstanceState, Presenter presenter) {
+		onCreate(savedInstanceState);
+		this.presenter = presenter;
 	}
 	
 	public void showMessage(String error) {
@@ -22,6 +27,11 @@ public abstract class GenericActivity extends Activity {
 	
 	//To be implemented.
 	public abstract TextView getTextArea();
+	
+	@Override
+	protected void onStop(){
+		presenter.saveState();
+	}
 	
 	//TODO insert spinners here? Also, could we add the spinner area in this class and have it included in the subclasses?
 	

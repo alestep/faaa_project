@@ -131,6 +131,17 @@ public class DataController {
 	}
 	
 	/**
+	 * Returns a list of all players as objects
+	 * @return An ArrayList with players
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		return players;
+	}
+	
+	/**
 	 * Returns a list with all player names. This list will also be cached locally.
 	 * @return an ArrayList containing 
 	 * @throws DatabaseException - if the connection to the database fails
@@ -163,7 +174,6 @@ public class DataController {
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public ArrayList<Game> getGames() throws DatabaseException{
-		ArrayList<Player> testFetch = db.getPlayers();
 		ArrayList<Game> games = db.getGames(getCurrentPlayer());
 		Game localGame;
 		for(Game game : games){
@@ -278,6 +288,25 @@ public class DataController {
 	 */
 	public void sendInvitation(Player player){
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
+	}
+	
+	/**
+	 * Called in order to accept an invitation and automatically create a game.
+	 * @param invitation - The invitation to accept
+	 * @throws DatabaseException
+	 */
+	public void acceptInvitation(Invitation invitation) throws DatabaseException{
+		createGame(invitation.getInviter(), invitation.getInvitee());
+		db.removeInvitation(invitation);
+	}
+	
+	/**
+	 * Called to reject an invitation, which is then deleted form the database
+	 * @param invitaiton - The invitation to reject
+	 * @throws DatabaseException
+	 */
+	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
+		db.removeInvitation(invitaiton);
 	}
 	
 }

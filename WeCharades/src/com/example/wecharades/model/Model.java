@@ -111,7 +111,7 @@ public class Model {
 			gameList.put(game,tempTurns);
 			gameIdList.put(game.getGameId(), game);
 		} else{
-			gameList.put(game, new ArrayList<Turn>(7));
+			gameList.put(game, new ArrayList<Turn>(6));
 			gameIdList.put(game.getGameId(), game);
 		}
 
@@ -156,8 +156,9 @@ public class Model {
 		if( !gameList.containsKey(game))
 			throw new NoSuchElementException();
 		ArrayList<Turn> listOfTurns = gameList.get(game);
-		listOfTurns.remove(turn.getTurnNumber()); //Removes the old copy of the turn
-		listOfTurns.add(turn.getTurnNumber(), turn); //Adds the new copy of the game
+		if(listOfTurns.contains(turn)) //Removes the old copy of the turn
+			listOfTurns.remove(turn.getTurnNumber()-1); 
+		listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
 	}
 
 	/**
@@ -203,9 +204,10 @@ public class Model {
 	 */
 	public void putPlayer(Player player){
 		if(!playerIsCached(player)){
-			storedPlayers.put(player.getParseId(),player);
 			storedPlayerNames.put(player.getName(), player.getParseId());
 		}
+		//The data for a player should always be updated
+		storedPlayers.put(player.getParseId(),player);
 	}
 	
 	/**
@@ -287,5 +289,5 @@ public class Model {
 	public ArrayList<Invitation> getSentInviations(){
 		return sentInvitations;
 	}
-
+	
 }
