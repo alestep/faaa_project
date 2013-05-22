@@ -194,6 +194,8 @@ public class DataController {
 			//If the local game hasn't been created locally, fetch all turns and create the game
 			if(localGame == null){
 				m.putGame(game);
+			} 
+			if (m.getTurns(game) == null){
 				m.putTurns(db.getTurns(game));
 			} else if(Game.hasChanged(game, localGame)){
 				//Updates the current turn from the database
@@ -204,8 +206,8 @@ public class DataController {
 				}
 			}
 		}
-		m.putGameList(games);
-		return games;
+		//m.putGameList(games);
+		return m.getGames();
 	}
 	
 	/**

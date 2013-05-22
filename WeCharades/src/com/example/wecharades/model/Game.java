@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Anton Dahlström
  *
  */
-public class Game implements Serializable { //TODO make this class truly Serializable later
+public class Game implements Serializable, Comparable<Game> { //TODO make this class truly Serializable later
 	/**
 	 * auto-generated serialVersionUID
 	 */
@@ -109,6 +109,7 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 	 */
 	@Override
 	public int hashCode(){
+		String id = getGameId();
 		return getGameId().hashCode();
 	}
 
@@ -137,5 +138,12 @@ public class Game implements Serializable { //TODO make this class truly Seriali
 				&& game1.getCurrentPlayer().equals(game2.getCurrentPlayer())
 				&& game1.getTurn() == game2.getTurn()
 				&& game1.isFinished() == game2.isFinished();
+	}
+
+	@Override
+	public int compareTo(Game otherGame) {
+		if(otherGame == null)
+			throw new NullPointerException();
+		return this.getGameId().compareTo(otherGame.getGameId());
 	}
 }

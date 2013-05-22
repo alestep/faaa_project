@@ -43,10 +43,16 @@ public class Player implements Serializable {
 	
 	public boolean equals(Player otherPlayer){
 		return otherPlayer != null 
-				&& this.getParseId() == otherPlayer.getParseId();
+				&& this.getParseId().equals(otherPlayer.getParseId());
 	}
 	
+	@Override
 	public int hashCode(){
 		return getParseId().hashCode();	
+	}
+	
+	@Override
+	public String toString(){
+		return getName();
 	}
 }
