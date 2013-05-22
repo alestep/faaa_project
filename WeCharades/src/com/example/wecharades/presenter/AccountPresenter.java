@@ -1,7 +1,11 @@
 package com.example.wecharades.presenter;
 
+import android.content.Intent;
+
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.AccountActivity;
+import com.example.wecharades.views.GameInstructionsActivity;
+import com.example.wecharades.views.StartActivity;
 
 public class AccountPresenter extends Presenter {
 
@@ -13,22 +17,39 @@ public class AccountPresenter extends Presenter {
 
 	public void update() {
 		Player currentPlayer = dc.getCurrentPlayer();
-		activity.updateUsername(currentPlayer.getName());
-		activity.updateRanking(currentPlayer.getGlobalRanking(), dc.getCurrentPlayer().getGlobalScore());
-		activity.updatePlayedGames(currentPlayer.getNumberOfFinishedGames());
-		activity.updateWonGames(currentPlayer.getNumberOfWonGames());
-		activity.updateLostGames(currentPlayer.getNumberOfLostGames());
-		activity.updateDrawGames(currentPlayer.getNumberOfDrawGames());
-	}
-	
-	public void gameInstructions() {
-		// TODO IMPLEMENT!
-		
-	}
-	
-	public void deleteAccount() {
-		// TODO IMPLEMENT! - validation check
-		
+
+		activity.updatePlayerInformation(
+				currentPlayer.getName(),
+				currentPlayer.getGlobalRanking(),
+				currentPlayer.getGlobalScore(),
+				currentPlayer.getNumberOfFinishedGames(),
+				currentPlayer.getNumberOfWonGames(),
+				currentPlayer.getNumberOfLostGames(),
+				currentPlayer.getNumberOfDrawGames());
+
 	}
 
+	/**
+	 * Called when Game Instructions button is clicked
+	 */
+	public void gameInstructions() {
+		Intent i = new Intent(activity.getApplicationContext(), GameInstructionsActivity.class);
+		activity.startActivity(i);
+	}
+
+	/**
+	 * Called when Delete Account button is clicked
+	 */
+	public void deleteAccount() {
+		// TODO IMPLEMENT! - validation check
+
+	}
+	
+	/**
+	 * Log out the current user
+	 */
+	public void logOut() {
+		dc.logOutPlayer();
+		goToLoginActivity();
+	}
 }

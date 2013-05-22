@@ -7,8 +7,6 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.AccountPresenter;
 
-
-
 public class AccountActivity extends GenericActivity {
 	private TextView username, globalRanking, playedGames, wonGames, lostGames, drawGames;
 
@@ -23,8 +21,6 @@ public class AccountActivity extends GenericActivity {
 		wonGames = (TextView) findViewById(R.id.wonGames);
 		lostGames = (TextView) findViewById(R.id.lostGames);
 		drawGames = (TextView) findViewById(R.id.drawGames);
-
-
 	}
 
 	@Override
@@ -33,42 +29,56 @@ public class AccountActivity extends GenericActivity {
 		((AccountPresenter) presenter).update();
 	}
 
-	public void updateUsername(String newUsername) {
-		username.setText(newUsername);
-	}
-
-	public void updateRanking(int newGlobalRanking, int globalScore) {
-		globalRanking.setText("Global ranking: " + newGlobalRanking + " ("+ globalScore +" points)");
-	}
-
-	public void updatePlayedGames(int newPlayedGames) {
-		playedGames.setText("Played games: " + newPlayedGames);
-	}
-
-	public void updateWonGames(int newWonGames) {
-		wonGames.setText("Won games: " + newWonGames);
-	}
-
-	public void updateLostGames(int newLostGames) {
-		lostGames.setText("Lost games: " + newLostGames);
-	}
-
-	public void updateDrawGames(int newDrawGames) {
-		drawGames.setText("Draw games: " + newDrawGames);
-	}
-
 	@Override
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * Called when Game Instructions button is clicked
+	 * @param view
+	 */
 	public void onClickGameInstructions(View view) {
 		((AccountPresenter) presenter).gameInstructions();
 	}
 
+	/**
+	 * Called when Delete Account button is clicked
+	 * @param view
+	 */
 	public void onClickDeleteAccount(View view) {
 		((AccountPresenter) presenter).deleteAccount();
+	}
+	
+	/**
+	 * Called when Logout button is clicked
+	 * @param view
+	 */
+	public void onClickLogout(View view) {
+		((AccountPresenter) presenter).logOut();
+	}
+
+
+	/**
+	 * Update player information and statistics
+	 * @param newUsername
+	 * @param newGlobalRanking
+	 * @param globalScore
+	 * @param numberOfFinishedGames
+	 * @param numberOfWonGames
+	 * @param numberOfLostGames
+	 * @param numberOfDrawGames
+	 */
+	public void updatePlayerInformation(String newUsername, int newGlobalRanking,
+			int globalScore, int numberOfFinishedGames, int numberOfWonGames,
+			int numberOfLostGames, int numberOfDrawGames) {
+		username.setText(newUsername);
+		globalRanking.setText("Global ranking: " + newGlobalRanking + " ("+ globalScore +" points)");
+		playedGames.setText("Played games: " + numberOfFinishedGames);
+		wonGames.setText("Won games: " + numberOfWonGames);
+		lostGames.setText("Lost games: " + numberOfLostGames);
+		drawGames.setText("Draw games: " + numberOfDrawGames);
 	}
 
 

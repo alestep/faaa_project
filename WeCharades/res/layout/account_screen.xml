@@ -14,14 +14,6 @@
         android:text="Username"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/listOfTextViews"
-        android:layout_alignBottom="@+id/username"
-        android:layout_marginRight="20dp"
-        android:background="#FFFFFF" />
-
     <LinearLayout
         android:id="@+id/listOfTextViews"
         android:layout_width="wrap_content"
@@ -93,5 +85,15 @@
         android:layout_marginRight="10dp"
         android:onClick="onClickDeleteAccount"
         android:text="Delete account" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/username"
+        android:layout_alignBottom="@+id/username"
+        android:layout_alignRight="@+id/deleteAccount"
+        android:onClick="onClickLogout"
+        android:text="Logout!" />
 
 </RelativeLayout>
