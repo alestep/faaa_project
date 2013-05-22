@@ -15,7 +15,7 @@ public abstract class GenericActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
+		
 	public void showMessage(String error) {
 		getTextArea().setText(error);
 	}
