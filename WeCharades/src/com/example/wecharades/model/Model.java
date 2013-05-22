@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import android.content.Context;
 

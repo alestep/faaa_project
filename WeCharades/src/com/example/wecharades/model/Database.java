@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.wecharades.presenter.DataController;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;

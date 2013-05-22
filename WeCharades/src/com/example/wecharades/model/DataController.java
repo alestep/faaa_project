@@ -1,4 +1,4 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,13 +7,6 @@ import java.util.TreeSet;
 
 import android.content.Context;
 
-import com.example.wecharades.model.Database;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Model;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
 
 /**
  * This is a class intended as an interface to the model and database.

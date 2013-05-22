@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wecharades.model.DataController;
 import com.example.wecharades.views.LoginActivity;
 
 public abstract class Presenter {
