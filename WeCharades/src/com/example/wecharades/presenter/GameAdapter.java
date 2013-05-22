@@ -40,7 +40,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 				final TextView subtitle = (TextView) v.findViewById(R.id.score);
 				
 				if (title != null)
-					title.setText(game.getPlayer1().equals(currentPlayer) ? game.getPlayer1().getName() : game.getPlayer2().getName());
+					title.setText(game.getPlayer1().equals(currentPlayer) ? game.getPlayer2().getName() : game.getPlayer1().getName());
 				if(subtitle != null)
 					//TODO: Undersök hur vi kan hämta score här.
 					subtitle.setText("The score is 5-6");

@@ -52,15 +52,14 @@ public class StartPresenter extends Presenter {
 		try {
 			//TODO This should talk to the DataFetcher later.
 			ArrayList<Game> gameList = dc.getGames();
-			
-			separatedList.put("Finished games", new ArrayList<Game>());
-			separatedList.put("Opponent's turn", new ArrayList<Game>());
 			separatedList.put("Your turn", new ArrayList<Game>());
+			separatedList.put("Opponent's turn", new ArrayList<Game>());
+			separatedList.put("Finished games", new ArrayList<Game>());
 			
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		separatedList.get("Finished games").add(g);
-	        	else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
+	        	else if (!g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
 	        		separatedList.get("Opponent's turn").add(g);
 	        	else
 	        		separatedList.get("Your turn").add(g);
