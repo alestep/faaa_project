@@ -31,6 +31,7 @@ public class DataController {
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
+		db.setConverter(this);
 	}
 	
 	public static DataController getDataController(Context context){
@@ -70,7 +71,12 @@ public class DataController {
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		return db.getCurrentPlayer();
+		Player p = m.getCurrentPlayer();
+		if(p == null){
+			p = db.getCurrentPlayer();
+			m.setCurrentPlayer(p);
+		}
+		return p;
 	}
 	
 	/**

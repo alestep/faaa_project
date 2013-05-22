@@ -50,7 +50,6 @@ public class StartPresenter extends Presenter {
 	 */
 	private void parseGameLists() {
 		try {
-			//TODO This should talk to the DataFetcher later.
 			ArrayList<Game> gameList = dc.getGames();
 			
 			separatedList.put("Finished games", new ArrayList<Game>());
