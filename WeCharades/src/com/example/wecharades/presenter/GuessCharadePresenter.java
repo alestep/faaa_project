@@ -53,7 +53,7 @@ public class GuessCharadePresenter extends Presenter {
 	public void update(){
 		String id = turn.getGameId();
 		try {
-			dc.updateGame(dc.getGame(id));
+			dc.updateGame(dc.getGame(turn.getGameId()));
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
