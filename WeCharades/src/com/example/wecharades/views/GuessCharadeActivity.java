@@ -69,7 +69,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			gameState = GAME_FINISHED;
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
-			presenter.updateModel();
+			presenter.update();
 			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
 			mDialog.setTitle("Charade");
 			mDialog
@@ -155,7 +155,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			public void onClick(DialogInterface dialog, int id) {
 				turn.setRecPlayerScore(1);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-				presenter.updateModel();
+				presenter.update();
 				dialog.cancel();
 				finish();
 			}
