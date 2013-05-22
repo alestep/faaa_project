@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TreeSet;
 
@@ -156,10 +157,15 @@ public class DataController {
 	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>();
+		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
 		for(Player p : players){
-			nameList.add(p.getName());
+				nameList.add(p.getName());
 		}
+		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
 	

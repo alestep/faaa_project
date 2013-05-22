@@ -22,6 +22,7 @@
     <string name="search_hint">Enter username</string>
     <string name="search_result">Search result</string>
     <string name="play">Play</string>
+    <string name="empty_list">No results found!</string>
     
     <!-- Invitations screen strings -->
     <string name="accept">Accept</string>

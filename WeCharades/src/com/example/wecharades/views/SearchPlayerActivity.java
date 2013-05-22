@@ -1,19 +1,20 @@
 package com.example.wecharades.views;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.SimplePresenter;
 /**
  * 
  * @author Alexander
  *
  */
-public class SearchPlayerActivity extends Activity {
+public class SearchPlayerActivity extends GenericActivity {
 	
 	private EditText searchBox;
 	
@@ -22,8 +23,8 @@ public class SearchPlayerActivity extends Activity {
 	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+		super.onCreate(savedInstanceState, new SimplePresenter(this));
+		
 		// Sets the View Layer
 		setContentView(R.layout.search_player_screen);
 		
@@ -42,5 +43,11 @@ public class SearchPlayerActivity extends Activity {
 		searchBox.setText("");
 		startActivity(intent);
 		
+	}
+
+	@Override
+	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
