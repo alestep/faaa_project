@@ -169,6 +169,10 @@ public class DataController {
 	
 	//Games -----------------------------------------------------------
 	
+	public void putInRandomQueue(Player player){
+		db.putIntoRandomQueue(player);
+	}
+	
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1

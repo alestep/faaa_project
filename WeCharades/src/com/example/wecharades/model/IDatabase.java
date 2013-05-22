@@ -101,7 +101,7 @@ public interface IDatabase {
 	/**
 	 * Puts the playerId into the the random queue
 	 */
-	public abstract void putIntoPlayerQueue(Player player);
+	public abstract void putIntoRandomQueue(Player player);
 
 	/**
 	 * Send an invitation to another player

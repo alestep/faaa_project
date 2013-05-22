@@ -375,7 +375,9 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#putIntoPlayerQueue(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void putIntoPlayerQueue(Player player) {
+	public void putIntoRandomQueue(Player player) {
+		
+		
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveInBackground();
