@@ -23,7 +23,6 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
