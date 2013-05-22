@@ -53,15 +53,15 @@ public class StartActivity extends GenericActivity {
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
-		presenter = new StartPresenter(this);
-		
-		//Check if the user is logged in or saved in the cache
-		presenter.checkLogin();		
+		presenter = new StartPresenter(this);	
 
 		//TODO All this should probably be done in PRESENTER?
 		// Create the ListView Adapter
 		adapter = new SeparatedListAdapter(this);
-
+		
+		//Check if the user is logged in or saved in the cache
+		presenter.checkLogin();
+		
 	}
 
 	public void onStart(){

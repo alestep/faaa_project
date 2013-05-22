@@ -28,8 +28,8 @@ public class DataController {
 	private Database db;
 	
 	private DataController(Context context){
-		db = Database.getDatabaseInstance(context);
 		m = Model.getModelInstance(context);
+		db = Database.getDatabaseInstance(context);
 	}
 	
 	public static DataController getDataController(Context context){
@@ -37,6 +37,10 @@ public class DataController {
 			dc = new DataController(context);
 		}
 		return dc;
+	}
+	
+	public void saveState(Context context){
+		m.saveModel(context);
 	}
 	
 	//Session handling -----------------------------------------------------------
@@ -65,8 +69,7 @@ public class DataController {
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		//TODO maybe not the most optimal way of doing things
-		return m.getCurrentPlayer();
+		return db.getCurrentPlayer();
 	}
 	
 	/**
@@ -160,7 +163,8 @@ public class DataController {
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public ArrayList<Game> getGames() throws DatabaseException{
-		ArrayList<Game> games = db.getGames(m.getCurrentPlayer());
+		ArrayList<Player> testFetch = db.getPlayers();
+		ArrayList<Game> games = db.getGames(getCurrentPlayer());
 		Game localGame;
 		for(Game game : games){
 			localGame = m.getGame(game.getGameId());
@@ -273,7 +277,7 @@ public class DataController {
 	 * @param player The player-representation of the player
 	 */
 	public void sendInvitation(Player player){
-		sendInvitation(new Invitation(m.getCurrentPlayer(), player, new Date()));
+		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
 	}
 	
 }

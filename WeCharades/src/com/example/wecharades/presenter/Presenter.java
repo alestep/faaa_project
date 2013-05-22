@@ -120,7 +120,14 @@ public abstract class Presenter {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view
-		//TODO I do not think we should do this, at least not for the start screen!
+		//TODO I do not think we should do this? at least not for the start screen!
 		//activity.finish();
+	}
+	
+	/**
+	 * Called whenever a activity is closed.
+	 */
+	public void saveState(){
+		dc.saveState(activity);
 	}
 }

@@ -26,13 +26,11 @@ public class StartPresenter extends Presenter {
 		super(activity);
 		this.activity = activity;
 		separatedList = new HashMap<String, ArrayList<Game>>();
-		
-		//Checks if the there is any user logged in
-		checkLogin();
 	}
 	
 	public void update(){
-		activity.setDisplayName(dc.getCurrentPlayer().getName());
+		String string = dc.getCurrentPlayer().getName();
+		activity.setDisplayName(string);
 		parseGameLists();
 	}
 	

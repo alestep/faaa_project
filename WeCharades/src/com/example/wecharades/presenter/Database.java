@@ -179,7 +179,7 @@ public class Database {
 		ParseQuery mainQuery = ParseQuery.or(queries);
 
 		try{
-			List<ParseObject> dbResult = mainQuery.find();
+			List<ParseObject> dbResult = query1.find();
 			for(ParseObject game : dbResult){
 				games.add(DatabaseConverter.parseGame(this, game));
 			}

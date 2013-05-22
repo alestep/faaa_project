@@ -50,7 +50,7 @@ public class DatabaseConverter {
 
 	//A method to parse ParseObject players to players
 	protected static Player parsePlayer(ParseObject player){
-		if(player.getClassName().equals("_User")) {
+		if(player != null && player.getClassName().equals("_User")) {
 			return new Player(
 					player.getObjectId(), 
 					player.getString("naturalUsername"), 
