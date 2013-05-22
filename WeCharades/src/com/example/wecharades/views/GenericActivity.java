@@ -25,8 +25,8 @@ public abstract class GenericActivity extends Activity {
 	
 	@Override
 	protected void onStop(){
-		super.onStop();
 		presenter.saveState();
+		super.onStop();
 	}
 	
 	protected Presenter getPresenter(){

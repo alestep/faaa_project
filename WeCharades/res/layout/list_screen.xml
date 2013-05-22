@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="italic"
-        android:text="@string/empty_list" >
+        android:textStyle="italic">
     </TextView>
 </LinearLayout>

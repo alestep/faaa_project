@@ -105,7 +105,7 @@ public abstract class Presenter {
 	 */
 	public void hideProgressSpinner(View view, ProgressBar progressSpinner) {
 		//hide the progress spinner
-		progressSpinner.setVisibility(8);
+		progressSpinner.setVisibility(4);
 		//disable buttons
 		enableOrDisableViews(view);
 	}
@@ -123,7 +123,7 @@ public abstract class Presenter {
 	}
 	
 	/**
-	 * Called whenever a activity is closed.
+	 * Called whenever an activity is closed.
 	 */
 	public void saveState(){
 		dc.saveState(activity);
