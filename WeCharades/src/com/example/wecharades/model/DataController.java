@@ -18,9 +18,9 @@ import android.content.Context;
  */
 public class DataController {
 	
-	private static DataController dc = null;
+	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
-	private Database db;
+	private IDatabase db;
 	
 	private DataController(Context context){
 		m = Model.getModelInstance(context);

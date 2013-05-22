@@ -25,7 +25,7 @@ import com.parse.ParseUser;
  *
  */
 @SuppressLint("DefaultLocale")
-public class Database {
+public class Database implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String 	WORDLIST				= "WordList",
@@ -56,19 +56,24 @@ public class Database {
 								INVITE_INVITER 			= "inviter",
 								INVITE_INVITEE 			= "invitee";
 
-	private static Database singleton;
+	private static IDatabase singleton;
 	private DatabaseConverter dbc;
 
 	private Database(Context context){
 		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
-	public static Database getDatabaseInstance(Context context){
+	public static IDatabase getDatabaseInstance(Context context){
 		if(singleton == null)
 			singleton = new Database(context);
 		return singleton;
 	}
 	
+	/**
+	 * Sets the converter for this database.
+	 * @param dc - the Datacontroller
+	 */
+	@Override
 	public void setConverter(DataController dc){
 			dbc = new DatabaseConverter(dc);
 	}
@@ -100,14 +105,10 @@ public class Database {
 
 	//Games -----------------------------------------------------------------------------------------//	
 
-	/**
-	 * Creates a new game on the server
-	 * 
-	 * @param 	player1: The player who created the game
-	 * 			player2: The player who received the game
-	 * @return - The newly created game
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#createGame(com.example.wecharades.model.Player, com.example.wecharades.model.Player)
 	 */
+	@Override
 	public void createGame(Player player1, Player player2) throws DatabaseException{
 
 		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
@@ -141,12 +142,10 @@ public class Database {
 		}
 	}
 
-	/**
-	 * A method to get a single game
-	 * @param gameId
-	 * @return The game with gameId
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getGame(java.lang.String)
 	 */
+	@Override
 	public Game getGame(String gameId) throws DatabaseException{
 		Game game;
 		try {
@@ -174,12 +173,10 @@ public class Database {
 		return object;
 	}
 
-	/**
-	 * Get a list of game-instances of the logged in player from the Parse server.
-	 * @param The user
-	 * @return an ArrayList with Game instances
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getGames(com.example.wecharades.model.Player)
 	 */
+	@Override
 	public ArrayList<Game> getGames(Player player) throws DatabaseException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
@@ -205,10 +202,10 @@ public class Database {
 		return games;
 	}
 
-	/**
-	 * Update a game on the Parse server.
-	 * @param The game to be updated
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#updateGame(com.example.wecharades.model.Game)
 	 */
+	@Override
 	public void updateGame(Game theGame) {
 		final Game game = theGame;
 		ParseQuery query = new ParseQuery(GAME);
@@ -250,13 +247,10 @@ public class Database {
 		return newTurn;
 	}
 
-	/**
-	 * Retrieves a turn from the database
-	 * @param gameId - the game to which this turn belongs
-	 * @param turnNumber - the turn number
-	 * @return A Turn class representation of the retrieved data
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getTurn(com.example.wecharades.model.Game, int)
 	 */
+	@Override
 	public Turn getTurn(Game game, int turnNumber) throws DatabaseException{
 		ParseQuery query = new ParseQuery(TURN);
 		query.whereEqualTo(TURN_GAME, game.getGameId());
@@ -271,12 +265,10 @@ public class Database {
 		return dbc.parseTurn(turn);
 	}
 
-	/**
-	 * Returns a list of all games associated with a game
-	 * @param game - the game to fetch
-	 * @return an ArrayList of turns
-	 * @throws DatabaseException
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getTurns(com.example.wecharades.model.Game)
 	 */
+	@Override
 	public ArrayList<Turn> getTurns(Game game) throws DatabaseException{
 		ParseQuery query = new ParseQuery(TURN);
 		//We have to do this, as the turn is linked to a parse object
@@ -297,10 +289,10 @@ public class Database {
 		return turnList;
 	}
 
-	/**
-	 * Updates a specific turn according to its local version
-	 * @param theTurn - the Turn object that should be used as a reference
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#updateTurn(com.example.wecharades.model.Turn)
 	 */
+	@Override
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
@@ -322,12 +314,10 @@ public class Database {
 
 	//Players -----------------------------------------------------------------------------------------//	
 
-	/**
-	 * Gets the player with player Id from the database
-	 * @param playerId the Player's name
-	 * @return a Player representation
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getPlayer(java.lang.String)
 	 */
+	@Override
 	public Player getPlayer(String playerName) throws DatabaseException {
 		ParseQuery query = ParseUser.getQuery();
 		query.whereEqualTo(PLAYER_USERNAME, playerName.toLowerCase());
@@ -341,12 +331,10 @@ public class Database {
 		return dbc.parsePlayer(dbPlayer);
 	}
 
-	/**
-	 * 
-	 * @param parseId
-	 * @return
-	 * @throws DatabaseException
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getPlayerById(java.lang.String)
 	 */
+	@Override
 	public Player getPlayerById(String parseId) throws DatabaseException {
 		return dbc.parsePlayer(getPlayerObject(parseId));
 	}
@@ -366,12 +354,10 @@ public class Database {
 		}
 	}
 
-	/**
-	 * Get a list of player-instances containing all players 
-	 * @param searchString 
-	 * @return List containing all players
-	 * @throws DatabaseException
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getPlayers()
 	 */
+	@Override
 	public ArrayList<Player> getPlayers() throws DatabaseException {
 		ArrayList<Player> players = new ArrayList<Player>();
 		ParseQuery query = ParseUser.getQuery();
@@ -390,19 +376,20 @@ public class Database {
 	
 	//Invitations -----------------------------------------------------------------------------------------
 	
-	/**
-	 * Puts the playerId into the the random queue
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#putIntoPlayerQueue(com.example.wecharades.model.Player)
 	 */
+	@Override
 	public void putIntoPlayerQueue(Player player) {
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveInBackground();
 	}
 	
-	/**
-	 * Send an invitation to another player
-	 * @param inv
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#sendInvitation(com.example.wecharades.model.Invitation)
 	 */
+	@Override
 	public void sendInvitation(Invitation inv){
 		ParseObject invite = new ParseObject(INVITE);
 		invite.put(INVITE_INVITER, inv.getInviter().getParseId());
@@ -410,13 +397,10 @@ public class Database {
 		invite.saveInBackground();
 	}
 
-	/**
-	 * Retrieves the invitations a player has received
-	 * 
-	 * @param player - the Player
-	 * @return an ArrayList with playerId:s
-	 * @throws DatabaseException 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getInvitations(com.example.wecharades.model.Player)
 	 */
+	@Override
 	public ArrayList<Invitation> getInvitations(Player player) throws DatabaseException {
 		ArrayList<Invitation> returnList = new ArrayList<Invitation>();
 
@@ -434,12 +418,10 @@ public class Database {
 		return returnList;
 	}
 
-	/**
-	 * Removes an invitation from the database
-	 * 
-	 * @param inv - an invitation to delete
-	 * @throws DatabaseException
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#removeInvitation(com.example.wecharades.model.Invitation)
 	 */
+	@Override
 	public void removeInvitation(Invitation inv) throws DatabaseException{
 		try{
 			ParseQuery query = new ParseQuery(INVITE);
@@ -455,11 +437,10 @@ public class Database {
 		}
 	}
 	
-	/**
-	 * Removes the entire collection of Invites from the database
-	 * @param inv - a collection of invitations
-	 * @throws DatabaseException
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#removeInvitations(java.util.Collection)
 	 */
+	@Override
 	public void removeInvitations(Collection<Invitation> inv) throws DatabaseException{
 		for(Invitation invite : inv){
 			removeInvitation(invite);
@@ -468,14 +449,10 @@ public class Database {
 	
 	//User registration -----------------------------------------------------------------------------------------
 	
-	/**
-	 * A method to register a user
-	 * @param inputNickname - the nickname of choice
-	 * @param inputEmail - Email address
-	 * @param inputPassword - password
-	 * @param inputRepeatPassword - control password
-	 * @throws ParseException - thrown if the database transfer fails
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#registerPlayer(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void registerPlayer(
 			String inputNickname, 
 			String inputEmail, 
@@ -506,12 +483,10 @@ public class Database {
 		}
 	}
 
-	/**
-	 * Login activity
-	 * @param username - the user
-	 * @param password - the password
-	 * @throws DatabaseException - if something went wrong
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#loginPlayer(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void loginPlayer(String username, String password) throws DatabaseException{
 		//login through parse.com's standard function
 		//Using lowercase at login and registration to avoid case sensitivity problem
@@ -524,19 +499,18 @@ public class Database {
 		}
 	}
 	
-	/**
-	 * Returns the current player
-	 * @return A Player
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#getCurrentPlayer()
 	 */
+	@Override
 	public Player getCurrentPlayer(){
 		return dbc.parsePlayer(ParseUser.getCurrentUser());
 	}
 	
-	/**
-	 * A method to restore the user password
-	 * @param email - the user email
-	 * @throws DatabaseException - If the connection fails
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#resetPassword(java.lang.String)
 	 */
+	@Override
 	public void resetPassword(String email) throws DatabaseException {
 		try {
 			ParseUser.requestPasswordReset(email);
@@ -545,9 +519,10 @@ public class Database {
 		}
 	}
 	
-	/**
-	 * A method that will log out the current user
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#logOut()
 	 */
+	@Override
 	public void logOut(){
 		ParseUser.logOut();
 	}
