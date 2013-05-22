@@ -100,8 +100,6 @@ public class StartActivity extends GenericActivity {
 	 */
 	public void onClickLogout(View view) {
 		presenter.logOut();
-		//Redirecting to LoginActivity
-		finish(); //Should this be here? /Felix
 	}
 
 	/**
