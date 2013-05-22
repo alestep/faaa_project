@@ -25,10 +25,10 @@ public class SearchResultActivity extends ListActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		getListView().setAdapter(presenter.performSearch(getIntent().getExtras().getString("username")));
+		presenter.update();
 	}
-	
+
 	public void invite(String invitee){
-		presenter.invite(invitee);
+		//presenter.invite(invitee);
 	}
 }

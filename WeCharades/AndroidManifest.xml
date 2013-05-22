@@ -31,11 +31,10 @@
             android:label="@string/menu" >
  
             <!-- DEFAULT STARTING SCREEN -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
  
         <!-- New Game Activity -->
@@ -43,7 +42,13 @@
             android:name=".views.NewGameActivity"
             android:label="@string/new_game" >
         </activity>
- 
+
+        <!-- Invitations Activity -->
+        <activity
+            android:name=".views.InvitationActivity"
+            android:label="@string/invitations" >
+        </activity>
+        
         <!-- Search Player Activity -->
         <activity
             android:name=".views.SearchPlayerActivity"

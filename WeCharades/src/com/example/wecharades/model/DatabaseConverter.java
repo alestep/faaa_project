@@ -1,23 +1,26 @@
 package com.example.wecharades.model;
 
+import com.example.wecharades.presenter.DataController;
 import com.parse.ParseObject;
 
 public class DatabaseConverter {
-
+	
+	DataController dc;
+	
+	public DatabaseConverter(DataController dc){
+		this.dc = dc;
+	}
+	
 	//A protected method to parse a ParseObject to a game
-	protected static Game parseGame(Database db, ParseObject game) throws DatabaseException{
-		if(game.getClassName().equals("Game")){
-			//Save player locally to avoid multiple fetches. //TODO have a local list of players??
-			Player p1 = db.getPlayerById(game.getString("player1"));
-			Player p2 = db.getPlayerById(game.getString("player2"));
-			Player current = (game.getString("currentPlayer").equals(p1.getParseId())) ? p1 : p2 ;
+	protected Game parseGame(ParseObject game) throws DatabaseException{
+		if(game.getClassName().equals(Database.GAME)){
 			return new Game(
 					game.getObjectId(),
-					db.getPlayerById(game.getString("player1")),
-					db.getPlayerById(game.getString("player2")),
-					current,
-					game.getInt("turn"), 
-					game.getBoolean("finished"), 
+					dc.getPlayerById(game.getString(Database.GAME_PLAYER_1)),
+					dc.getPlayerById(game.getString(Database.GAME_PLAYER_2)),
+					dc.getPlayerById(game.getString(Database.GAME_PLAYER_CURRENT)),
+					game.getInt(Database.GAME_TURN), 
+					game.getBoolean(Database.GAME_FINISH), 
 					game.getUpdatedAt());
 		} else{
 			return null;
@@ -25,18 +28,18 @@ public class DatabaseConverter {
 	}
 
 	//A method to parse ParseObject turns into turns
-	protected static Turn parseTurn(Database db, ParseObject turn) throws DatabaseException{
-		if(turn.getClassName().equals("Turn")){
+	protected Turn parseTurn(ParseObject turn) throws DatabaseException{
+		if(turn.getClassName().equals(Database.TURN)){
 			return new Turn(
-					turn.getParseObject("game").getObjectId(),
-					turn.getInt("turn"), 
-					turn.getInt("state"), 
-					turn.getString("word"), 
-					turn.getString("videoLink"), 
-					db.getPlayerById(turn.getString("recPlayer")),
-					turn.getInt("recPlayerScore"),
-					db.getPlayerById(turn.getString("ansPlayer")), 
-					turn.getInt("ansPlayerScore") 
+					turn.getParseObject(Database.TURN_GAME).getObjectId(),
+					turn.getInt(Database.TURN_TURN), 
+					turn.getInt(Database.TURN_STATE), 
+					turn.getString(Database.TURN_WORD), 
+					turn.getString(Database.TURN_VIDEOLINK), 
+					dc.getPlayerById(turn.getString(Database.TURN_PLAYER_REC)),
+					turn.getInt(Database.TURN_PLAYER_REC_SCORE),
+					dc.getPlayerById(turn.getString(Database.TURN_PLAYER_ANS)), 
+					turn.getInt(Database.TURN_PLAYER_ANS_SCORE) 
 					);
 		} else{
 			return null;
@@ -44,20 +47,23 @@ public class DatabaseConverter {
 	}
 
 	//A method to parse ParseObject players to players
-	protected static Player parsePlayer(ParseObject player){
-		if(player != null && player.getClassName().equals("_User")) {
+	protected Player parsePlayer(ParseObject player){
+		if(player != null && player.getClassName().equals(Database.PLAYER)) {
 			return new Player(
 					player.getObjectId(), 
-					player.getString("naturalUsername"), 
-					player.getInt("globalScore"));
+					player.getString(Database.PLAYER_USERNAME_NATURAL), 
+					player.getInt(Database.PLAYER_GLOBALSCORE));
 		} else{
 			return null;
 		}
 	}
 
-	protected static Invitation parseInvitation(Database db, ParseObject invitation) throws DatabaseException{
-		if(invitation.getClassName().equals("Invite")){
-			return new Invitation(db.getPlayerById(invitation.getString("inviter")), db.getPlayerById(invitation.getString("invitee")), invitation.getCreatedAt());
+	protected Invitation parseInvitation(ParseObject invitation) throws DatabaseException{
+		if(invitation.getClassName().equals(Database.INVITE)){
+			return new Invitation(
+					dc.getPlayerById(invitation.getString(Database.INVITE_INVITER))
+					, dc.getPlayerById(invitation.getString(Database.INVITE_INVITEE))
+					, invitation.getCreatedAt());
 		} else{
 			return null;
 		}
