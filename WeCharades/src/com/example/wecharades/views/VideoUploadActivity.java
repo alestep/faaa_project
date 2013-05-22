@@ -29,9 +29,9 @@ public class VideoUploadActivity extends GenericActivity{
 	private VideoUploadPresenter presenter;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new VideoUploadPresenter(this));
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces landscape orientation which is what the camera uses.
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces portrait orientation which is what the camera uses.
 		setContentView(R.layout.showvideo);
 		presenter = (VideoUploadPresenter) super.getPresenter();
 		videoView = (VideoView) findViewById(R.id.satisfiedVideoView);
@@ -40,7 +40,7 @@ public class VideoUploadActivity extends GenericActivity{
 	}
 
 	/**
-	 * handles the yes button
+	 * Handles the Yes button
 	 * @param view
 	 */
 	public void onClickYes(View view) {
@@ -48,7 +48,7 @@ public class VideoUploadActivity extends GenericActivity{
 	}
 
 	/**
-	 * Handles the no button
+	 * Handles the No button
 	 * @param w
 	 */
 	public void onClickNo(View view) {
