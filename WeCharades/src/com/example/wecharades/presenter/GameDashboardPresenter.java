@@ -99,15 +99,6 @@ public class GameDashboardPresenter extends Presenter {
 					turn.getAnsPlayerScore() + " points" 
 					: turn.getRecPlayerScore() + " points";
 			button.setEnabled(false);
-//			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
-//				buttonText = turn.getAnsPlayerScore() + " points";
-//				button.setEnabled(false);
-//			} else if (turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
-//				button.setEnabled(false);
-//				buttonText = turn.getRecPlayerScore() + " points";
-//			} else {
-//				buttonText = "error";
-//			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
 			//TODO: add at state: "waiting for opponent"
 			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
