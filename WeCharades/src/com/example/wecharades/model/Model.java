@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import android.content.Context;
 
@@ -273,6 +274,7 @@ public class Model implements Serializable {
 		storedPlayers.remove(currentPlayer.getParseId());
 		storedPlayerNames.remove(currentPlayer.getName());
 		currentPlayer = null;
+		
 	}
 
 	//Invitations ---------------------------------------------------------------
@@ -287,10 +289,10 @@ public class Model implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Returns a set with all players the current player has sent invitations to. 
 	 * @return
 	 */
-	public ArrayList<Invitation> getSentInviations(){
+	public ArrayList<Invitation> getSentInvitations(){
 		return sentInvitations;
 	}
 

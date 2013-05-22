@@ -285,7 +285,20 @@ public class DataController {
 	 * @return An ArrayList containing Invitations
 	 */
 	public ArrayList<Invitation> getSentInvitations(){
-		return m.getSentInviations();
+		return m.getSentInvitations();
+	}
+	
+	/**
+	 * Returns a set with all players the current player has sent invitations to.
+	 * @return A TreeSet containing String (natural)usernames
+	 */
+	public TreeSet<String> getSentInvitationsAsUsernames(){
+		TreeSet<String> usernames = new TreeSet<String>();
+		ArrayList<Invitation> invitations = getSentInvitations();
+		for(Invitation invitation : invitations){
+			usernames.add(invitation.getInvitee().getName());
+		}
+		return usernames;
 	}
 	
 	/**
