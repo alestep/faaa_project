@@ -169,8 +169,8 @@ public class DataController {
 	
 	//Games -----------------------------------------------------------
 	
-	public void putInRandomQueue(Player player){
-		db.putIntoRandomQueue(player);
+	public void putInRandomQueue(){
+		db.putIntoRandomQueue(getCurrentPlayer());
 	}
 	
 	/**

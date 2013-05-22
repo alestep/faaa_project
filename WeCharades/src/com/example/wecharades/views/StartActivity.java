@@ -100,7 +100,7 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickNewGame(View view) {
-		Intent intent = new Intent (getApplicationContext(), NewGameActivity.class);
+		Intent intent = new Intent (this, NewGameActivity.class);
 		startActivity(intent);
 	}
 	
@@ -109,7 +109,7 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickHighScore(View view) {
-//		Intent intent = new Intent (getApplicationContext(), HighScoreActivity.class);
+//		Intent intent = new Intent (this, HighScoreActivity.class);
 //		startActivity(intent);
 	}
 
@@ -119,7 +119,7 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickAccount(View view) {
-//		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
+//		Intent intent = new Intent (this, AccountActivity.class);
 //		startActivity(intent);
 	}
 	
