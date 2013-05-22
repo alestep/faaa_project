@@ -109,7 +109,6 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 */
 	@Override
 	public int hashCode(){
-		String id = getGameId();
 		return getGameId().hashCode();
 	}
 

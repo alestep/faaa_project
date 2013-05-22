@@ -18,9 +18,9 @@ import android.content.Context;
  */
 public class DataController {
 	
-	private static DataController dc = null;
+	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
-	private Database db;
+	private IDatabase db;
 	
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
@@ -36,7 +36,8 @@ public class DataController {
 	}
 	
 	public void saveState(Context context){
-		m.saveModel(context);
+		if(m != null)
+			m.saveModel(context);
 	}
 	
 	//Session handling -----------------------------------------------------------
@@ -47,7 +48,9 @@ public class DataController {
 	 * @param password - The password
 	 * @throws DatabaseException - if the connection to the database fails 
 	 */
-	public void loginPlayer(String username, String password) throws DatabaseException{
+	public void loginPlayer(Context context, String username, String password) throws DatabaseException{
+		m = Model.getModelInstance(context);
+		db = Database.getDatabaseInstance(context);
 		db.loginPlayer(username, password);
 		m.setCurrentPlayer(db.getCurrentPlayer());
 	}
@@ -55,9 +58,11 @@ public class DataController {
 	/**
 	 * Log out the current player
 	 */
-	public void logOutPlayer(){
-		m.logOutCurrentPlayer();
+	public void logOutPlayer(Context context){
+		m.logOutCurrentPlayer(context);
 		db.logOut();
+		//Dereference the model
+		m = null;
 	}
 	
 	/**
@@ -163,6 +168,10 @@ public class DataController {
 	}
 	
 	//Games -----------------------------------------------------------
+	
+	public void putInRandomQueue(Player player){
+		db.putIntoRandomQueue(player);
+	}
 	
 	/**
 	 * Create a game. The local storage will not be updated

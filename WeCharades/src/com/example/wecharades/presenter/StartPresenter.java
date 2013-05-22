@@ -99,7 +99,7 @@ public class StartPresenter extends Presenter {
 	 * Log out the current user
 	 */
 	public void logOut() {
-		dc.logOutPlayer();
+		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
 	

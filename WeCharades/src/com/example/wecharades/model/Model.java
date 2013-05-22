@@ -1,5 +1,6 @@
 package com.example.wecharades.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * This class stores all the data available in the game.
@@ -87,6 +89,13 @@ public class Model implements Serializable {
 			//TODO Ändra även här
 		}
 		return singleModel;
+	}
+	
+	private static void eraseModel(Context context){
+		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
+		if(modelFile.delete())
+			Log.d("Model - File:","Removed file");
+		singleModel = null;
 	}
 
 	//Games ---------------------------------------------------------------
@@ -269,11 +278,8 @@ public class Model implements Serializable {
 	/**
 	 * Deletes the current player entirely from the model. Should be done when user logs out.
 	 */
-	public void logOutCurrentPlayer(){
-		storedPlayers.remove(currentPlayer.getParseId());
-		storedPlayerNames.remove(currentPlayer.getName());
-		currentPlayer = null;
-		
+	public void logOutCurrentPlayer(Context context){
+		eraseModel(context);
 	}
 
 	//Invitations ---------------------------------------------------------------
