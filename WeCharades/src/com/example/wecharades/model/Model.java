@@ -3,6 +3,7 @@ package com.example.wecharades.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,50 +11,50 @@ import java.util.NoSuchElementException;
 
 import android.content.Context;
 
-import com.example.wecharades.presenter.Database;
-import com.parse.ParseUser;
-
 /**
  * This class stores all the data available in the game.
  * @author Anton Dahlström
  *
  */
-public class Model {
+public class Model implements Serializable {
 	private static final String SAVE_FILE = "model.save";
-	
+
 	//Two maps for games for increased speed
 	private HashMap<Game, ArrayList<Turn>> gameList = new HashMap<Game, ArrayList<Turn>>();
 	private HashMap<String, Game> gameIdList = new HashMap<String, Game>();
-	
+
 	//Two maps for player names and id:s. The second one is used for increased speed
 	private HashMap<String, Player> storedPlayers = new HashMap<String, Player>();
 	private HashMap<String, String> storedPlayerNames = new HashMap<String, String>();
 	private Player currentPlayer = null;
-	
+
 	/*
 	 * Invitations are stored locally, in order to check that two invites aren't sent to one person (weak check).
 	 */
 	private ArrayList<Invitation> sentInvitations = new ArrayList<Invitation>(); 
-	
+
 
 	//Singleton
 	private static Model singleModel;
 
-	private Model(Context context){
-		loadModel(context);
-	}
+	private Model(Context context){}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
 	 * @return the Model
 	 */
 	public static Model getModelInstance(Context context){
-		if (singleModel == null){
-			singleModel = new Model(context);
+		if(singleModel == null){
+			//Try to load from storage
+			singleModel = loadModel(context);
+			if(singleModel == null){
+				//If there were no previous models present, create new
+				singleModel = new Model(context);
+			}
 		}
 		return singleModel;
 	}
-	
+
 	/**
 	 * A method to save the current model to memory.
 	 * 	This should be done on every onDestroy
@@ -62,7 +63,7 @@ public class Model {
 	public void saveModel(Context context){
 		try {
 			ObjectOutputStream oOut = new ObjectOutputStream(
-						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
+					context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
 					);
 			oOut.writeObject(singleModel);
 			oOut.close();
@@ -71,8 +72,9 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void loadModel(Context context){
+
+	private static Model loadModel(Context context){
+		Model singleModel = null;
 		try {
 			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
 			Object obj = oIn.readObject();
@@ -84,6 +86,7 @@ public class Model {
 		} catch (ClassNotFoundException e2){
 			//TODO Ändra även här
 		}
+		return singleModel;
 	}
 
 	//Games ---------------------------------------------------------------
@@ -105,13 +108,13 @@ public class Model {
 	public void putGame(Game game){
 		//This is actually kind of fast, although it might look a bit weird.
 		ArrayList<Turn> tempTurns;
-		if(gameList.containsKey(game)){
+		if(gameList.containsKey(game) && gameList.get(game) != null){
 			tempTurns = gameList.get(game);
 			gameList.remove(game);
 			gameList.put(game,tempTurns);
 			gameIdList.put(game.getGameId(), game);
 		} else{
-			gameList.put(game, new ArrayList<Turn>(6));
+			gameList.put(game, null);
 			gameIdList.put(game.getGameId(), game);
 		}
 
@@ -124,7 +127,7 @@ public class Model {
 	public ArrayList<Game> getGames(){
 		return new ArrayList<Game>(gameList.keySet());
 	}
-	
+
 	/**
 	 * Gets a game from its game id
 	 * @param parseId
@@ -152,23 +155,28 @@ public class Model {
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurn(Turn turn){
-		Game game = getGame(turn.getGameId());
-		if( !gameList.containsKey(game))
-			throw new NoSuchElementException();
-		ArrayList<Turn> listOfTurns = gameList.get(game);
-		if(listOfTurns.contains(turn)) //Removes the old copy of the turn
-			listOfTurns.remove(turn.getTurnNumber()-1); 
-		listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
+		if(turn != null){ //TODO vet inte om vi ska göra det här....
+			Game game = getGame(turn.getGameId());
+			if( !gameList.containsKey(game))
+				throw new NoSuchElementException();
+			ArrayList<Turn> listOfTurns = gameList.get(game);
+			if(listOfTurns == null){
+				listOfTurns = new ArrayList<Turn>();
+			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
+				listOfTurns.remove(turn.getTurnNumber()-1); 
+			listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
+			gameList.put(game, listOfTurns);
+		}
 	}
 
 	/**
-	 * Updates a list of turns at once
+	 * Updates a list of turns at once - the existing list will be overwritten.
 	 * @param game - 
 	 * @param turnList
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
-		for(Turn turn : turnList) {
+		for(Turn turn : turnList){
 			putTurn(turn);
 		}
 	}
@@ -181,7 +189,7 @@ public class Model {
 	public ArrayList<Turn> getTurns(Game game){
 		return gameList.get(game);
 	}
-	
+
 	/**
 	 * Returns the current turn from the model
 	 * @param game - the game to fetch from
@@ -192,11 +200,11 @@ public class Model {
 	}
 
 	//Players ---------------------------------------------------------------
-	
+
 	public boolean playerIsCached(Player player){
 		return storedPlayers.containsKey(player.getParseId());
 	}
-	
+
 	/**
 	 * Puts a player in stored players 
 	 * @param player - the player to be stored
@@ -204,11 +212,12 @@ public class Model {
 	 */
 	public void putPlayer(Player player){
 		if(!playerIsCached(player)){
-			storedPlayers.put(player.getParseId(),player);
 			storedPlayerNames.put(player.getName(), player.getParseId());
 		}
+		//The data for a player should always be updated
+		storedPlayers.put(player.getParseId(),player);
 	}
-	
+
 	/**
 	 * Puts a collection of players into the model
 	 * @param players - a collection of players
@@ -246,11 +255,7 @@ public class Model {
 	 *  it gets added.
 	 */
 	public void setCurrentPlayer(Player player){
-		ParseUser parseUser = ParseUser.getCurrentUser();
-		currentPlayer = new Player(parseUser.getObjectId(), 
-				parseUser.getString(Database.PLAYER_USERNAME_NATURAL), 
-				parseUser.getInt(Database.PLAYER_GLOBALSCORE));
-		putPlayer(currentPlayer);
+		currentPlayer = player;
 	}
 
 	/**
@@ -260,7 +265,7 @@ public class Model {
 	public Player getCurrentPlayer(){
 		return currentPlayer;
 	}
-	
+
 	/**
 	 * Deletes the current player entirely from the model. Should be done when user logs out.
 	 */
@@ -269,6 +274,7 @@ public class Model {
 		storedPlayerNames.remove(currentPlayer.getName());
 		currentPlayer = null;
 	}
+
 	
 	/**
 	 * Delete the account that belongs to the current player
@@ -276,10 +282,10 @@ public class Model {
 	public void deleteAccount() {
 		//TODO: implement this shit!
 	}
-	
+
 	//Invitations ---------------------------------------------------------------
 	//Received invitations are not needed here, as they should allways be fetched from the database.
-	
+
 	/**
 	 * 
 	 * @param invitation
@@ -287,7 +293,7 @@ public class Model {
 	public void setSentInvitation(Invitation invitation){
 		sentInvitations.add(invitation);
 	}
-	
+
 	/**
 	 * 
 	 * @return

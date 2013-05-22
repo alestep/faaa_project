@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -12,9 +13,7 @@ import com.example.wecharades.views.SearchResultActivity;
 public class SearchResultPresenter extends Presenter {
 	
 	private SearchResultActivity activity;
-	//TODO Remove if not necessary
-	//private ArrayList<Player> players;
-	//private SortedSet<String> usernames;
+	private TreeSet<String> usernames;
 	
 	
 	/**
@@ -26,20 +25,32 @@ public class SearchResultPresenter extends Presenter {
 		this.activity = (SearchResultActivity) activity;
 	}
 	
-	public SearchResultAdapter performSearch(String searchString) {
-		TreeSet<String> usernames = null;
+	public void update(){
+		performSearch(activity.getIntent().getExtras().getString("username"));
+	}
+	
+	/**
+	 * 
+	 */
+	public void setPlayersList () {
+		usernames = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
+
 		try {
 			usernames = dc.getAllOtherPlayerNames();
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO When GenericActivity implemented, activity.showMessage(e.prettyPrint());
 		}
-		//TODO what is a sorted set, and do we need it? A TreeSet is somewhat sorted
+	}
+
+	private void performSearch(String searchString) {
+		setPlayersList();
 		SortedSet<String> resultList = usernames.subSet(searchString, searchString + Character.MAX_VALUE);
 		ArrayList<String> list = new ArrayList<String>(resultList);
-		//TODO: Kolla om det går att hämta ListViewn här. Dvs gör metoden till void!
-		//activity.getListView().setAdapter(new SearchResultAdapter(activity.getApplicationContext(), list));
-		return new SearchResultAdapter(activity, list);
+		activity.getListView().setAdapter(new SearchResultAdapter(activity, list));
 		
 	}
 

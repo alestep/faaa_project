@@ -17,9 +17,9 @@ public class GameDashboardActivity extends GenericActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new GameDashboardPresenter(this));
 		setContentView(R.layout.game_screen);
-		presenter = new GameDashboardPresenter(this);
+		presenter = (GameDashboardPresenter) super.getPresenter();
 		title = (TextView) findViewById(R.id.titleText);
 		yourScore = (TextView) findViewById(R.id.yourScore);
 		opponentsScore = (TextView) findViewById(R.id.opponentScore);

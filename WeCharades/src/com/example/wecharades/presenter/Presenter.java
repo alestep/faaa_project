@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,12 +16,9 @@ import com.example.wecharades.views.LoginActivity;
 
 public abstract class Presenter {
 
-	//TODO These are now removed in favour of the datacontroller
-	//protected Database db;
-	//protected Model model;
 	protected DataController dc;
 	protected Activity activity;
-
+	
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
@@ -121,7 +119,7 @@ public abstract class Presenter {
 		activity.startActivity(i);
 		// Close current view
 		//TODO I do not think we should do this? at least not for the start screen!
-		//activity.finish();
+		activity.finish();
 	}
 	
 	/**

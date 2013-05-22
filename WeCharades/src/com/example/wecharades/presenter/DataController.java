@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import android.content.Context;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
@@ -30,6 +31,7 @@ public class DataController {
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
+		db.setConverter(this);
 	}
 	
 	public static DataController getDataController(Context context){
@@ -140,6 +142,17 @@ public class DataController {
 			m.putPlayer(p);
 		}
 		return p;
+	}
+	
+	/**
+	 * Returns a list of all players as objects
+	 * @return An ArrayList with players
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		return players;
 	}
 	
 	/**
@@ -289,6 +302,25 @@ public class DataController {
 	 */
 	public void sendInvitation(Player player){
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
+	}
+	
+	/**
+	 * Called in order to accept an invitation and automatically create a game.
+	 * @param invitation - The invitation to accept
+	 * @throws DatabaseException
+	 */
+	public void acceptInvitation(Invitation invitation) throws DatabaseException{
+		createGame(invitation.getInviter(), invitation.getInvitee());
+		db.removeInvitation(invitation);
+	}
+	
+	/**
+	 * Called to reject an invitation, which is then deleted form the database
+	 * @param invitaiton - The invitation to reject
+	 * @throws DatabaseException
+	 */
+	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
+		db.removeInvitation(invitaiton);
 	}
 	
 }

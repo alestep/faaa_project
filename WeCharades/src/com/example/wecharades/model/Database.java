@@ -1,4 +1,4 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,11 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
+import com.example.wecharades.presenter.DataController;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -41,7 +37,7 @@ public class Database {
 								GAME_PLAYER_CURRENT 	= "currentPlayer",
 								GAME_TURN 				= "turn",
 								GAME_FINISH 			= "finished",
-								TURN					= "turn",
+								TURN					= "Turn",
 								TURN_GAME				= "game",
 								TURN_TURN				= "turn",
 								TURN_STATE				= "state",
@@ -51,6 +47,7 @@ public class Database {
 								TURN_PLAYER_REC_SCORE	= "recPlayerScore",
 								TURN_PLAYER_ANS			= "ansPlayer",
 								TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
+								PLAYER					= "_User",
 								PLAYER_USERNAME			= "username",
 								PLAYER_USERNAME_NATURAL	= "naturalUsername",
 								PLAYER_GLOBALSCORE		= "globalScore",
@@ -61,6 +58,7 @@ public class Database {
 								INVITE_INVITEE 			= "invitee";
 
 	private static Database singleton;
+	private DatabaseConverter dbc;
 
 	private Database(Context context){
 		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
@@ -70,6 +68,10 @@ public class Database {
 		if(singleton == null)
 			singleton = new Database(context);
 		return singleton;
+	}
+	
+	public void setConverter(DataController dc){
+			dbc = new DatabaseConverter(dc);
 	}
 
 	/**
@@ -151,12 +153,26 @@ public class Database {
 		try {
 			ParseQuery query = new ParseQuery(GAME);
 			ParseObject dbGame = query.get(gameId);
-			game = DatabaseConverter.parseGame(this, dbGame);
+			game = dbc.parseGame(dbGame);
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1003,"Failed to fetch game data");
 		}
 		return game;
+	}
+	
+	private ParseObject getGameParseObject(String gameId) throws DatabaseException {
+		ParseObject object = null;
+		ParseQuery query = new ParseQuery("Game");
+		try {
+			object = query.get(gameId);
+		} catch(ParseException e){
+			Log.d("Database", e.getMessage());
+			//TODO: fix error message
+			throw new DatabaseException(1112, "Failed to get ParseObject");
+		}
+		
+		return object;
 	}
 
 	/**
@@ -181,7 +197,7 @@ public class Database {
 		try{
 			List<ParseObject> dbResult = mainQuery.find();
 			for(ParseObject game : dbResult){
-				games.add(DatabaseConverter.parseGame(this, game));//TODO The DB-helper should not connect to db.
+				games.add(dbc.parseGame(game));//TODO The DB-helper should not connect to db.
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
@@ -222,16 +238,16 @@ public class Database {
 	 * @param ansPlayer - the parseId of the player that should answer
 	 */
 	private ParseObject createTurn(ParseObject game, int turnNumber, String word, String recPlayer, String ansPlayer) {
-		ParseObject newTurn = new ParseObject("Turn");
-		newTurn.put("game",game);
-		newTurn.put("turn",turnNumber);
-//		newTurn.put("state",Turn.INIT);
-		newTurn.put("word",word);
-		newTurn.put("videoLink","");
-		newTurn.put("recPlayer",recPlayer);
-		newTurn.put("recPlayerScore",0);
-		newTurn.put("ansPlayer",ansPlayer);
-		newTurn.put("ansPlayerScore",0);
+		ParseObject newTurn = new ParseObject(TURN);
+		newTurn.put(TURN_GAME,game);
+		newTurn.put(TURN_TURN,turnNumber);
+		newTurn.put(TURN_STATE,Turn.INIT);
+		newTurn.put(TURN_WORD,word);
+		newTurn.put(TURN_VIDEOLINK,"");
+		newTurn.put(TURN_PLAYER_REC,recPlayer);
+		newTurn.put(TURN_PLAYER_REC_SCORE,0);
+		newTurn.put(TURN_PLAYER_ANS,ansPlayer);
+		newTurn.put(TURN_PLAYER_ANS_SCORE,0);
 		return newTurn;
 	}
 
@@ -253,7 +269,7 @@ public class Database {
 			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1005, "Failed to get turn");
 		}
-		return DatabaseConverter.parseTurn(this, turn);
+		return dbc.parseTurn(turn);
 	}
 
 	/**
@@ -263,9 +279,10 @@ public class Database {
 	 * @throws DatabaseException
 	 */
 	public ArrayList<Turn> getTurns(Game game) throws DatabaseException{
-		ParseQuery query = new ParseQuery("Turn");
+		ParseQuery query = new ParseQuery(TURN);
+		//We have to do this, as the turn is linked to a parse object
 		query.whereEqualTo(TURN_GAME, getGameParseObject(game.getGameId()));
-		query.addAscendingOrder("turn");
+		query.addAscendingOrder(TURN_TURN);
 
 		List<ParseObject> dbList = null;
 		try{
@@ -276,23 +293,9 @@ public class Database {
 		}
 		ArrayList<Turn> turnList = new ArrayList<Turn>();
 		for(ParseObject turn : dbList){
-			turnList.add(DatabaseConverter.parseTurn(this, turn)); //TODO The helper classes should REALY not fetch data like this...
+			turnList.add(dbc.parseTurn(turn));
 		}
 		return turnList;
-	}
-
-	private ParseObject getGameParseObject(String gameId) throws DatabaseException {
-		ParseObject object = null;
-		ParseQuery query = new ParseQuery("Game");
-		try {
-			object = query.get(gameId);
-		} catch(ParseException e){
-			Log.d("Database", e.getMessage());
-			//TODO: fix error message
-			throw new DatabaseException(1112, "Failed to get ParseObject");
-		}
-		
-		return object;
 	}
 
 	/**
@@ -336,7 +339,7 @@ public class Database {
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1010,"Failed to fetch user");
 		}
-		return DatabaseConverter.parsePlayer(dbPlayer);
+		return dbc.parsePlayer(dbPlayer);
 	}
 
 	/**
@@ -346,7 +349,7 @@ public class Database {
 	 * @throws DatabaseException
 	 */
 	public Player getPlayerById(String parseId) throws DatabaseException {
-		return DatabaseConverter.parsePlayer(getPlayerObject(parseId));
+		return dbc.parsePlayer(getPlayerObject(parseId));
 	}
 
 	/**
@@ -356,7 +359,6 @@ public class Database {
 	 * @throws DatabaseException
 	 */
 	private ParseObject getPlayerObject(String parseId) throws DatabaseException{
-		//TODO We should try and fetch this from the model first!
 		try {
 			return ParseUser.getQuery().get(parseId);
 		} catch (ParseException e) {
@@ -378,7 +380,7 @@ public class Database {
 		try {
 			List<ParseObject> dbResult = query.find();
 			for(ParseObject player : dbResult) {
-				players.add(DatabaseConverter.parsePlayer(player));
+				players.add(dbc.parsePlayer(player));
 			}
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
@@ -426,7 +428,7 @@ public class Database {
 		try {
 			List<ParseObject> result = query.find();
 			for(ParseObject object : result){
-				returnList.add(DatabaseConverter.parseInvitation(this, object));
+				returnList.add(dbc.parseInvitation(object));
 			}
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
@@ -530,7 +532,7 @@ public class Database {
 	 * @return A Player
 	 */
 	public Player getCurrentPlayer(){
-		return DatabaseConverter.parsePlayer(ParseUser.getCurrentUser());
+		return dbc.parsePlayer(ParseUser.getCurrentUser());
 	}
 	
 	/**

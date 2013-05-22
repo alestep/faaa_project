@@ -21,7 +21,7 @@ public class LoginActivity extends GenericActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new LoginPresenter(this));
 		setContentView(R.layout.login);
 
 		// Importing all assets like buttons, text fields
@@ -34,7 +34,7 @@ public class LoginActivity extends GenericActivity {
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		
 		//initializing the presenter
-		presenter = new LoginPresenter(this);
+		presenter = (LoginPresenter) super.getPresenter();
 
 		presenter.setProgressSpinnerInvisible(loginProgress);
 	}
