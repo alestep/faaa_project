@@ -2,12 +2,6 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
-import com.example.wecharades.R;
-import com.example.wecharades.R.id;
-import com.example.wecharades.R.layout;
-import com.example.wecharades.model.Model;
-import com.example.wecharades.views.SearchResultActivity;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.wecharades.R;
+import com.example.wecharades.views.SearchResultActivity;
 
 public class SearchResultAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;

@@ -1,8 +1,5 @@
 package com.example.wecharades.views;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

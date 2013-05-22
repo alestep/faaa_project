@@ -3,7 +3,6 @@ package com.example.wecharades.presenter;
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,7 +14,6 @@ import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
-import com.parse.ParseUser;
 public class GameDashboardPresenter extends Presenter {
 
 	private GameDashboardActivity activity;
