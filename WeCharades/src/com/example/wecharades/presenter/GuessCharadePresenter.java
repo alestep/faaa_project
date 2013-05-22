@@ -2,13 +2,18 @@ package com.example.wecharades.presenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -200,13 +205,29 @@ public class GuessCharadePresenter extends Presenter {
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");
+						con.deleteFile(turn.getVideoLink());
 					}						
 					con.logout();
 					con.disconnect();
 				}
 			}
+			catch (SocketException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (UnknownHostException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (FTPConnectionClosedException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (CopyStreamException e){
+				Log.v("download result", e.getMessage());
+			}
+			catch (IOException e){
+				Log.v("download result", e.getMessage());
+			}
 			catch (Exception e){
-				Log.v("download result","failed");
+				Log.v("download result","failed " + e.getMessage());
 			}
 			return null;	
 		}
