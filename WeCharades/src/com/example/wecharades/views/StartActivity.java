@@ -2,8 +2,6 @@ package com.example.wecharades.views;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;

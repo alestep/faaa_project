@@ -63,8 +63,8 @@ public class DataController {
 	 * Log out the current player
 	 */
 	public void logOutPlayer(){
-		db.logOut();
 		m.logOutCurrentPlayer();
+		db.logOut();
 	}
 	
 	/**

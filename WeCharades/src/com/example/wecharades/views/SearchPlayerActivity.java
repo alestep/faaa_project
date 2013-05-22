@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.SimplePresenter;

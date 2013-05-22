@@ -1,7 +1,6 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;

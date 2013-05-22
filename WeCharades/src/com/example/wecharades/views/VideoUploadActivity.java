@@ -1,7 +1,6 @@
 package com.example.wecharades.views;
 
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
