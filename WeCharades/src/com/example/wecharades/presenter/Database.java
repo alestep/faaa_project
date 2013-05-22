@@ -179,9 +179,9 @@ public class Database {
 		ParseQuery mainQuery = ParseQuery.or(queries);
 
 		try{
-			List<ParseObject> dbResult = query1.find();
+			List<ParseObject> dbResult = mainQuery.find();
 			for(ParseObject game : dbResult){
-				games.add(DatabaseConverter.parseGame(this, game));
+				games.add(DatabaseConverter.parseGame(this, game));//TODO The DB-helper should not connect to db.
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
@@ -276,7 +276,7 @@ public class Database {
 		}
 		ArrayList<Turn> turnList = new ArrayList<Turn>();
 		for(ParseObject turn : dbList){
-			turnList.add(DatabaseConverter.parseTurn(this, turn));
+			turnList.add(DatabaseConverter.parseTurn(this, turn)); //TODO The helper classes should REALY not fetch data like this...
 		}
 		return turnList;
 	}

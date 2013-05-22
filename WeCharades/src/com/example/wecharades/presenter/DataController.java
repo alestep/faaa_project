@@ -163,7 +163,6 @@ public class DataController {
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public ArrayList<Game> getGames() throws DatabaseException{
-		ArrayList<Player> testFetch = db.getPlayers();
 		ArrayList<Game> games = db.getGames(getCurrentPlayer());
 		Game localGame;
 		for(Game game : games){

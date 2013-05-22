@@ -33,7 +33,7 @@ public class DatabaseConverter {
 	protected static Turn parseTurn(Database db, ParseObject turn) throws DatabaseException{
 		if(turn.getClassName().equals("Turn")){
 			return new Turn(
-					turn.getString("game"), 
+					turn.getParseObject("game").getObjectId(),
 					turn.getInt("turn"), 
 					turn.getInt("state"), 
 					turn.getString("word"), 
