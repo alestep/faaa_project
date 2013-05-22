@@ -7,16 +7,18 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.NewGamePresenter;
 
 public class NewGameActivity extends Activity {
 	
-	public final static String TAG = "NewGameScreen";
+	private NewGamePresenter presenter;
 	
 	//TODO Implement a presenter and extend generic activity if possible
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_game);
+		presenter = new NewGamePresenter(this);
 	}
 	
 	/**
@@ -24,7 +26,7 @@ public class NewGameActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickRandom(View view) {
-		Log.d(TAG, "Clicked Find random player");
+		presenter.randomInvitation();
 	}
 	
 	/**
@@ -32,7 +34,6 @@ public class NewGameActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickSearchPlayer(View view) {
-		Log.d(TAG, "Clicked Search for player");
 		Intent intent = new Intent (getApplicationContext(), SearchPlayerActivity.class);
 		startActivity(intent);
 	}

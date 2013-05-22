@@ -1,6 +1,9 @@
 package com.example.wecharades.views;
 
+
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,20 +39,21 @@ public class StartActivity extends GenericActivity {
 	private ListView gameListView;
 
 	private TextView displayUser; 
+	private Button invitations;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
 		// Sets the View Layer
 		setContentView(R.layout.list_screen);
 		
-		// Get a reference to the ListView holder
-        gameListView = (ListView) this.findViewById(R.id.list);
+		// Get a reference to views
+        gameListView = (ListView) findViewById(R.id.list);
+		invitations = (Button) findViewById(R.id.invitations);
 		
 		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 		
-		// Get a reference to the dispalyUser field
 		displayUser = (TextView) findViewById(R.id.user_display);
 		
 		// Sets the presenter
@@ -83,6 +87,15 @@ public class StartActivity extends GenericActivity {
             }
         });
 	}
+	
+	/**
+	 * 
+	 * @param v
+	 */
+	public void onClickInvitations(View v) {
+		Intent intent = new Intent(this, InvitationActivity.class);
+		startActivity(intent);
+	}
 
 	/**
 	 * Logout and go back to login screen
@@ -99,10 +112,7 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickNewGame(View view) {
-		Button b = (Button) view;
-		//presenter.showToast(getApplicationContext(), b.getText().toString());
 		Intent intent = new Intent (getApplicationContext(), NewGameActivity.class);
-		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
 		startActivity(intent);
 	}
 
@@ -121,6 +131,13 @@ public class StartActivity extends GenericActivity {
 	
 	public void setDisplayName(String user){
 		displayUser.setText(user);
+	}
+
+	public void setInvitations(int nrInvites){
+		if (nrInvites != 0) {
+			invitations.setText(nrInvites);
+			//invitations.setBackground(getResources().getDrawable(R.drawable.btn_default_normal));
+		}
 	}
 
 	@Override

@@ -45,13 +45,18 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 				username.setText(s); 
 		}
 		else {
-			// TODO: LŠgg till en NoResults-screen
+			v = li.inflate(R.layout.textview_medium, null);
+			final TextView text = (TextView) v.findViewById(R.id.textview_medium);
+			if (text != null)
+				text.setText("No results found"); 
 		}
 		
 		final Button play = (Button) v.findViewById(R.id.play);
 		play.setOnClickListener(new OnClickListener(){ 
 			@Override
 			public void onClick(View v){
+				play.setText("Sent");
+				play.setEnabled(false);
 				activity.invite(s);	
 			}
 		});  

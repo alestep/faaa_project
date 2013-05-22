@@ -1,13 +1,11 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import android.util.Log;
+import java.util.LinkedHashMap;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.StartActivity;
 
 /**
@@ -17,21 +15,24 @@ import com.example.wecharades.views.StartActivity;
  */
 public class StartPresenter extends Presenter {
 	
-	private static final String TAG = "Start Presenter";
 	private StartActivity activity;
-	private Map<String, ArrayList<Game>> separatedList;
-	
+	private LinkedHashMap<String, ArrayList<Game>> listMap;
+	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 	
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		separatedList = new HashMap<String, ArrayList<Game>>();
+		listMap = new LinkedHashMap<String, ArrayList<Game>>();
+
 	}
 	
 	public void update(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setDisplayName(string);
-		parseGameLists();
+		parseList();
+		
+		
+		//setInvitationStatus();
 	}
 	
 	/**
@@ -48,25 +49,25 @@ public class StartPresenter extends Presenter {
 	/**
 	 * 
 	 */
-	private void parseGameLists() {
+	private void parseList() {
 		try {
 			ArrayList<Game> gameList = dc.getGames();
 			
-			separatedList.put("Finished games", new ArrayList<Game>());
-			separatedList.put("Opponent's turn", new ArrayList<Game>());
-			separatedList.put("Your turn", new ArrayList<Game>());
+			for (String s : headers) {
+				listMap.put(s, new ArrayList<Game>());
+			}
 			
-	        for (Game g : gameList) {
-	        	if (g.isFinished())
-	        		separatedList.get("Finished games").add(g);
-	        	else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
-	        		separatedList.get("Opponent's turn").add(g);
-	        	else
-	        		separatedList.get("Your turn").add(g);
-	        }
-	        
-		} catch (DatabaseException e){
-			Log.d(TAG, e.getMessage());
+			for (Game g : gameList) {
+				if (g.isFinished())
+					listMap.get("Finished games").add(g);
+				else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
+					listMap.get("Your turn").add(g);
+				else
+					listMap.get("Opponent's turn").add(g);
+			}
+			
+		}catch(DatabaseException e){
+			activity.showMessage(e.prettyPrint());
 		}
 	}
 
@@ -76,11 +77,25 @@ public class StartPresenter extends Presenter {
 	 * @return
 	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
-		// TODO: Sortera listan - DET FINNS FÄRDIGA KLASSER FÖR DETTA!
-		for (String s : separatedList.keySet()) {
-			adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), dc.getCurrentPlayer()));		
+		for (String s : headers) {
+			if(!listMap.get(s).isEmpty())
+				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer()));		
 		}
 		return adapter;
+	}
+	
+	/**
+	 * 
+	 */
+	private void setInvitationStatus() {
+		try {
+			ArrayList<Invitation> invites = dc.getInvitations();
+			activity.setInvitations(invites.size());
+		}catch (Exception e){
+			
+		}
+				
+			
 	}
 	
 	/**
