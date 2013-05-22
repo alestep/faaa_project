@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +21,7 @@ public abstract class Presenter {
 	protected Database db;
 	protected Model model;
 	protected Activity activity;
-
+	
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)

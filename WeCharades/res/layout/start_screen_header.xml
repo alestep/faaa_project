@@ -18,16 +18,16 @@
             android:text="@string/account"
             android:onClick="onClickAccount" />
 
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/invitations"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dip"
             android:layout_marginTop="10dip"
             android:background="@drawable/btn_default_normal"
-            android:src="@android:drawable/btn_star" />
+            android:onClick="onClickInvitations" />
 
         <Button
             android:id="@+id/btnLogout"
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imageButton1"
+            android:layout_toRightOf="@+id/btnLogout"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>

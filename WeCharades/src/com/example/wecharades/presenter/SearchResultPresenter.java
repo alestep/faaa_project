@@ -26,6 +26,10 @@ public class SearchResultPresenter extends Presenter {
 		this.activity = (SearchResultActivity) activity;
 	}
 	
+	public void update(){
+		performSearch(activity.getIntent().getExtras().getString("username"));
+	}
+	
 	/**
 	 * 
 	 */
@@ -48,13 +52,12 @@ public class SearchResultPresenter extends Presenter {
 		}
 	}
 
-	public SearchResultAdapter performSearch(String searchString) {
+	private void performSearch(String searchString) {
 		setPlayersList();
 		SortedSet<String> resultList = usernames.subSet(searchString, searchString + Character.MAX_VALUE);
 		ArrayList<String> list = new ArrayList<String>(resultList);
 		//TODO: Kolla om det går att hämta ListViewn här. Dvs gör metoden till void!
-		//activity.getListView().setAdapter(new SearchResultAdapter(activity.getApplicationContext(), list));
-		return new SearchResultAdapter(activity, list);
+		activity.getListView().setAdapter(new SearchResultAdapter(activity, list));
 		
 	}
 

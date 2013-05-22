@@ -1,13 +1,15 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import android.util.Log;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Invitation;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseUser;
 
@@ -18,22 +20,27 @@ import com.parse.ParseUser;
  */
 public class StartPresenter extends Presenter {
 	
-	private static final String TAG = "Start Presenter";
 	private StartActivity activity;
 	private Map<String, ArrayList<Game>> separatedList;
-	
+	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
+	private Player player;
 	
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		separatedList = new HashMap<String, ArrayList<Game>>();
-		
+		separatedList = new TreeMap<String, ArrayList<Game>>();
+		try {
+			player = db.getPlayer(getCurrentUser().getUsername());
+		}catch (Exception e){
+			
+		}
 		//Checks if the there is any user logged in
 		checkLogin();
 	}
 	
 	public void update(){
-		activity.setDisplayName(model.getCurrentPlayer().getName());
+		activity.setDisplayName(player.getName());
+		//setInvitationStatus();
 	}
 	
 	/**
@@ -52,33 +59,28 @@ public class StartPresenter extends Presenter {
 	/**
 	 * 
 	 */
-	private void parseGameLists() {
+	private void parseList() {
 		try {
-			//TODO This should talk to the DataFetcher later.
-			ArrayList<Game> gameList = db.getGames(model.getCurrentPlayer());
-			
-			separatedList.put("Finished games", new ArrayList<Game>());
-			separatedList.put("Opponent's turn", new ArrayList<Game>());
-			separatedList.put("Your turn", new ArrayList<Game>());
+			//TODO This should talk to the DataFetcher later. Fungerar ej nu!
+			ArrayList<Game> gameList = db.getGames(player);
+			Log.d("TAG", "" + gameList.isEmpty()); //returnerar true?!
+			for (String s : headers) {
+				separatedList.put(s, new ArrayList<Game>());
+			}
 			
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		separatedList.get("Finished games").add(g);
-	        	else if (g.getCurrentPlayer().getName().toLowerCase().equals(getCurrentUser()) && !g.isFinished())
+	        	else if (g.getCurrentPlayer().equals(player) && !g.isFinished())
 	        		separatedList.get("Opponent's turn").add(g);
 	        	else
 	        		separatedList.get("Your turn").add(g);
 	        }
 	        
 		} catch (DatabaseException e){
-			Log.d(TAG, e.getMessage());
+
 		}
 	}
-
-//	private void putInList(String s, Game g) {
-//		separatedList.put(s, (new ArrayList<Game>()).add(g));
-//		separatedList.get(s).add(g);
-//	}
 
 	/**
 	 * 
@@ -86,13 +88,28 @@ public class StartPresenter extends Presenter {
 	 * @return
 	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
-		parseGameLists();
-		// TODO: Sortera listan
+		parseList();
 		for (String s : separatedList.keySet()) {
-			adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), model.getCurrentPlayer()));		
+			//if (!separatedList.get(s).isEmpty())
+				adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), player));		
 		}
 	
 		return adapter;
+	}
+	
+	/**
+	 * 
+	 */
+	private void setInvitationStatus() {
+		try {
+			ArrayList<Invitation> invites = db.getInvitations(player);
+			activity.setInvitations(invites.size());
+				
+		}catch (Exception e){
+			
+		}
+				
+			
 	}
 	
 	/**
