@@ -13,9 +13,9 @@ public class SearchResultActivity extends GenericActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new SearchResultPresenter(this));
 		setContentView(R.layout.list_screen);
-		presenter = new SearchResultPresenter(this);
+		presenter = (SearchResultPresenter) super.getPresenter();
 	}
 	
 	/**

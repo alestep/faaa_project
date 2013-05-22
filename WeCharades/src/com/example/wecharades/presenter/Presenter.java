@@ -123,7 +123,7 @@ public abstract class Presenter {
 	}
 	
 	/**
-	 * Called whenever a activity is closed.
+	 * Called whenever an activity is closed.
 	 */
 	public void saveState(){
 		dc.saveState(activity);
