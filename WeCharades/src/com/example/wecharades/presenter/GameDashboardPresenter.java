@@ -93,36 +93,40 @@ public class GameDashboardPresenter extends Presenter {
 	 */
 	private void updateButtonInformation(Turn turn, Button button) {
 		//TODO This method is a bit elaborate
-		String string = "";
+		String buttonText = "";
 		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
-			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
-				string = turn.getAnsPlayerScore() + " points";
-				button.setEnabled(false);
-			} else if (turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
-				button.setEnabled(false);
-				string = turn.getRecPlayerScore() + " points";
-			} else {
-				string = "error";
-			}
+			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
+					turn.getAnsPlayerScore() + " points" 
+					: turn.getRecPlayerScore() + " points";
+			button.setEnabled(false);
+//			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
+//				buttonText = turn.getAnsPlayerScore() + " points";
+//				button.setEnabled(false);
+//			} else if (turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
+//				button.setEnabled(false);
+//				buttonText = turn.getRecPlayerScore() + " points";
+//			} else {
+//				buttonText = "error";
+//			}
 		} else if(turn.getTurnNumber() == game.getTurn()) {
 			//TODO: add at state: "waiting for opponent"
 			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
-				string = "Guess word!";
+				buttonText = "Guess word!";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
 			} 
 			// Checks if you are the "RecPlayer" AND already has uploaded a video
 			else if (turn.getRecPlayer().equals(dc.getCurrentPlayer()) && !turn.getVideoLink().isEmpty()) {
-				string = "Waiting...";
+				buttonText = "Waiting...";
 				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
 			} else {
-				string = "Record Video";
+				buttonText = "Record Video";
 				button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 			}
 		} else {
 			button.setEnabled(false);
-			string = "Locked";
+			buttonText = "Locked";
 		}
-		button.setText(string);
+		button.setText(buttonText);
 	} 
 	
 	//TODO this method is a bit special.
