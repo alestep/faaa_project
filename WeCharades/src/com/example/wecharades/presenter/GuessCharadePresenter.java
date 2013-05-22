@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GuessCharadeActivity;
 
@@ -45,7 +46,12 @@ public class GuessCharadePresenter extends Presenter {
 
 	}
 	public void updateModel(){
-		model.updateTurn(model.getGame(turn.getGameId()), turn);
+		try {
+			dc.updateGame(dc.getGame(turn.getGameId()));
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

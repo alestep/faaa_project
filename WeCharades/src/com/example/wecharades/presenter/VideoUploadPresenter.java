@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.StartActivity;
 import com.example.wecharades.views.VideoUploadActivity;
@@ -141,7 +142,12 @@ public class VideoUploadPresenter extends Presenter {
 	            }); */
 				mDialog.dismiss();
 				turn.setVideoLink(setServerStorageLocation() + fileName);
-				model.updateTurn(model.getGame(turn.getGameId()), turn);
+				try {
+					dc.updateGame(dc.getGame(turn.getGameId()));
+				} catch (DatabaseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
