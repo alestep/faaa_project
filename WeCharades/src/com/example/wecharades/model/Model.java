@@ -220,9 +220,8 @@ public class Model implements Serializable {
 	 * @return if the player was added or not
 	 */
 	public void putPlayer(Player player){
-		if(!playerIsCached(player)){
+		if(playerIsCached(player))
 			storedPlayerNames.put(player.getName(), player.getParseId());
-		}
 		//The data for a player should always be updated
 		storedPlayers.put(player.getParseId(),player);
 	}
@@ -232,6 +231,8 @@ public class Model implements Serializable {
 	 * @param players - a collection of players
 	 */
 	public void putPlayers(Collection<Player> players){
+		storedPlayers.clear();
+		storedPlayerNames.clear();
 		for(Player player : players){
 			putPlayer(player);
 		}
@@ -280,14 +281,6 @@ public class Model implements Serializable {
 	 */
 	public void logOutCurrentPlayer(Context context){
 		eraseModel(context);
-	}
-
-	
-	/**
-	 * Delete the account that belongs to the current player
-	 */
-	public void deleteAccount() {
-		//TODO: implement this shit!
 	}
 
 	//Invitations ---------------------------------------------------------------

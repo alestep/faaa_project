@@ -42,14 +42,6 @@ public class AccountActivity extends GenericActivity {
 	public void onClickGameInstructions(View view) {
 		((AccountPresenter) presenter).gameInstructions();
 	}
-
-	/**
-	 * Called when Delete Account button is clicked
-	 * @param view
-	 */
-	public void onClickDeleteAccount(View view) {
-		((AccountPresenter) presenter).deleteAccount();
-	}
 	
 	/**
 	 * Called when Logout button is clicked

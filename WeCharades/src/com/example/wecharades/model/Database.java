@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -399,12 +400,41 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#putIntoPlayerQueue(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void putIntoRandomQueue(Player player) {
+	public void putIntoRandomQueue(final Player player){
+		final Database db = this;
 		
-		
+		ParseQuery query = new ParseQuery(RANDOMQUEUE);
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> queryList, ParseException e){
+				if(e == null){
+					if(queryList.isEmpty()){
+						db.putRandom(player);
+					} else{
+						Collections.shuffle(queryList);
+						Player p2 = dbc.parsePlayer(queryList.get(0));
+						try {
+							db.createGame(player, p2);
+						} catch (DatabaseException e1) {
+							Log.d("Database", e1.getMessage());
+						}
+					}
+				} else{
+					Log.d("Database",e.getMessage());
+				}
+			}
+		});
+	}
+	/*
+	 * Helper method for putInRandomQueue
+	 */
+	private void putRandom(Player player){
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
-		queue.saveInBackground();
+		queue.saveEventually();
+	}
+	private void removeRandom(Player player){
+		ParseQuery query = new ParseQuery(RANDOMQUEUE);
+		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
 	}
 
 	/* (non-Javadoc)
@@ -547,13 +577,6 @@ public class Database implements IDatabase {
 	@Override
 	public void logOut(){
 		ParseUser.logOut();
-	}
-	
-	/**
-	 * A method to delete an account
-	 */
-	public void deleteAccount() {
-		//TODO: implement!
 	}
 
 }

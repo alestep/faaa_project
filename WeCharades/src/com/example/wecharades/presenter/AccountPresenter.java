@@ -36,14 +36,6 @@ public class AccountPresenter extends Presenter {
 		Intent i = new Intent(activity.getApplicationContext(), GameInstructionsActivity.class);
 		activity.startActivity(i);
 	}
-
-	/**
-	 * Called when Delete Account button is clicked
-	 */
-	public void deleteAccount() {
-		//This doesn't do anything atm. TODO: fix!
-		dc.deleteAccount();
-	}
 	
 	/**
 	 * Log out the current user
