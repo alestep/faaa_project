@@ -131,6 +131,17 @@ public class DataController {
 	}
 	
 	/**
+	 * Returns a list of all players as objects
+	 * @return An ArrayList with players
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		return players;
+	}
+	
+	/**
 	 * Returns a list with all player names. This list will also be cached locally.
 	 * @return an ArrayList containing 
 	 * @throws DatabaseException - if the connection to the database fails

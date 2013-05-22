@@ -204,9 +204,10 @@ public class Model {
 	 */
 	public void putPlayer(Player player){
 		if(!playerIsCached(player)){
-			storedPlayers.put(player.getParseId(),player);
 			storedPlayerNames.put(player.getName(), player.getParseId());
 		}
+		//The data for a player should always be updated
+		storedPlayers.put(player.getParseId(),player);
 	}
 	
 	/**
