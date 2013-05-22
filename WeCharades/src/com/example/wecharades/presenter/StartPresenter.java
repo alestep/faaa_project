@@ -9,7 +9,6 @@ import android.util.Log;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.views.StartActivity;
-import com.parse.ParseUser;
 
 /**
  * 
@@ -27,13 +26,12 @@ public class StartPresenter extends Presenter {
 		super(activity);
 		this.activity = activity;
 		separatedList = new HashMap<String, ArrayList<Game>>();
-		
-		//Checks if the there is any user logged in
-		checkLogin();
 	}
 	
 	public void update(){
-		activity.setDisplayName(model.getCurrentPlayer().getName());
+		String string = dc.getCurrentPlayer().getName();
+		activity.setDisplayName(string);
+		parseGameLists();
 	}
 	
 	/**
@@ -42,10 +40,8 @@ public class StartPresenter extends Presenter {
 	 * 
 	 */
 	public void checkLogin() {
-		if(getCurrentUser() == null){
+		if(dc.getCurrentPlayer() == null){
 			goToLoginActivity();
-		} else{
-			model.setCurrentPlayer();//TODO should this be removed after we have created a more persistent model?
 		}
 	}
     
@@ -55,7 +51,7 @@ public class StartPresenter extends Presenter {
 	private void parseGameLists() {
 		try {
 			//TODO This should talk to the DataFetcher later.
-			ArrayList<Game> gameList = db.getGames(model.getCurrentPlayer());
+			ArrayList<Game> gameList = dc.getGames();
 			
 			separatedList.put("Finished games", new ArrayList<Game>());
 			separatedList.put("Opponent's turn", new ArrayList<Game>());
@@ -64,7 +60,7 @@ public class StartPresenter extends Presenter {
 	        for (Game g : gameList) {
 	        	if (g.isFinished())
 	        		separatedList.get("Finished games").add(g);
-	        	else if (g.getCurrentPlayer().getName().toLowerCase().equals(getCurrentUser()) && !g.isFinished())
+	        	else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
 	        		separatedList.get("Opponent's turn").add(g);
 	        	else
 	        		separatedList.get("Your turn").add(g);
@@ -75,23 +71,16 @@ public class StartPresenter extends Presenter {
 		}
 	}
 
-//	private void putInList(String s, Game g) {
-//		separatedList.put(s, (new ArrayList<Game>()).add(g));
-//		separatedList.get(s).add(g);
-//	}
-
 	/**
 	 * 
 	 * @param adapter
 	 * @return
 	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
-		parseGameLists();
-		// TODO: Sortera listan
+		// TODO: Sortera listan - DET FINNS FÄRDIGA KLASSER FÖR DETTA!
 		for (String s : separatedList.keySet()) {
-			adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), model.getCurrentPlayer()));		
+			adapter.addSection(s, new GameAdapter(activity, separatedList.get(s), dc.getCurrentPlayer()));		
 		}
-	
 		return adapter;
 	}
 	
@@ -99,8 +88,7 @@ public class StartPresenter extends Presenter {
 	 * Log out the current user
 	 */
 	public void logOut() {
-		ParseUser.logOut();
-		model.logOutCurrentPlayer();
+		dc.logOutPlayer();
 		goToLoginActivity();
 	}
 	

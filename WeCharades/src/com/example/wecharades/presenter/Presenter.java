@@ -11,14 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wecharades.model.Model;
 import com.example.wecharades.views.LoginActivity;
-import com.parse.ParseUser;
 
 public abstract class Presenter {
 
-	protected Database db;
-	protected Model model;
+	//TODO These are now removed in favour of the datacontroller
+	//protected Database db;
+	//protected Model model;
+	protected DataController dc;
 	protected Activity activity;
 
 	/**
@@ -27,18 +27,9 @@ public abstract class Presenter {
 	 */
 	public Presenter(Activity activity) {
 		this.activity = activity;
-		this.db = Database.getDatabaseConnection(activity);
-		this.model = Model.getModelInstance();
+		this.dc = DataController.getDataController(activity);
 	}
 	
-	/**
-	 * Get current user
-	 * @return current user
-	 */
-	public ParseUser getCurrentUser() {
-		return ParseUser.getCurrentUser();
-	}
-
 	/**
 	 * Enable or disable all clickable objects in view
 	 * @param view
@@ -129,7 +120,14 @@ public abstract class Presenter {
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view
-		//TODO I do not think we should do this, at least not for the start screen!
+		//TODO I do not think we should do this? at least not for the start screen!
 		//activity.finish();
+	}
+	
+	/**
+	 * Called whenever a activity is closed.
+	 */
+	public void saveState(){
+		dc.saveState(activity);
 	}
 }

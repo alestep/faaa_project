@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.wecharades.presenter.Presenter;
+
 public abstract class GenericActivity extends Activity {
+	
+	//TODO this should prbably be referenced in the subclasses. 
+	protected Presenter presenter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

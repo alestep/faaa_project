@@ -12,15 +12,13 @@ public class LoginPresenter extends Presenter{
 	
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
-		this.activity = (LoginActivity) activity;
+		this.activity = activity;
 	}
 
 	public void login(String username, String password){
 		try {
 			//If this fails, the user will get a message and the subsequent code will not be run
-			db.loginPlayer(username, password);
-			//saves the current player in the model if successful!
-			model.setCurrentPlayer();
+			dc.loginPlayer(username, password);
 			Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
 			activity.startActivity(i);
 			activity.finish();//We do not need the login-activity any more

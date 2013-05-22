@@ -31,6 +31,7 @@ public class CaptureVideo extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		//TODO Can we do like this?
 		this.turn = (Turn) getIntent().getSerializableExtra("Turn");
 		dispatchTakeVideoIntent();
 	}

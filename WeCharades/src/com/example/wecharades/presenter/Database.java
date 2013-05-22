@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class Database {
 								TURN					= "turn",
 								TURN_GAME				= "game",
 								TURN_TURN				= "turn",
-								//TURN_STATE			= "state",
+								TURN_STATE				= "state",
 								TURN_WORD				= "word",
 								TURN_VIDEOLINK			= "videoLink",
 								TURN_PLAYER_REC			= "recPlayer",
@@ -65,7 +66,7 @@ public class Database {
 		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
-	public static Database getDatabaseConnection(Context context){
+	public static Database getDatabaseInstance(Context context){
 		if(singleton == null)
 			singleton = new Database(context);
 		return singleton;
@@ -103,6 +104,7 @@ public class Database {
 	 * 
 	 * @param 	player1: The player who created the game
 	 * 			player2: The player who received the game
+	 * @return - The newly created game
 	 * @throws DatabaseException 
 	 */
 	public void createGame(Player player1, Player player2) throws DatabaseException{
@@ -179,7 +181,7 @@ public class Database {
 		try{
 			List<ParseObject> dbResult = mainQuery.find();
 			for(ParseObject game : dbResult){
-				games.add(DatabaseConverter.parseGame(this, game));
+				games.add(DatabaseConverter.parseGame(this, game));//TODO The DB-helper should not connect to db.
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
@@ -262,7 +264,7 @@ public class Database {
 	 */
 	public ArrayList<Turn> getTurns(Game game) throws DatabaseException{
 		ParseQuery query = new ParseQuery("Turn");
-		query.whereEqualTo(TURN_GAME, getParseObject(game.getGameId()));
+		query.whereEqualTo(TURN_GAME, getGameParseObject(game.getGameId()));
 		query.addAscendingOrder("turn");
 
 		List<ParseObject> dbList = null;
@@ -274,12 +276,12 @@ public class Database {
 		}
 		ArrayList<Turn> turnList = new ArrayList<Turn>();
 		for(ParseObject turn : dbList){
-			turnList.add(DatabaseConverter.parseTurn(this, turn));
+			turnList.add(DatabaseConverter.parseTurn(this, turn)); //TODO The helper classes should REALY not fetch data like this...
 		}
 		return turnList;
 	}
 
-	private static ParseObject getParseObject(String gameId) throws DatabaseException {
+	private ParseObject getGameParseObject(String gameId) throws DatabaseException {
 		ParseObject object = null;
 		ParseQuery query = new ParseQuery("Game");
 		try {
@@ -305,7 +307,7 @@ public class Database {
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){
 				if(e == null){
-					//dbTurn.put(TURN_STATE,turn.getState());
+					dbTurn.put(TURN_STATE,turn.getState());
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
@@ -316,7 +318,7 @@ public class Database {
 		});
 	}
 
-	//Players-----------------------------------------------------------------------------------------//	
+	//Players -----------------------------------------------------------------------------------------//	
 
 	/**
 	 * Gets the player with player Id from the database
@@ -369,7 +371,7 @@ public class Database {
 	 * @return List containing all players
 	 * @throws DatabaseException
 	 */
-	public static ArrayList<Player> getPlayers() throws DatabaseException {
+	public ArrayList<Player> getPlayers() throws DatabaseException {
 		ArrayList<Player> players = new ArrayList<Player>();
 		ParseQuery query = ParseUser.getQuery();
 
@@ -384,7 +386,9 @@ public class Database {
 		}
 		return players;
 	}
-
+	
+	//Invitations -----------------------------------------------------------------------------------------
+	
 	/**
 	 * Puts the playerId into the the random queue
 	 */
@@ -393,17 +397,15 @@ public class Database {
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveInBackground();
 	}
-
+	
 	/**
-	 * Send an invite to another player
-	 * 
-	 * @param inviter - the inviter
-	 * @param invitee - the player who receives the invite
+	 * Send an invitation to another player
+	 * @param inv
 	 */
-	public void invitePlayer(Player inviter, Player invitee) {
+	public void sendInvitation(Invitation inv){
 		ParseObject invite = new ParseObject(INVITE);
-		invite.put(INVITE_INVITER, inviter.getParseId());
-		invite.put(INVITE_INVITEE, invitee.getParseId());
+		invite.put(INVITE_INVITER, inv.getInviter().getParseId());
+		invite.put(INVITE_INVITEE, inv.getInvitee().getParseId());
 		invite.saveInBackground();
 	}
 
@@ -432,24 +434,17 @@ public class Database {
 	}
 
 	/**
-	 * Removes an invitation from the database - called when a user declines or accepts an invitation.
-	 * 	This is a complete deletion - there is no need to call the method with different 
-	 * 	combinations of the players, as this is done automatically.
+	 * Removes an invitation from the database
 	 * 
-	 * @param player1 - one player
-	 * @param player2 - another player
+	 * @param inv - an invitation to delete
 	 * @throws DatabaseException
 	 */
-	public void removeInvitation(Player player1, Player player2) throws DatabaseException{
+	public void removeInvitation(Invitation inv) throws DatabaseException{
 		try{
 			ParseQuery query = new ParseQuery(INVITE);
-			query.whereEqualTo(INVITE_INVITER, player1.getParseId());
-			query.whereEqualTo(INVITE_INVITEE, player2.getParseId());
+			query.whereEqualTo(INVITE_INVITER, inv.getInviter().getParseId());
+			query.whereEqualTo(INVITE_INVITEE, inv.getInvitee().getParseId());
 			List<ParseObject> objectList = query.find();
-			query = new ParseQuery(INVITE);
-			query.whereEqualTo(INVITE_INVITER, player2.getParseId());
-			query.whereEqualTo(INVITE_INVITEE, player1.getParseId());
-			objectList.addAll(query.find());
 			for(ParseObject object : objectList){
 				object.delete();
 			}
@@ -458,7 +453,20 @@ public class Database {
 			throw new DatabaseException(1008,"Error removing player from queue");
 		}
 	}
-
+	
+	/**
+	 * Removes the entire collection of Invites from the database
+	 * @param inv - a collection of invitations
+	 * @throws DatabaseException
+	 */
+	public void removeInvitations(Collection<Invitation> inv) throws DatabaseException{
+		for(Invitation invite : inv){
+			removeInvitation(invite);
+		}
+	}
+	
+	//User registration -----------------------------------------------------------------------------------------
+	
 	/**
 	 * A method to register a user
 	 * @param inputNickname - the nickname of choice
@@ -514,13 +522,33 @@ public class Database {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
-
+	
+	/**
+	 * Returns the current player
+	 * @return A Player
+	 */
+	public Player getCurrentPlayer(){
+		return DatabaseConverter.parsePlayer(ParseUser.getCurrentUser());
+	}
+	
+	/**
+	 * A method to restore the user password
+	 * @param email - the user email
+	 * @throws DatabaseException - If the connection fails
+	 */
 	public void resetPassword(String email) throws DatabaseException {
 		try {
 			ParseUser.requestPasswordReset(email);
 		} catch (ParseException e) {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
+	}
+	
+	/**
+	 * A method that will log out the current user
+	 */
+	public void logOut(){
+		ParseUser.logOut();
 	}
 
 }
