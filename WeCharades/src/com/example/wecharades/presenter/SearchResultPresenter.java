@@ -32,6 +32,7 @@ public class SearchResultPresenter extends Presenter {
 
 	private void performSearch(String searchString) {
 		try {
+
 			ListView view = (ListView) activity.findViewById(R.id.list);
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No results found!");

@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,7 +43,6 @@ public class GameAdapter extends ArrayAdapter<Game> {
 				if (title != null)
 					title.setText(game.getPlayer1().equals(currentPlayer) ? game.getPlayer2().getName() : game.getPlayer1().getName());
 				if(subtitle != null)
-					//TODO: Undersök hur vi kan hämta score här.
 					subtitle.setText("The score is 5-6");
 		}
 		return v;

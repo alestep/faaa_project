@@ -14,7 +14,7 @@
             android:layout_marginLeft="5dip"
             android:layout_marginTop="10dip"
             android:background="@drawable/btn_default_normal"
-            android:onClick="onClickAccount" />
+            android:onClick="onClickUsername" />
 
         <Button
             android:id="@+id/invitations"

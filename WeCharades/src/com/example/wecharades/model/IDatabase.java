@@ -174,5 +174,13 @@ public interface IDatabase {
 	 * A method that will log out the current user
 	 */
 	public abstract void logOut();
+	
+	
+	/**
+	 * Generates a list with the 10 players with best global score
+	 * @return a list with top 10 players based on their global score
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException;
 
 }

@@ -94,6 +94,15 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent(this, InvitationActivity.class);
 		startActivity(intent);
 	}
+	
+	/**
+	 * 
+	 * @param v
+	 */
+	public void onClickHighscore(View v) {
+		Intent intent = new Intent(this, HighScoreActivity.class);
+		startActivity(intent);
+	}
 
 	/**
 	 * Go to New Game screen
@@ -109,8 +118,8 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickHighScore(View view) {
-//		Intent intent = new Intent (this, HighScoreActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent (this, HighScoreActivity.class);
+		startActivity(intent);
 	}
 
 
@@ -118,9 +127,9 @@ public class StartActivity extends GenericActivity {
 	 * Nothing happens so far...
 	 * @param view
 	 */
-	public void onClickAccount(View view) {
-//		Intent intent = new Intent (this, AccountActivity.class);
-//		startActivity(intent);
+	public void onClickUsername(View view) {
+		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
+		startActivity(intent);
 	}
 	
 	public void setAccountName(String user){

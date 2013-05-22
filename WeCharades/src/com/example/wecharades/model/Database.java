@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -368,6 +369,30 @@ public class Database implements IDatabase {
 		}
 		return players;
 	}
+	
+	/**
+	 * Generates a list with the 10 players with best global score
+	 * @return a list with top 10 players based on their global score
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
+		ArrayList<Player> players = new ArrayList<Player>();
+		ParseQuery query = ParseUser.getQuery();
+		query.addDescendingOrder("globalScore");
+		query.setLimit(10);
+		
+		try {
+			List<ParseObject> dbResult = query.find();
+			for(ParseObject player : dbResult) {
+				players.add(dbc.parsePlayer(player));
+			}
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch players");
+		}
+		return players;
+		
+	}
 
 	//Invitations -----------------------------------------------------------------------------------------
 
@@ -375,12 +400,41 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#putIntoPlayerQueue(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void putIntoRandomQueue(Player player) {
+	public void putIntoRandomQueue(final Player player){
+		final Database db = this;
 		
-		
+		ParseQuery query = new ParseQuery(RANDOMQUEUE);
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> queryList, ParseException e){
+				if(e == null){
+					if(queryList.isEmpty()){
+						db.putRandom(player);
+					} else{
+						Collections.shuffle(queryList);
+						Player p2 = dbc.parsePlayer(queryList.get(0));
+						try {
+							db.createGame(player, p2);
+						} catch (DatabaseException e1) {
+							Log.d("Database", e1.getMessage());
+						}
+					}
+				} else{
+					Log.d("Database",e.getMessage());
+				}
+			}
+		});
+	}
+	/*
+	 * Helper method for putInRandomQueue
+	 */
+	private void putRandom(Player player){
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
-		queue.saveInBackground();
+		queue.saveEventually();
+	}
+	private void removeRandom(Player player){
+		ParseQuery query = new ParseQuery(RANDOMQUEUE);
+		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
 	}
 
 	/* (non-Javadoc)
@@ -443,8 +497,9 @@ public class Database implements IDatabase {
 			removeInvitation(invite);
 		}
 	}
-
-	//User registration -----------------------------------------------------------------------------------------
+	
+	//User login, registration and logout -----------------------------------------------------------------------------
+	
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#registerPlayer(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
