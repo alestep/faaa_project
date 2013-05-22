@@ -28,7 +28,7 @@ public class SearchResultActivity extends GenericActivity {
 	}
 
 	public void invite(String invitee){
-		//presenter.invite(invitee);
+		presenter.invite(invitee);
 	}
 
 	@Override

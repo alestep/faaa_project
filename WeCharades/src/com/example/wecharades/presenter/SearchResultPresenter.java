@@ -49,8 +49,8 @@ public class SearchResultPresenter extends Presenter {
 	public void invite(String invitee) {
 		try {
 			dc.sendInvitation(dc.getPlayer(invitee));
-		} catch (Exception e){
-			e.getMessage();
+		} catch (DatabaseException e){
+			activity.showMessage(e.prettyPrint());
 		}
 		
 	}
