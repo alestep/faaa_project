@@ -118,8 +118,8 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickHighScore(View view) {
-//		Intent intent = new Intent (this, HighScoreActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent (this, HighScoreActivity.class);
+		startActivity(intent);
 	}
 
 
