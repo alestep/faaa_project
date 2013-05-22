@@ -28,8 +28,15 @@ public class HighScorePresenter extends Presenter {
 			e.printStackTrace();
 		}
 		
+		int totalNumberOfPlayers = 0;
+		try {
+			totalNumberOfPlayers = dc.getAllPlayerNames().size();
+		} catch (DatabaseException e) {
+			// TODO prettyMessage
+			e.printStackTrace();
+		}
 		//Update field for global ranking
-		activity.updateGlobalRanking(dc.getCurrentPlayer().getGlobalRanking());
+		activity.updateGlobalRanking(dc.getCurrentPlayer().getGlobalRanking(), totalNumberOfPlayers);
 	}
 
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {

@@ -13,7 +13,8 @@
             android:layout_height="50dp"
             android:layout_marginLeft="5dip"
             android:layout_marginTop="10dip"
-            android:background="@drawable/btn_default_normal" />
+            android:background="@drawable/btn_default_normal"
+            android:onClick="onClickUsername" />
 
         <Button
             android:id="@+id/invitations"

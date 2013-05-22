@@ -127,7 +127,7 @@ public class StartActivity extends GenericActivity {
 	 * Nothing happens so far...
 	 * @param view
 	 */
-	public void onClickAccount(View view) {
+	public void onClickUsername(View view) {
 		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
 		startActivity(intent);
 	}
