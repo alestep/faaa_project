@@ -2,11 +2,12 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 
-import android.widget.Button;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.HighScoreActivity;
 
@@ -18,28 +19,36 @@ public class HighScorePresenter extends Presenter {
 		this.activity = activity;
 	}
 	
-	public void updateHighScores (TableLayout table) {
-		//TODO: implement dc.getTopTenPlayers()
-		//updateHighScoreList(dc.getTopTenPlayers(), getAllButtons(table));
+	public void updateHighScores(TableLayout table) {
+		try {
+			updateHighScoreList(dc.getTopTenPlayers(), getAllTextViews(table));
+		} catch (DatabaseException e) {
+			//TODO: prettyPrint()!
+			e.printStackTrace();
+		}
 	}
 	
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {
 		int i = 0;
 		for(Player p : playerList) {
 			i++;
+			tvList.get(0).setVisibility(View.VISIBLE);
 			tvList.remove(0).setText(i+".");
+			tvList.get(0).setVisibility(View.VISIBLE);
 			tvList.remove(0).setText(p.getName());
-			tvList.remove(0).setText(p.getGlobalScore());
+			tvList.get(0).setVisibility(View.VISIBLE);
+			tvList.remove(0).setText(p.getGlobalScore() + " points");
 		}
 	}
 		
 	
-	private ArrayList<TextView> getAllButtons(TableLayout table) {
+	private ArrayList<TextView> getAllTextViews(TableLayout table) {
 		ArrayList<TextView> tvList = new ArrayList<TextView>();
 		for(int i = 0; i < table.getChildCount(); i++) {
 			TableRow row = (TableRow) table.getChildAt(i);
 			for(int j = 0; j < row.getChildCount(); j++) {
 				TextView tv = (TextView) row.getChildAt(j);
+				tv.setVisibility(View.GONE);
 				tvList.add(tv);
 			}
 		}

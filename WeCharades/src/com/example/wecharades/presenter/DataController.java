@@ -23,30 +23,30 @@ import com.example.wecharades.model.Turn;
  *
  */
 public class DataController {
-	
+
 	private static DataController dc = null;
 	private Model m;
 	private Database db;
-	
+
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
 	}
-	
+
 	public static DataController getDataController(Context context){
 		if(dc == null){
 			dc = new DataController(context);
 		}
 		return dc;
 	}
-	
+
 	public void saveState(Context context){
 		m.saveModel(context);
 	}
-	
+
 	//Session handling -----------------------------------------------------------
-	
+
 	/**
 	 * Log in a player
 	 * @param username - The username (case insensitive)
@@ -57,7 +57,7 @@ public class DataController {
 		db.loginPlayer(username, password);
 		m.setCurrentPlayer(db.getCurrentPlayer());
 	}
-	
+
 	/**
 	 * Log out the current player
 	 */
@@ -65,7 +65,7 @@ public class DataController {
 		db.logOut();
 		m.logOutCurrentPlayer();
 	}
-	
+
 	/**
 	 * returns the current user
 	 * @return
@@ -76,7 +76,7 @@ public class DataController {
 		}
 		return m.getCurrentPlayer();
 	}
-	
+
 	/**
 	 * Register a player
 	 * @param inputNickname - The player
@@ -93,7 +93,7 @@ public class DataController {
 			) throws DatabaseException{
 		db.registerPlayer(inputNickname, inputEmail, inputPassword,inputRepeatPassword);
 	}
-	
+
 	/**
 	 * Resets the password connected to the provided email address
 	 * @param email - The email address connected to an account.
@@ -102,7 +102,7 @@ public class DataController {
 	public void resetPassword(String email) throws DatabaseException{
 		db.resetPassword(email);
 	}
-	
+
 	/**
 	 * delete the account responding to the current user
 	 */
@@ -111,9 +111,9 @@ public class DataController {
 		m.deleteAccount();
 		db.deleteAccount();
 	}
-	
+
 	//Players -----------------------------------------------------------
-	
+
 	/**
 	 * Get a user by its ParseId
 	 * @param parseId - the players ParseId
@@ -128,7 +128,7 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Get a user by its username
 	 * @param username - the players username
@@ -143,24 +143,24 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Returns a list of all players as objects
 	 * @return An ArrayList with players
 	 * @throws DatabaseException
 	 */
-	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+	public ArrayList<Player> getAllPlayerObjects() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
 		return players;
 	}
-	
+
 	/**
 	 * Returns a list with all player names. This list will also be cached locally.
 	 * @return an ArrayList containing 
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
+	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
 		TreeSet<String> nameList = new TreeSet<String>();
@@ -169,9 +169,18 @@ public class DataController {
 		}
 		return nameList;
 	}
-	
+
+	/**
+	 * 
+	 * @return an ArrayList with Players
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
+		
+		return db.getTopTenPlayers();
+	}
+
 	//Games -----------------------------------------------------------
-	
+
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
@@ -181,7 +190,7 @@ public class DataController {
 	public void createGame(Player p1, Player p2) throws DatabaseException{
 		db.createGame(p1, p2);
 	}
-	
+
 	/**
 	 * Gets a list of current games. This should only be called from the StartPresenter,
 	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
@@ -208,7 +217,7 @@ public class DataController {
 		m.putGameList(games);
 		return games;
 	}
-	
+
 	/**
 	 * Returns a game from its parseId
 	 * @param parseId - the games parseId
@@ -223,7 +232,7 @@ public class DataController {
 		}
 		return game;
 	}
-	
+
 	/**
 	 * Updates the database for the game. 
 	 * 	CALL THIS METHOD BEFORE INCREMENTING THE GAME TURN!
@@ -244,7 +253,7 @@ public class DataController {
 	private boolean isFinished(Game game){
 		return (game.getTurn() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
 	}
-	
+
 	//Turn -----------------------------------------------------------
 	/**
 	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
@@ -254,10 +263,10 @@ public class DataController {
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-	
-	
+
+
 	//Invitation -----------------------------------------------------------
-	
+
 	/**
 	 * A method to get all current invitations from the database
 	 * @return
@@ -278,7 +287,7 @@ public class DataController {
 		db.removeInvitations(oldInvitations);
 		return invitations;
 	}
-	
+
 	/**
 	 * Retrieves a list of all invitations sent form this device.
 	 * @return An ArrayList containing Invitations
@@ -286,7 +295,7 @@ public class DataController {
 	public ArrayList<Invitation> getSentInvitations(){
 		return m.getSentInviations();
 	}
-	
+
 	/**
 	 * Send an invitation to another player
 	 * @param invitation
@@ -295,7 +304,7 @@ public class DataController {
 		m.setSentInvitation(invitation);
 		db.sendInvitation(invitation);
 	}
-	
+
 	/**
 	 * Send an invitation to another Player (based on the Player class)
 	 * @param player The player-representation of the player
@@ -303,7 +312,7 @@ public class DataController {
 	public void sendInvitation(Player player){
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
 	}
-	
+
 	/**
 	 * Called in order to accept an invitation and automatically create a game.
 	 * @param invitation - The invitation to accept
@@ -313,7 +322,7 @@ public class DataController {
 		createGame(invitation.getInviter(), invitation.getInvitee());
 		db.removeInvitation(invitation);
 	}
-	
+
 	/**
 	 * Called to reject an invitation, which is then deleted form the database
 	 * @param invitaiton - The invitation to reject
@@ -322,5 +331,5 @@ public class DataController {
 	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
 		db.removeInvitation(invitaiton);
 	}
-	
+
 }

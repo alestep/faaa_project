@@ -40,7 +40,7 @@ public class SearchResultPresenter extends Presenter {
 		});
 
 		try {
-			usernames = dc.getAllOtherPlayerNames();
+			usernames = dc.getAllPlayerNames();//I removed getAllOtherPlayerNames for now... just to test some shitz
 		} catch (DatabaseException e) {
 			// TODO When GenericActivity implemented, activity.showMessage(e.prettyPrint());
 		}

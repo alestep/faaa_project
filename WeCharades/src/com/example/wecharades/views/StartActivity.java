@@ -96,6 +96,15 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent(this, InvitationActivity.class);
 		startActivity(intent);
 	}
+	
+	/**
+	 * 
+	 * @param v
+	 */
+	public void onClickHighscore(View v) {
+		Intent intent = new Intent(this, HighScoreActivity.class);
+		startActivity(intent);
+	}
 
 	/**
 	 * Logout and go back to login screen
@@ -122,11 +131,8 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickAccount(View view) {
-		Log.d("Clicked", "Account");
-//		Button b = (Button) view;
-//		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
+		startActivity(intent);
 	}
 	
 	public void setDisplayName(String user){
