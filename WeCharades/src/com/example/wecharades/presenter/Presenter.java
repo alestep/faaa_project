@@ -105,7 +105,7 @@ public abstract class Presenter {
 	 */
 	public void hideProgressSpinner(View view, ProgressBar progressSpinner) {
 		//hide the progress spinner
-		progressSpinner.setVisibility(8);
+		progressSpinner.setVisibility(4);
 		//disable buttons
 		enableOrDisableViews(view);
 	}
