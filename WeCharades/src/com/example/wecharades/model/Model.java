@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * This class stores all the data available in the game.
@@ -92,7 +93,9 @@ public class Model implements Serializable {
 	
 	private static void eraseModel(Context context){
 		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
-		modelFile.delete();
+		if(modelFile.delete())
+			Log.d("Model - File:","Removed file");
+		singleModel = null;
 	}
 
 	//Games ---------------------------------------------------------------

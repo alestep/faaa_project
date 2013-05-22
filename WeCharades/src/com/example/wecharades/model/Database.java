@@ -29,32 +29,32 @@ public class Database implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String 	WORDLIST				= "WordList",
-								WORDLIST_WORD			= "word",
-								GAME 					= "Game",
-								GAME_PLAYER_1 			= "player1",
-								GAME_PLAYER_2 			= "player2",
-								GAME_PLAYER_CURRENT 	= "currentPlayer",
-								GAME_TURN 				= "turn",
-								GAME_FINISH 			= "finished",
-								TURN					= "Turn",
-								TURN_GAME				= "game",
-								TURN_TURN				= "turn",
-								TURN_STATE				= "state",
-								TURN_WORD				= "word",
-								TURN_VIDEOLINK			= "videoLink",
-								TURN_PLAYER_REC			= "recPlayer",
-								TURN_PLAYER_REC_SCORE	= "recPlayerScore",
-								TURN_PLAYER_ANS			= "ansPlayer",
-								TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
-								PLAYER					= "_User",
-								PLAYER_USERNAME			= "username",
-								PLAYER_USERNAME_NATURAL	= "naturalUsername",
-								PLAYER_GLOBALSCORE		= "globalScore",
-								RANDOMQUEUE				= "RandomQueue",
-								RANDOMQUEUE_PLAYER		= "player",
-								INVITE 					= "invite",
-								INVITE_INVITER 			= "inviter",
-								INVITE_INVITEE 			= "invitee";
+			WORDLIST_WORD			= "word",
+			GAME 					= "Game",
+			GAME_PLAYER_1 			= "player1",
+			GAME_PLAYER_2 			= "player2",
+			GAME_PLAYER_CURRENT 	= "currentPlayer",
+			GAME_TURN 				= "turn",
+			GAME_FINISH 			= "finished",
+			TURN					= "Turn",
+			TURN_GAME				= "game",
+			TURN_TURN				= "turn",
+			TURN_STATE				= "state",
+			TURN_WORD				= "word",
+			TURN_VIDEOLINK			= "videoLink",
+			TURN_PLAYER_REC			= "recPlayer",
+			TURN_PLAYER_REC_SCORE	= "recPlayerScore",
+			TURN_PLAYER_ANS			= "ansPlayer",
+			TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
+			PLAYER					= "_User",
+			PLAYER_USERNAME			= "username",
+			PLAYER_USERNAME_NATURAL	= "naturalUsername",
+			PLAYER_GLOBALSCORE		= "globalScore",
+			RANDOMQUEUE				= "RandomQueue",
+			RANDOMQUEUE_PLAYER		= "player",
+			INVITE 					= "invite",
+			INVITE_INVITER 			= "inviter",
+			INVITE_INVITEE 			= "invitee";
 
 	private static IDatabase singleton;
 	private DatabaseConverter dbc;
@@ -68,14 +68,14 @@ public class Database implements IDatabase {
 			singleton = new Database(context);
 		return singleton;
 	}
-	
+
 	/**
 	 * Sets the converter for this database.
 	 * @param dc - the Datacontroller
 	 */
 	@Override
 	public void setConverter(DataController dc){
-			dbc = new DatabaseConverter(dc);
+		dbc = new DatabaseConverter(dc);
 	}
 
 	/**
@@ -134,12 +134,7 @@ public class Database implements IDatabase {
 			}
 			parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
 		}
-		try {
-			ParseObject.saveAll(parseList);
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1002,"Failed to create game");
-		}
+		ParseObject.saveAllInBackground(parseList);
 	}
 
 	/* (non-Javadoc)
@@ -158,7 +153,7 @@ public class Database implements IDatabase {
 		}
 		return game;
 	}
-	
+
 	private ParseObject getGameParseObject(String gameId) throws DatabaseException {
 		ParseObject object = null;
 		ParseQuery query = new ParseQuery("Game");
@@ -169,7 +164,7 @@ public class Database implements IDatabase {
 			//TODO: fix error message
 			throw new DatabaseException(1112, "Failed to get ParseObject");
 		}
-		
+
 		return object;
 	}
 
@@ -397,18 +392,21 @@ public class Database implements IDatabase {
 		return players;
 		
 	}
+
 	//Invitations -----------------------------------------------------------------------------------------
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#putIntoPlayerQueue(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void putIntoPlayerQueue(Player player) {
+	public void putIntoRandomQueue(Player player) {
+		
+		
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveInBackground();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#sendInvitation(com.example.wecharades.model.Invitation)
 	 */
@@ -459,7 +457,7 @@ public class Database implements IDatabase {
 			throw new DatabaseException(1008,"Error removing player from queue");
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#removeInvitations(java.util.Collection)
 	 */
@@ -472,6 +470,7 @@ public class Database implements IDatabase {
 	
 	//User login, registration and logout -----------------------------------------------------------------------------
 	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#registerPlayer(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -521,7 +520,7 @@ public class Database implements IDatabase {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#getCurrentPlayer()
 	 */
@@ -529,7 +528,7 @@ public class Database implements IDatabase {
 	public Player getCurrentPlayer(){
 		return dbc.parsePlayer(ParseUser.getCurrentUser());
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#resetPassword(java.lang.String)
 	 */
@@ -541,7 +540,7 @@ public class Database implements IDatabase {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#logOut()
 	 */

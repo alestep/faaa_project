@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -9,21 +8,17 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/btnAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_default_normal"
-            android:onClick="onClickAccount"
-            android:text="@string/account" />
+            android:id="@+id/account"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/btn_default_normal" />
 
         <Button
             android:id="@+id/invitations"
             android:layout_width="50dp"
-            android:text="+1"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dip"
@@ -32,30 +27,21 @@
             android:onClick="onClickInvitations" />
 
         <Button
-            android:id="@+id/highscore"
+            android:id="@+id/global_score"
             android:layout_width="50dp"
-            android:text="H"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@+id/invitations"
+            android:layout_alignBottom="@+id/invitations"
             android:layout_toLeftOf="@+id/invitations"
-            android:layout_marginRight="5dip"
-            android:layout_marginTop="10dip"
-            android:background="@drawable/btn_default_normal"
-            android:onClick="onClickHighscore" />
+            android:background="@android:drawable/btn_star"
+            android:onClick="onClickHighScore"/>
 
-        <TextView
-            android:id="@+id/user_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/btnAccount"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/new_game_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:background="@drawable/btn_default_normal"
