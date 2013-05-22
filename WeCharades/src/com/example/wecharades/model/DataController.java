@@ -18,31 +18,30 @@ import android.content.Context;
  *
  */
 public class DataController {
-	
+
 	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
 	private IDatabase db;
-	
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
 	}
-	
+
 	public static DataController getDataController(Context context){
 		if(dc == null){
 			dc = new DataController(context);
 		}
 		return dc;
 	}
-	
+
 	public void saveState(Context context){
 		if(m != null)
 			m.saveModel(context);
 	}
-	
+
 	//Session handling -----------------------------------------------------------
-	
+
 	/**
 	 * Log in a player
 	 * @param username - The username (case insensitive)
@@ -55,7 +54,7 @@ public class DataController {
 		db.loginPlayer(username, password);
 		m.setCurrentPlayer(db.getCurrentPlayer());
 	}
-	
+
 	/**
 	 * Log out the current player
 	 */
@@ -65,20 +64,18 @@ public class DataController {
 		//Dereference the model
 		m = null;
 	}
-	
+
 	/**
 	 * returns the current user
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		Player p = m.getCurrentPlayer();
-		if(p == null){
-			p = db.getCurrentPlayer();
-			m.setCurrentPlayer(p);
+		if(m.getCurrentPlayer() == null){
+			m.setCurrentPlayer(db.getCurrentPlayer());
 		}
-		return p;
+		return m.getCurrentPlayer();
 	}
-	
+
 	/**
 	 * Register a player
 	 * @param inputNickname - The player
@@ -95,7 +92,7 @@ public class DataController {
 			) throws DatabaseException{
 		db.registerPlayer(inputNickname, inputEmail, inputPassword,inputRepeatPassword);
 	}
-	
+
 	/**
 	 * Resets the password connected to the provided email address
 	 * @param email - The email address connected to an account.
@@ -104,9 +101,18 @@ public class DataController {
 	public void resetPassword(String email) throws DatabaseException{
 		db.resetPassword(email);
 	}
-	
+
+	/**
+	 * delete the account responding to the current user
+	 */
+	public void deleteAccount() {
+		//TODO: implement
+		/*m.deleteAccount();
+		db.deleteAccount();*/
+	}
+
 	//Players -----------------------------------------------------------
-	
+
 	/**
 	 * Get a user by its ParseId
 	 * @param parseId - the players ParseId
@@ -121,7 +127,7 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Get a user by its username
 	 * @param username - the players username
@@ -136,18 +142,38 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Returns a list of all players as objects
 	 * @return An ArrayList with players
 	 * @throws DatabaseException
 	 */
-	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+	public ArrayList<Player> getAllPlayerObjects() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
 		return players;
 	}
-	
+
+	/**
+	 * Returns a list with all player names. This list will also be cached locally.
+	 * @return an ArrayList containing 
+	 * @throws DatabaseException - if the connection to the database fails
+	 */
+	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
+		for(Player p : players){
+			nameList.add(p.getName());
+		}
+		nameList.remove(getCurrentPlayer().getName());
+		return nameList;
+	}
+
 	/**
 	 * Returns a list with all player names. This list will also be cached locally.
 	 * @return an ArrayList containing 
@@ -162,18 +188,26 @@ public class DataController {
 			}
 		});
 		for(Player p : players){
-				nameList.add(p.getName());
+			nameList.add(p.getName());
 		}
 		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
-	
-	//Games -----------------------------------------------------------
-	
-	public void putInRandomQueue(Player player){
-		db.putIntoRandomQueue(player);
+
+	/**
+	 * 
+	 * @return an ArrayList with Players
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
+		return db.getTopTenPlayers();
 	}
+
+	//Games -----------------------------------------------------------
+
 	
+	public void putInRandomQueue(){
+		db.putIntoRandomQueue(getCurrentPlayer());
+	}
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
@@ -183,7 +217,7 @@ public class DataController {
 	public void createGame(Player p1, Player p2) throws DatabaseException{
 		db.createGame(p1, p2);
 	}
-	
+
 	/**
 	 * Gets a list of current games. This should only be called from the StartPresenter,
 	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
@@ -212,7 +246,7 @@ public class DataController {
 		//m.putGameList(games);
 		return m.getGames();
 	}
-	
+
 	/**
 	 * Returns a game from its parseId
 	 * @param parseId - the games parseId
@@ -268,7 +302,7 @@ public class DataController {
 	private boolean isFinished(Game game){
 		return (game.getTurn() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
 	}
-	
+
 	//Turn -----------------------------------------------------------
 	/**
 	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
@@ -278,10 +312,10 @@ public class DataController {
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-	
-	
+
+
 	//Invitation -----------------------------------------------------------
-	
+
 	/**
 	 * A method to get all current invitations from the database
 	 * @return
@@ -302,7 +336,7 @@ public class DataController {
 		db.removeInvitations(oldInvitations);
 		return invitations;
 	}
-	
+
 	/**
 	 * Retrieves a list of all invitations sent form this device.
 	 * @return An ArrayList containing Invitations
@@ -310,7 +344,7 @@ public class DataController {
 	public ArrayList<Invitation> getSentInvitations(){
 		return m.getSentInvitations();
 	}
-	
+
 	/**
 	 * Returns a set with all players the current player has sent invitations to.
 	 * @return A TreeSet containing String (natural)usernames
@@ -323,7 +357,7 @@ public class DataController {
 		}
 		return usernames;
 	}
-	
+
 	/**
 	 * Send an invitation to another player
 	 * @param invitation
@@ -332,7 +366,7 @@ public class DataController {
 		m.setSentInvitation(invitation);
 		db.sendInvitation(invitation);
 	}
-	
+
 	/**
 	 * Send an invitation to another Player (based on the Player class)
 	 * @param player The player-representation of the player
@@ -340,7 +374,7 @@ public class DataController {
 	public void sendInvitation(Player player){
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
 	}
-	
+
 	/**
 	 * Called in order to accept an invitation and automatically create a game.
 	 * @param invitation - The invitation to accept
@@ -350,7 +384,7 @@ public class DataController {
 		createGame(invitation.getInviter(), invitation.getInvitee());
 		db.removeInvitation(invitation);
 	}
-	
+
 	/**
 	 * Called to reject an invitation, which is then deleted form the database
 	 * @param invitaiton - The invitation to reject
@@ -359,5 +393,5 @@ public class DataController {
 	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
 		db.removeInvitation(invitaiton);
 	}
-	
+
 }

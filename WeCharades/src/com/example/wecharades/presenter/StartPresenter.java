@@ -26,10 +26,10 @@ public class StartPresenter extends Presenter {
 	
 	public void update(){
 		String string = dc.getCurrentPlayer().getName();
-		activity.setDisplayName(string);
+		activity.setAccountName(string);
 		listMap = new LinkedHashMap<String, ArrayList<Game>>();
 		parseList();
-		//setInvitationStatus();
+		setInvitationStatus();
 	}
 	
 	/**
@@ -88,8 +88,8 @@ public class StartPresenter extends Presenter {
 		try {
 			ArrayList<Invitation> invites = dc.getInvitations();
 			activity.setInvitations(invites.size());
-		}catch (Exception e){
-			
+		}catch (DatabaseException e){
+			activity.showMessage(e.prettyPrint());
 		}
 				
 			

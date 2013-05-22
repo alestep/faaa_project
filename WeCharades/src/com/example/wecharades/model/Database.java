@@ -369,6 +369,30 @@ public class Database implements IDatabase {
 		}
 		return players;
 	}
+	
+	/**
+	 * Generates a list with the 10 players with best global score
+	 * @return a list with top 10 players based on their global score
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
+		ArrayList<Player> players = new ArrayList<Player>();
+		ParseQuery query = ParseUser.getQuery();
+		query.addDescendingOrder("globalScore");
+		query.setLimit(10);
+		
+		try {
+			List<ParseObject> dbResult = query.find();
+			for(ParseObject player : dbResult) {
+				players.add(dbc.parsePlayer(player));
+			}
+		} catch (ParseException e) {
+			Log.d("Database", e.getMessage());
+			throw new DatabaseException(1010,"Failed to fetch players");
+		}
+		return players;
+		
+	}
 
 	//Invitations -----------------------------------------------------------------------------------------
 
@@ -473,8 +497,9 @@ public class Database implements IDatabase {
 			removeInvitation(invite);
 		}
 	}
-
-	//User registration -----------------------------------------------------------------------------------------
+	
+	//User login, registration and logout -----------------------------------------------------------------------------
+	
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#registerPlayer(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
@@ -552,6 +577,13 @@ public class Database implements IDatabase {
 	@Override
 	public void logOut(){
 		ParseUser.logOut();
+	}
+	
+	/**
+	 * A method to delete an account
+	 */
+	public void deleteAccount() {
+		//TODO: implement!
 	}
 
 }

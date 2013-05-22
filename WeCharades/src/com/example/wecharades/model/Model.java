@@ -282,6 +282,14 @@ public class Model implements Serializable {
 		eraseModel(context);
 	}
 
+	
+	/**
+	 * Delete the account that belongs to the current player
+	 */
+	public void deleteAccount() {
+		//TODO: implement this shit!
+	}
+
 	//Invitations ---------------------------------------------------------------
 	//Received invitations are not needed here, as they should allways be fetched from the database.
 
@@ -300,5 +308,4 @@ public class Model implements Serializable {
 	public ArrayList<Invitation> getSentInvitations(){
 		return sentInvitations;
 	}
-
 }

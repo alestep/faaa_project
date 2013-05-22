@@ -2,8 +2,14 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import android.util.Log;
 
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public interface IDatabase {
 
@@ -174,5 +180,18 @@ public interface IDatabase {
 	 * A method that will log out the current user
 	 */
 	public abstract void logOut();
+	
+	
+	/**
+	 * Generates a list with the 10 players with best global score
+	 * @return a list with top 10 players based on their global score
+	 * @throws DatabaseException
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException;
+
+	/**
+	 * A method to delete a user account
+	 */
+	public abstract void deleteAccount();
 
 }

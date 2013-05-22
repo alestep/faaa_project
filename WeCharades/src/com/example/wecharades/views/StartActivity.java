@@ -35,8 +35,9 @@ public class StartActivity extends GenericActivity {
 	// ListView Contents
 	private ListView gameListView;
 
-	private TextView displayUser; 
 	private Button invitations;
+	private Button account;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
@@ -45,13 +46,13 @@ public class StartActivity extends GenericActivity {
 		
 		// Get a reference to views
         gameListView = (ListView) findViewById(R.id.list);
-		invitations = (Button) findViewById(R.id.invitations);
 		
 		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 		
-		displayUser = (TextView) findViewById(R.id.user_display);
+		invitations = (Button) findViewById(R.id.invitations);
+		account = (Button) findViewById(R.id.account);
 		
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
@@ -93,13 +94,14 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent(this, InvitationActivity.class);
 		startActivity(intent);
 	}
-
+	
 	/**
-	 * Logout and go back to login screen
-	 * @param view
+	 * 
+	 * @param v
 	 */
-	public void onClickLogout(View view) {
-		presenter.logOut();
+	public void onClickHighscore(View v) {
+		Intent intent = new Intent(this, HighScoreActivity.class);
+		startActivity(intent);
 	}
 
 	/**
@@ -107,8 +109,17 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickNewGame(View view) {
-		Intent intent = new Intent (getApplicationContext(), NewGameActivity.class);
+		Intent intent = new Intent (this, NewGameActivity.class);
 		startActivity(intent);
+	}
+	
+	/**
+	 * Go to High Score screen
+	 * @param view
+	 */
+	public void onClickHighScore(View view) {
+//		Intent intent = new Intent (this, HighScoreActivity.class);
+//		startActivity(intent);
 	}
 
 
@@ -117,21 +128,17 @@ public class StartActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickAccount(View view) {
-		Log.d("Clicked", "Account");
-//		Button b = (Button) view;
-//		Toast.makeText(getApplicationContext(), b.getText().toString(), Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent (getApplicationContext(), GameDashboardActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
+		startActivity(intent);
 	}
 	
-	public void setDisplayName(String user){
-		displayUser.setText(user);
+	public void setAccountName(String user){
+		account.setText(user);
 	}
 
 	public void setInvitations(int nrInvites){
 		if (nrInvites != 0) {
-			invitations.setText(nrInvites);
-			//invitations.setBackground(getResources().getDrawable(R.drawable.btn_default_normal));
+			invitations.setText("+" + nrInvites);
 		}
 	}
 
