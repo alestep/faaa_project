@@ -24,6 +24,10 @@ public class GameDashboardActivity extends GenericActivity {
 		yourScore = (TextView) findViewById(R.id.yourScore);
 		opponentsScore = (TextView) findViewById(R.id.opponentScore);
 		myTable = (TableLayout) findViewById(R.id.table);
+	}
+	
+	public void onStart(){
+		super.onStart();
 		presenter.createDashboard(myTable);
 	}
 
