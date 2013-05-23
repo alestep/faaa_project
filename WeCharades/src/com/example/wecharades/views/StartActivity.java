@@ -99,14 +99,6 @@ public class StartActivity extends GenericActivity {
 		startActivity(intent);
 	}
 	
-	/**
-	 * 
-	 * @param v
-	 */
-	public void onClickHighscore(View v) {
-		Intent intent = new Intent(this, HighScoreActivity.class);
-		startActivity(intent);
-	}
 
 	/**
 	 * Go to New Game screen

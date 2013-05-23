@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.views.StartActivity;
 
 /**
@@ -21,6 +24,8 @@ public class StartPresenter extends Presenter implements Observer{
 	private StartActivity activity;
 	private LinkedHashMap<String, ArrayList<Game>> listMap;
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
+	
+	private Map<Game, Map<Player, Integer>> score;
 
 	public StartPresenter(StartActivity activity) {
 		super(activity);
@@ -33,18 +38,19 @@ public class StartPresenter extends Presenter implements Observer{
 		String string = dc.getCurrentPlayer().getName();
 		activity.setAccountName(string);
 		listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		score = new TreeMap<Game, Map<Player, Integer>>();
 		parseList(dc.getGames());
 		setInvitationStatus();
 	}
-	
-	/*
-	 * Called when a new updated game list is received from the database.
-	 */
-	private void updateFromDb(ArrayList<Game> dbGames){
-		try{
-			ArrayList<Game> newList = dc.retrievedUpdatedGameList(dbGames);
-		} catch(DatabaseException e){activity.showMessage(e.prettyPrint());}
-	}
+
+/*
+ * Called when a new updated game list is received from the database.
+ */
+private void updateFromDb(ArrayList<Game> dbGames){
+	/*try{
+		//ArrayList<Game> newList = dc.retrievedUpdatedGameList(dbGames);
+	} catch(DatabaseException e){activity.showMessage(e.prettyPrint());}*/
+}
 
 	/**
 	 * Check if the there is a user logged in. 
@@ -81,8 +87,9 @@ public class StartPresenter extends Presenter implements Observer{
 	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
 		for (String s : headers) {
-			if(!listMap.get(s).isEmpty())
-				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer()));		
+			if(!listMap.get(s).isEmpty()) {
+				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer(), score));		
+			}
 		}
 		return adapter;
 	}

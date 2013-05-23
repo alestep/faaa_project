@@ -275,6 +275,7 @@ public class DataController extends Observable implements Observer{
 			}
 		}
 		return m.getGames();*/
+		return null;
 	}
 
 	/**
@@ -314,7 +315,6 @@ public class DataController extends Observable implements Observer{
 	
 	/**
 	 * Updates the database for the game. 
-	 * 	CALL THIS METHOD BEFORE INCREMENTING THE GAME TURN!
 	 * 	if the turn is finished, this will also be set here.
 	 * @param game - the game to be updated
 	 * @throws DatabaseException
@@ -341,6 +341,11 @@ public class DataController extends Observable implements Observer{
 	 */
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
+	}
+	
+	public void updateTurn(Turn turn) throws DatabaseException{
+		m.putTurn(turn);
+		updateGame(m.getGame(turn.getGameId()));
 	}
 
 
