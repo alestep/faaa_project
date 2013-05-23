@@ -15,7 +15,7 @@ public abstract class GenericActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.presenter = presenter;
 	}
-	
+		
 	public void showMessage(String error) {
 		getTextArea().setText(error);
 	}
@@ -25,14 +25,14 @@ public abstract class GenericActivity extends Activity {
 	
 	@Override
 	protected void onStop(){
-		super.onStop();
 		presenter.saveState();
+		super.onStop();
 	}
 	
 	protected Presenter getPresenter(){
 		return presenter;
 	}
-	
+
 	//TODO insert spinners here? Also, could we add the spinner area in this class and have it included in the subclasses?
 	
 }

@@ -50,9 +50,10 @@ public class LoginPresenter extends Presenter{
 		protected Boolean doInBackground(Void... arg0) {
 			boolean loginSucceeded = false;
 			try {
-				//If this fails, the user will get a message and the subsequent code will not be run
-				dc.loginPlayer(username, password);
-				loginSucceeded = true;
+				dc.loginPlayer(activity, username, password);
+				Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
+				activity.startActivity(i);
+				activity.finish();//We do not need the login-activity any more
 			} catch (DatabaseException e) {
 				dbException = e;
 				exceptionState = CAUGHT_EXCEPTION;

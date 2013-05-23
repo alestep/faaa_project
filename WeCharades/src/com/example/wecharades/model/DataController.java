@@ -1,19 +1,13 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import android.content.Context;
 
-import com.example.wecharades.model.Database;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Game;
-import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Model;
-import com.example.wecharades.model.Player;
-import com.example.wecharades.model.Turn;
 
 /**
  * This is a class intended as an interface to the model and database.
@@ -24,62 +18,64 @@ import com.example.wecharades.model.Turn;
  *
  */
 public class DataController {
-	
-	private static DataController dc = null;
+
+	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
-	private Database db;
-	
+	private IDatabase db;
 	private DataController(Context context){
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
 	}
-	
+
 	public static DataController getDataController(Context context){
 		if(dc == null){
 			dc = new DataController(context);
 		}
 		return dc;
 	}
-	
+
 	public void saveState(Context context){
-		m.saveModel(context);
+		if(m != null)
+			m.saveModel(context);
 	}
-	
+
 	//Session handling -----------------------------------------------------------
-	
+
 	/**
 	 * Log in a player
 	 * @param username - The username (case insensitive)
 	 * @param password - The password
 	 * @throws DatabaseException - if the connection to the database fails 
 	 */
-	public void loginPlayer(String username, String password) throws DatabaseException{
+	public void loginPlayer(Context context, String username, String password) throws DatabaseException{
+		m = Model.getModelInstance(context);
+		db = Database.getDatabaseInstance(context);
 		db.loginPlayer(username, password);
 		m.setCurrentPlayer(db.getCurrentPlayer());
 	}
-	
+
 	/**
 	 * Log out the current player
 	 */
-	public void logOutPlayer(){
+	public void logOutPlayer(Context context){
+		m.logOutCurrentPlayer(context);
 		db.logOut();
-		m.logOutCurrentPlayer();
+		//Dereference the model
+		m = null;
 	}
-	
+
 	/**
 	 * returns the current user
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		Player p = m.getCurrentPlayer();
-		if(p == null){
-			p = db.getCurrentPlayer();
-			m.setCurrentPlayer(p);
+		if(m.getCurrentPlayer() == null){
+			m.setCurrentPlayer(db.getCurrentPlayer());
 		}
-		return p;
+		return m.getCurrentPlayer();
 	}
-	
+
 	/**
 	 * Register a player
 	 * @param inputNickname - The player
@@ -96,7 +92,7 @@ public class DataController {
 			) throws DatabaseException{
 		db.registerPlayer(inputNickname, inputEmail, inputPassword,inputRepeatPassword);
 	}
-	
+
 	/**
 	 * Resets the password connected to the provided email address
 	 * @param email - The email address connected to an account.
@@ -105,9 +101,9 @@ public class DataController {
 	public void resetPassword(String email) throws DatabaseException{
 		db.resetPassword(email);
 	}
-	
+
 	//Players -----------------------------------------------------------
-	
+
 	/**
 	 * Get a user by its ParseId
 	 * @param parseId - the players ParseId
@@ -122,7 +118,7 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Get a user by its username
 	 * @param username - the players username
@@ -137,18 +133,38 @@ public class DataController {
 		}
 		return p;
 	}
-	
+
 	/**
 	 * Returns a list of all players as objects
 	 * @return An ArrayList with players
 	 * @throws DatabaseException
 	 */
-	public ArrayList<Player> getAllOtherPlayerObjects() throws DatabaseException {
+	public ArrayList<Player> getAllPlayerObjects() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
 		return players;
 	}
-	
+
+	/**
+	 * Returns a list with all player names. This list will also be cached locally.
+	 * @return an ArrayList containing 
+	 * @throws DatabaseException - if the connection to the database fails
+	 */
+	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
+		ArrayList<Player> players = db.getPlayers();
+		m.putPlayers(players);
+		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
+			public int compare(String s1, String s2){
+				return s1.compareToIgnoreCase(s2);
+			}
+		});
+		for(Player p : players){
+			nameList.add(p.getName());
+		}
+		nameList.remove(getCurrentPlayer().getName());
+		return nameList;
+	}
+
 	/**
 	 * Returns a list with all player names. This list will also be cached locally.
 	 * @return an ArrayList containing 
@@ -163,14 +179,26 @@ public class DataController {
 			}
 		});
 		for(Player p : players){
-				nameList.add(p.getName());
+			nameList.add(p.getName());
 		}
 		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
-	
+
+	/**
+	 * 
+	 * @return an ArrayList with Players
+	 */
+	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
+		return db.getTopTenPlayers();
+	}
+
 	//Games -----------------------------------------------------------
+
 	
+	public void putInRandomQueue(){
+		db.putIntoRandomQueue(getCurrentPlayer());
+	}
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
@@ -180,7 +208,7 @@ public class DataController {
 	public void createGame(Player p1, Player p2) throws DatabaseException{
 		db.createGame(p1, p2);
 	}
-	
+
 	/**
 	 * Gets a list of current games. This should only be called from the StartPresenter,
 	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
@@ -209,7 +237,7 @@ public class DataController {
 		//m.putGameList(games);
 		return m.getGames();
 	}
-	
+
 	/**
 	 * Returns a game from its parseId
 	 * @param parseId - the games parseId
@@ -223,6 +251,26 @@ public class DataController {
 			m.putGame(game);
 		}
 		return game;
+	}
+	
+	public TreeMap<Player, Integer> getGameScore(Game game){
+		TreeMap<Player, Integer> returnMap = new TreeMap<Player, Integer>();
+		ArrayList<Turn> turnList = getTurns(game);
+		if(turnList != null){
+			Player p1 = game.getPlayer1();
+			Player p2 = game.getPlayer2();
+			int p1s = 0;
+			int p2s = 0;
+			Turn currentTurn;
+			for(int i=0; i < game.getTurn(); i++){
+				currentTurn = turnList.get(i);
+				p1s += currentTurn.getPlayerScore(p1);
+				p2s += currentTurn.getPlayerScore(p2);
+			}
+			returnMap.put(p1, p1s);
+			returnMap.put(p2, p2s);
+		}
+		return returnMap;
 	}
 	
 	/**
@@ -245,7 +293,7 @@ public class DataController {
 	private boolean isFinished(Game game){
 		return (game.getTurn() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
 	}
-	
+
 	//Turn -----------------------------------------------------------
 	/**
 	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
@@ -255,10 +303,10 @@ public class DataController {
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-	
-	
+
+
 	//Invitation -----------------------------------------------------------
-	
+
 	/**
 	 * A method to get all current invitations from the database
 	 * @return
@@ -279,15 +327,28 @@ public class DataController {
 		db.removeInvitations(oldInvitations);
 		return invitations;
 	}
-	
+
 	/**
 	 * Retrieves a list of all invitations sent form this device.
 	 * @return An ArrayList containing Invitations
 	 */
 	public ArrayList<Invitation> getSentInvitations(){
-		return m.getSentInviations();
+		return m.getSentInvitations();
 	}
-	
+
+	/**
+	 * Returns a set with all players the current player has sent invitations to.
+	 * @return A TreeSet containing String (natural)usernames
+	 */
+	public TreeSet<String> getSentInvitationsAsUsernames(){
+		TreeSet<String> usernames = new TreeSet<String>();
+		ArrayList<Invitation> invitations = getSentInvitations();
+		for(Invitation invitation : invitations){
+			usernames.add(invitation.getInvitee().getName());
+		}
+		return usernames;
+	}
+
 	/**
 	 * Send an invitation to another player
 	 * @param invitation
@@ -296,7 +357,7 @@ public class DataController {
 		m.setSentInvitation(invitation);
 		db.sendInvitation(invitation);
 	}
-	
+
 	/**
 	 * Send an invitation to another Player (based on the Player class)
 	 * @param player The player-representation of the player
@@ -304,7 +365,7 @@ public class DataController {
 	public void sendInvitation(Player player){
 		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
 	}
-	
+
 	/**
 	 * Called in order to accept an invitation and automatically create a game.
 	 * @param invitation - The invitation to accept
@@ -314,7 +375,7 @@ public class DataController {
 		createGame(invitation.getInviter(), invitation.getInvitee());
 		db.removeInvitation(invitation);
 	}
-	
+
 	/**
 	 * Called to reject an invitation, which is then deleted form the database
 	 * @param invitaiton - The invitation to reject
@@ -323,5 +384,5 @@ public class DataController {
 	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
 		db.removeInvitation(invitaiton);
 	}
-	
+
 }

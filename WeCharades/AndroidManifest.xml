@@ -120,6 +120,21 @@
             android:name=".views.GuessCharadeActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" />
+        
+        <!-- High Score Activity -->
+        <activity
+            android:name=".views.HighScoreActivity"
+            android:label="Top 10 Charaders" />
+        
+        <!-- AccountActivity -->
+        <activity
+            android:name=".views.AccountActivity"
+            android:label="Statistics" />
+        
+        <!-- GameInstructionsActivity -->
+        <activity
+            android:name=".views.GameInstructionsActivity"
+            android:label="Game Instructions" />
     </application>
  
 </manifest>

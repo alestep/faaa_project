@@ -13,18 +13,15 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.Player;
 import com.example.wecharades.views.InvitationActivity;
 
 public class InvitationAdapter extends ArrayAdapter<Invitation> {
-	private Player currentPlayer;
 	private LayoutInflater li;
 	private ArrayList<Invitation> invites;
 	private InvitationActivity activity;
 	
 	public InvitationAdapter(InvitationActivity activity, ArrayList<Invitation> invites) {
 		super(activity, 0, invites);
-		this.currentPlayer = currentPlayer;
 		this.invites = invites;
 		this.activity = activity;
 		li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

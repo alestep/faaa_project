@@ -1,7 +1,6 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wecharades.model.DataController;
 import com.example.wecharades.views.LoginActivity;
 
 public abstract class Presenter {
@@ -123,7 +123,7 @@ public abstract class Presenter {
 	}
 	
 	/**
-	 * Called whenever a activity is closed.
+	 * Called whenever an activity is closed.
 	 */
 	public void saveState(){
 		dc.saveState(activity);
