@@ -49,10 +49,10 @@ public class CaptureVideo extends Activity {
 			if(requestCode == REQUEST_VIDEO_CAPTURED){
 				uriVideo = data.getData();
 				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
-				//finishActivity(REQUEST_VIDEO_CAPTURED);
 				Intent intentShowVideo = new Intent(CaptureVideo.this, VideoUploadActivity.class);
 				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
+				finishActivity(REQUEST_VIDEO_CAPTURED);
 			}
 		}
 		else if(resultCode == RESULT_CANCELED){

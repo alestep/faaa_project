@@ -104,4 +104,11 @@ public class Turn implements Serializable {
 		else
 			return -1;
 	}
+	
+	public boolean equals(Turn anotherTurn){
+		return anotherTurn != null
+				&& anotherTurn.getGameId().equals(this.getGameId())
+				&& anotherTurn.getTurnNumber() == (this.getTurnNumber());
+		
+	}
 }

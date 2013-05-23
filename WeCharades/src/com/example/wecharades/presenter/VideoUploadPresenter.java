@@ -18,9 +18,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.StartActivity;
@@ -37,7 +37,7 @@ public class VideoUploadPresenter extends Presenter {
 	public VideoUploadPresenter(VideoUploadActivity activity) {
 		super(activity);
 		this.activity = activity;
-		this.turn = (Turn) activity.getIntent().getSerializableExtra("Turn");
+		this.turn = (Turn) activity.getIntent().getSerializableExtra(Database.TURN);
 	}
 	
 	/**
@@ -46,6 +46,7 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
+		setServerStorageLocation();
 		upload = new UploadVideo(context, path);
 		upload.execute();
 	}
@@ -54,22 +55,25 @@ public class VideoUploadPresenter extends Presenter {
 	 * Initiate and start the video.
 	 * @param videoView
 	 */
-	public void playVideo(VideoView videoView) {
-		videoView.setVideoURI(CaptureVideo.uriVideo);
-		videoView.setMediaController(new MediaController(activity));
+	public void playVideo(VideoView videoView,String path) {
+		videoView.setVideoPath(path);
+		//videoView.setVideoURI(CaptureVideo.uriVideo);
+		//videoView.setMediaController(new MediaController(activity));
 		videoView.start();
-		videoView.requestFocus();
+		//videoView.requestFocus();
 	}
 	
 	/**
 	 * Sets the storage location of the videofile for the FTP-server. 
 	 * @return
 	 */
-	private String setServerStorageLocation(){
+	private void setServerStorageLocation(){
 		String gameID = turn.getGameId();
 		String turnNumber = String.valueOf(turn.getTurnNumber());
-		String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
-		return serverPath;
+		//String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
+		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
+		System.out.println(serverPath);
+		this.serverPath = serverPath;
 	}
 	
 	/**	
@@ -85,7 +89,7 @@ public class VideoUploadPresenter extends Presenter {
 	}
 	private void updateModel(){
 		try {
-			dc.updateGame(dc.getGame(turn.getGameId()));
+			dc.updateTurn(turn);
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,9 +126,9 @@ public class VideoUploadPresenter extends Presenter {
 				if (ftp.login("mklcompetencia.se", "ypkq4w")){
 					ftp.enterLocalPassiveMode();
 					ftp.setFileType(FTP.BINARY_FILE_TYPE);					
-					ftpCreateDirectoryTree(ftp, setServerStorageLocation());				
+					//ftpCreateDirectoryTree(ftp, serverPath);				
 					FileInputStream in = new FileInputStream(new File(SAVE_PATH));
-					boolean result = ftp.storeFile(setServerStorageLocation() + fileName, in);					
+					boolean result = ftp.storeFile(serverPath, in);					
 					in.close();
 					if (result) 
 						Log.v("upload result", "succeeded");
@@ -156,26 +160,14 @@ public class VideoUploadPresenter extends Presenter {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(mDialog.isShowing()){
-
-				//TODO: Show a dialog with the text "Successful upload" and click OK to proceed
-				/*mDialog.setButton("Cancel", new OnClickListener() {
-
-	                @Override
-	                public void onClick(DialogInterface dialog, int which) {
-	                    // TODO Auto-generated method stub
-
-	                myDialog.dismiss();
-	                }
-	            }); */
 				mDialog.dismiss();
-				turn.setVideoLink(setServerStorageLocation() + fileName);
+				turn.setVideoLink(serverPath);
+				turn.setState(Turn.VIDEO);
 				updateModel();
-
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
-
 			}
 		}
 		/**
@@ -184,10 +176,8 @@ public class VideoUploadPresenter extends Presenter {
 		* @param dirTree  the directory tree only delimited with / chars.  No file name!
 		* @throws Exception
 		*/
-		private void ftpCreateDirectoryTree( FTPClient client, String dirTree ) throws IOException {
-			
+		private void ftpCreateDirectoryTree( FTPClient client, String dirTree ) throws IOException {	
 		  boolean dirExists = true;
-		  
 		  //tokenize the string and attempt to change into each directory level.  If you cannot, then start creating.
 		  String[] directories = dirTree.split("/");
 		  for (String dir : directories ) {

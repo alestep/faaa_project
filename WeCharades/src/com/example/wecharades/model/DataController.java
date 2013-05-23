@@ -275,7 +275,6 @@ public class DataController {
 	
 	/**
 	 * Updates the database for the game. 
-	 * 	CALL THIS METHOD BEFORE INCREMENTING THE GAME TURN!
 	 * 	if the turn is finished, this will also be set here.
 	 * @param game - the game to be updated
 	 * @throws DatabaseException
@@ -304,8 +303,9 @@ public class DataController {
 		return m.getTurns(game);
 	}
 	
-	public void updateTurn(Turn turn){
+	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
+		updateGame(m.getGame(turn.getGameId()));
 	}
 
 

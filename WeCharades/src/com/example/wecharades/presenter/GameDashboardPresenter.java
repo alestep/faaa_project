@@ -109,7 +109,7 @@ public class GameDashboardPresenter extends Presenter {
 				buttonText = "Waiting...";
 				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
 			} else {
-				buttonText = "Record Video";
+				buttonText = "Record Video\n" + "Charade: " + turn.getWord();
 				button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 			}
 		} else {
