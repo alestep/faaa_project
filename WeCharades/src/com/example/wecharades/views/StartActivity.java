@@ -87,7 +87,15 @@ public class StartActivity extends GenericActivity {
 	}
 	
 	/**
-	 * 
+	 * Updates the screen
+	 * @param v
+	 */
+	public void onClickRefresh(View v) {
+		presenter.update();
+	}
+	
+	/**
+	 * Go to Invitation screen
 	 * @param v
 	 */
 	public void onClickInvitations(View v) {
