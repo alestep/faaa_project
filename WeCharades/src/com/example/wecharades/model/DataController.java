@@ -304,8 +304,9 @@ public class DataController {
 		return m.getTurns(game);
 	}
 	
-	public void updateTurn(Turn turn){
+	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
+		updateGame(m.getGame(turn.getGameId()));
 	}
 
 
