@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
@@ -176,8 +178,8 @@ public class Model implements Serializable {
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
-				listOfTurns.remove(turn.getTurnNumber()-1);
-			listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
+				listOfTurns.remove(turn);
+			listOfTurns.add(turn); //Adds the new copy of the game
 		}
 	}
 
@@ -188,6 +190,12 @@ public class Model implements Serializable {
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
+		Collections.sort(turnList, new Comparator<Turn>(){
+			@Override
+			public int compare(Turn lhs, Turn rhs) {
+				return lhs.getTurnNumber() - rhs.getTurnNumber();
+			}
+			});
 		for(Turn turn : turnList){
 			putTurn(turn);
 		}

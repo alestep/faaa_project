@@ -117,7 +117,7 @@ public class StartPresenter extends Presenter implements Observer{
         	@Override
         	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
         		Game game = (Game) adapter.getItem(position-1);
-        		Intent intent = new Intent(activity.getApplicationContext(), GameDashboardActivity.class);
+        		Intent intent = new Intent(activity, GameDashboardActivity.class);
         		intent.putExtra("Game", game);
         		activity.startActivity(intent);
             }
@@ -134,8 +134,6 @@ public class StartPresenter extends Presenter implements Observer{
 		}catch (DatabaseException e){
 			activity.showMessage(e.prettyPrint());
 		}
-
-
 	}
 
 	/**
