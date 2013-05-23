@@ -195,7 +195,7 @@ public class DataController {
 
 	//Games -----------------------------------------------------------
 
-	
+
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
 	}
@@ -252,7 +252,7 @@ public class DataController {
 		}
 		return game;
 	}
-	
+
 	public TreeMap<Player, Integer> getGameScore(Game game){
 		TreeMap<Player, Integer> returnMap = new TreeMap<Player, Integer>();
 		ArrayList<Turn> turnList = getTurns(game);
@@ -272,7 +272,7 @@ public class DataController {
 		}
 		return returnMap;
 	}
-	
+
 	/**
 	 * Updates the database for the game. 
 	 * 	if the turn is finished, this will also be set here.
@@ -302,10 +302,20 @@ public class DataController {
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-	
+
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
-		updateGame(m.getGame(turn.getGameId()));
+		Game game = m.getGame(turn.getGameId());
+		switch(turn.getState()){
+		case Turn.INIT : 	game.setCurrentPlayer(turn.getAnsPlayer());
+							break;
+		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getRecPlayer());
+							break;
+		case Turn.FINISH : 	game.incrementTurn();
+							break;
+		}
+		game.setLastPlayed(new Date());
+		updateGame(game);
 	}
 
 
