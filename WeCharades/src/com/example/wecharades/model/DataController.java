@@ -52,7 +52,7 @@ public class DataController extends Observable implements Observer{
 			if(obj.getClass().equals(DatabaseException.class)){
 				setChanged();
 				notifyObservers((DatabaseException)obj);
-			} else if(obj.getClass().equals(TreeMap.class)){
+			} else if(obj instanceof TreeMap){
 				ArrayList<Game> gameList = retrieveUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
 				setChanged();
 				notifyObservers(gameList);

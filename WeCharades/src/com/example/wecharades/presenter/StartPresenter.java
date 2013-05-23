@@ -134,7 +134,7 @@ public class StartPresenter extends Presenter implements Observer{
 	public void update(Observable obs, Object obj) {
 		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
-			if(obj.getClass().equals(ArrayList.class)
+			if(obj instanceof ArrayList
 					&& !((ArrayList) obj).isEmpty()
 					&& ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
 				updateFromDb((ArrayList<Game>) obj);
