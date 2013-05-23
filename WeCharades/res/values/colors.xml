@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<!-- Title bar colors -->
+    <color name="titlebackgroundcolor">#3232CD</color>
+    <color name="titletextcolor">#FFFF00</color>
+    
+    <!-- Other colors -->
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
@@ -134,12 +138,16 @@
     <color name="DeepSkyBlue">#00BFFF</color>
     <color name="DarkCyan">#008B8B</color>
     <color name="Teal">#008080</color>
-    <color name="Green">#008000</color>
+    <color name="SoftGreen">#00CC33</color>
     <color name="DarkGreen">#006400</color>
-    <color name="Blue">#0000FF</color>
+    <color name="SoftBlue">#3D8BFF</color>
+    <color name="SoftBlue2">#7ABDFF</color>
+    <color name="SoftBlue3">#3D9EFF</color>
     <color name="MediumBlue">#0000CD</color>
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="SoftRed">#FF513D</color>
+    <color name="SoftYellow">#FFFF7A</color>
 
 </resources>
