@@ -89,7 +89,6 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	public void incrementTurn() {
 		if(turn == 6){
 			isFinished = true;
-			turn = 0;
 		}
 		else
 			turn ++;
