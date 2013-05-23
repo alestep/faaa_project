@@ -199,13 +199,14 @@ public class GuessCharadePresenter extends Presenter {
 				con.connect("ftp.mklcompetencia.se", 21);
 				if (con.login("mklcompetencia.se", "ypkq4w")){
 					con.enterLocalPassiveMode(); // important!
+					System.out.println(turn.getVideoLink());
 					con.setFileType(FTP.BINARY_FILE_TYPE);
 					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
 					boolean result = con.retrieveFile(turn.getVideoLink(), out);// Todo: server path. //"/APP/PresentVideo.mp4"
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");
-						con.deleteFile(turn.getVideoLink());
+						//con.deleteFile(turn.getVideoLink());
 					}						
 					con.logout();
 					con.disconnect();
