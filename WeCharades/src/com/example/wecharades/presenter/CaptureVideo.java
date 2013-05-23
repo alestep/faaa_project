@@ -51,7 +51,7 @@ public class CaptureVideo extends Activity {
 				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
 				//finishActivity(REQUEST_VIDEO_CAPTURED);
 				Intent intentShowVideo = new Intent(CaptureVideo.this, VideoUploadActivity.class);
-				intentShowVideo.putExtra("Turn", turn);
+				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
 			}
 		}

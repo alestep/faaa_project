@@ -7,7 +7,7 @@ import java.io.Serializable;
  * The session of the native player should also be stored in SharedPreferences
  *
  */
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
 	/**
 	 * auto-generated serialVersionUID
 	 */
@@ -171,4 +171,12 @@ public class Player implements Serializable {
 	public String toString(){
 		return getName();
 	}
+
+	@Override
+	public int compareTo(Player another) {
+		if(another != null){
+			return this.getParseId().compareTo(another.getParseId());
+		} else return 0;
+	}
+
 }
