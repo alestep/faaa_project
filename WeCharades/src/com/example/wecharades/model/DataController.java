@@ -275,7 +275,6 @@ public class DataController {
 	
 	/**
 	 * Updates the database for the game. 
-	 * 	CALL THIS METHOD BEFORE INCREMENTING THE GAME TURN!
 	 * 	if the turn is finished, this will also be set here.
 	 * @param game - the game to be updated
 	 * @throws DatabaseException
