@@ -52,7 +52,7 @@ public class GuessCharadePresenter extends Presenter {
 	}
 	public void updateModel(){
 		try {
-			dc.updateGame(dc.getGame(turn.getGameId()));
+			dc.updateTurn(turn);
 		} catch (DatabaseException e) {
 			Log.e("GuessCharadePresenter", e.getMessage());
 			e.printStackTrace();
@@ -76,6 +76,7 @@ public class GuessCharadePresenter extends Presenter {
 				videoView.stopPlayback();
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
+				turn.setState(Turn.FINISH);
 				updateModel();
 				activity.finishDialog();
 			}
