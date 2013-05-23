@@ -24,7 +24,7 @@ public class StartPresenter extends Presenter implements Observer{
 	private StartActivity activity;
 	private LinkedHashMap<String, ArrayList<Game>> listMap;
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
-	
+
 	private Map<Game, Map<Player, Integer>> score;
 
 	public StartPresenter(StartActivity activity) {
@@ -43,12 +43,12 @@ public class StartPresenter extends Presenter implements Observer{
 		setInvitationStatus();
 	}
 
-/*
- * Called when a new updated game list is received from the database.
- */
-private void updateFromDb(ArrayList<Game> dbGames){
-	parseList(dbGames);
-}
+	/*
+	 * Called when a new updated game list is received from the database.
+	 */
+	private void updateFromDb(ArrayList<Game> dbGames){
+		parseList(dbGames);
+	}
 
 	/**
 	 * Check if the there is a user logged in. 
@@ -121,19 +121,25 @@ private void updateFromDb(ArrayList<Game> dbGames){
 		dc.deleteObserver(this);
 	}
 
+	/**
+	 * Called whenever a message is reveived from the DataController
+	 * 	This method will override the default, but will pass on the message
+	 * 	to super when appropriate
+	 * @param obs - The observer
+	 * @param obj - The object included in the message
+	 */
 	@Override
 	public void update(Observable obs, Object obj) {
 		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
-			if(obj.getClass().equals(DatabaseException.class)){
-				DatabaseException e = (DatabaseException) obj;
-				activity.showMessage(e.prettyPrint());
-			} else if (obj.getClass().equals(ArrayList.class)
-					&& !((ArrayList) obj).isEmpty()){
-				if( ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
-					updateFromDb((ArrayList<Game>) obj);
-				}
+			if(obj.getClass().equals(ArrayList.class)
+					&& !((ArrayList) obj).isEmpty()
+					&& ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
+				updateFromDb((ArrayList<Game>) obj);
 			}
+		} else{
+			//If this 
+			super.update(obs, obj);
 		}
 	}
 

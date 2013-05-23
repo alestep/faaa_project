@@ -17,7 +17,7 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 
-public abstract class Presenter<ANY extends GenericActivity> implements Observer{
+public abstract class Presenter implements Observer{
 
 	protected DataController dc;
 	protected GenericActivity activity;
@@ -26,7 +26,7 @@ public abstract class Presenter<ANY extends GenericActivity> implements Observer
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	public Presenter(ANY activity) {
+	public Presenter(GenericActivity activity) {
 		this.activity = activity;
 		this.dc = DataController.getDataController(activity);
 		dc.addObserver(this);
