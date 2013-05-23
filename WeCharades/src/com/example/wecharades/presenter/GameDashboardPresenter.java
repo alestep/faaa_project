@@ -95,40 +95,6 @@ public class GameDashboardPresenter extends Presenter {
 	 * Update button information based on information from the Turn object
 	 * @param turn
 	 */
-	//	private void updateButtonInformation(Turn turn, Button button) {
-	//		//TODO: Fix design stuff! enabled/disabled styles for example
-	//		String buttonText = "";
-	//		if(turn.getState() == Turn.FINISH) {
-	//			//Set current user's points received for the specific turn
-	//			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
-	//					turn.getAnsPlayerScore() + " points" 
-	//					: turn.getRecPlayerScore() + " points";
-	//			button.setEnabled(false);
-	//			
-	//		} else if(turn.getTurnNumber() == game.getTurnNumber()) {
-	//			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
-	//				buttonText = "Guess word!";
-	//				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
-	//			} 
-	//			// Checks if you are the "RecPlayer" AND already has uploaded a video
-	//			else if (turn.getRecPlayer().equals(dc.getCurrentPlayer()) && !turn.getVideoLink().isEmpty()) {
-	//				buttonText = "Waiting...";
-	//				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
-	//			} else {
-	//				buttonText = "Record Video\n" + "Charade: " + turn.getWord();
-	//				button.setOnClickListener(buttonListener(false, turn)); //the player should record video
-	//			}
-	//		} else {
-	//			button.setEnabled(false);
-	//			buttonText = "Locked";
-	//		}
-	//		button.setText(buttonText);
-	//	} 
-
-	/**
-	 * Update button information based on information from the Turn object
-	 * @param turn
-	 */
 	private void updateButtonInformation(Turn turn, Button button) {
 		//TODO: Fix design stuff! enabled/disabled styles for example
 		String buttonText = "";
@@ -150,6 +116,7 @@ public class GameDashboardPresenter extends Presenter {
 		} else if (turn.getState() == Turn.VIDEO && turn.getAnsPlayer().equals(dc.getCurrentPlayer())){
 				buttonText = "Guess Charade!";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess charade
+		
 		} else {
 			button.setEnabled(false);
 			buttonText = "Waiting..."; //Currently highlighted but doesn't lead anywhere
