@@ -227,10 +227,10 @@ public class DataController {
 				m.putTurns(db.getTurns(game));
 			} else if(Game.hasChanged(game, localGame)){
 				//Updates the current turn from the database
-				m.putTurn(db.getTurn(game, game.getTurn()));
+				m.putTurn(db.getTurn(game, game.getTurnNumber()));
 				//If the last turn was finished
-				if(game.getTurn() > localGame.getTurn()){
-					m.putTurn(db.getTurn(game, game.getTurn()-1));
+				if(game.getTurnNumber() > localGame.getTurnNumber()){
+					m.putTurn(db.getTurn(game, game.getTurnNumber()-1));
 				}
 			}
 		}
@@ -262,7 +262,7 @@ public class DataController {
 			int p1s = 0;
 			int p2s = 0;
 			Turn currentTurn;
-			for(int i=0; i < game.getTurn(); i++){
+			for(int i=0; i < game.getTurnNumber(); i++){
 				currentTurn = turnList.get(i);
 				p1s += currentTurn.getPlayerScore(p1);
 				p2s += currentTurn.getPlayerScore(p2);
@@ -290,7 +290,7 @@ public class DataController {
 	 * Helper method for updateGame()
 	 */
 	private boolean isFinished(Game game){
-		return (game.getTurn() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
+		return (game.getTurnNumber() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
 	}
 
 	//Turn -----------------------------------------------------------

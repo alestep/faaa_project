@@ -214,7 +214,7 @@ public class Database implements IDatabase {
 				if(e == null){
 					//Updates the game on the server with the latest info
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
-					object.put(GAME_TURN, game.getTurn());
+					object.put(GAME_TURN, game.getTurnNumber());
 					object.saveEventually();
 				} else{
 					Log.d("Database",e.getMessage());
