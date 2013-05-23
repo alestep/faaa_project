@@ -39,4 +39,10 @@ public class Invitation implements Serializable {
 		return (inviter.getParseId() + invitee.getParseId()).hashCode();
 	}
 	
+	public boolean equals(Invitation otherInv){
+		return otherInv != null
+				&& this.getInvitee().equals(otherInv.getInvitee())
+				&& this.getInviter().equals(otherInv.getInviter());
+	}
+	
 }

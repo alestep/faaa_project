@@ -21,8 +21,10 @@ import android.util.Log;
  */
 public class Model {
 	private static final String 	SAVE_FILE = "model.save";
-	public static final int 		FINISHEDGAMES_SAVETIME = 168,
-			FINISHEDGAMES_NUMBERSAVED = 10;
+	public static final int 		
+			FINISHEDGAMES_SAVETIME 			= 168
+			, FINISHEDGAMES_NUMBERSAVED 	= 10
+			, INVITATIONS_SAVETIME 			= 72;
 
 	//A variable to check if model is already saved.
 	private boolean					SAVED = true;

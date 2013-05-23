@@ -131,7 +131,7 @@ public class DataController extends Observable implements Observer{
 	 * @return A player
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	public Player getPlayerById(String parseId) throws DatabaseException {
+	protected Player getPlayerById(String parseId) throws DatabaseException {
 		Player p = m.getPlayerById(parseId);
 		if(p == null){
 			p = db.getPlayerById(parseId);
@@ -172,13 +172,11 @@ public class DataController extends Observable implements Observer{
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
-		ArrayList<Player> players = db.getPlayers();
-		m.putPlayers(players);
+		ArrayList<Player> players = getAllPlayerObjects();
 		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
-		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
 
@@ -188,12 +186,7 @@ public class DataController extends Observable implements Observer{
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
-		ArrayList<Player> players = db.getPlayers();
-		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		for(Player p : players){
-			nameList.add(p.getName());
-		}
+		TreeSet<String> nameList = getAllPlayerNames();
 		nameList.remove(getCurrentPlayer().getName());
 		return nameList;
 	}
@@ -233,6 +226,7 @@ public class DataController extends Observable implements Observer{
 	/*
 	 * This is one of the core methods of this application.
 	 * 	This method will sync the database with the model!
+	 * 	//TODO This MIGHT have problems with it and is untested
 	 */
 	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
 		Game localGame;
@@ -307,21 +301,6 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
-	}
-
-	/**
-	 * Returns a game from its parseId
-	 * @param parseId - the games parseId
-	 * @return A Game, or null if no such game exist
-	 * @throws DatabaseException - if the connection to the database fails
-	 */
-	public Game getGame(String parseId) throws DatabaseException{
-		Game game = m.getGame(parseId);
-		if(game == null){
-			game = db.getGame(parseId);
-			m.putGame(game);
-		}
-		return game;
 	}
 
 	public TreeMap<Player, Integer> getGameScore(Game game){
@@ -407,7 +386,7 @@ public class DataController extends Observable implements Observer{
 		ArrayList<Invitation> oldInvitations = new ArrayList<Invitation>();
 		for(Invitation inv : invitations){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
-			if(timeDifference > 72){ //if the invitations are considered to old
+			if(timeDifference > Model.INVITATIONS_SAVETIME){ //if the invitations are considered to old
 				oldInvitations.add(inv);
 				invitations.remove(inv);
 			}
@@ -442,8 +421,10 @@ public class DataController extends Observable implements Observer{
 	 * @param invitation
 	 */
 	public void sendInvitation(Invitation invitation){
-		m.setSentInvitation(invitation);
-		db.sendInvitation(invitation);
+		if(!m.getSentInvitations().contains(invitation)){
+			m.setSentInvitation(invitation);
+			db.sendInvitation(invitation);
+		}
 	}
 
 	/**
