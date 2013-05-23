@@ -56,10 +56,7 @@ public class StartActivity extends GenericActivity {
 		
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
-
-		//TODO All this should probably be done in PRESENTER?
-		// Create the ListView Adapter
-		adapter = new SeparatedListAdapter(this);
+		presenter.setGameListView(gameListView);
 		
 		//Check if the user is logged in or saved in the cache
 		presenter.checkLogin();
@@ -68,22 +65,9 @@ public class StartActivity extends GenericActivity {
 
 	public void onStart(){
 		super.onStart();
-		
+		presenter.initiate();
 		//TODO here the code for updating the view should be included.
 		presenter.update();
-		
-		// Set the adapter on the ListView holder //TODO Assign adapter in presenter?
-		gameListView.setAdapter(presenter.setAdapter(adapter));
-        // Listen for Click events
-        gameListView.setOnItemClickListener(new OnItemClickListener() {
-        	@Override
-        	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-        		Game game = (Game) adapter.getItem(position-1);
-        		Intent intent = new Intent(getApplicationContext(), GameDashboardActivity.class);
-        		intent.putExtra("Game", game);
-        		startActivity(intent);
-            }
-        });
 	}
 	
 	public void onStop(){

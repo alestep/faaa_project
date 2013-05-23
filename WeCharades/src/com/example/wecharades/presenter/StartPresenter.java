@@ -7,13 +7,18 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
-import com.example.wecharades.model.DataController;
-import android.util.Log;
+import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
+import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.StartActivity;
 
 /**
@@ -24,33 +29,47 @@ import com.example.wecharades.views.StartActivity;
 public class StartPresenter extends Presenter implements Observer{
 
 	private StartActivity activity;
-	private LinkedHashMap<String, ArrayList<Game>> listMap;
+	//private LinkedHashMap<String, ArrayList<Game>> listMap;
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
-
+	
+	// Adapter for ListView Contents and the actual listview
+	//private SeparatedListAdapter adapter;
+	private ListView gameListView;
+	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
-
+	
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		//Register this activity to listen to calls form the datacontroller
-		dc.addObserver(this);
+		//adapter = new SeparatedListAdapter(activity);
 	}
-
-	public void update(){
+	public void setGameListView(ListView gameListView){
+		this.gameListView = gameListView;
+	}
+	
+	public void initiate(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setAccountName(string);
-		listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		score = new TreeMap<Game, Map<Player, Integer>>();
-		parseList(dc.getGames());
+	}
+	
+	public void update(){
 		setInvitationStatus();
+		
+		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		score = new TreeMap<Game, Map<Player, Integer>>();
+		parseList(listMap, dc.getGames());
+		
+		createListView(listMap);
 	}
 
 	/*
 	 * Called when a new updated game list is received from the database.
 	 */
 	private void updateFromDb(ArrayList<Game> dbGames){
-		listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		parseList(dbGames);
+		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		parseList(listMap, dbGames);
+		
+		createListView(listMap);
 	}
 
 	/**
@@ -67,7 +86,7 @@ public class StartPresenter extends Presenter implements Observer{
 	/**
 	 * 
 	 */
-	private void parseList(ArrayList<Game> gameList) {
+	private void parseList(LinkedHashMap<String, ArrayList<Game>> listMap, ArrayList<Game> gameList) {
 		for (String s : headers) {
 			listMap.put(s, new ArrayList<Game>());
 		}
@@ -82,18 +101,27 @@ public class StartPresenter extends Presenter implements Observer{
 		}
 	}
 
-	/**
-	 * 
-	 * @param adapter
-	 * @return
-	 */
-	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
+	public void createListView(LinkedHashMap<String, ArrayList<Game>> listMap){
+		adapter = new SeparatedListAdapter(activity);
 		for (String s : headers) {
 			if(!listMap.get(s).isEmpty()) {
 				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer(), score));		
 			}
 		}
-		return adapter;
+		
+		// Set the adapter on the ListView holder
+		gameListView.setAdapter(adapter);
+		
+        // Listen for Click events
+        gameListView.setOnItemClickListener(new OnItemClickListener() {
+        	@Override
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+        		Game game = (Game) adapter.getItem(position-1);
+        		Intent intent = new Intent(activity.getApplicationContext(), GameDashboardActivity.class);
+        		intent.putExtra("Game", game);
+        		activity.startActivity(intent);
+            }
+        });
 	}
 
 	/**

@@ -229,26 +229,6 @@ public class DataController extends Observable implements Observer{
 		//Fetches the db-list of current games
 		db.fetchGames(getCurrentPlayer());
 		return m.getGames();
-		/*Game localGame;
-		for(Game game : games){
-			localGame = m.getGame(game.getGameId());
-			//If the local game hasn't been created locally, fetch all turns and create the game
-			if(localGame == null){
-				m.putGame(game);
-			} 
-			if (m.getTurns(game) == null){
-				m.putTurns(db.getTurns(game));
-			} else if(Game.hasChanged(game, localGame)){
-				//Updates the current turn from the database
-				m.putTurn(db.getTurn(game, game.getTurnNumber()));
-				//If the last turn was finished
-				if(game.getTurnNumber() > localGame.getTurnNumber()){
-					m.putTurn(db.getTurn(game, game.getTurnNumber()-1));
-				}
-			}
-		}
-		//m.putGameList(games);
-		return m.getGames();*/
 	}
 	/*
 	 * This is one of the core methods of this application.
@@ -360,6 +340,9 @@ public class DataController extends Observable implements Observer{
 			}
 			returnMap.put(p1, p1s);
 			returnMap.put(p2, p2s);
+		} else{
+			returnMap.put(game.getPlayer1(), 0);
+			returnMap.put(game.getPlayer2(), 0);
 		}
 		return returnMap;
 	}

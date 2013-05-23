@@ -241,8 +241,8 @@ public class Database extends Observable implements IDatabase {
 						}
 						db.getTurnsInBackgrund(games);
 						//Notify the observer of new games!
-						setChanged();
-						notifyObservers(games);
+//						setChanged();
+//						notifyObservers(games);
 					} catch (DatabaseException e2){
 						setChanged();
 						notifyObservers(e2);
