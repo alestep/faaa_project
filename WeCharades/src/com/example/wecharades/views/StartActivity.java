@@ -10,6 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.AccountActivity;
 import com.example.wecharades.views.GameInstructionsActivity;
-import com.example.wecharades.views.StartActivity;
 
 public class AccountPresenter extends Presenter {
 

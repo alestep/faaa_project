@@ -2,9 +2,9 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Map;
 import java.util.TreeMap;
 
 import com.example.wecharades.model.DataController;

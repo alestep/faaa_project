@@ -1,6 +1,8 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import java.util.Observable;
@@ -42,7 +44,7 @@ public class DataController extends Observable implements Observer{
 		if(m != null)
 			m.saveModel(context);
 	}
-	
+
 	@Override
 	public void update(Observable db, Object obj) {
 		if(db.getClass().equals(Database.class)
@@ -56,7 +58,7 @@ public class DataController extends Observable implements Observer{
 				notifyObservers(gameList);
 			}
 		}
-		
+
 	}
 
 	//Session handling -----------------------------------------------------------
@@ -248,10 +250,13 @@ public class DataController extends Observable implements Observer{
 		//m.putGameList(games);
 		return m.getGames();*/
 	}
-	
-	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) {
+	/*
+	 * This is one of the core methods of this application.
+	 * 	This method will sync the database with the model!
+	 */
+	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
 		Game localGame;
-		for(Map.Entry<Game, ArrayList<Turn>> gameMap : games.entrySet()){
+		for(Map.Entry<Game, ArrayList<Turn>> gameMap : dbGames.entrySet()){
 			localGame = m.getGame(gameMap.getKey().getGameId());
 			if(localGame == null || m.getTurns(localGame) == null){
 				//If the local game does not exist, or does not have any turns
@@ -261,40 +266,67 @@ public class DataController extends Observable implements Observer{
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
 					//Run if the local turn is older than the db one.
 					//It can then be deduced that the local turns are out-of-date.
+					//Because of the saveEventually, we do not have to check the other way around.
 					m.putGame(gameMap.getKey());
 					m.putTurns(gameMap.getValue());
 				} else if(localGame.isFinished() 
 						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
 					//This code deletes games and turns after they are finished!
-					//This code is only reachable for the receiving player - as the score should be updated
+					//This code is only reachable for the receiving player
 					db.removeGame(localGame);
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-					//If current player fo a game is different, we must check the turns
-					
+					//If current player of a game is different, we must check the turns
+					Turn localTurn = m.getCurrentTurn(localGame);
+					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+					if(localTurn.getState() > dbTurn.getState()){
+						//Update db.turn if local version is further ahead
+						db.updateTurn(localTurn);
+					} else {
+						//If something is wrong, allways use the "Golden master" - aka. the database
+						m.putTurn(dbTurn);
+					}
 				}
 			}
 		}
-		//TODO check this in retrieval:
-		/*if(timeDiff > 168)
-			m.removeGame(localGame);*/
-		/*Game localGame;
-		for(Game game : games){
-			localGame = m.getGame(game.getGameId());
-			//If the local game hasn't been created locally, fetch all turns and create the game
-			if(localGame == null || m.getTurns(game) == null){
-				m.putGame(game);
-				m.putTurns(db.getTurns(game));
-			} else if(Game.hasChanged(game, localGame)){
-				//Updates the current turn from the database
-				m.putTurn(db.getTurn(game, game.getTurn()));
-				//If the last turn was finished
-				if(game.getTurn() > localGame.getTurn()){
-					m.putTurn(db.getTurn(game, game.getTurn()-1));
+		removeOldGames();
+
+		return m.getGames();
+	}
+	/*
+	 * This part removes any games that are "to old".
+	 */
+	private void removeOldGames(){
+		ArrayList<Game> finishedGames = new ArrayList<Game>(); 
+		for(Game locGame : m.getGames()){
+			if(locGame.isFinished())
+				finishedGames.add(locGame);
+		}
+		if(finishedGames.size() > 0){
+			//Sort the games using a cusom time-comparator
+			Collections.sort(finishedGames, new Comparator<Game>(){
+				@Override
+				public int compare(Game g1, Game g2) {
+					return (int) (g1.getLastPlayed().getTime() - g2.getLastPlayed().getTime()); 
+				}
+			});
+			//Removes games that are to old - also with a number restriction.
+			//The newest gemes are preferred (which is why we sort the list)
+			long timeDiff;
+			int numberSaved = 0;
+			for(Game game : finishedGames){
+				if(numberSaved > Model.FINISHEDGAMES_NUMBERSAVED){
+					m.removeGame(game);
+				} else{
+					timeDiff =  ((new Date()).getTime() - game.getLastPlayed().getTime()) 
+							/ (1000L * 3600L);
+					if(timeDiff > 168){
+						m.removeGame(game);
+					} else{
+						numberSaved ++;
+					}
 				}
 			}
 		}
-		return m.getGames();*/
-		return null;
 	}
 
 	/**
@@ -367,11 +399,11 @@ public class DataController extends Observable implements Observer{
 		Game game = m.getGame(turn.getGameId());
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getAnsPlayer());
-							break;
+		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getRecPlayer());
-							break;
+		break;
 		case Turn.FINISH : 	game.incrementTurn();
-							break;
+		break;
 		}
 		game.setLastPlayed(new Date());
 		updateGame(game);

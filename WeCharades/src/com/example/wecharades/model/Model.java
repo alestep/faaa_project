@@ -19,7 +19,10 @@ import android.util.Log;
  *
  */
 public class Model implements Serializable {
-	private static final String SAVE_FILE = "model.save";
+	private static final String 	SAVE_FILE = "model.save";
+	public static final int 		FINISHEDGAMES_SAVETIME = 168,
+									FINISHEDGAMES_NUMBERSAVED = 10;
+	
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();

@@ -1,7 +1,6 @@
 package com.example.wecharades.views;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
-import com.example.wecharades.presenter.SimplePresenter;
 
 /**
  * 

@@ -1,8 +1,9 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -12,20 +13,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.model.DataController;
+import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 
-public abstract class Presenter {
+public abstract class Presenter<ANY extends GenericActivity> implements Observer{
 
 	protected DataController dc;
-	protected Activity activity;
+	protected GenericActivity activity;
 	
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
 	 */
-	public Presenter(Activity activity) {
+	public Presenter(ANY activity) {
 		this.activity = activity;
 		this.dc = DataController.getDataController(activity);
+		dc.addObserver(this);
 	}
 	
 	/**
@@ -127,5 +131,13 @@ public abstract class Presenter {
 	 */
 	public void saveState(){
 		dc.saveState(activity);
+	}
+	
+	@Override
+	public void update(Observable dataController, Object obj){
+		if(dataController.getClass().equals(DataController.class) 
+				&& obj != null && obj.getClass().equals(DatabaseException.class)){
+			//activity
+		}
 	}
 }

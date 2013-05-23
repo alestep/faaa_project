@@ -393,7 +393,7 @@ public class Database extends Observable implements IDatabase {
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
-		try {
+		try { //TODO background activity
 			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
 		} catch (DatabaseException e1) {
 			// TODO Auto-generated catch block
