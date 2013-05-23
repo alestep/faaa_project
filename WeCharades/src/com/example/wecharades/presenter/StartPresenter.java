@@ -50,7 +50,6 @@ public class StartPresenter extends Presenter implements Observer{
 	 */
 	private void updateFromDb(ArrayList<Game> dbGames){
 		listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		score = new TreeMap<Game, Map<Player, Integer>>();
 		parseList(dbGames);
 	}
 
@@ -73,6 +72,7 @@ public class StartPresenter extends Presenter implements Observer{
 			listMap.put(s, new ArrayList<Game>());
 		}
 		for (Game g : gameList) {
+			score.put(g, dc.getGameScore(g)); //TODO: make three maps for every state below
 			if (g.isFinished())
 				listMap.get("Finished games").add(g);
 			else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
