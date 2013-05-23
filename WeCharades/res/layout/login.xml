@@ -3,50 +3,43 @@
     android:id="@+id/scrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff" >
+    android:background="@color/LightGrey" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <LinearLayout
+       	<LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:padding="10dip" >
-
-            <!-- View Title Label -->
+            android:padding="10dp" >
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip"
-                android:text="LOGIN"
-                android:textSize="25dip"
+                android:layout_marginBottom="10dp"
+                android:text="@string/app_name"
+                android:textColor="@color/White"
+                android:textSize="25sp"
                 android:textStyle="bold" />
-
-            <!-- username Label -->
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Username" />
 
             <!-- username TextField -->
 
             <EditText
                 android:id="@+id/loginUsername"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- Password Label -->
-
-            <TextView
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dip"
-                android:text="Password" />
+                android:background="@drawable/btn_default_normal"
+                android:drawableRight="@drawable/social_person"
+                android:hint="@string/username"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true" >
+
+                <requestFocus />
+            </EditText>
 
             <!-- Password TextField -->
 
@@ -54,7 +47,13 @@
                 android:id="@+id/loginPassword"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:password="true" />
+                android:background="@drawable/btn_default_normal"
+                android:drawableRight="@drawable/device_access_not_secure"
+                android:hint="@string/password"
+                android:imeActionLabel="Done"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:singleLine="true" />
 
             <!-- Error message -->
 
@@ -63,7 +62,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:textColor="#e30000"
+                android:textColor="@color/Red"
                 android:textStyle="bold" />
 
             <!-- Login Button -->
@@ -72,9 +71,12 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_default_normal"
                 android:onClick="onClickLogin"
-                android:text="Login" />
+                android:text="@string/login"
+                android:textColor="@color/White" />
 
             <!-- Link to Forgot Password Screen -->
 
@@ -84,10 +86,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dip"
                 android:background="@null"
-                android:text="Forgot your password? - Get a new one!"
-                android:textColor="#000000"
-                android:textSize="15dip"
-                android:onClick="onClickForgotPassword" />
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="onClickForgotPassword"
+                android:text="@string/forgot_password"
+                android:textColor="@color/White"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <!-- Link to Registration Screen -->
 
@@ -97,10 +101,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dip"
                 android:background="@null"
-                android:text="Not Registered? Click here!"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:onClick="onClickRegister" />
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="onClickRegister"
+                android:paddingLeft="10dp"
+                android:text="@string/not_registered"
+                android:textColor="@color/White"
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ProgressBar

@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/LightGrey" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,64 +14,62 @@
             android:id="@+id/invitations"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/social_group"
-            android:onClick="onClickInvitations" />
-
-        <Button
-            android:id="@+id/global_score"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/invitations"
-            android:background="@drawable/star"
-            android:onClick="onClickHighScore" />
+            android:layout_marginTop="5dp"
+            android:background="@drawable/social_group"
+            android:gravity="right|top"
+            android:onClick="onClickInvitations" />
 
         <Button
             android:id="@+id/refresh"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/global_score"
             android:background="@drawable/navigation_refresh"
-            android:onClick="onClickRefresh"
-            android:src="@drawable/navigation_refresh" />
+            android:onClick="onClickRefresh" />
 
         <Button
             android:id="@+id/account"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="left|center_vertical"
-            android:textColor="@color/White"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/btn_default_normal"
             android:drawableLeft="@drawable/action_about"
-            android:onClick="onClickUsername" />
+            android:gravity="left|center_vertical"
+            android:onClick="onClickUsername"
+            android:textColor="@color/White" />
 
+        <Button
+            android:id="@+id/global_score"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/invitations"
+            android:background="@drawable/star"
+            android:onClick="onClickHighScore" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/new_game_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_gravity="left"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:gravity="left|center_vertical"
-        android:layout_gravity="left"
-        android:paddingLeft="20dp"
-        android:textColor="@color/White"
-        android:textSize="15sp"
         android:background="@drawable/btn_default_normal_green"
         android:drawableRight="@drawable/content_new"
+        android:gravity="left|center_vertical"
         android:onClick="onClickNewGame"
-        android:text="@string/new_game" />
+        android:paddingLeft="20dp"
+        android:text="@string/new_game"
+        android:textColor="@color/White"
+        android:textSize="15sp" />
 
 </LinearLayout>
