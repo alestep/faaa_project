@@ -2,10 +2,15 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observer;
 
 import com.parse.ParseException;
 
-public interface IDatabase {
+public interface IDatabase{
+	
+	public void addObserver(Observer observer);
+	
+	public void deleteObserver(Observer observer);
 
 	/**
 	 * Sets the converter for this database.
@@ -38,7 +43,7 @@ public interface IDatabase {
 	 * @return an ArrayList with Game instances
 	 * @throws DatabaseException 
 	 */
-	public abstract ArrayList<Game> getGames(Player player)
+	public abstract void fetchGames(Player player)
 			throws DatabaseException;
 
 	/**

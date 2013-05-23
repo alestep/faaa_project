@@ -86,6 +86,12 @@ public class StartActivity extends GenericActivity {
         });
 	}
 	
+	public void onStop(){
+		//Deregisters the presenter from the list of observers
+		presenter.unRegisterObserver();
+		super.onStop();
+	}
+	
 	/**
 	 * 
 	 * @param v

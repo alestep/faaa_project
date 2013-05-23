@@ -3,6 +3,7 @@ package com.example.wecharades.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Observer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -39,6 +40,14 @@ public class DataController {
 		if(m != null)
 			m.saveModel(context);
 	}
+	
+	//Observable-classes
+	public void addDbObserver(Observer observer){
+		db.addObserver(observer);
+	}
+	public void deleteDbObserver(Observer observer){
+		db.deleteObserver(observer);
+	} 
 
 	//Session handling -----------------------------------------------------------
 
@@ -194,7 +203,7 @@ public class DataController {
 	}
 
 	//Games -----------------------------------------------------------
-
+	
 	
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
@@ -215,8 +224,10 @@ public class DataController {
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public ArrayList<Game> getGames() throws DatabaseException{
-		ArrayList<Game> games = db.getGames(getCurrentPlayer());
-		Game localGame;
+		//Fetches the db-list of current games
+		db.fetchGames(getCurrentPlayer());
+		return m.getGames();
+		/*Game localGame;
 		for(Game game : games){
 			localGame = m.getGame(game.getGameId());
 			//If the local game hasn't been created locally, fetch all turns and create the game
@@ -235,7 +246,7 @@ public class DataController {
 			}
 		}
 		//m.putGameList(games);
-		return m.getGames();
+		return m.getGames();*/
 	}
 
 	/**

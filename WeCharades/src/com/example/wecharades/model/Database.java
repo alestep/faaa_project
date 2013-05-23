@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
@@ -26,7 +27,7 @@ import com.parse.ParseUser;
  *
  */
 @SuppressLint("DefaultLocale")
-public class Database implements IDatabase {
+public class Database extends Observable implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String 	WORDLIST				= "WordList",
@@ -176,8 +177,10 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#getGames(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public ArrayList<Game> getGames(Player player) throws DatabaseException {
-		ArrayList<Game> games = new ArrayList<Game>();
+	public void fetchGames(Player player){
+		final Database db = this;
+		final DatabaseConverter dbc = this.dbc;
+
 		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
 		ParseQuery query1 = new ParseQuery(GAME);
 		query1.whereContains(GAME_PLAYER_1, player.getParseId());
@@ -189,6 +192,26 @@ public class Database implements IDatabase {
 
 		ParseQuery mainQuery = ParseQuery.or(queries);
 
+		mainQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> dbResult, ParseException e){
+				if(e == null && db != null){
+					try{
+						ArrayList<Game> games = new ArrayList<Game>();
+						for(ParseObject game : dbResult){
+							games.add(dbc.parseGame(game));
+						}
+						//Notify the observer of new games!
+						setChanged();
+						notifyObservers(games);
+					} catch (DatabaseException e2){
+						//TODO Unhandeled exception}
+					}
+				} else{
+					Log.d("Database","Failed to fetch games");
+				}
+			}
+		});
+		/*
 		try{
 			List<ParseObject> dbResult = mainQuery.find();
 			for(ParseObject game : dbResult){
@@ -198,7 +221,7 @@ public class Database implements IDatabase {
 			Log.d("Database", e.getMessage());
 			throw new DatabaseException(1004,"Failed to fetch games");
 		}
-		return games;
+		return games;*/
 	}
 
 	/* (non-Javadoc)
@@ -225,7 +248,8 @@ public class Database implements IDatabase {
 	//Turn -----------------------------------------------------------------------------------------//	
 
 	/**
-	 * A PRIVATE method to create a new Turn. Should not be reachable outside this class!
+	 * A PRIVATE method to create a new ParseObject-Turn. Not pushed to db.
+	 * 	This is a helper class for create game.
 	 * @param game - the Game ParseObject
 	 * @param turnNumber - an integer representation of the turn number
 	 * @param word - the word of the turn

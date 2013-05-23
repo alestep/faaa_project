@@ -2,7 +2,10 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Observable;
+import java.util.Observer;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
@@ -13,7 +16,7 @@ import com.example.wecharades.views.StartActivity;
  * @author Alexander
  *
  */
-public class StartPresenter extends Presenter {
+public class StartPresenter extends Presenter implements Observer{
 	
 	private StartActivity activity;
 	private LinkedHashMap<String, ArrayList<Game>> listMap;
@@ -22,6 +25,7 @@ public class StartPresenter extends Presenter {
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
+		dc.addDbObserver(this);
 	}
 	
 	public void update(){
@@ -101,6 +105,21 @@ public class StartPresenter extends Presenter {
 	public void logOut() {
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
+	}
+	
+	/**
+	 * Called in order to deregister this presenter from the list of observers in the db.
+	 */
+	public void unRegisterObserver(){
+		dc.deleteDbObserver(this);
+	}
+	
+	@Override
+	public void update(Observable db, Object listOfGames) {
+		if(db.getClass().equals(Database.class) 
+				&& listOfGames != null){
+			
+		}
 	}
 	
 }
