@@ -22,20 +22,25 @@ import com.example.wecharades.presenter.VideoUploadPresenter;
 
 public class VideoUploadActivity extends GenericActivity{
 	protected static final String TAG = "";
-	public static String path = "";
+	private String path = "";
 	public static String fileName;
 	private VideoView videoView;
 	private VideoUploadPresenter presenter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, new VideoUploadPresenter(this));
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces portrait orientation which is what the camera uses.
 		setContentView(R.layout.showvideo);
-		presenter = (VideoUploadPresenter) super.getPresenter();
+		presenter = (VideoUploadPresenter) super.getPresenter(); //DOES NOT WORK.
 		videoView = (VideoView) findViewById(R.id.satisfiedVideoView);
-		path = getPathFromURI(CaptureVideo.uriVideo);
-		presenter.playVideo(videoView);
+		path = getPathFromURI(CaptureVideo.uriVideo);	
+	}
+	
+	@Override
+	protected void onStart(){
+		super.onStart();
+		presenter.playVideo(videoView,path);
 	}
 
 	/**
@@ -54,9 +59,8 @@ public class VideoUploadActivity extends GenericActivity{
 		presenter.reRecord(path);
 	}
 	
-	
 	//TODO: fix a new method that's not using managedQuery(); @adam
-	public String getPathFromURI(Uri contentUri) {
+	private String getPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

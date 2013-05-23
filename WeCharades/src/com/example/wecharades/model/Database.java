@@ -29,7 +29,8 @@ import com.parse.ParseUser;
 public class Database implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
-	public static final String 	WORDLIST				= "WordList",
+	public static final String
+			WORDLIST				= "WordList",
 			WORDLIST_WORD			= "word",
 			GAME 					= "Game",
 			GAME_PLAYER_1 			= "player1",
@@ -154,7 +155,7 @@ public class Database implements IDatabase {
 			game = dbc.parseGame(dbGame);
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1003,"Failed to fetch game data");
+			throw new DatabaseException(1001,"Failed to fetch game data");
 		}
 		return game;
 	}
@@ -166,7 +167,7 @@ public class Database implements IDatabase {
 			object = query.get(gameId);
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1112, "Failed to get ParseObject");
+			throw new DatabaseException(1002, "Failed to get ParseObject");
 		}
 
 		return object;
@@ -196,7 +197,7 @@ public class Database implements IDatabase {
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1004,"Failed to fetch games");
+			throw new DatabaseException(1003,"Failed to fetch games");
 		}
 		return games;
 	}
@@ -259,7 +260,7 @@ public class Database implements IDatabase {
 			turn = query.getFirst();
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1005, "Failed to get turn");
+			throw new DatabaseException(1004, "Failed to get turn");
 		}
 		return dbc.parseTurn(turn);
 	}
@@ -279,7 +280,7 @@ public class Database implements IDatabase {
 			dbList = query.find();
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1009, "Failed to get turns");
+			throw new DatabaseException(1005, "Failed to get turns");
 		}
 		ArrayList<Turn> turnList = new ArrayList<Turn>();
 		for(ParseObject turn : dbList){
@@ -295,7 +296,12 @@ public class Database implements IDatabase {
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
-		query.whereEqualTo(TURN_GAME, turn.getGameId());
+		try {
+			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
+		} catch (DatabaseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		query.whereEqualTo(TURN_TURN, turn.getTurnNumber());
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){
@@ -304,6 +310,7 @@ public class Database implements IDatabase {
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
+					dbTurn.saveEventually();
 				} else{
 					Log.d("Database",e.getMessage());
 				}
@@ -325,7 +332,7 @@ public class Database implements IDatabase {
 			dbPlayer = query.getFirst();
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1010,"Failed to fetch user");
+			throw new DatabaseException(1006,"Failed to fetch user");
 		}
 		return dbc.parsePlayer(dbPlayer);
 	}
@@ -344,12 +351,12 @@ public class Database implements IDatabase {
 	 * @return
 	 * @throws DatabaseException
 	 */
-	private ParseObject getPlayerObject(String parseId) throws DatabaseException{
+	private ParseObject getPlayerObject(String parseId) throws DatabaseException {
 		try {
 			return ParseUser.getQuery().get(parseId);
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1010,"Failed to fetch user");
+			throw new DatabaseException(1007,"Failed to fetch user");
 		}
 	}
 
@@ -368,7 +375,7 @@ public class Database implements IDatabase {
 			}
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1010,"Failed to fetch players");
+			throw new DatabaseException(1008,"Failed to fetch players");
 		}
 		return players;
 	}
@@ -391,7 +398,7 @@ public class Database implements IDatabase {
 			}
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1010,"Failed to fetch players");
+			throw new DatabaseException(1008,"Failed to fetch players");
 		}
 		return players;
 
@@ -474,7 +481,7 @@ public class Database implements IDatabase {
 			}
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1006, "Failed to get invitations");
+			throw new DatabaseException(1009, "Failed to get invitations");
 		}
 		return returnList;
 	}
@@ -494,7 +501,7 @@ public class Database implements IDatabase {
 			}
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1008,"Error removing player from queue");
+			throw new DatabaseException(1010,"Error removing player from queue");
 		}
 	}
 
@@ -556,7 +563,6 @@ public class Database implements IDatabase {
 			ParseUser.logIn(username.toLowerCase(), password);
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage() + ". Code: " + Integer.toString(e.getCode()));
-			//TODO: it doesn't store e.getCode() properly - check DatabaseException ...
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}

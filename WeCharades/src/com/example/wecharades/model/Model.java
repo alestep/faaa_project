@@ -173,7 +173,7 @@ public class Model implements Serializable {
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
-				listOfTurns.remove(turn.getTurnNumber()-1); 
+				listOfTurns.remove(turn.getTurnNumber()-1);
 			listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
 		}
 	}
@@ -205,7 +205,7 @@ public class Model implements Serializable {
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game){
-		return gameList.get(game).get(game.getTurn()-1);
+		return getTurns(game).get(game.getTurn()-1);
 	}
 
 	//Players ---------------------------------------------------------------
