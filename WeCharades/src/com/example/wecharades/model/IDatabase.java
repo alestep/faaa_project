@@ -2,10 +2,15 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observer;
 
 import com.parse.ParseException;
 
-public interface IDatabase {
+public interface IDatabase{
+	
+	public void addObserver(Observer observer);
+	
+	public void deleteObserver(Observer observer);
 
 	/**
 	 * Sets the converter for this database.
@@ -23,7 +28,13 @@ public interface IDatabase {
 	 */
 	public abstract void createGame(Player player1, Player player2)
 			throws DatabaseException;
-
+	
+	/**
+	 * Removed a game from the database
+	 * @param game - the game to delete
+	 */
+	public abstract void removeGame(Game game);
+	
 	/**
 	 * A method to get a single game
 	 * @param gameId
@@ -38,15 +49,14 @@ public interface IDatabase {
 	 * @return an ArrayList with Game instances
 	 * @throws DatabaseException 
 	 */
-	public abstract ArrayList<Game> getGames(Player player)
-			throws DatabaseException;
+	public abstract void fetchGames(Player player);
 
 	/**
 	 * Update a game on the Parse server.
 	 * @param The game to be updated
 	 */
 	public abstract void updateGame(Game theGame);
-
+	
 	/**
 	 * Retrieves a turn from the database
 	 * @param gameId - the game to which this turn belongs

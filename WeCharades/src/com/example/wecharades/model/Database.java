@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,37 +28,37 @@ import com.parse.ParseUser;
  *
  */
 @SuppressLint("DefaultLocale")
-public class Database implements IDatabase {
+public class Database extends Observable implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String
-			WORDLIST				= "WordList",
-			WORDLIST_WORD			= "word",
-			GAME 					= "Game",
-			GAME_PLAYER_1 			= "player1",
-			GAME_PLAYER_2 			= "player2",
-			GAME_PLAYER_CURRENT 	= "currentPlayer",
-			GAME_TURN 				= "turn",
-			GAME_FINISH 			= "finished",
-			TURN					= "Turn",
-			TURN_GAME				= "game",
-			TURN_TURN				= "turn",
-			TURN_STATE				= "state",
-			TURN_WORD				= "word",
-			TURN_VIDEOLINK			= "videoLink",
-			TURN_PLAYER_REC			= "recPlayer",
-			TURN_PLAYER_REC_SCORE	= "recPlayerScore",
-			TURN_PLAYER_ANS			= "ansPlayer",
-			TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
-			PLAYER					= "_User",
-			PLAYER_USERNAME			= "username",
-			PLAYER_USERNAME_NATURAL	= "naturalUsername",
-			PLAYER_GLOBALSCORE		= "globalScore",
-			RANDOMQUEUE				= "RandomQueue",
-			RANDOMQUEUE_PLAYER		= "player",
-			INVITE 					= "invite",
-			INVITE_INVITER 			= "inviter",
-			INVITE_INVITEE 			= "invitee";
+	WORDLIST				= "WordList",
+	WORDLIST_WORD			= "word",
+	GAME 					= "Game",
+	GAME_PLAYER_1 			= "player1",
+	GAME_PLAYER_2 			= "player2",
+	GAME_PLAYER_CURRENT 	= "currentPlayer",
+	GAME_TURN 				= "turn",
+	GAME_FINISH 			= "finished",
+	TURN					= "Turn",
+	TURN_GAME				= "game",
+	TURN_TURN				= "turn",
+	TURN_STATE				= "state",
+	TURN_WORD				= "word",
+	TURN_VIDEOLINK			= "videoLink",
+	TURN_PLAYER_REC			= "recPlayer",
+	TURN_PLAYER_REC_SCORE	= "recPlayerScore",
+	TURN_PLAYER_ANS			= "ansPlayer",
+	TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
+	PLAYER					= "_User",
+	PLAYER_USERNAME			= "username",
+	PLAYER_USERNAME_NATURAL	= "naturalUsername",
+	PLAYER_GLOBALSCORE		= "globalScore",
+	RANDOMQUEUE				= "RandomQueue",
+	RANDOMQUEUE_PLAYER		= "player",
+	INVITE 					= "invite",
+	INVITE_INVITER 			= "inviter",
+	INVITE_INVITEE 			= "invitee";
 
 	private static IDatabase singleton;
 	private DatabaseConverter dbc;
@@ -143,6 +145,43 @@ public class Database implements IDatabase {
 		ParseObject.saveAllInBackground(parseList);
 	}
 
+	/**
+	 * Method to delete a game in background
+	 */
+	public void removeGame(Game game){
+		ParseQuery query = new ParseQuery(Database.GAME);
+		query.getInBackground(game.getGameId(), new GetCallback(){
+			public void done(ParseObject game, ParseException e){
+				if(e == null){
+					removeTurns(game);
+					game.deleteEventually();
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+	}
+	/*
+	 * Helper method to removeTurns - called when the game has been fetched from the db.
+	 */
+	private void removeTurns(ParseObject game){
+		ParseQuery turnQuery = new ParseQuery(Database.TURN);
+		turnQuery.whereEqualTo(Database.TURN_GAME, game);
+		turnQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> list, ParseException e){
+				if(e == null){
+					for(ParseObject turn : list){
+						turn.deleteEventually();
+					}
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+	}
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#getGame(java.lang.String)
 	 */
@@ -177,8 +216,10 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#getGames(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public ArrayList<Game> getGames(Player player) throws DatabaseException {
-		ArrayList<Game> games = new ArrayList<Game>();
+	public void fetchGames(Player player){
+		final Database db = this;
+		final DatabaseConverter dbc = this.dbc;
+
 		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
 		ParseQuery query1 = new ParseQuery(GAME);
 		query1.whereContains(GAME_PLAYER_1, player.getParseId());
@@ -190,16 +231,73 @@ public class Database implements IDatabase {
 
 		ParseQuery mainQuery = ParseQuery.or(queries);
 
-		try{
-			List<ParseObject> dbResult = mainQuery.find();
-			for(ParseObject game : dbResult){
-				games.add(dbc.parseGame(game));//TODO The DB-helper should not connect to db.
+		mainQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> dbResult, ParseException e){
+				if(e == null && db != null){
+						db.getTurnsInBackgrund(dbResult);
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
 			}
-		} catch(ParseException e){
-			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1003,"Failed to fetch games");
+		});
+	}
+	/*
+	 * Helper method to fetch games. Games and turns are fetched in background.
+	 */
+	private void getTurnsInBackgrund(final List<ParseObject> gameList){
+		if(gameList.size() > 0){
+			final Database db = this;
+			LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
+			ParseQuery individualQuery;
+			for(ParseObject game : gameList){
+				individualQuery = new ParseQuery(TURN);
+				individualQuery.whereEqualTo(TURN_GAME, game);
+				gameQueries.add(individualQuery);
+			}
+			ParseQuery masterQuery = ParseQuery.or(gameQueries);
+			masterQuery.findInBackground(new FindCallback(){
+				public void done(List<ParseObject> resultList, ParseException e){
+					if(e == null){
+						try{
+							ArrayList<Game> games = new ArrayList<Game>();
+							for(ParseObject obj : gameList){
+								games.add(dbc.parseGame(obj));
+							}
+							TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+							//First, we create a TreeMap with the games, and an index for reference:
+							TreeMap<String, Game> idList = new TreeMap<String, Game>();
+							for(Game game : games){
+								map.put(game, new ArrayList<Turn>());
+								idList.put(game.getGameId(), game);
+							}
+							//Then, we must parse the ParseObjects to turns and add them to the correct list
+							for(ParseObject obj : resultList){
+								Turn turn = dbc.parseTurn(obj);
+								Game g = idList.get(turn.getGameId());
+								try{
+								ArrayList<Turn> tl = map.get(g);
+								tl.add(turn);
+								
+									//map.get(idList.get(turn.getGameId())).add(turn.getTurnNumber()-1, turn);
+								} catch(IndexOutOfBoundsException e3){
+									Log.d("Game ID", turn.getGameId());
+									Log.d("Turn number", Integer.toString(turn.getTurnNumber()));
+									}
+							}
+							setChanged();
+							notifyObservers(map);
+						} catch(DatabaseException e2){
+							setChanged();
+							notifyObservers(e2);
+						}
+					} else{
+						setChanged();
+						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					}
+				}
+			});
 		}
-		return games;
 	}
 
 	/* (non-Javadoc)
@@ -226,7 +324,8 @@ public class Database implements IDatabase {
 	//Turn -----------------------------------------------------------------------------------------//	
 
 	/**
-	 * A PRIVATE method to create a new Turn. Should not be reachable outside this class!
+	 * A PRIVATE method to create a new ParseObject-Turn. Not pushed to db.
+	 * 	This is a helper class for create game.
 	 * @param game - the Game ParseObject
 	 * @param turnNumber - an integer representation of the turn number
 	 * @param word - the word of the turn
@@ -296,7 +395,7 @@ public class Database implements IDatabase {
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
-		try {
+		try { //TODO background activity
 			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
 		} catch (DatabaseException e1) {
 			// TODO Auto-generated catch block

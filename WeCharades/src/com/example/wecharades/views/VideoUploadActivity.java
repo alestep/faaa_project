@@ -48,6 +48,7 @@ public class VideoUploadActivity extends GenericActivity{
 	 * @param view
 	 */
 	public void onClickYes(View view) {
+		videoView.stopPlayback();
 		presenter.uploadVideo(VideoUploadActivity.this, path);
 	}
 

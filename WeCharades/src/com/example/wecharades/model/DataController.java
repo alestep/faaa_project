@@ -1,8 +1,12 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -17,7 +21,7 @@ import android.content.Context;
  * @author Anton Dahlström
  *
  */
-public class DataController {
+public class DataController extends Observable implements Observer{
 
 	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
@@ -26,6 +30,7 @@ public class DataController {
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
+		db.addObserver(this);
 	}
 
 	public static DataController getDataController(Context context){
@@ -38,6 +43,22 @@ public class DataController {
 	public void saveState(Context context){
 		if(m != null)
 			m.saveModel(context);
+	}
+
+	@Override
+	public void update(Observable db, Object obj) {
+		if(db.getClass().equals(Database.class)
+				& obj != null){
+			if(obj.getClass().equals(DatabaseException.class)){
+				setChanged();
+				notifyObservers((DatabaseException)obj);
+			} else if(obj instanceof TreeMap){
+				ArrayList<Game> gameList = retrieveUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
+				setChanged();
+				notifyObservers(gameList);
+			}
+		}
+
 	}
 
 	//Session handling -----------------------------------------------------------
@@ -153,11 +174,7 @@ public class DataController {
 	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
-			public int compare(String s1, String s2){
-				return s1.compareToIgnoreCase(s2);
-			}
-		});
+		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
@@ -173,11 +190,7 @@ public class DataController {
 	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
-			public int compare(String s1, String s2){
-				return s1.compareToIgnoreCase(s2);
-			}
-		});
+		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
@@ -194,8 +207,6 @@ public class DataController {
 	}
 
 	//Games -----------------------------------------------------------
-
-
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
 	}
@@ -214,28 +225,88 @@ public class DataController {
 	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	public ArrayList<Game> getGames() throws DatabaseException{
-		ArrayList<Game> games = db.getGames(getCurrentPlayer());
+	public ArrayList<Game> getGames(){
+		//Fetches the db-list of current games
+		db.fetchGames(getCurrentPlayer());
+		return m.getGames();
+	}
+	/*
+	 * This is one of the core methods of this application.
+	 * 	This method will sync the database with the model!
+	 */
+	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
 		Game localGame;
-		for(Game game : games){
-			localGame = m.getGame(game.getGameId());
-			//If the local game hasn't been created locally, fetch all turns and create the game
-			if(localGame == null){
-				m.putGame(game);
-			} 
-			if (m.getTurns(game) == null){
-				m.putTurns(db.getTurns(game));
-			} else if(Game.hasChanged(game, localGame)){
-				//Updates the current turn from the database
-				m.putTurn(db.getTurn(game, game.getTurnNumber()));
-				//If the last turn was finished
-				if(game.getTurnNumber() > localGame.getTurnNumber()){
-					m.putTurn(db.getTurn(game, game.getTurnNumber()-1));
+		for(Map.Entry<Game, ArrayList<Turn>> gameMap : dbGames.entrySet()){
+			localGame = m.getGame(gameMap.getKey().getGameId());
+			if(localGame == null || m.getTurns(localGame) == null){
+				//If the local game does not exist, or does not have any turns
+				m.putGame(gameMap.getKey());
+				m.putTurns(gameMap.getValue());
+			} else if(Game.hasChanged(localGame, gameMap.getKey())){
+				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
+					//Run if the local turn is older than the db one.
+					//It can then be deduced that the local turns are out-of-date.
+					//Because of the saveEventually, we do not have to check the other way around.
+					m.putGame(gameMap.getKey());
+					m.putTurns(gameMap.getValue());
+				} else if(localGame.isFinished() 
+						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
+					//This code deletes games and turns after they are finished!
+					//This code is only reachable for the receiving player
+					db.removeGame(localGame);
+				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+					//If current player of a game is different, we must check the turns
+					Turn localTurn = m.getCurrentTurn(localGame);
+					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+					if(localTurn.getState() > dbTurn.getState()){
+						//Update db.turn if local version is further ahead
+						db.updateTurn(localTurn);
+					} else {
+						//If something is wrong, allways use the "Golden master" - aka. the database
+						m.putTurn(dbTurn);
+					}
 				}
 			}
 		}
-		//m.putGameList(games);
+		removeOldGames();
+
 		return m.getGames();
+	}
+	/*
+	 * This part removes any games that are "to old".
+	 */
+	private void removeOldGames(){
+		ArrayList<Game> finishedGames = new ArrayList<Game>(); 
+		for(Game locGame : m.getGames()){
+			if(locGame.isFinished())
+				finishedGames.add(locGame);
+		}
+		if(finishedGames.size() > 0){
+			//Sort the games using a cusom time-comparator
+			Collections.sort(finishedGames, new Comparator<Game>(){
+				@Override
+				public int compare(Game g1, Game g2) {
+					return (int) (g1.getLastPlayed().getTime() - g2.getLastPlayed().getTime()); 
+				}
+			});
+			//Removes games that are to old - also with a number restriction.
+			//The newest gemes are preferred (which is why we sort the list)
+			long timeDiff;
+			int numberSaved = 0;
+			for(Game game : finishedGames){
+				if(numberSaved > Model.FINISHEDGAMES_NUMBERSAVED){
+					m.removeGame(game);
+				} else{
+					timeDiff =  ((new Date()).getTime() - game.getLastPlayed().getTime()) 
+							/ (1000L * 3600L);
+					if(timeDiff > 168){
+						m.removeGame(game);
+					} else{
+						numberSaved ++;
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -269,6 +340,9 @@ public class DataController {
 			}
 			returnMap.put(p1, p1s);
 			returnMap.put(p2, p2s);
+		} else{
+			returnMap.put(game.getPlayer1(), 0);
+			returnMap.put(game.getPlayer2(), 0);
 		}
 		return returnMap;
 	}
@@ -308,11 +382,11 @@ public class DataController {
 		Game game = m.getGame(turn.getGameId());
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getAnsPlayer());
-							break;
+		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getRecPlayer());
-							break;
+		break;
 		case Turn.FINISH : 	game.incrementTurn();
-							break;
+		break;
 		}
 		game.setLastPlayed(new Date());
 		updateGame(game);
