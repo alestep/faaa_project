@@ -80,7 +80,7 @@ public class Model {
 				oOut.close();
 				SAVED = true;
 			} catch (IOException e) {
-				Log.d("IO - Model save", e.getMessage());
+				Log.d("IO - Model save", "Save failed");
 			}
 		}
 	}
@@ -94,9 +94,9 @@ public class Model {
 				singleModel = (Model) obj;
 			}
 		} catch (IOException e){
-			Log.d("IO - Model load", e.getMessage());
+			Log.d("IO - Model load", "IOException");
 		} catch (ClassNotFoundException e2){
-			Log.d("IO - Model load", e2.getMessage());
+			Log.d("IO - Model load", "ClassNotFound");
 		}
 		return singleModel;
 	}
