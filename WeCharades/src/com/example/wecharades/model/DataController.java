@@ -303,6 +303,10 @@ public class DataController {
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
+	
+	public void updateTurn(Turn turn){
+		m.putTurn(turn);
+	}
 
 
 	//Invitation -----------------------------------------------------------
