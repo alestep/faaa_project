@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.util.Log;
+
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
@@ -68,7 +70,8 @@ public class StartPresenter extends Presenter {
 					listMap.get("Opponent's turn").add(g);
 			}
 
-		}catch(DatabaseException e){
+		} catch (DatabaseException e){
+			Log.d("DATABASE ERROR",e.getMessage());
 			activity.showMessage(e.prettyPrint());
 		}
 	}
