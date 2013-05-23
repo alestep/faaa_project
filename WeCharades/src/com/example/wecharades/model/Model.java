@@ -205,7 +205,7 @@ public class Model implements Serializable {
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game){
-		return getTurns(game).get(game.getTurn()-1);
+		return getTurns(game).get(game.getTurnNumber()-1);
 	}
 
 	//Players ---------------------------------------------------------------
