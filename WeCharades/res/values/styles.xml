@@ -4,7 +4,7 @@
         <item name="android:background">@color/DarkGrey</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingTop">5dp</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:drawableLeft">@drawable/social_person</item>
     </style>
 
 </resources>

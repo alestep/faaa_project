@@ -2,8 +2,10 @@ package com.example.wecharades.views;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TextView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.presenter.Presenter;
 
 public abstract class GenericActivity extends Activity implements IMessage{
@@ -14,6 +16,8 @@ public abstract class GenericActivity extends Activity implements IMessage{
 	public void onCreate(Bundle savedInstanceState, Presenter presenter) {
 		super.onCreate(savedInstanceState);
 		this.presenter = presenter;
+		
+		
 	}
 		
 	public void showMessage(String error) {
