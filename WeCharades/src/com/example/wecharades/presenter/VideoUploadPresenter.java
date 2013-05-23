@@ -90,7 +90,6 @@ public class VideoUploadPresenter extends Presenter {
 	private void updateModel(){
 		try {
 			dc.updateTurn(turn);
-			//dc.updateGame(dc.getGame(turn.getGameId()));
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -163,6 +162,7 @@ public class VideoUploadPresenter extends Presenter {
 			if(mDialog.isShowing()){
 				mDialog.dismiss();
 				turn.setVideoLink(serverPath);
+				turn.setState(Turn.VIDEO);
 				updateModel();
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
