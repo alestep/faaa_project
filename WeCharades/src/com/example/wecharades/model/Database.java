@@ -309,6 +309,7 @@ public class Database implements IDatabase {
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
+					dbTurn.saveEventually();
 				} else{
 					Log.d("Database",e.getMessage());
 				}
