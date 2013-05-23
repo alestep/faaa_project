@@ -81,7 +81,11 @@ public class GameDashboardPresenter extends Presenter {
 	 */
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
 		//This requires that the lists are equally long, which they always should be
+		int i = 0;
 		for(Turn turn : turnList) {
+			i++;
+			if(i == 7) 
+				break;
 			Button button = (Button) buttonList.remove(0);
 			updateButtonInformation(turn, button);
 		}
@@ -94,12 +98,12 @@ public class GameDashboardPresenter extends Presenter {
 	private void updateButtonInformation(Turn turn, Button button) {
 		//TODO This method is a bit elaborate
 		String buttonText = "";
-		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
+		if(game.isFinished() || (turn.getTurnNumber() < game.getTurnNumber()) ) {
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
 					: turn.getRecPlayerScore() + " points";
 			button.setEnabled(false);
-		} else if(turn.getTurnNumber() == game.getTurn()) {
+		} else if(turn.getTurnNumber() == game.getTurnNumber()) {
 			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
 				buttonText = "Guess word!";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
@@ -107,8 +111,13 @@ public class GameDashboardPresenter extends Presenter {
 			// Checks if you are the "RecPlayer" AND already has uploaded a video
 			else if (turn.getRecPlayer().equals(dc.getCurrentPlayer()) && !turn.getVideoLink().isEmpty()) {
 				buttonText = "Waiting...";
+
 				//button.setEnabled(false); THE BUTTON IS CURRENTLY HIGHLIGHTED BUT DOESN'T LEAD ANYWHERE				
-			} else {
+			}
+			else if (turn.getAnsPlayer().equals(dc.getCurrentPlayer()) && turn.getVideoLink().isEmpty()) {
+				buttonText = "Waiting...";
+			}
+			else {
 				buttonText = "Record Video\n" + "Charade: " + turn.getWord();
 				button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 			}

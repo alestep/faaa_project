@@ -66,6 +66,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 	public void onClickGuess(View view){
 		if(presenter.checkRightWord(answerWord) == true){
 			videoView.stopPlayback();
+			presenter.timer.cancel();
 			gameState = GAME_FINISHED;
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
@@ -78,9 +79,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			.setCancelable(false)
 			.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
-					videoView.stopPlayback();
-					presenter.timer.cancel();
-					Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
 					startActivity(intent);
 					finish();
 				}
