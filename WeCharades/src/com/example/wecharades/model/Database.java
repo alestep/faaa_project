@@ -295,7 +295,12 @@ public class Database implements IDatabase {
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
-		query.whereEqualTo(TURN_GAME, turn.getGameId());
+		try {
+			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
+		} catch (DatabaseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		query.whereEqualTo(TURN_TURN, turn.getTurnNumber());
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){
