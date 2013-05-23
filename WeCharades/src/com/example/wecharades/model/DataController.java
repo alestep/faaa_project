@@ -3,6 +3,7 @@ package com.example.wecharades.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -18,7 +19,7 @@ import android.content.Context;
  * @author Anton Dahlström
  *
  */
-public class DataController {
+public class DataController extends Observable implements Observer{
 
 	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
@@ -27,6 +28,7 @@ public class DataController {
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
+		db.addObserver(this);
 	}
 
 	public static DataController getDataController(Context context){
@@ -41,13 +43,19 @@ public class DataController {
 			m.saveModel(context);
 	}
 	
-	//Observable-classes
-	public void addDbObserver(Observer observer){
-		db.addObserver(observer);
+	@Override
+	public void update(Observable db, Object obj) {
+		if(db.getClass().equals(Database.class)
+				& obj != null){
+			if(obj.getClass().equals(DatabaseException.class)){
+				setChanged();
+				notifyObservers((DatabaseException)obj);
+			} else if(obj.getClass().equals(TreeMap.class)){
+				//(TreeMap<Game, ArrayList<Turn>>)  
+			}
+		}
+		
 	}
-	public void deleteDbObserver(Observer observer){
-		db.deleteObserver(observer);
-	} 
 
 	//Session handling -----------------------------------------------------------
 
@@ -249,8 +257,8 @@ public class DataController {
 		return m.getGames();*/
 	}
 	
-	public ArrayList<Game> retrievedUpdatedGameList(ArrayList<Game> games) throws DatabaseException{
-		Game localGame;
+	public ArrayList<Game> retrievedUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) throws DatabaseException{
+		/*Game localGame;
 		for(Game game : games){
 			localGame = m.getGame(game.getGameId());
 			//If the local game hasn't been created locally, fetch all turns and create the game
@@ -266,7 +274,7 @@ public class DataController {
 				}
 			}
 		}
-		return m.getGames();
+		return m.getGames();*/
 	}
 
 	/**

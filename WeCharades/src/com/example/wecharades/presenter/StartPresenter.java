@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.example.wecharades.model.Database;
+import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
@@ -25,7 +25,8 @@ public class StartPresenter extends Presenter implements Observer{
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		dc.addDbObserver(this);
+		//Register this activity to listen to calls form the datacontroller
+		dc.addObserver(this);
 	}
 
 	public void update(){
@@ -36,11 +37,13 @@ public class StartPresenter extends Presenter implements Observer{
 		setInvitationStatus();
 	}
 	
+	/*
+	 * Called when a new updated game list is received from the database.
+	 */
 	private void updateFromDb(ArrayList<Game> dbGames){
 		try{
 			ArrayList<Game> newList = dc.retrievedUpdatedGameList(dbGames);
 		} catch(DatabaseException e){activity.showMessage(e.prettyPrint());}
-		
 	}
 
 	/**
@@ -110,12 +113,12 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Called in order to deregister this presenter from the list of observers in the db.
 	 */
 	public void unRegisterObserver(){
-		dc.deleteDbObserver(this);
+		dc.deleteObserver(this);
 	}
 
 	@Override
-	public void update(Observable db, Object obj) {
-		if(db.getClass().equals(Database.class) 
+	public void update(Observable obs, Object obj) {
+		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
 			if(obj.getClass().equals(DatabaseException.class)){
 				DatabaseException e = (DatabaseException) obj;

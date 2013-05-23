@@ -217,7 +217,7 @@ public class Database extends Observable implements IDatabase {
 		});
 	}
 	/*
-	 * Helper method to fetch games. Games and turns are now fetched!
+	 * Helper method to fetch games. Games and turns are fetched in background.
 	 */
 	private void getTurnsInBackgrund(final ArrayList<Game> gameList){
 		final Database db = this;

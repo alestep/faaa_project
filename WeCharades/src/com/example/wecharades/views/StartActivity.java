@@ -3,7 +3,6 @@ package com.example.wecharades.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +10,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
