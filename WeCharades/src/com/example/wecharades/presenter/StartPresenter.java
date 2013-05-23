@@ -47,9 +47,7 @@ public class StartPresenter extends Presenter implements Observer{
  * Called when a new updated game list is received from the database.
  */
 private void updateFromDb(ArrayList<Game> dbGames){
-	/*try{
-		//ArrayList<Game> newList = dc.retrievedUpdatedGameList(dbGames);
-	} catch(DatabaseException e){activity.showMessage(e.prettyPrint());}*/
+	parseList(dbGames);
 }
 
 	/**

@@ -1,8 +1,8 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
@@ -170,11 +170,7 @@ public class DataController extends Observable implements Observer{
 	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
-			public int compare(String s1, String s2){
-				return s1.compareToIgnoreCase(s2);
-			}
-		});
+		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
@@ -190,11 +186,7 @@ public class DataController extends Observable implements Observer{
 	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
 		ArrayList<Player> players = db.getPlayers();
 		m.putPlayers(players);
-		TreeSet<String> nameList = new TreeSet<String>(new Comparator<String>() {
-			public int compare(String s1, String s2){
-				return s1.compareToIgnoreCase(s2);
-			}
-		});
+		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
 			nameList.add(p.getName());
 		}
@@ -257,7 +249,10 @@ public class DataController extends Observable implements Observer{
 		return m.getGames();*/
 	}
 	
-	public ArrayList<Game> retrievedUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) throws DatabaseException{
+	public ArrayList<Game> retrievedUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) {
+		for(Map.Entry<Game, ArrayList<Turn>> game : games.entrySet()){
+			
+		}
 		/*Game localGame;
 		for(Game game : games){
 			localGame = m.getGame(game.getGameId());
