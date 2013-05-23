@@ -37,7 +37,8 @@
         android:layout_alignBottom="@+id/editAnswerCharade"
         android:layout_alignRight="@+id/streamedVideoSurface"
         android:layout_margin="8dp"
-        android:background="@drawable/ic_play"
+        android:background="@drawable/btn_default_normal_green"
+        android:drawableLeft="@drawable/play"
         android:onClick="onClickGuess" />
 
     <TextView

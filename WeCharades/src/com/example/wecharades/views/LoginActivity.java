@@ -2,10 +2,13 @@ package com.example.wecharades.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.LoginPresenter;
@@ -37,6 +40,33 @@ public class LoginActivity extends GenericActivity {
 		presenter = (LoginPresenter) super.getPresenter();
 
 		presenter.setProgressSpinnerInvisible(loginProgress);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		inputUsername.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_NEXT) {
+					TextView nextField = (TextView) inputUsername.focusSearch(View.FOCUS_DOWN);
+					nextField.requestFocus();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		
+		inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					onClickLogin(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
 	}
 
 	/**

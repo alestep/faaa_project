@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/LightGrey" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,8 +18,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:gravity="right|top"
             android:background="@drawable/social_group"
+            android:gravity="right|top"
             android:onClick="onClickInvitations" />
 
         <Button
@@ -28,8 +29,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/global_score"
-            android:onClick="onClickRefresh"
-            android:background="@drawable/navigation_refresh" />
+            android:background="@drawable/navigation_refresh"
+            android:onClick="onClickRefresh" />
 
         <Button
             android:id="@+id/account"
@@ -51,9 +52,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/invitations"
-            android:onClick="onClickHighScore"
-            android:background="@drawable/star" />
-
+            android:background="@drawable/star"
+            android:onClick="onClickHighScore" />
     </RelativeLayout>
 
     <Button

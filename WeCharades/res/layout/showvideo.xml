@@ -17,8 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/satisfiedText"
         android:layout_below="@id/satisfiedText"
-        android:onClick="onClickNo"
-        android:text="No, re-record" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_default_normal_red"
+        android:drawableLeft="@drawable/undo"
+        android:onClick="onClickNo" />
 
     <Button
         android:id="@+id/yesButton"
@@ -26,16 +28,38 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/satisfiedText"
         android:layout_below="@+id/satisfiedText"
-        android:onClick="onClickYes"
-        android:text="Yes" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/btn_default_normal_green"
+        android:drawableLeft="@drawable/navigation_upload"
+        android:onClick="onClickYes" />
 
-    <VideoView
-        android:id="@+id/satisfiedVideoView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/testtv"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/NoButton"
-        android:orientation="horizontal" />
+        android:layout_marginBottom="100dp"
+        android:layout_below="@+id/NoButton" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/tv" />
+
+        <VideoView
+            android:id="@+id/satisfiedVideoView"
+            android:layout_width="289dp"
+            android:layout_height="167dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_marginTop="43dp"
+            android:orientation="horizontal" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
