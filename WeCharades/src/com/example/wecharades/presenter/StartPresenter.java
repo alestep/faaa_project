@@ -17,25 +17,32 @@ import com.example.wecharades.views.StartActivity;
  *
  */
 public class StartPresenter extends Presenter implements Observer{
-	
+
 	private StartActivity activity;
 	private LinkedHashMap<String, ArrayList<Game>> listMap;
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
-	
+
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
 		dc.addDbObserver(this);
 	}
-	
+
 	public void update(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setAccountName(string);
 		listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		parseList();
+		parseList(dc.getGames());
 		setInvitationStatus();
 	}
 	
+	private void updateFromDb(ArrayList<Game> dbGames){
+		try{
+			ArrayList<Game> newList = dc.retrievedUpdatedGameList(dbGames);
+		} catch(DatabaseException e){activity.showMessage(e.prettyPrint());}
+		
+	}
+
 	/**
 	 * Check if the there is a user logged in. 
 	 * 	Will call the activity and update username if this is true
@@ -46,29 +53,21 @@ public class StartPresenter extends Presenter implements Observer{
 			goToLoginActivity();
 		}
 	}
-    
+
 	/**
 	 * 
 	 */
-	private void parseList() {
-		try {
-			ArrayList<Game> gameList = dc.getGames();
-			
-			for (String s : headers) {
-				listMap.put(s, new ArrayList<Game>());
-			}
-			
-			for (Game g : gameList) {
-				if (g.isFinished())
-					listMap.get("Finished games").add(g);
-				else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
-					listMap.get("Your turn").add(g);
-				else
-					listMap.get("Opponent's turn").add(g);
-			}
-			
-		}catch(DatabaseException e){
-			activity.showMessage(e.prettyPrint());
+	private void parseList(ArrayList<Game> gameList) {
+		for (String s : headers) {
+			listMap.put(s, new ArrayList<Game>());
+		}
+		for (Game g : gameList) {
+			if (g.isFinished())
+				listMap.get("Finished games").add(g);
+			else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
+				listMap.get("Your turn").add(g);
+			else
+				listMap.get("Opponent's turn").add(g);
 		}
 	}
 
@@ -84,7 +83,7 @@ public class StartPresenter extends Presenter implements Observer{
 		}
 		return adapter;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -95,10 +94,10 @@ public class StartPresenter extends Presenter implements Observer{
 		}catch (DatabaseException e){
 			activity.showMessage(e.prettyPrint());
 		}
-				
-			
+
+
 	}
-	
+
 	/**
 	 * Log out the current user
 	 */
@@ -106,20 +105,28 @@ public class StartPresenter extends Presenter implements Observer{
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
-	
+
 	/**
 	 * Called in order to deregister this presenter from the list of observers in the db.
 	 */
 	public void unRegisterObserver(){
 		dc.deleteDbObserver(this);
 	}
-	
+
 	@Override
-	public void update(Observable db, Object listOfGames) {
+	public void update(Observable db, Object obj) {
 		if(db.getClass().equals(Database.class) 
-				&& listOfGames != null){
-			
+				&& obj != null){
+			if(obj.getClass().equals(DatabaseException.class)){
+				DatabaseException e = (DatabaseException) obj;
+				activity.showMessage(e.prettyPrint());
+			} else if (obj.getClass().equals(ArrayList.class)
+					&& !((ArrayList) obj).isEmpty()){
+				if( ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
+					updateFromDb((ArrayList<Game>) obj);
+				}
+			}
 		}
 	}
-	
+
 }

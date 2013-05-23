@@ -43,8 +43,7 @@ public interface IDatabase{
 	 * @return an ArrayList with Game instances
 	 * @throws DatabaseException 
 	 */
-	public abstract void fetchGames(Player player)
-			throws DatabaseException;
+	public abstract void fetchGames(Player player);
 
 	/**
 	 * Update a game on the Parse server.

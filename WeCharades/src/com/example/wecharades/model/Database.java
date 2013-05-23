@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -200,28 +201,63 @@ public class Database extends Observable implements IDatabase {
 						for(ParseObject game : dbResult){
 							games.add(dbc.parseGame(game));
 						}
+						db.getTurnsInBackgrund(games);
 						//Notify the observer of new games!
 						setChanged();
 						notifyObservers(games);
 					} catch (DatabaseException e2){
-						//TODO Unhandeled exception}
+						setChanged();
+						notifyObservers(e2);
 					}
 				} else{
-					Log.d("Database","Failed to fetch games");
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
-		/*
-		try{
-			List<ParseObject> dbResult = mainQuery.find();
-			for(ParseObject game : dbResult){
-				games.add(dbc.parseGame(game));//TODO The DB-helper should not connect to db.
-			}
-		} catch(ParseException e){
-			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1004,"Failed to fetch games");
+	}
+	/*
+	 * Helper method to fetch games. Games and turns are now fetched!
+	 */
+	private void getTurnsInBackgrund(final ArrayList<Game> gameList){
+		final Database db = this;
+		LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
+		ParseQuery individualQuery;
+		for(Game game : gameList){
+			individualQuery = new ParseQuery(TURN);
+			individualQuery.whereEqualTo(TURN_GAME, game.getGameId());
+			gameQueries.add(individualQuery);
 		}
-		return games;*/
+		ParseQuery masterQuery = ParseQuery.or(gameQueries);
+		masterQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> resultList, ParseException e){
+				if(e == null){
+					try{
+						TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+						//First, we create a TreeMap with the games, and an index for reference:
+						TreeMap<String, Game> idList = new TreeMap<String, Game>();
+						for(Game game : gameList){
+							map.put(game, new ArrayList<Turn>());
+							idList.put(game.getGameId(), game);
+						}
+						//Then, we must parse the ParseObjects to turns and add them to the correct list
+						for(ParseObject obj : resultList){
+							Turn turn = dbc.parseTurn(obj);
+							map.get(idList.get(turn.getGameId())).add(turn.getTurnNumber()-1, turn);
+						}
+						setChanged();
+						notifyObservers(map);
+					} catch(DatabaseException e2){
+						setChanged();
+						notifyObservers(e2);
+					}
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+
 	}
 
 	/* (non-Javadoc)

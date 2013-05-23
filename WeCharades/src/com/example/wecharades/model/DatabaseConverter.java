@@ -1,15 +1,19 @@
 package com.example.wecharades.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
 import com.parse.ParseObject;
 
 public class DatabaseConverter {
-	
+
 	DataController dc;
-	
+
 	public DatabaseConverter(DataController dc){
 		this.dc = dc;
 	}
-	
+
 	//A protected method to parse a ParseObject to a game
 	protected Game parseGame(ParseObject game) throws DatabaseException{
 		if(game.getClassName().equals(Database.GAME)){

@@ -223,7 +223,7 @@ public class DataController {
 	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	public ArrayList<Game> getGames() throws DatabaseException{
+	public ArrayList<Game> getGames(){
 		//Fetches the db-list of current games
 		db.fetchGames(getCurrentPlayer());
 		return m.getGames();
@@ -247,6 +247,26 @@ public class DataController {
 		}
 		//m.putGameList(games);
 		return m.getGames();*/
+	}
+	
+	public ArrayList<Game> retrievedUpdatedGameList(ArrayList<Game> games) throws DatabaseException{
+		Game localGame;
+		for(Game game : games){
+			localGame = m.getGame(game.getGameId());
+			//If the local game hasn't been created locally, fetch all turns and create the game
+			if(localGame == null || m.getTurns(game) == null){
+				m.putGame(game);
+				m.putTurns(db.getTurns(game));
+			} else if(Game.hasChanged(game, localGame)){
+				//Updates the current turn from the database
+				m.putTurn(db.getTurn(game, game.getTurn()));
+				//If the last turn was finished
+				if(game.getTurn() > localGame.getTurn()){
+					m.putTurn(db.getTurn(game, game.getTurn()-1));
+				}
+			}
+		}
+		return m.getGames();
 	}
 
 	/**
