@@ -72,7 +72,7 @@ public class VideoUploadPresenter extends Presenter {
 		return serverPath;
 	}
 	
-	/**
+	/**	
 	 * Lets the player to re-record the video and deletes the current file.
 	 * @param path
 	 */

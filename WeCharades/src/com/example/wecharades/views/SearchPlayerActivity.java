@@ -12,6 +12,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.SimplePresenter;
+
 /**
  * 
  * @author Alexander
