@@ -16,8 +16,11 @@ import org.apache.commons.net.io.CopyStreamException;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.wecharades.model.Database;
@@ -55,12 +58,22 @@ public class VideoUploadPresenter extends Presenter {
 	 * Initiate and start the video.
 	 * @param videoView
 	 */
-	public void playVideo(VideoView videoView,String path) {
-		videoView.setVideoPath(path);
-		//videoView.setVideoURI(CaptureVideo.uriVideo);
-		//videoView.setMediaController(new MediaController(activity));
-		videoView.start();
-		//videoView.requestFocus();
+	public void playVideo(VideoView videoView,String path) {		
+		try {
+			videoView.setOnPreparedListener(new OnPreparedListener() {
+
+				@Override
+				public void onPrepared(MediaPlayer mp) {
+					mp.setLooping(true);		
+				}
+			});
+			videoView.setVideoPath(path);
+			videoView.setMediaController(new MediaController(activity));
+			videoView.start();
+			videoView.requestFocus();
+		} catch (Exception e) {
+			Log.e("Video", "error: " + e.getMessage(), e);
+		}
 	}
 	
 	/**
@@ -165,7 +178,6 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setVideoLink(serverPath);
 				turn.setState(Turn.VIDEO);
 				updateModel();
-				
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);

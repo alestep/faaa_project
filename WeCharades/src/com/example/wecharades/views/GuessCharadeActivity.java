@@ -72,6 +72,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			turn.setAnsPlayerScore(5);
 			turn.setState(Turn.FINISH);
 			presenter.updateModel();
+			
 			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
 			mDialog.setTitle("Charade");
 			mDialog
@@ -79,6 +80,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			.setCancelable(false)
 			.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
+
 					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
 					startActivity(intent);
 					finish();
