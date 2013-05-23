@@ -14,6 +14,7 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
+	ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
@@ -21,22 +22,22 @@ public class InvitationPresenter extends Presenter {
 	}
 
 	private void setAdapter() {
-		try {
 			ListView view = (ListView) activity.findViewById(R.id.list);
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No invitations found!");
 			view.setEmptyView(text);
-			
-			ArrayList<Invitation> invitationList = dc.getInvitations();
 			view.setAdapter(new InvitationAdapter(activity, invitationList));
-		}catch(DatabaseException e){
-			activity.showMessage(e.prettyPrint());
-		}
 	}
 
 	public void update() {
+		if(invitationList == null){
+			try {
+				invitationList = dc.getInvitations();
+			} catch (DatabaseException e) {
+				activity.showMessage(e.prettyPrint());
+			}
+		}
 		setAdapter();
-		
 	}
 
 	public void setInvitation(Invitation invitation, boolean response) {

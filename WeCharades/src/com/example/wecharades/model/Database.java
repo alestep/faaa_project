@@ -32,33 +32,33 @@ public class Database extends Observable implements IDatabase {
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String
-			WORDLIST				= "WordList",
-			WORDLIST_WORD			= "word",
-			GAME 					= "Game",
-			GAME_PLAYER_1 			= "player1",
-			GAME_PLAYER_2 			= "player2",
-			GAME_PLAYER_CURRENT 	= "currentPlayer",
-			GAME_TURN 				= "turn",
-			GAME_FINISH 			= "finished",
-			TURN					= "Turn",
-			TURN_GAME				= "game",
-			TURN_TURN				= "turn",
-			TURN_STATE				= "state",
-			TURN_WORD				= "word",
-			TURN_VIDEOLINK			= "videoLink",
-			TURN_PLAYER_REC			= "recPlayer",
-			TURN_PLAYER_REC_SCORE	= "recPlayerScore",
-			TURN_PLAYER_ANS			= "ansPlayer",
-			TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
-			PLAYER					= "_User",
-			PLAYER_USERNAME			= "username",
-			PLAYER_USERNAME_NATURAL	= "naturalUsername",
-			PLAYER_GLOBALSCORE		= "globalScore",
-			RANDOMQUEUE				= "RandomQueue",
-			RANDOMQUEUE_PLAYER		= "player",
-			INVITE 					= "invite",
-			INVITE_INVITER 			= "inviter",
-			INVITE_INVITEE 			= "invitee";
+	WORDLIST				= "WordList",
+	WORDLIST_WORD			= "word",
+	GAME 					= "Game",
+	GAME_PLAYER_1 			= "player1",
+	GAME_PLAYER_2 			= "player2",
+	GAME_PLAYER_CURRENT 	= "currentPlayer",
+	GAME_TURN 				= "turn",
+	GAME_FINISH 			= "finished",
+	TURN					= "Turn",
+	TURN_GAME				= "game",
+	TURN_TURN				= "turn",
+	TURN_STATE				= "state",
+	TURN_WORD				= "word",
+	TURN_VIDEOLINK			= "videoLink",
+	TURN_PLAYER_REC			= "recPlayer",
+	TURN_PLAYER_REC_SCORE	= "recPlayerScore",
+	TURN_PLAYER_ANS			= "ansPlayer",
+	TURN_PLAYER_ANS_SCORE	= "ansPlayerScore",
+	PLAYER					= "_User",
+	PLAYER_USERNAME			= "username",
+	PLAYER_USERNAME_NATURAL	= "naturalUsername",
+	PLAYER_GLOBALSCORE		= "globalScore",
+	RANDOMQUEUE				= "RandomQueue",
+	RANDOMQUEUE_PLAYER		= "player",
+	INVITE 					= "invite",
+	INVITE_INVITER 			= "inviter",
+	INVITE_INVITEE 			= "invitee";
 
 	private static IDatabase singleton;
 	private DatabaseConverter dbc;
@@ -258,44 +258,46 @@ public class Database extends Observable implements IDatabase {
 	 * Helper method to fetch games. Games and turns are fetched in background.
 	 */
 	private void getTurnsInBackgrund(final ArrayList<Game> gameList){
-		final Database db = this;
-		LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
-		ParseQuery individualQuery;
-		for(Game game : gameList){
-			individualQuery = new ParseQuery(TURN);
-			individualQuery.whereEqualTo(TURN_GAME, game.getGameId());
-			gameQueries.add(individualQuery);
+		if(gameList.size() > 0){
+			final Database db = this;
+			LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
+			ParseQuery individualQuery;
+			for(Game game : gameList){
+				individualQuery = new ParseQuery(TURN);
+				individualQuery.whereEqualTo(TURN_GAME, game.getGameId());
+				gameQueries.add(individualQuery);
 
-		}
-		ParseQuery masterQuery = ParseQuery.or(gameQueries);
-		masterQuery.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> resultList, ParseException e){
-				if(e == null){
-					try{
-						TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
-						//First, we create a TreeMap with the games, and an index for reference:
-						TreeMap<String, Game> idList = new TreeMap<String, Game>();
-						for(Game game : gameList){
-							map.put(game, new ArrayList<Turn>());
-							idList.put(game.getGameId(), game);
-						}
-						//Then, we must parse the ParseObjects to turns and add them to the correct list
-						for(ParseObject obj : resultList){
-							Turn turn = dbc.parseTurn(obj);
-							map.get(idList.get(turn.getGameId())).add(turn.getTurnNumber()-1, turn);
-						}
-						setChanged();
-						notifyObservers(map);
-					} catch(DatabaseException e2){
-						setChanged();
-						notifyObservers(e2);
-					}
-				} else{
-					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
-				}
 			}
-		});
+			ParseQuery masterQuery = ParseQuery.or(gameQueries);
+			masterQuery.findInBackground(new FindCallback(){
+				public void done(List<ParseObject> resultList, ParseException e){
+					if(e == null){
+						try{
+							TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+							//First, we create a TreeMap with the games, and an index for reference:
+							TreeMap<String, Game> idList = new TreeMap<String, Game>();
+							for(Game game : gameList){
+								map.put(game, new ArrayList<Turn>());
+								idList.put(game.getGameId(), game);
+							}
+							//Then, we must parse the ParseObjects to turns and add them to the correct list
+							for(ParseObject obj : resultList){
+								Turn turn = dbc.parseTurn(obj);
+								map.get(idList.get(turn.getGameId())).add(turn.getTurnNumber()-1, turn);
+							}
+							setChanged();
+							notifyObservers(map);
+						} catch(DatabaseException e2){
+							setChanged();
+							notifyObservers(e2);
+						}
+					} else{
+						setChanged();
+						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					}
+				}
+			});
+		}
 	}
 
 	/* (non-Javadoc)

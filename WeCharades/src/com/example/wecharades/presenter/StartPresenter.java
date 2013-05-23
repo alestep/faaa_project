@@ -47,6 +47,8 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Called when a new updated game list is received from the database.
 	 */
 	private void updateFromDb(ArrayList<Game> dbGames){
+		listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		score = new TreeMap<Game, Map<Player, Integer>>();
 		parseList(dbGames);
 	}
 
