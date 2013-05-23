@@ -149,7 +149,6 @@ public class VideoUploadPresenter extends Presenter {
 					ftp.disconnect();
 				}
 			}
-			//TODO: prettyPrint-stuff?
 			catch (SocketException e){
 				Log.v("download result", e.getMessage());
 			}
