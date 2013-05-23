@@ -8,6 +8,8 @@ import java.util.Observer;
 import java.util.TreeMap;
 
 import com.example.wecharades.model.DataController;
+import android.util.Log;
+
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
