@@ -253,7 +253,7 @@ public class Database implements IDatabase {
 	@Override
 	public Turn getTurn(Game game, int turnNumber) throws DatabaseException{
 		ParseQuery query = new ParseQuery(TURN);
-		query.whereEqualTo(TURN_GAME, game.getGameId());
+		query.whereEqualTo(TURN_GAME, getGameParseObject(game.getGameId()));
 		query.whereEqualTo(TURN_TURN, turnNumber);
 		ParseObject turn = null;
 		try {
