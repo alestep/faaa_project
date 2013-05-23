@@ -8,24 +8,27 @@
         android:id="@+id/inviter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="0.80"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
+    <ImageButton
         android:id="@+id/accept"
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_weight="1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/btn_default_normal_green"
-        android:text="@string/accept" />
+        android:src="@drawable/navigation_accept" />
 
-    <Button
+    <ImageButton
         android:id="@+id/reject"
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
         android:background="@drawable/btn_default_normal_red"
-        android:text="@string/reject" />
+        android:src="@drawable/navigation_cancel"/>
 
 </LinearLayout>

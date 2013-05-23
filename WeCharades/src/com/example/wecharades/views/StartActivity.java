@@ -15,6 +15,7 @@ import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
+
 /**
  * 
  * @author Alexander
@@ -117,7 +118,6 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent (this, HighScoreActivity.class);
 		startActivity(intent);
 	}
-
 
 	/**
 	 * Nothing happens so far...

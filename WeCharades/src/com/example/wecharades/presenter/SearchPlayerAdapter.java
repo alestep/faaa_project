@@ -1,7 +1,6 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import android.content.Context;
@@ -14,12 +13,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.views.SearchResultActivity;
+import com.example.wecharades.views.SearchPlayerActivity;
 
-public class SearchResultAdapter extends ArrayAdapter<String> {
+public class SearchPlayerAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;
 	private LayoutInflater li;
-	private SearchResultActivity activity;
+	private SearchPlayerActivity activity;
 	private TreeSet<String> sentInvitations;
 	
 	/**
@@ -28,7 +27,7 @@ public class SearchResultAdapter extends ArrayAdapter<String> {
 	 * @param resultList
 	 * @param sentInvitations
 	 */
-	public SearchResultAdapter(SearchResultActivity activity, ArrayList<String> resultList, TreeSet<String> sentInvitations) {
+	public SearchPlayerAdapter(SearchPlayerActivity activity, ArrayList<String> resultList, TreeSet<String> sentInvitations) {
 		super(activity, 0, resultList);
 		this.sentInvitations = sentInvitations;
 		this.resultList = resultList;

@@ -19,7 +19,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	private Player 	player1;
 	private Player 	player2;
 	private Player 	currentPlayer;
-	private int 	turn;
+	private int 	turnNumber;
 	private boolean isFinished;
 	private Date 	lastPlayed;
 
@@ -37,7 +37,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		this.player1 = p1;
 		this.player2 = p2;
 		this.currentPlayer = currentPlayer;
-		this.turn = turn;
+		this.turnNumber = turn;
 		this.isFinished = finished;
 		this.lastPlayed = lastPlayed;
 	}
@@ -65,8 +65,8 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		return currentPlayer;
 	}
 
-	public int getTurn() {
-		return turn;
+	public int getTurnNumber() {
+		return turnNumber;
 	}
 
 	public boolean isFinished() {
@@ -87,11 +87,11 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 * Increments the turn number. If it is the last turn, the value will be set to 0
 	 */
 	public void incrementTurn() {
-		if(turn == 6){
+		if(turnNumber == 6){
 			isFinished = true;
 		}
 		else
-			turn ++;
+			turnNumber ++;
 	}
 	
 	public void setFinished(){
@@ -112,29 +112,25 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	}
 
 	/**
-	 * Two games are considered equal if they have the same 
-	 * 	id, current player, turn number, date-stamp and finished state
+	 * Two games are considered equal if they have the same id 
+	 * 	
 	 * @param otherGame - the game to compare
 	 * @return if the games are equal
 	 */
 	public boolean equals(Game otherGame){
-		return otherGame != null 
-				&& this.getGameId() == otherGame.getGameId() 
-				&& this.getCurrentPlayer().equals(otherGame.getCurrentPlayer())
-				&& this.getTurn() == otherGame.getTurn()
-				&& this.getLastPlayed().equals(otherGame.getLastPlayed())
-				&& this.isFinished()== otherGame.isFinished();
+		return this.getGameId().equals(otherGame.getGameId());
 	}
 	
 	/**
-	 * A static method to check if a game has changed
+	 * A static method to check if a game has changed:
+	 * 	will look on current player, turn and finished state.
 	 * @return - if the game has changed
 	 */
 	public static boolean hasChanged(Game game1, Game game2){
 		return game1 != null && game2 != null
 				&& game1.equals(game2) 
 				&& game1.getCurrentPlayer().equals(game2.getCurrentPlayer())
-				&& game1.getTurn() == game2.getTurn()
+				&& game1.getTurnNumber() == game2.getTurnNumber()
 				&& game1.isFinished() == game2.isFinished();
 	}
 

@@ -52,7 +52,7 @@ public class GameDashboardPresenter extends Presenter {
 				currentPLayersScore += turn.getRecPlayerScore();
 				opponentsScore		+= turn.getAnsPlayerScore();
 			}
-				
+
 		}
 		activity.updateScore(currentPLayersScore, opponentsScore);
 	}
@@ -86,7 +86,7 @@ public class GameDashboardPresenter extends Presenter {
 			updateButtonInformation(turn, button);
 		}
 	}
-	
+
 	/**
 	 * Update button information based on information from the Turn object
 	 * @param turn
@@ -100,7 +100,6 @@ public class GameDashboardPresenter extends Presenter {
 					: turn.getRecPlayerScore() + " points";
 			button.setEnabled(false);
 		} else if(turn.getTurnNumber() == game.getTurnNumber()) {
-			//TODO: add at state: "waiting for opponent"
 			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
 				buttonText = "Guess word!";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess word
@@ -119,7 +118,7 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		button.setText(buttonText);
 	} 
-	
+
 	//TODO this method is a bit special.
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
 		OnClickListener buttonListener = new View.OnClickListener() {

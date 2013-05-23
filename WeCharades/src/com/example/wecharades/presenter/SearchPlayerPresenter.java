@@ -10,30 +10,30 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.views.SearchResultActivity;
+import com.example.wecharades.views.SearchPlayerActivity;
 
-public class SearchResultPresenter extends Presenter {
+public class SearchPlayerPresenter extends Presenter {
 	
-	private SearchResultActivity activity;
+	private SearchPlayerActivity activity;
 	
 	
 	/**
 	 * 
 	 * @param activity
 	 */
-	public SearchResultPresenter(Activity activity) {
+	public SearchPlayerPresenter(Activity activity) {
 		super(activity);
-		this.activity = (SearchResultActivity) activity;
+		this.activity = (SearchPlayerActivity) activity;
 	}
 	
-	public void update(){
-		performSearch(activity.getIntent().getExtras().getString("username"));
+	public void update(String s){
+		performSearch(s);
 	}
 
 	private void performSearch(String searchString) {
 		try {
 
-			ListView view = (ListView) activity.findViewById(R.id.list);
+			ListView view = (ListView) activity.findViewById(R.id.result_list);
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No results found!");
 			view.setEmptyView(text);
@@ -42,7 +42,7 @@ public class SearchResultPresenter extends Presenter {
 			TreeSet<String> sentInvitations = dc.getSentInvitationsAsUsernames();
 			ArrayList<String> resultList = new ArrayList<String>(list);
 			if (!list.isEmpty())
-				view.setAdapter(new SearchResultAdapter(activity, resultList, sentInvitations));
+				view.setAdapter(new SearchPlayerAdapter(activity, resultList, sentInvitations));
 		} catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());
 		}

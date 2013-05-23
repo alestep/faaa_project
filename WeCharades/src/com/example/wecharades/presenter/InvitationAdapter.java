@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -39,15 +39,14 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 					invitor.setText(invitation.getInviter().getName());
 			}
 			
-			final Button accept = (Button) v.findViewById(R.id.accept);
-			final Button reject = (Button) v.findViewById(R.id.reject);
+			final ImageButton accept = (ImageButton) v.findViewById(R.id.accept);
+			final ImageButton reject = (ImageButton) v.findViewById(R.id.reject);
 			
 			accept.setOnClickListener(new OnClickListener(){ 
 				@Override
 				public void onClick(View v){
 					accept.setEnabled(false);
 					reject.setEnabled(false);
-					accept.setText("Accepted");
 					activity.setInvitation(invitation, true);	
 				}
 			});
@@ -57,11 +56,12 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 				public void onClick(View v){
 					accept.setEnabled(false);
 					reject.setEnabled(false);
-					reject.setText("Rejected");
 					activity.setInvitation(invitation, false);	
 				}
-			}); 
+			});
 				
 		return v;
 	}
+	
+	
 }

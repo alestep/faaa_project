@@ -48,6 +48,26 @@ public class DatabaseException extends Exception{
 			break;
 			case 205: message = "E-mail not found";
 			break;
+			case 1001: message = "Failed to fetch game data";
+			break;
+			case 1002: message = "Failed to get ParseObject";
+			break;
+			case 1003: message = "Failed to fetch games";
+			break;
+			case 1004: message = "Failed to get turn";
+			break;
+			case 1005: message = "Failed to get turns";
+			break;
+			case 1006: message = "Failed to fetch user";
+			break;
+			case 1007: message = "Failed to fetch user";
+			break;
+			case 1008: message = "Failed to fetch players";
+			break;
+			case 1009: message = "Failed to get invitations";
+			break;
+			case 1010: message = "Error removing player from queue";
+			break;
 		}
 
 		return message;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.SearchPlayerPresenter;
 import com.example.wecharades.presenter.SimplePresenter;
 
 /**
@@ -21,16 +22,16 @@ import com.example.wecharades.presenter.SimplePresenter;
 public class SearchPlayerActivity extends GenericActivity {
 	
 	private EditText searchBox;
-	private SimplePresenter presenter;
+	private SearchPlayerPresenter presenter;
 	
 	/**
 	 * 
 	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new SimplePresenter(this));
+		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
 		setContentView(R.layout.search_player_screen);
-		presenter = (SimplePresenter) super.getPresenter();
+		presenter = (SearchPlayerPresenter) super.getPresenter();
 		
 		// Get reference to search box
 		searchBox = (EditText) findViewById(R.id.search_window);
@@ -57,11 +58,13 @@ public class SearchPlayerActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickSearch(View view){
-		Intent intent = new Intent(this, SearchResultActivity.class);
-		intent.putExtra("username", searchBox.getText().toString());
+		presenter.update(searchBox.getText().toString());
 		searchBox.setText("");
-		startActivity(intent);
 		
+	}
+	
+	public void invite(String invitee){
+		presenter.invite(invitee);
 	}
 
 	@Override
