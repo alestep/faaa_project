@@ -279,7 +279,7 @@ public class DataController {
 	 * @param game - the game to be updated
 	 * @throws DatabaseException
 	 */
-	public void updateGame(Game game) throws DatabaseException{
+	private void updateGame(Game game) throws DatabaseException{
 		if(isFinished(game)){
 			game.setFinished();
 		}
