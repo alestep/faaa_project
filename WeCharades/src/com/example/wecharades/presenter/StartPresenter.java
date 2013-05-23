@@ -2,10 +2,13 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.views.StartActivity;
 
 /**
@@ -14,24 +17,26 @@ import com.example.wecharades.views.StartActivity;
  *
  */
 public class StartPresenter extends Presenter {
-	
+
 	private StartActivity activity;
 	private LinkedHashMap<String, ArrayList<Game>> listMap;
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
-	
+	private Map<Game, Map<Player, Integer>> score;
+
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
 	}
-	
+
 	public void update(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setAccountName(string);
 		listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		score = new TreeMap<Game, Map<Player, Integer>>();
 		parseList();
 		setInvitationStatus();
 	}
-	
+
 	/**
 	 * Check if the there is a user logged in. 
 	 * 	Will call the activity and update username if this is true
@@ -42,19 +47,19 @@ public class StartPresenter extends Presenter {
 			goToLoginActivity();
 		}
 	}
-    
+
 	/**
 	 * 
 	 */
 	private void parseList() {
 		try {
 			ArrayList<Game> gameList = dc.getGames();
-			
 			for (String s : headers) {
 				listMap.put(s, new ArrayList<Game>());
 			}
-			
-			for (Game g : gameList) {
+
+			for (Game g : gameList) {				
+				score.put(g, dc.getGameScore(g)); //TODO: make three maps for every state below
 				if (g.isFinished())
 					listMap.get("Finished games").add(g);
 				else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
@@ -62,7 +67,7 @@ public class StartPresenter extends Presenter {
 				else
 					listMap.get("Opponent's turn").add(g);
 			}
-			
+
 		}catch(DatabaseException e){
 			activity.showMessage(e.prettyPrint());
 		}
@@ -75,12 +80,13 @@ public class StartPresenter extends Presenter {
 	 */
 	public SeparatedListAdapter setAdapter(SeparatedListAdapter adapter) {
 		for (String s : headers) {
-			if(!listMap.get(s).isEmpty())
-				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer()));		
+			if(!listMap.get(s).isEmpty()) {
+				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer(), score));		
+			}
 		}
 		return adapter;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -91,10 +97,10 @@ public class StartPresenter extends Presenter {
 		}catch (DatabaseException e){
 			activity.showMessage(e.prettyPrint());
 		}
-				
-			
+
+
 	}
-	
+
 	/**
 	 * Log out the current user
 	 */
@@ -102,5 +108,5 @@ public class StartPresenter extends Presenter {
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
-	
+
 }

@@ -102,6 +102,6 @@ public class Turn implements Serializable {
 		else if(player.equals(getRecPlayer()))
 			return getRecPlayerScore();
 		else
-			return 0;
+			return -1;
 	}
 }
