@@ -81,11 +81,7 @@ public class GameDashboardPresenter extends Presenter {
 	 */
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
 		//This requires that the lists are equally long, which they always should be
-		int i = 0;
 		for(Turn turn : turnList) {
-			i++;
-			if(i == 7) 
-				break;
 			Button button = (Button) buttonList.remove(0);
 			updateButtonInformation(turn, button);
 		}
@@ -127,11 +123,11 @@ public class GameDashboardPresenter extends Presenter {
 	//TODO this method is a bit special.
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
 		OnClickListener buttonListener = new View.OnClickListener() {
-			boolean isAnsPLayer = ansPlayer;
+			//boolean isAnsPLayer = ansPlayer;
 			Turn theTurn = turn;
 			@Override
 			public void onClick(View v) {
-				if(isAnsPLayer) {
+				if(ansPlayer) {
 					//Go to GuessCharadeActivity
 					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
 					intent.putExtra("Turn", theTurn);

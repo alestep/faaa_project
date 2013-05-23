@@ -1,6 +1,8 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.graphics.Typeface;
 import android.view.View;
@@ -15,12 +17,33 @@ import com.example.wecharades.views.HighScoreActivity;
 public class HighScorePresenter extends Presenter {
 
 	HighScoreActivity activity;
+	
 	public HighScorePresenter(HighScoreActivity activity) {
 		super(activity);
 		this.activity = activity;
 	}
-
-	public void updateHighScores(TableLayout table) {
+	
+	/**
+	 * Creates an table with highscores
+	 * @param table
+	 */
+	public void updateHighScores(TableLayout table){
+		try{
+			ArrayList<Player> allPlayers = dc.getAllPlayerObjects();
+			Collections.sort(allPlayers, new Comparator<Player>(){
+				@Override
+				public int compare(Player p1, Player p2) {
+					return p2.getGlobalScore() - p1.getGlobalScore();
+				}
+			});
+			updateHighScoreList(new ArrayList<Player>(allPlayers.subList(0, 9)), getAllTextViews(table));
+			activity.updateGlobalRanking(dc.getCurrentPlayer().getGlobalRanking(), allPlayers.size());
+		} catch(DatabaseException e){
+			activity.showMessage(e.prettyPrint());
+		}
+	}
+	
+	public void updateHighScoresOld(TableLayout table) {
 		try {
 			updateHighScoreList(dc.getTopTenPlayers(), getAllTextViews(table));
 		} catch (DatabaseException e) {
