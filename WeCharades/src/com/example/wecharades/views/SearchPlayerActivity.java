@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.presenter.SimplePresenter;
+//import com.example.wecharades.presenter.SimplePresenter;
 /**
  * 
  * @author Alexander
@@ -23,7 +23,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new SimplePresenter(this));
+		//super.onCreate(savedInstanceState, new SimplePresenter(this));
 		
 		// Sets the View Layer
 		setContentView(R.layout.search_player_screen);

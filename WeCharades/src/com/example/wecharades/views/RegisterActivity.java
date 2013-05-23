@@ -51,20 +51,11 @@ public class RegisterActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickRegister(View view) {
-
-		//TODO: progress spinners doesn't work yet!
-		//Show the progress spinner
-		presenter.showProgressSpinner(myView, registerProgress);
-
-
 		presenter.registerUser(
 				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
-				inputRepeatPassword.getText().toString());
-
-		//Hide the progress spinner
-		presenter.hideProgressSpinner(myView, registerProgress);
+				inputRepeatPassword.getText().toString(), myView, registerProgress);
 	}
 
 	/**

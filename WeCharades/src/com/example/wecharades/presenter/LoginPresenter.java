@@ -34,7 +34,7 @@ public class LoginPresenter extends Presenter{
 	private class Login extends AsyncTask<Void, Long, Boolean>{
 
 		private int exceptionState = 0;
-		private final static int INITIAL_MODE = 0;
+		private final static int NO_EXCEPTION = 0;
 		private final static int CAUGHT_EXCEPTION = 1;
 
 		public Login(){
@@ -48,28 +48,31 @@ public class LoginPresenter extends Presenter{
 
 		@Override
 		protected Boolean doInBackground(Void... arg0) {
-			// TODO Auto-generated method stub
+			boolean loginSucceeded = false;
 			try {
 				//If this fails, the user will get a message and the subsequent code will not be run
 				dc.loginPlayer(username, password);
-				Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
-				activity.startActivity(i);
-				activity.finish();//We do not need the login-activity any more
+				loginSucceeded = true;
 			} catch (DatabaseException e) {
 				dbException = e;
 				exceptionState = CAUGHT_EXCEPTION;
-			}	
+			}
+			finally{
+				if(loginSucceeded){
+					Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
+					activity.startActivity(i);
+					activity.finish();//We do not need the login-activity any more
+				}
+			}
 			return null;
 		}
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
 				activity.showMessage(dbException.prettyPrint());
-				exceptionState = INITIAL_MODE;
+				exceptionState = NO_EXCEPTION;
 			}
-
-			//Hide the progress spinner
-			hideProgressSpinner(myView, loginProgress);
+			hideProgressSpinner(myView, loginProgress);	
 		}
 	}
 }

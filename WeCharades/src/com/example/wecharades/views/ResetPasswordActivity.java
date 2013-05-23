@@ -39,17 +39,7 @@ public class ResetPasswordActivity extends GenericActivity {
 	 * @param arg0
 	 */
 	public void onClickResetPassword(View view) {
-		//TODO: progress spinner not working :(
-
-		//Showing the progress spinner
-		presenter.showProgressSpinner(myView, resetProgress);
-
-		presenter.resetPassword(emailInput.getText().toString());
-
-		//Hiding the progress spinner
-		presenter.hideProgressSpinner(myView, resetProgress);
-
-
+		presenter.resetPassword(emailInput.getText().toString(), myView, resetProgress);
 	}
 
 	/**
@@ -70,7 +60,6 @@ public class ResetPasswordActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
-		// TODO Auto-generated method stub
 		return errorMsg;
 	}
 
