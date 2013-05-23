@@ -61,7 +61,7 @@ public class StartPresenter extends Presenter {
 			}
 
 			for (Game g : gameList) {				
-				score.put(g, dc.getGameScore(g)); //TODO: make three maps for every state below
+				score.put(g, dc.getGameScore(g));
 				if (g.isFinished())
 					listMap.get("Finished games").add(g);
 				else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
