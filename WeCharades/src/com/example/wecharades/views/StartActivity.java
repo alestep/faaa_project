@@ -3,7 +3,6 @@ package com.example.wecharades.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +15,7 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
+
 
 /**
  * 
@@ -95,14 +95,6 @@ public class StartActivity extends GenericActivity {
 		startActivity(intent);
 	}
 	
-	/**
-	 * 
-	 * @param v
-	 */
-	public void onClickHighscore(View v) {
-		Intent intent = new Intent(this, HighScoreActivity.class);
-		startActivity(intent);
-	}
 
 	/**
 	 * Go to New Game screen
@@ -121,7 +113,6 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent (this, HighScoreActivity.class);
 		startActivity(intent);
 	}
-
 
 	/**
 	 * Nothing happens so far...

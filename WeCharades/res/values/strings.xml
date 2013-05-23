@@ -9,7 +9,7 @@
     <string name="invitations">Invitations</string>
 	
 	<!-- Start screen header strings -->
-	<string name="new_game">New Game</string>
+	<string name="new_game">Start a new game</string>
 	<string name="account">Account</string>
 	<string name="logout">Logout</string>
    
