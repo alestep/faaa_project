@@ -45,7 +45,6 @@ public class LoginActivity extends GenericActivity {
 	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
-		//login
 		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString(), myView, loginProgress);
 
 	}
@@ -57,7 +56,7 @@ public class LoginActivity extends GenericActivity {
 		Intent i = new Intent(getApplicationContext(),
 				ResetPasswordActivity.class);
 		startActivity(i);
-		finish();
+		//finish();
 	}
 	
 	/**
@@ -67,7 +66,7 @@ public class LoginActivity extends GenericActivity {
 	public void onClickRegister(View view) {
 		Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
 		startActivity(i);
-		finish();
+		//finish();
 	}
 
 	@Override

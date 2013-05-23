@@ -82,26 +82,24 @@ public class Database implements IDatabase {
 	/**
 	 * Randomly get 6 unique word from the database 
 	 * @return an ArrayList with 6 words 
-	 * @throws DatabaseException 
 	 */
-	private Stack<String> getWords() throws DatabaseException{
-		Stack<String> list = new Stack<String>();
+	private void getWords(final Player player1, final Player player2){
+		final Database db = this;
 		ParseQuery query = new ParseQuery(WORDLIST);
-		ArrayList<String> w = new ArrayList<String>();
-		w.add(WORDLIST_WORD);
-		query.selectKeys(w);
-		List<ParseObject> dblist;
-		try {
-			dblist = query.find();
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1001,"Could not fetch word");
-		}
-		for(ParseObject word : dblist){
-			list.add(word.getString("word"));
-		}
-		Collections.shuffle(list);
-		return list;
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> dblist, ParseException e){
+				if(e == null && db != null){
+					Stack<String> wordList = new Stack<String>();
+					for(ParseObject word : dblist){
+						wordList.add(word.getString("word"));
+					}
+					Collections.shuffle(wordList);
+					db.createGameInBackground(player1, player2, wordList);
+				} else{
+					Log.d("Database", "Failed to find word");
+				}
+			}
+		});
 	}
 
 	//Games -----------------------------------------------------------------------------------------//	
@@ -110,8 +108,14 @@ public class Database implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#createGame(com.example.wecharades.model.Player, com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void createGame(Player player1, Player player2) throws DatabaseException{
-
+	public void createGame(Player player1, Player player2){
+		//Fetch the list of words - on Callback, the rest of the game creation will take place
+		getWords(player1, player2);
+	}
+	/*
+	 * Helper methdo for createGame - called after callback from fetching wordlist
+	 */
+	private void createGameInBackground(Player player1, Player player2, Stack<String> wordList){
 		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
 
 		ParseObject newGame = new ParseObject(GAME);
@@ -123,7 +127,7 @@ public class Database implements IDatabase {
 
 		parseList.add(newGame);
 		//Adds all the six turns
-		Stack<String> wordList = getWords();
+
 		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
 			if(i%2 == 0){
@@ -162,7 +166,6 @@ public class Database implements IDatabase {
 			object = query.get(gameId);
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			//TODO: fix error message
 			throw new DatabaseException(1112, "Failed to get ParseObject");
 		}
 
@@ -369,7 +372,7 @@ public class Database implements IDatabase {
 		}
 		return players;
 	}
-	
+
 	/**
 	 * Generates a list with the 10 players with best global score
 	 * @return a list with top 10 players based on their global score
@@ -380,7 +383,7 @@ public class Database implements IDatabase {
 		ParseQuery query = ParseUser.getQuery();
 		query.addDescendingOrder("globalScore");
 		query.setLimit(10);
-		
+
 		try {
 			List<ParseObject> dbResult = query.find();
 			for(ParseObject player : dbResult) {
@@ -391,7 +394,7 @@ public class Database implements IDatabase {
 			throw new DatabaseException(1010,"Failed to fetch players");
 		}
 		return players;
-		
+
 	}
 
 	//Invitations -----------------------------------------------------------------------------------------
@@ -402,21 +405,18 @@ public class Database implements IDatabase {
 	@Override
 	public void putIntoRandomQueue(final Player player){
 		final Database db = this;
-		
+
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> queryList, ParseException e){
-				if(e == null){
+				if(e == null && db != null){
 					if(queryList.isEmpty()){
 						db.putRandom(player);
 					} else{
 						Collections.shuffle(queryList);
 						Player p2 = dbc.parsePlayer(queryList.get(0));
-						try {
-							db.createGame(player, p2);
-						} catch (DatabaseException e1) {
-							Log.d("Database", e1.getMessage());
-						}
+						db.createGame(player, p2);
+						db.removeRandom(player);
 					}
 				} else{
 					Log.d("Database",e.getMessage());
@@ -432,9 +432,19 @@ public class Database implements IDatabase {
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
 		queue.saveEventually();
 	}
-	private void removeRandom(Player player){
+	public void removeRandom(Player player){
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
+		//First fetches the player from the randomqueue, then deletes the player. All on speparate thread.
+		query.getFirstInBackground(new GetCallback(){
+			public void done(ParseObject thePlayer, ParseException e){
+				if(e == null){
+					thePlayer.deleteEventually();
+				} else{
+					Log.d("Database", "Could not remove random player");
+				}
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -497,9 +507,9 @@ public class Database implements IDatabase {
 			removeInvitation(invite);
 		}
 	}
-	
+
 	//User login, registration and logout -----------------------------------------------------------------------------
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#registerPlayer(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
