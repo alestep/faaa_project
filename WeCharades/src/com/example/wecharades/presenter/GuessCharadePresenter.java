@@ -60,7 +60,7 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	/**
-	 * Creates a timer to controll the gameTime
+	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
 	public void initializeTimer (final TextView timerView){
@@ -239,10 +239,10 @@ public class GuessCharadePresenter extends Presenter {
 				mDialog.setMessage("Download Success!");
 				mDialog.dismiss();
 				activity.showMessage(shuffleWord().toUpperCase());
-				timer.start();
-				timerView.setVisibility(0);
 				downloadState = DOWNLOAD_FINISHED;
 				playVideo();
+				timer.start();
+				timerView.setVisibility(0);
 
 			}
 		}

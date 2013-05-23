@@ -7,7 +7,8 @@
     <TextView
         android:id="@+id/inviter"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="left|center_vertical"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_weight="0.80"
@@ -16,19 +17,19 @@
     <ImageButton
         android:id="@+id/accept"
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/btn_default_normal_green"
+        android:background="@drawable/button_custom_accept"
         android:src="@drawable/navigation_accept" />
 
     <ImageButton
         android:id="@+id/reject"
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/btn_default_normal_red"
+        android:background="@drawable/button_custom_reject"
         android:src="@drawable/navigation_cancel"/>
 
 </LinearLayout>

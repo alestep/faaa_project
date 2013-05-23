@@ -240,10 +240,10 @@ public class DataController extends Observable implements Observer{
 				m.putTurns(db.getTurns(game));
 			} else if(Game.hasChanged(game, localGame)){
 				//Updates the current turn from the database
-				m.putTurn(db.getTurn(game, game.getTurn()));
+				m.putTurn(db.getTurn(game, game.getTurnNumber()));
 				//If the last turn was finished
-				if(game.getTurn() > localGame.getTurn()){
-					m.putTurn(db.getTurn(game, game.getTurn()-1));
+				if(game.getTurnNumber() > localGame.getTurnNumber()){
+					m.putTurn(db.getTurn(game, game.getTurnNumber()-1));
 				}
 			}
 		}
@@ -370,7 +370,7 @@ public class DataController extends Observable implements Observer{
 	 * @param game - the game to be updated
 	 * @throws DatabaseException
 	 */
-	public void updateGame(Game game) throws DatabaseException{
+	private void updateGame(Game game) throws DatabaseException{
 		if(isFinished(game)){
 			game.setFinished();
 		}
