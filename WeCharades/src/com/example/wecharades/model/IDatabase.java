@@ -28,7 +28,13 @@ public interface IDatabase{
 	 */
 	public abstract void createGame(Player player1, Player player2)
 			throws DatabaseException;
-
+	
+	/**
+	 * Removed a game from the database
+	 * @param game - the game to delete
+	 */
+	public abstract void removeGame(Game game);
+	
 	/**
 	 * A method to get a single game
 	 * @param gameId
@@ -50,7 +56,7 @@ public interface IDatabase{
 	 * @param The game to be updated
 	 */
 	public abstract void updateGame(Game theGame);
-
+	
 	/**
 	 * Retrieves a turn from the database
 	 * @param gameId - the game to which this turn belongs

@@ -94,12 +94,12 @@ public class GameDashboardPresenter extends Presenter {
 	private void updateButtonInformation(Turn turn, Button button) {
 		//TODO This method is a bit elaborate
 		String buttonText = "";
-		if(game.isFinished() || (turn.getTurnNumber() < game.getTurn()) ) {
+		if(game.isFinished() || (turn.getTurnNumber() < game.getTurnNumber()) ) {
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
 					: turn.getRecPlayerScore() + " points";
 			button.setEnabled(false);
-		} else if(turn.getTurnNumber() == game.getTurn()) {
+		} else if(turn.getTurnNumber() == game.getTurnNumber()) {
 			//TODO: add at state: "waiting for opponent"
 			if(turn.getAnsPlayer().equals(dc.getCurrentPlayer())) {
 				buttonText = "Guess word!";

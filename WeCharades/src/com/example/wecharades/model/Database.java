@@ -144,6 +144,43 @@ public class Database extends Observable implements IDatabase {
 		ParseObject.saveAllInBackground(parseList);
 	}
 
+	/**
+	 * Method to delete a game in background
+	 */
+	public void removeGame(Game game){
+		ParseQuery query = new ParseQuery(Database.GAME);
+		query.getInBackground(game.getGameId(), new GetCallback(){
+			public void done(ParseObject game, ParseException e){
+				if(e == null){
+					removeTurns(game);
+					game.deleteEventually();
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+	}
+	/*
+	 * Helper method to removeTurns - called when the game has been fetched from the db.
+	 */
+	private void removeTurns(ParseObject game){
+		ParseQuery turnQuery = new ParseQuery(Database.TURN);
+		turnQuery.whereEqualTo(Database.TURN_GAME, game);
+		turnQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> list, ParseException e){
+				if(e == null){
+					for(ParseObject turn : list){
+						turn.deleteEventually();
+					}
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+	}
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#getGame(java.lang.String)
 	 */
@@ -272,7 +309,7 @@ public class Database extends Observable implements IDatabase {
 				if(e == null){
 					//Updates the game on the server with the latest info
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
-					object.put(GAME_TURN, game.getTurn());
+					object.put(GAME_TURN, game.getTurnNumber());
 					object.saveEventually();
 				} else{
 					Log.d("Database",e.getMessage());

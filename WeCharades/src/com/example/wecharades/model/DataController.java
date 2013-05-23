@@ -51,7 +51,9 @@ public class DataController extends Observable implements Observer{
 				setChanged();
 				notifyObservers((DatabaseException)obj);
 			} else if(obj.getClass().equals(TreeMap.class)){
-				//(TreeMap<Game, ArrayList<Turn>>)  
+				ArrayList<Game> gameList = retrieveUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
+				setChanged();
+				notifyObservers(gameList);
 			}
 		}
 		
@@ -247,10 +249,34 @@ public class DataController extends Observable implements Observer{
 		return m.getGames();*/
 	}
 	
-	public ArrayList<Game> retrievedUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) {
-		for(Map.Entry<Game, ArrayList<Turn>> game : games.entrySet()){
-			
+	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> games) {
+		Game localGame;
+		for(Map.Entry<Game, ArrayList<Turn>> gameMap : games.entrySet()){
+			localGame = m.getGame(gameMap.getKey().getGameId());
+			if(localGame == null || m.getTurns(localGame) == null){
+				//If the local game does not exist, or does not have any turns
+				m.putGame(gameMap.getKey());
+				m.putTurns(gameMap.getValue());
+			} else if(Game.hasChanged(localGame, gameMap.getKey())){
+				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
+					//Run if the local turn is older than the db one.
+					//It can then be deduced that the local turns are out-of-date.
+					m.putGame(gameMap.getKey());
+					m.putTurns(gameMap.getValue());
+				} else if(localGame.isFinished() 
+						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
+					//This code deletes games and turns after they are finished!
+					//This code is only reachable for the receiving player - as the score should be updated
+					db.removeGame(localGame);
+				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+					//If current player fo a game is different, we must check the turns
+					
+				}
+			}
 		}
+		//TODO check this in retrieval:
+		/*if(timeDiff > 168)
+			m.removeGame(localGame);*/
 		/*Game localGame;
 		for(Game game : games){
 			localGame = m.getGame(game.getGameId());
@@ -295,7 +321,7 @@ public class DataController extends Observable implements Observer{
 			int p1s = 0;
 			int p2s = 0;
 			Turn currentTurn;
-			for(int i=0; i < game.getTurn(); i++){
+			for(int i=0; i < game.getTurnNumber(); i++){
 				currentTurn = turnList.get(i);
 				p1s += currentTurn.getPlayerScore(p1);
 				p2s += currentTurn.getPlayerScore(p2);
@@ -323,7 +349,7 @@ public class DataController extends Observable implements Observer{
 	 * Helper method for updateGame()
 	 */
 	private boolean isFinished(Game game){
-		return (game.getTurn() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
+		return (game.getTurnNumber() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
 	}
 
 	//Turn -----------------------------------------------------------
