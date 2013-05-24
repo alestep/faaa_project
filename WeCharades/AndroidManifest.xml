@@ -27,7 +27,7 @@
         <!-- Start Screen Activity -->
         <activity
             android:name=".views.StartActivity"
-            android:label="@string/menu" >
+            android:label="@string/app_name" >
  
             <!-- DEFAULT STARTING SCREEN -->
              <intent-filter>
@@ -39,7 +39,7 @@
         <!-- New Game Activity -->
         <activity
             android:name=".views.NewGameActivity"
-            android:label="@string/new_game" >
+            android:label="@string/new_game">
         </activity>
 
         <!-- Invitations Activity -->

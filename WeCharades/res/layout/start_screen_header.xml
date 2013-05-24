@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/LightGrey" >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,13 +23,13 @@
 
         <Button
             android:id="@+id/refresh"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/global_score"
             android:background="@drawable/navigation_refresh"
-            android:onClick="onClickRefresh" />
+            android:onClick="onClickRefresh"/>
 
         <Button
             android:id="@+id/account"

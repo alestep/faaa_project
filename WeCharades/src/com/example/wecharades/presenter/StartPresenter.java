@@ -10,9 +10,11 @@ import java.util.TreeMap;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
@@ -43,6 +45,7 @@ public class StartPresenter extends Presenter implements Observer{
 		this.activity = activity;
 		//adapter = new SeparatedListAdapter(activity);
 	}
+
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
 	}
@@ -110,7 +113,7 @@ public class StartPresenter extends Presenter implements Observer{
 			}
 		}
 		
-		// Set the adapter on the ListView holder
+		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
 		
         // Listen for Click events
@@ -124,6 +127,7 @@ public class StartPresenter extends Presenter implements Observer{
             }
         });
 	}
+	
 
 	/**
 	 * 

@@ -45,6 +45,12 @@ public class RegisterActivity extends GenericActivity {
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		presenter.setProgressSpinnerInvisible(registerProgress);
 	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		presenter.setListeners(inputRepeatPassword);
+	}
 
 	/**
 	 * Registers a new user - if success go to the StartScreen, if fail show error messages
@@ -56,15 +62,9 @@ public class RegisterActivity extends GenericActivity {
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString(), myView, registerProgress);
+		
 	}
 
-	/**
-	 * Go to login screen
-	 * @param view
-	 */
-	public void onClickLogin(View view) {
-		presenter.goToLoginActivity();
-	}
 
 	@Override
 	public TextView getTextArea() {
