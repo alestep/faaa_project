@@ -1,6 +1,7 @@
 package com.example.wecharades.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,7 +28,7 @@ public class Model {
 	, INVITATIONS_SAVETIME 			= 72;
 
 	//A variable to check if model is already saved.
-	private boolean					SAVED = true;
+	private boolean					SAVED = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -47,7 +48,10 @@ public class Model {
 	//Singleton
 	private static Model singleModel;
 
-	private Model(Context context){}
+	private Model(Context context){
+		//Creating a file
+		saveModel(context);
+	}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
@@ -73,9 +77,8 @@ public class Model {
 	public void saveModel(Context context){
 		if(!SAVED){
 			try {
-				ObjectOutputStream oOut = new ObjectOutputStream(
-						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
-						);
+				FileOutputStream ops = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+				ObjectOutputStream oOut = new ObjectOutputStream(ops);
 				oOut.writeObject(singleModel);
 				oOut.close();
 				SAVED = true;

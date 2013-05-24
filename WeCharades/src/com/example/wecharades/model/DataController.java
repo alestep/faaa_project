@@ -46,6 +46,9 @@ public class DataController extends Observable implements Observer{
 			m.saveModel(context);
 	}
 
+	/**
+	 * This method is called when the database has finished fetching turn and game data.
+	 */
 	@Override
 	public void update(Observable db, Object obj) {
 		if(db.getClass().equals(Database.class)
