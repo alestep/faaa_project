@@ -83,7 +83,6 @@ public class VideoUploadPresenter extends Presenter {
 	private void setServerStorageLocation(){
 		String gameID = turn.getGameId();
 		String turnNumber = String.valueOf(turn.getTurnNumber());
-		//String serverPath = "/APP/" + gameID + "/" + turnNumber + "/";
 		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
 		System.out.println(serverPath);
 		this.serverPath = serverPath;

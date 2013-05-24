@@ -22,9 +22,9 @@ import android.util.Log;
 public class Model {
 	private static final String 	SAVE_FILE = "model.save";
 	public static final int 		
-			FINISHEDGAMES_SAVETIME 			= 168
-			, FINISHEDGAMES_NUMBERSAVED 	= 10
-			, INVITATIONS_SAVETIME 			= 72;
+	FINISHEDGAMES_SAVETIME 			= 168
+	, FINISHEDGAMES_NUMBERSAVED 	= 10
+	, INVITATIONS_SAVETIME 			= 72;
 
 	//A variable to check if model is already saved.
 	private boolean					SAVED = true;
@@ -184,8 +184,8 @@ public class Model {
 			if(listOfTurns == null){
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
-			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
-				listOfTurns.remove(turn);
+			}else if(listOfTurns.contains(turn)) 
+				listOfTurns.remove(turn); //Removes the old copy of the turn
 			listOfTurns.add(turn); //Adds the new copy of the game
 		}
 		SAVED = false;
