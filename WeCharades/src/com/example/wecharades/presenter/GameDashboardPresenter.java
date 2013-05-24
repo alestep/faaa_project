@@ -82,13 +82,7 @@ public class GameDashboardPresenter extends Presenter {
 	 */
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
 		//This requires that the lists are equally long, which they always should be
-		int i = 0;
 		for(Turn turn : turnList) {
-			i++;
-			if (i > 6) {
-				Log.d("Too many Turn objects", String.valueOf(turn.getTurnNumber()));
-				continue;
-			}
 			Button button = (Button) buttonList.remove(0);
 			updateButtonInformation(turn, button);
 		}
