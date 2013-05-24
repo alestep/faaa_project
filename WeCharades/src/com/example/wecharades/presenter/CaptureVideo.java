@@ -31,16 +31,16 @@ public class CaptureVideo extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		//setContentView(R.layout.main);
 		//TODO Can we do like this?
 		this.turn = (Turn) getIntent().getSerializableExtra(Database.TURN);
 		dispatchTakeVideoIntent();
 	}
 	private void dispatchTakeVideoIntent(){
-		intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-		intentCamera.putExtra("android.intent.extra.durationLimit", 8);
-		intentCamera.putExtra("android.intent.extra.videoQuality", 1);
-		startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);
+			intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+			intentCamera.putExtra("android.intent.extra.durationLimit", 8);
+			intentCamera.putExtra("android.intent.extra.videoQuality", 1);
+			startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);	
 	}
 
 	@Override
@@ -53,13 +53,14 @@ public class CaptureVideo extends Activity {
 				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
 				finishActivity(REQUEST_VIDEO_CAPTURED);
+				finish();
+				
 			}
 		}
 		else if(resultCode == RESULT_CANCELED){
 			uriVideo = null;
 			Toast.makeText(CaptureVideo.this,"Cancelled!",Toast.LENGTH_LONG).show();
 		}
-
 	}
 
 	public static boolean isIntentAvailable(Context context, String action) {
