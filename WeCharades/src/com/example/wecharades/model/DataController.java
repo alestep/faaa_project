@@ -210,7 +210,7 @@ public class DataController extends Observable implements Observer{
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
-	 * @param p2 - palyer 2
+	 * @param p2 - player 2
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public void createGame(Player p1, Player p2) throws DatabaseException{

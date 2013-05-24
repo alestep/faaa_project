@@ -504,17 +504,25 @@ public class Database extends Observable implements IDatabase {
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> queryList, ParseException e){
-				if(e == null && db != null){
-					if(queryList.isEmpty()){
-						db.putRandom(player);
-					} else{
-						Collections.shuffle(queryList);
-						Player p2 = dbc.parsePlayer(queryList.get(0));
-						db.createGame(player, p2);
-						db.removeRandom(player);
+				if(e == null){
+					if(db != null){
+						if(queryList.isEmpty()){
+							db.putRandom(player);
+						} else{
+							Collections.shuffle(queryList);
+							try {
+								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
+								db.createGame(player, p2);
+								db.removeRandom(player);
+							} catch (DatabaseException e1) {
+								setChanged();
+								notifyObservers(new DatabaseException(e1.getCode(), e1.getMessage()));
+							}
+						}
 					}
 				} else{
-					Log.d("Database",e.getMessage());
+					setChanged();	
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
