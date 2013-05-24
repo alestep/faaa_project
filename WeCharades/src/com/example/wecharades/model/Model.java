@@ -227,7 +227,7 @@ public class Model {
 	 */
 	public Turn getCurrentTurn(Game game) {
 		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1).getTurnNumber()));
-		return getTurns(game).get(game.getTurnNumber()-1);
+		return getTurns(game).get(game.getTurnNumber()-1); //HERE IS THE ERROR! THE TURN HAS BEEN INCREMENTED!
 	}
 
 	//Players ---------------------------------------------------------------

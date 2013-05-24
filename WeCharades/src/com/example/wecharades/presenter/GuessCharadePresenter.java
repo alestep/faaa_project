@@ -159,12 +159,7 @@ public class GuessCharadePresenter extends Presenter {
 	 * @return True if answerWord matches currentWord.
 	 */
 	public boolean checkRightWord(EditText answerWord){
-		if(answerWord.getText().toString().equalsIgnoreCase(currentWord) ){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
 	}
 	/**
 	 * 

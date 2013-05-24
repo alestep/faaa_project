@@ -29,7 +29,7 @@ import com.example.wecharades.views.StartActivity;
 public class StartPresenter extends Presenter implements Observer{
 
 	private StartActivity activity;
-	//private LinkedHashMap<String, ArrayList<Game>> listMap;
+	//private LinkedHashMap<String, ArrayList<Game>> listMap; 
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 	
 	// Adapter for ListView Contents and the actual listview
