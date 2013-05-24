@@ -349,7 +349,6 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
-		db.updateTurn(m.getCurrentTurn(game)); //Put this above the switch clause in updateTurn() and it should work.
 	}
 	/*
 	 * Helper method for updateGame()
@@ -371,6 +370,7 @@ public class DataController extends Observable implements Observer{
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
 		Game game = m.getGame(turn.getGameId());
+		db.updateTurn(m.getCurrentTurn(game));
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
