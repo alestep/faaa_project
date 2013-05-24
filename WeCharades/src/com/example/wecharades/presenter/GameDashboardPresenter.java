@@ -40,7 +40,7 @@ public class GameDashboardPresenter extends Presenter {
 	/**
 	 * Total score per player at a specific game
 	 */
-	private void updateScore() {
+	private void updateScore() { //TODO: use dc.getGameScore()
 		int currentPLayersScore	= 0;
 		int opponentsScore		= 0;
 		for(Turn turn : turnList) {
@@ -84,8 +84,7 @@ public class GameDashboardPresenter extends Presenter {
 		int i = 0;
 		for(Turn turn : turnList) {
 			i++;
-			if(i == 7) 
-				break;
+			if(i > 6) break;
 			Button button = (Button) buttonList.remove(0);
 			updateButtonInformation(turn, button);
 		}
