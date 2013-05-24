@@ -186,7 +186,7 @@ public class Model {
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) 
 				if(listOfTurns.remove(turn)) Log.d("TURN REMOVED?", "turn removed"); else { Log.d("TURN REMOVED?", "turn NOT removed"); }
-			listOfTurns.add(turn); //TODO: ADD AT INDEX (turn.getTurnNumber - 1)
+			listOfTurns.add(turn.getTurnNumber() - 1, turn);
 		}
 		SAVED = false;
 	}
@@ -215,7 +215,6 @@ public class Model {
 	 * @return - an arraylist of turns
 	 */
 	public ArrayList<Turn> getTurns(Game game){
-		Log.d("Model: getTurns->GameId", game.getGameId());
 		return gameList.get(game);
 	}
 
@@ -225,7 +224,7 @@ public class Model {
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game) {
-		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1)));
+		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1).getTurnNumber()));
 		return getTurns(game).get(game.getTurnNumber()-1);
 	}
 
