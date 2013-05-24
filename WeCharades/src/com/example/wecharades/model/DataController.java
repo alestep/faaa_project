@@ -341,6 +341,8 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
+		Log.d("Turn number", String.valueOf((m.getCurrentTurn(game)).getTurnNumber())); //TODO: remove
+		Log.d("Turn's Videolink", m.getCurrentTurn(game).getVideoLink()); //TODO: remove
 		db.updateTurn(m.getCurrentTurn(game));
 	}
 	/*

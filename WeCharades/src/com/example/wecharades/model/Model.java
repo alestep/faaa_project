@@ -223,7 +223,7 @@ public class Model {
 	 * @param game - the game to fetch from
 	 * @return a Turn
 	 */
-	public Turn getCurrentTurn(Game game){
+	public Turn getCurrentTurn(Game game) {
 		return getTurns(game).get(game.getTurnNumber()-1);
 	}
 
