@@ -130,6 +130,7 @@ public abstract class Presenter implements Observer{
 	 * Called whenever an activity is closed.
 	 */
 	public void saveState(){
+		dc.deleteObserver(this);
 		dc.saveState(activity);
 	}
 	

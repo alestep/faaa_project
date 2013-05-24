@@ -1,9 +1,11 @@
 package com.example.wecharades.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +21,11 @@ import android.util.Log;
  * @author Anton Dahlström
  *
  */
-public class Model {
+public class Model implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8167671678222883965L;
 	private static final String 	SAVE_FILE = "model.save";
 	public static final int 		
 	FINISHEDGAMES_SAVETIME 			= 168
@@ -27,7 +33,7 @@ public class Model {
 	, INVITATIONS_SAVETIME 			= 72;
 
 	//A variable to check if model is already saved.
-	private boolean					SAVED = true;
+	private boolean					SAVED = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -47,7 +53,10 @@ public class Model {
 	//Singleton
 	private static Model singleModel;
 
-	private Model(Context context){}
+	private Model(Context context){
+		//Creating a file
+		saveModel(context);
+	}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
@@ -73,14 +82,13 @@ public class Model {
 	public void saveModel(Context context){
 		if(!SAVED){
 			try {
-				ObjectOutputStream oOut = new ObjectOutputStream(
-						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
-						);
+				FileOutputStream ops = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+				ObjectOutputStream oOut = new ObjectOutputStream(ops);
 				oOut.writeObject(singleModel);
 				oOut.close();
 				SAVED = true;
 			} catch (IOException e) {
-				Log.d("IO - Model save", "Save failed");
+				Log.d("IO - Model save", e.getMessage());
 			}
 		}
 	}
@@ -90,7 +98,7 @@ public class Model {
 		try {
 			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
 			Object obj = oIn.readObject();
-			if (obj.getClass().equals(Model.class)){
+			if (obj != null && obj.getClass().equals(Model.class)){
 				singleModel = (Model) obj;
 			}
 		} catch (IOException e){
@@ -227,7 +235,7 @@ public class Model {
 	 */
 	public Turn getCurrentTurn(Game game) {
 		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1).getTurnNumber()));
-		return getTurns(game).get(game.getTurnNumber()-1);
+		return getTurns(game).get(game.getTurnNumber()-1); //HERE IS THE ERROR! THE TURN HAS BEEN INCREMENTED!
 	}
 
 	//Players ---------------------------------------------------------------

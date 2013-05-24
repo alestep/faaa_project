@@ -31,7 +31,7 @@ import com.example.wecharades.views.StartActivity;
 public class StartPresenter extends Presenter implements Observer{
 
 	private StartActivity activity;
-	//private LinkedHashMap<String, ArrayList<Game>> listMap;
+	//private LinkedHashMap<String, ArrayList<Game>> listMap; 
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 	
 	// Adapter for ListView Contents and the actual listview
@@ -43,7 +43,6 @@ public class StartPresenter extends Presenter implements Observer{
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		//adapter = new SeparatedListAdapter(activity);
 	}
 
 	public void setGameListView(ListView gameListView){
@@ -56,6 +55,7 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 	
 	public void update(){
+		dc.addObserver(this);
 		setInvitationStatus();
 		
 		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
@@ -163,17 +163,14 @@ public class StartPresenter extends Presenter implements Observer{
 	 * @param obs - The observer
 	 * @param obj - The object included in the message
 	 */
-	@Override
 	public void update(Observable obs, Object obj) {
 		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
-			if(obj instanceof ArrayList
-					&& !((ArrayList) obj).isEmpty()
-					&& ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
+			if(obj instanceof ArrayList){
 				updateFromDb((ArrayList<Game>) obj);
 			}
 		} else{
-			//If this 
+			//If anything else, send to super
 			super.update(obs, obj);
 		}
 	}

@@ -46,6 +46,9 @@ public class DataController extends Observable implements Observer{
 			m.saveModel(context);
 	}
 
+	/**
+	 * This method is called when the database has finished fetching turn and game data.
+	 */
 	@Override
 	public void update(Observable db, Object obj) {
 		if(db.getClass().equals(Database.class)
@@ -207,7 +210,7 @@ public class DataController extends Observable implements Observer{
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
-	 * @param p2 - palyer 2
+	 * @param p2 - player 2
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public void createGame(Player p1, Player p2) throws DatabaseException{
@@ -346,7 +349,6 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
-		db.updateTurn(m.getCurrentTurn(game));
 	}
 	/*
 	 * Helper method for updateGame()
@@ -368,12 +370,13 @@ public class DataController extends Observable implements Observer{
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
 		Game game = m.getGame(turn.getGameId());
+		db.updateTurn(m.getCurrentTurn(game));
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn(); Log.d("IncrementTurn()", "YES");
+		case Turn.FINISH : 	game.incrementTurn();
 		break;
 		}
 		game.setLastPlayed(new Date());
