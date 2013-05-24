@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
@@ -18,8 +19,15 @@ import android.util.Log;
  * @author Anton Dahlström
  *
  */
-public class Model implements Serializable {
-	private static final String SAVE_FILE = "model.save";
+public class Model {
+	private static final String 	SAVE_FILE = "model.save";
+	public static final int 		
+			FINISHEDGAMES_SAVETIME 			= 168
+			, FINISHEDGAMES_NUMBERSAVED 	= 10
+			, INVITATIONS_SAVETIME 			= 72;
+
+	//A variable to check if model is already saved.
+	private boolean					SAVED = true;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -63,15 +71,17 @@ public class Model implements Serializable {
 	 * @param context
 	 */
 	public void saveModel(Context context){
-		try {
-			ObjectOutputStream oOut = new ObjectOutputStream(
-					context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
-					);
-			oOut.writeObject(singleModel);
-			oOut.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(!SAVED){
+			try {
+				ObjectOutputStream oOut = new ObjectOutputStream(
+						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
+						);
+				oOut.writeObject(singleModel);
+				oOut.close();
+				SAVED = true;
+			} catch (IOException e) {
+				Log.d("IO - Model save", "Save failed");
+			}
 		}
 	}
 
@@ -84,13 +94,13 @@ public class Model implements Serializable {
 				singleModel = (Model) obj;
 			}
 		} catch (IOException e){
-			//TODO Ändra här också
+			Log.d("IO - Model load", "IOException");
 		} catch (ClassNotFoundException e2){
-			//TODO Ändra även här
+			Log.d("IO - Model load", "ClassNotFound");
 		}
 		return singleModel;
 	}
-	
+
 	private static void eraseModel(Context context){
 		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
 		if(modelFile.delete())
@@ -108,6 +118,7 @@ public class Model implements Serializable {
 		for(Game game : games){
 			putGame(game);
 		}
+		SAVED = false;
 	}
 
 	/**
@@ -126,7 +137,7 @@ public class Model implements Serializable {
 			gameList.put(game, null);
 			gameIdList.put(game.getGameId(), game);
 		}
-
+		SAVED = false;
 	}
 
 	/**
@@ -154,6 +165,7 @@ public class Model implements Serializable {
 	public void removeGame(Game game){
 		gameIdList.remove(game.getGameId());
 		gameList.remove(game);
+		SAVED = false;
 	}
 
 	/**
@@ -164,7 +176,7 @@ public class Model implements Serializable {
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurn(Turn turn){
-		if(turn != null){ //TODO vet inte om vi ska göra det här....
+		if(turn != null){
 			Game game = getGame(turn.getGameId());
 			if( !gameList.containsKey(game))
 				throw new NoSuchElementException();
@@ -173,9 +185,10 @@ public class Model implements Serializable {
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
-				listOfTurns.remove(turn.getTurnNumber()-1);
-			listOfTurns.add(turn.getTurnNumber()-1, turn); //Adds the new copy of the game
+				listOfTurns.remove(turn);
+			listOfTurns.add(turn); //Adds the new copy of the game
 		}
+		SAVED = false;
 	}
 
 	/**
@@ -185,6 +198,12 @@ public class Model implements Serializable {
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
+		Collections.sort(turnList, new Comparator<Turn>(){
+			@Override
+			public int compare(Turn lhs, Turn rhs) {
+				return lhs.getTurnNumber() - rhs.getTurnNumber();
+			}
+		});
 		for(Turn turn : turnList){
 			putTurn(turn);
 		}
@@ -224,6 +243,7 @@ public class Model implements Serializable {
 			storedPlayerNames.put(player.getName(), player.getParseId());
 		//The data for a player should always be updated
 		storedPlayers.put(player.getParseId(),player);
+		SAVED = false;
 	}
 
 	/**
@@ -266,6 +286,7 @@ public class Model implements Serializable {
 	 */
 	public void setCurrentPlayer(Player player){
 		currentPlayer = player;
+		SAVED = false;
 	}
 
 	/**
@@ -292,6 +313,7 @@ public class Model implements Serializable {
 	 */
 	public void setSentInvitation(Invitation invitation){
 		sentInvitations.add(invitation);
+		SAVED = false;
 	}
 
 	/**

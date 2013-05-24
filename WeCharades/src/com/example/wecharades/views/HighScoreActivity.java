@@ -16,9 +16,14 @@ public class HighScoreActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new HighScorePresenter(this));
 		setContentView(R.layout.highscore);
-		presenter = (HighScorePresenter) super.getPresenter();
 		myTable = (TableLayout) findViewById(R.id.table);
 		globalRanking = (TextView) findViewById(R.id.globalRanking);
+		
+		presenter = (HighScorePresenter) super.getPresenter();
+	}
+	
+	public void onStart(){
+		super.onStart();
 		presenter.updateHighScores(myTable);
 	}
 	

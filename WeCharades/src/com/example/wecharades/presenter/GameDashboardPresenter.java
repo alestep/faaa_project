@@ -3,6 +3,7 @@ package com.example.wecharades.presenter;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -76,15 +77,18 @@ public class GameDashboardPresenter extends Presenter {
 
 	/**
 	 * Update buttons with relevant information form the Turn object
-	 * @param turnList
-	 * @param buttonList
+	 * @param turnList - a list of turns in ascending order based on turn number
+	 * @param buttonList - plain buttons
 	 */
 	private void updateButtons(ArrayList<Turn> turnList, ArrayList<Button> buttonList) {
 		//This requires that the lists are equally long, which they always should be
 		int i = 0;
 		for(Turn turn : turnList) {
 			i++;
-			if(i > 6) break;
+			if (i > 6) {
+				Log.d("Too many Turn objects", String.valueOf(turn.getTurnNumber()));
+				continue;
+			}
 			Button button = (Button) buttonList.remove(0);
 			updateButtonInformation(turn, button);
 		}
@@ -126,11 +130,11 @@ public class GameDashboardPresenter extends Presenter {
 	//TODO this method is a bit special.
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
 		OnClickListener buttonListener = new View.OnClickListener() {
-			boolean isAnsPLayer = ansPlayer;
+			//boolean isAnsPLayer = ansPlayer;
 			Turn theTurn = turn;
 			@Override
 			public void onClick(View v) {
-				if(isAnsPLayer) {
+				if(ansPlayer) {
 					//Go to GuessCharadeActivity
 					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
 					intent.putExtra("Turn", theTurn);

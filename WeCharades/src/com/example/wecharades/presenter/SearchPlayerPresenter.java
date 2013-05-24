@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import android.app.Activity;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,7 +20,7 @@ public class SearchPlayerPresenter extends Presenter {
 	 * 
 	 * @param activity
 	 */
-	public SearchPlayerPresenter(Activity activity) {
+	public SearchPlayerPresenter(SearchPlayerActivity activity) {
 		super(activity);
 		this.activity = (SearchPlayerActivity) activity;
 	}

@@ -1,10 +1,10 @@
 package com.example.wecharades.presenter;
 
-import android.app.Activity;
+import com.example.wecharades.views.GenericActivity;
 
 public class SimplePresenter extends Presenter {
 
-	public SimplePresenter(Activity activity) {
+	public SimplePresenter(GenericActivity activity) {
 		super(activity);
 	}
 

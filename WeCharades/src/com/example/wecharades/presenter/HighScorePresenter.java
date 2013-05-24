@@ -1,8 +1,11 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -15,28 +18,39 @@ import com.example.wecharades.views.HighScoreActivity;
 public class HighScorePresenter extends Presenter {
 
 	HighScoreActivity activity;
+	
 	public HighScorePresenter(HighScoreActivity activity) {
 		super(activity);
 		this.activity = activity;
 	}
-
-	public void updateHighScores(TableLayout table) {
-		try {
-			updateHighScoreList(dc.getTopTenPlayers(), getAllTextViews(table));
-		} catch (DatabaseException e) {
-			//TODO: prettyPrint()!
-			e.printStackTrace();
+	
+	/**
+	 * Creates an table with highscores
+	 * @param table
+	 */
+	public void updateHighScores(TableLayout table){
+		try{
+			ArrayList<Player> allPlayers = dc.getAllPlayerObjects();
+			Collections.sort(allPlayers, new Comparator<Player>(){
+				@Override
+				public int compare(Player p1, Player p2) {
+					return p2.getGlobalScore() - p1.getGlobalScore();
+				}
+			});
+			
+			//int globalRanking = allPlayers.indexOf(dc.getCurrentPlayer());
+			//TODO: fix the line above. probably returns false value because of hashcode() and equals()
+			//Temporary fix below...
+			int globalRanking = 0;
+			for(int i = 0; i < allPlayers.size(); i++) {
+				if(allPlayers.get(i).equals(dc.getCurrentPlayer()))
+					globalRanking = i + 1;
+			}
+			updateHighScoreList(new ArrayList<Player>(allPlayers.subList(0, allPlayers.size() < 9 ? allPlayers.size() : 9)), getAllTextViews(table));
+			activity.updateGlobalRanking(globalRanking, allPlayers.size());
+		} catch(DatabaseException e) {
+			activity.showMessage(e.prettyPrint());
 		}
-		
-		int totalNumberOfPlayers = 0;
-		try {
-			totalNumberOfPlayers = dc.getAllPlayerNames().size();
-		} catch (DatabaseException e) {
-			// TODO prettyMessage
-			e.printStackTrace();
-		}
-		//Update field for global ranking
-		activity.updateGlobalRanking(dc.getCurrentPlayer().getGlobalRanking(), totalNumberOfPlayers);
 	}
 
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {

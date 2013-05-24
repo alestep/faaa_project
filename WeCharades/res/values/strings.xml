@@ -7,8 +7,14 @@
     <string name="game">Let\'s play</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="invitations">Invitations</string>
-	
-	<!-- Start screen header strings -->
+    
+    <!-- Login screen strings -->
+   	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="forgot_password">Forgot your password?</string>
+	<string name="not_registered">Not registered?</string>
+		
+	<!-- Start screen strings -->
 	<string name="new_game">Start a new game</string>
 	<string name="account">Account</string>
 	<string name="logout">Logout</string>
