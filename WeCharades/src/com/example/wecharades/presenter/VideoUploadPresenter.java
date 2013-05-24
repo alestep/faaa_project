@@ -173,9 +173,10 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onPostExecute(Boolean result){
 			if(mDialog.isShowing()){
 				mDialog.dismiss();
-				
 				turn.setVideoLink(serverPath);
+				Log.d("ServerPath in Presenter", serverPath);
 				turn.setState(Turn.VIDEO);
+				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
