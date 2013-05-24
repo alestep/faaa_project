@@ -103,7 +103,6 @@ public class VideoUploadPresenter extends Presenter {
 		try {
 			dc.updateTurn(turn);
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

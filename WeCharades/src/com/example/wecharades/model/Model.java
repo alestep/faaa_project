@@ -185,8 +185,8 @@ public class Model {
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) 
-				if(listOfTurns.remove(turn)) Log.d("TURN REMOVED?", "turn removed"); else { Log.d("TURN REMOVED?", "turn NOT removed"); }
-			listOfTurns.add(turn.getTurnNumber() - 1, turn);
+				listOfTurns.remove(turn);
+			listOfTurns.add(turn.getTurnNumber() - 1, turn); //put the updated turn in the right order!
 		}
 		SAVED = false;
 	}
