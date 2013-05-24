@@ -41,6 +41,7 @@ public class StartPresenter extends Presenter implements Observer{
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
+		dc.addObserver(this);
 	}
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
@@ -52,7 +53,6 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 	
 	public void update(){
-		dc.addObserver(this);
 		setInvitationStatus();
 		
 		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();

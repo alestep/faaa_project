@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -271,18 +272,21 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
-		removeOldGames();
+		removeOldGames(dbGames.keySet());
 
 		return m.getGames();
 	}
 	/*
 	 * This part removes any games that are "to old".
 	 */
-	private void removeOldGames(){
-		ArrayList<Game> finishedGames = new ArrayList<Game>(); 
+	private void removeOldGames(Set<Game> dbGames){
+		ArrayList<Game> finishedGames = new ArrayList<Game>();
 		for(Game locGame : m.getGames()){
-			if(locGame.isFinished())
+			if(locGame.isFinished()){
 				finishedGames.add(locGame);
+			} else if(!dbGames.contains(locGame)){
+				m.removeGame(locGame);
+			}
 		}
 		if(finishedGames.size() > 0){
 			//Sort the games using a cusom time-comparator
