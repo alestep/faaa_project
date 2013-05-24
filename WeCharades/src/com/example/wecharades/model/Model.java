@@ -47,7 +47,10 @@ public class Model {
 	//Singleton
 	private static Model singleModel;
 
-	private Model(Context context){}
+	private Model(Context context){
+		//Creating a file
+		new File(context.getFilesDir(), SAVE_FILE);
+	}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
