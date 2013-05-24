@@ -129,11 +129,13 @@ public class Model {
 		//This is actually kind of fast, although it might look a bit weird.
 		ArrayList<Turn> tempTurns;
 		if(gameList.containsKey(game) && gameList.get(game) != null){
+			Log.d("Model: putGame()", "Game in List");
 			tempTurns = gameList.get(game);
 			gameList.remove(game);
 			gameList.put(game,tempTurns);
 			gameIdList.put(game.getGameId(), game);
 		} else{
+			Log.d("Model: putGame()", "game not in list, add game");
 			gameList.put(game, null);
 			gameIdList.put(game.getGameId(), game);
 		}

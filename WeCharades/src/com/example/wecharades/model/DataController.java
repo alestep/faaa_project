@@ -238,7 +238,9 @@ public class DataController extends Observable implements Observer{
 				m.putGame(gameMap.getKey());
 				m.putTurns(gameMap.getValue());
 			} else if(Game.hasChanged(localGame, gameMap.getKey())){
+				Log.d("WORKS?", "YES!");
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
+					Log.d("DC: update", "Run if the local turn is older than the db one");
 					//Run if the local turn is older than the db one.
 					//It can then be deduced that the local turns are out-of-date.
 					//Because of the saveEventually, we do not have to check the other way around.
@@ -246,11 +248,14 @@ public class DataController extends Observable implements Observer{
 					m.putTurns(gameMap.getValue());
 				} else if(localGame.isFinished() 
 						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
+					Log.d("DC: update", "This code deletes games and turns after they are finished!");
+
 					//This code deletes games and turns after they are finished!
 					//This code is only reachable for the receiving player
 					db.removeGame(localGame);
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
 					//If current player of a game is different, we must check the turns
+					Log.d("DC: update", "If current player of a game is different, we must check the turns");
 					Turn localTurn = m.getCurrentTurn(localGame);
 					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
 					if(localTurn.getState() > dbTurn.getState()){
