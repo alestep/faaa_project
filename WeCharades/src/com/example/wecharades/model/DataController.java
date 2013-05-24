@@ -346,7 +346,7 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
-		db.updateTurn(m.getCurrentTurn(game));
+		db.updateTurn(m.getCurrentTurn(game)); //Put this above the switch clause in updateTurn() and it should work.
 	}
 	/*
 	 * Helper method for updateGame()
@@ -373,7 +373,7 @@ public class DataController extends Observable implements Observer{
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn(); Log.d("IncrementTurn()", "YES");
+		case Turn.FINISH : 	game.incrementTurn();
 		break;
 		}
 		game.setLastPlayed(new Date());
