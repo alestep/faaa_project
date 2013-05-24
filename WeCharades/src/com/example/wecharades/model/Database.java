@@ -513,7 +513,7 @@ public class Database extends Observable implements IDatabase {
 							try {
 								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
 								db.createGame(player, p2);
-								db.removeRandom(player);
+								db.removeRandom(p2);
 							} catch (DatabaseException e1) {
 								setChanged();
 								notifyObservers(new DatabaseException(e1.getCode(), e1.getMessage()));
@@ -539,10 +539,13 @@ public class Database extends Observable implements IDatabase {
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
 		//First fetches the player from the randomqueue, then deletes the player. All on speparate thread.
-		query.getFirstInBackground(new GetCallback(){
-			public void done(ParseObject thePlayer, ParseException e){
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> thePlayer, ParseException e){
 				if(e == null){
-					thePlayer.deleteEventually();
+					//Delete all instanses of a player.
+					for(ParseObject p : thePlayer){
+						p.deleteEventually();
+					}
 				} else{
 					Log.d("Database", "Could not remove random player");
 				}
