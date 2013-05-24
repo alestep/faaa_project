@@ -1,50 +1,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-        <EditText
-            android:id="@+id/search_window"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_default_normal"
-            android:ems="10"
-            android:hint="@string/search_hint"
-            android:drawableRight="@drawable/ic_menu_search"
-            android:imeActionLabel="Search"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:singleLine="true" >
-
-            <requestFocus />
-        </EditText>
-
-    </RelativeLayout>
-	
- 	<TextView
-        android:id="@+id/empty_list_item"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="italic"
-        android:visibility="gone" >
-    </TextView>
-    
-    <ListView
-       	android:id="@+id/result_list"
+    <EditText
+        android:id="@+id/search_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-         >
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_default_normal"
+        android:drawableRight="@drawable/ic_menu_search"
+        android:ems="10"
+        android:hint="@string/search_hint"
+        android:imeActionLabel="Search"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/empty_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic"
+        android:visibility="gone" >
+    </TextView>
+
+    <ListView
+        android:id="@+id/result_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
     </ListView>
 
 </LinearLayout>
