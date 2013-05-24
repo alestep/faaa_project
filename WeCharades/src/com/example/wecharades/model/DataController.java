@@ -349,7 +349,6 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
-		db.updateTurn(m.getCurrentTurn(game));
 	}
 	/*
 	 * Helper method for updateGame()
@@ -371,12 +370,13 @@ public class DataController extends Observable implements Observer{
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
 		Game game = m.getGame(turn.getGameId());
+		db.updateTurn(m.getCurrentTurn(game));
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn(); Log.d("IncrementTurn()", "YES");
+		case Turn.FINISH : 	game.incrementTurn();
 		break;
 		}
 		game.setLastPlayed(new Date());
