@@ -284,7 +284,10 @@ public class DataController extends Observable implements Observer{
 		for(Game locGame : m.getGames()){
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
-			} else if(!dbGames.contains(locGame)){
+			} else if(!dbGames.contains(locGame)
+					&& (new Date()).getTime() 
+						- locGame.getLastPlayed().getTime() > 1000L * 30L){
+				//We have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);
 			}
 		}
