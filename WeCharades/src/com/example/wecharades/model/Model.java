@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +21,11 @@ import android.util.Log;
  * @author Anton Dahlström
  *
  */
-public class Model {
+public class Model implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8167671678222883965L;
 	private static final String 	SAVE_FILE = "model.save";
 	public static final int 		
 	FINISHEDGAMES_SAVETIME 			= 168
@@ -83,7 +88,7 @@ public class Model {
 				oOut.close();
 				SAVED = true;
 			} catch (IOException e) {
-				Log.d("IO - Model save", "Save failed");
+				Log.d("IO - Model save", e.getMessage());
 			}
 		}
 	}
@@ -93,7 +98,7 @@ public class Model {
 		try {
 			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
 			Object obj = oIn.readObject();
-			if (obj.getClass().equals(Model.class)){
+			if (obj != null && obj.getClass().equals(Model.class)){
 				singleModel = (Model) obj;
 			}
 		} catch (IOException e){
