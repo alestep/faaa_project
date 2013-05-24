@@ -227,14 +227,16 @@ public class Database extends Observable implements IDatabase {
 		query2.whereContains(GAME_PLAYER_2, player.getParseId());
 
 		queries.add(query1);
-		queries.add(query2);
+		queries.add(query2); 
 
 		ParseQuery mainQuery = ParseQuery.or(queries);
 
 		mainQuery.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> dbResult, ParseException e){
-				if(e == null && db != null && !dbResult.isEmpty()){
-					db.getTurnsInBackgrund(dbResult);
+				if(e == null){
+					if (db != null && !dbResult.isEmpty()){
+						db.getTurnsInBackgrund(dbResult);
+					}
 				} else{
 					setChanged();
 					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
@@ -247,11 +249,8 @@ public class Database extends Observable implements IDatabase {
 	 */
 	private void getTurnsInBackgrund(final List<ParseObject> gameList){
 		LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
-		ParseQuery individualQuery;
 		for(ParseObject game : gameList){
-			individualQuery = new ParseQuery(TURN);
-			individualQuery.whereEqualTo(TURN_GAME, game);
-			gameQueries.add(individualQuery);
+			gameQueries.add((new ParseQuery(TURN)).whereEqualTo(TURN_GAME, game));
 		}
 		ParseQuery masterQuery = ParseQuery.or(gameQueries);
 		masterQuery.findInBackground(new FindCallback(){
