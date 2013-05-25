@@ -1,67 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/invitations"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/social_group"
-            android:gravity="right|top"
-            android:onClick="onClickInvitations" />
-
-        <Button
-            android:id="@+id/refresh"
-			android:layout_width="50dp"
-			android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/global_score"
-            android:background="@drawable/navigation_refresh"
-            android:onClick="onClickRefresh"/>
-
-        <Button
-            android:id="@+id/account"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btn_default_normal"
-            android:drawableLeft="@drawable/action_about"
-            android:gravity="left|center_vertical"
-            android:onClick="onClickUsername"
-            android:textColor="@color/White" />
-
-        <Button
-            android:id="@+id/global_score"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/invitations"
-            android:background="@drawable/star"
-            android:onClick="onClickHighScore" />
-    </RelativeLayout>
+    <Button
+        android:id="@+id/account"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.34"
+        android:background="@drawable/btn_default_normal"
+        android:drawableLeft="@drawable/action_about"
+        android:gravity="left|center_vertical"
+        android:onClick="onClickUsername"
+        android:textColor="@color/White" />
 
     <Button
         android:id="@+id/new_game_button"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="left"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_weight="0.64"
         android:background="@drawable/btn_default_normal_green"
         android:drawableRight="@drawable/content_new"
         android:gravity="left|center_vertical"

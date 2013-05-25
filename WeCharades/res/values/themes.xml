@@ -5,7 +5,7 @@
 
         <!-- Title bar styling -->
         <item name="android:windowTitleStyle">@style/title_bar_style</item>
-        <item name="android:windowTitleSize">35dip</item>
+        <item name="android:windowTitleSize">50dp</item>
         <item name="android:windowTitleBackgroundStyle">@style/title_bar_appearance</item>
 
         <!-- Window styling -->

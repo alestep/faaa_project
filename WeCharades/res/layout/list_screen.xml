@@ -3,19 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:padding="10dp" >
 
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:divider="@null"/>
 
     <TextView
         android:id="@+id/empty_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="italic">
+        android:textStyle="italic"
+        android:visibility="gone" >
     </TextView>
+
 </LinearLayout>

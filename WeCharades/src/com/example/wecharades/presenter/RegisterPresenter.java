@@ -1,5 +1,7 @@
 package com.example.wecharades.presenter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
@@ -24,7 +26,7 @@ public class RegisterPresenter extends Presenter {
 	private View myView;
 	private ProgressBar registerProgress;
 	private DatabaseException dbException;
-	
+
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
@@ -48,7 +50,7 @@ public class RegisterPresenter extends Presenter {
 		RegisterTask register = new RegisterTask();
 		register.execute();
 	}
-	
+
 	public void setListeners(EditText repeatPassword) {
 		repeatPassword.setOnEditorActionListener(new OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -60,7 +62,7 @@ public class RegisterPresenter extends Presenter {
 				}
 			}
 		});
-		
+
 	}
 
 	private class RegisterTask extends AsyncTask<Void, Long, Boolean>{
@@ -97,11 +99,23 @@ public class RegisterPresenter extends Presenter {
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
-				activity.showMessage(dbException.prettyPrint());
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle("Error!")
+				.setMessage(dbException.prettyPrint())
+				.setCancelable(false)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+
 				exceptionState = NO_EXCEPTION;
 			}
 			hideProgressSpinner(myView, registerProgress);
