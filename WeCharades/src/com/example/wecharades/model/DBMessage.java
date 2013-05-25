@@ -27,7 +27,7 @@ public DBMessage(int message, Object data){
 	case(20)	: if(data instanceof Map
 						&& ( 
 								(!((Map) data).isEmpty() 
-										&& ((Map) data).entrySet().iterator().next().getClass().equals(Game.class))
+										&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
 								|| ((Map) data).isEmpty()
 							)
 					)

@@ -54,43 +54,21 @@ public class DataController extends Observable implements Observer{
 	 */
 	@Override
 	public void update(Observable db, Object obj) { //TODO Create a DBMessage class as well...
-		if(obj != null && db.getClass().equals(DBMessage.class)){
+		if(obj != null && obj.getClass().equals(DBMessage.class)){
 			DBMessage dbm = (DBMessage) obj;
-			
 			if(dbm.getMessage() == DBMessage.ERROR){
 				setChanged();
-				notifyObservers(dbm.getData());
+				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
 			} else if(dbm.getMessage() == DBMessage.GAMELIST){
 				ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();
-				notifyObservers(gameList);
+				notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
 			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
 				List<Invitation> invList = parseDbInvitations((List<Invitation>) dbm.getData());
 				setChanged();
-				notifyObservers(invList);
+				notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
 			}
 		}
-		/*if(db.getClass().equals(Database.class)
-				& obj != null){
-			if(obj.getClass().equals(DatabaseException.class)){
-				setChanged();
-				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException)obj).prettyPrint()));
-			} else if(obj instanceof Map){
-				Map col = (Map) obj;
-				if(getInternalObject(col).getClass().equals(Game.class) || col.isEmpty()){
-					ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
-					setChanged();
-					notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
-				}
-			} else if (obj instanceof Collection){
-				Collection map = (Collection) obj;
-				if(getInternalObject(map).getClass().equals(Invitation.class) || map.isEmpty()){
-					List<Invitation> invList = parseDbInvitations((List<Invitation>) obj);
-					setChanged();
-					notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
-				}
-			}
-		} */
 	}
 
 	private Object getInternalObject(Collection col){
