@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -29,6 +30,8 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database extends Observable implements IDatabase {
+
+	//TODO change how dbexceptions are sent
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String
@@ -64,7 +67,7 @@ public class Database extends Observable implements IDatabase {
 	private DatabaseConverter dbc;
 
 	private Database(Context context){
-		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		Parse.initialize(context.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
 	public static IDatabase getDatabaseInstance(Context context){
@@ -157,7 +160,12 @@ public class Database extends Observable implements IDatabase {
 					game.deleteEventually();
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -176,7 +184,12 @@ public class Database extends Observable implements IDatabase {
 					}
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -238,7 +251,12 @@ public class Database extends Observable implements IDatabase {
 					}
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -250,7 +268,7 @@ public class Database extends Observable implements IDatabase {
 		if(gameList.isEmpty()){
 			//If there are no games, we should still update screen to remove old games!
 			setChanged();
-			notifyObservers(new TreeMap<Game, ArrayList<Turn>>());
+			notifyObservers(new DBMessage(DBMessage.GAMELIST, new TreeMap<Game, ArrayList<Turn>>()));
 		} else{
 			LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
 			for(ParseObject game : gameList){
@@ -259,35 +277,38 @@ public class Database extends Observable implements IDatabase {
 			ParseQuery masterQuery = ParseQuery.or(gameQueries);
 			masterQuery.findInBackground(new FindCallback(){
 				public void done(List<ParseObject> resultList, ParseException e){
-					if(e == null && !resultList.isEmpty()){
-						try{
-							ArrayList<Game> games = new ArrayList<Game>();
-							for(ParseObject obj : gameList){
-								games.add(dbc.parseGame(obj)); //TODO This should be fixed later
+					if(e == null){
+						if(!resultList.isEmpty()){
+							try{
+								ArrayList<Game> games = new ArrayList<Game>();
+								for(ParseObject obj : gameList){
+									games.add(dbc.parseGame(obj)); //TODO This should be fixed later
+								}
+								//First, we create a TreeMap with the games, and an index for reference:
+								TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+								TreeMap<String, Game> idList = new TreeMap<String, Game>();
+								for(Game game : games){
+									map.put(game, new ArrayList<Turn>());
+									idList.put(game.getGameId(), game);
+								}
+								//Then, we must parse the ParseObjects to turns and add them to the correct list
+								for(ParseObject obj : resultList){
+									Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
+									Game g = idList.get(turn.getGameId());
+									ArrayList<Turn> tl = map.get(g);
+									tl.add(turn);
+								}
+								setChanged();
+								notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
+							} catch(DatabaseException e2){
+								setChanged();
+								notifyObservers(new DBMessage(DBMessage.ERROR, e2));
 							}
-							//First, we create a TreeMap with the games, and an index for reference:
-							TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
-							TreeMap<String, Game> idList = new TreeMap<String, Game>();
-							for(Game game : games){
-								map.put(game, new ArrayList<Turn>());
-								idList.put(game.getGameId(), game);
-							}
-							//Then, we must parse the ParseObjects to turns and add them to the correct list
-							for(ParseObject obj : resultList){
-								Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
-								Game g = idList.get(turn.getGameId());
-								ArrayList<Turn> tl = map.get(g);
-								tl.add(turn);
-							}
-							setChanged();
-							notifyObservers(map);
-						} catch(DatabaseException e2){
-							setChanged();
-							notifyObservers(e2);
 						}
 					} else{
 						setChanged();
-						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+						notifyObservers(new DBMessage(DBMessage.ERROR
+								, new DatabaseException(e.getCode(), e.getMessage())));
 					}
 				}
 			});
@@ -521,13 +542,15 @@ public class Database extends Observable implements IDatabase {
 								db.removeRandom(p2);
 							} catch (DatabaseException e1) {
 								setChanged();
-								notifyObservers(new DatabaseException(e1.getCode(), e1.getMessage()));
+								notifyObservers(new DBMessage(DBMessage.ERROR
+										, e1));
 							}
 						}
 					}
 				} else{
-					setChanged();	
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					setChanged();
+					notifyObservers(new DBMessage(DBMessage.ERROR
+							, new DatabaseException(e.getCode(), e.getMessage())));
 				}
 			}
 		});
@@ -573,21 +596,33 @@ public class Database extends Observable implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#getInvitations(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public ArrayList<Invitation> getInvitations(Player player) throws DatabaseException {
-		ArrayList<Invitation> returnList = new ArrayList<Invitation>();
-
+	public void getInvitations(Player player) throws DatabaseException {
 		ParseQuery query = new ParseQuery(INVITE);
 		query.whereContains(INVITE_INVITEE, player.getParseId());
-		try {
-			List<ParseObject> result = query.find();
-			for(ParseObject object : result){
-				returnList.add(dbc.parseInvitation(object));
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> result, ParseException e){
+				if(e == null){
+					ArrayList<Invitation> invList = new ArrayList<Invitation>();
+					try{
+						if(!result.isEmpty()){
+							for(ParseObject obj : result){
+								invList.add(dbc.parseInvitation(obj));
+							}
+						}
+						setChanged();
+						notifyObservers(new DBMessage(DBMessage.INVITATIONS, invList));
+					} catch(DatabaseException e2){
+						sendError(e2);
+					}
+				} else{
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
+				}
 			}
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1009, "Failed to get invitations");
-		}
-		return returnList;
+			private void sendError(DatabaseException e){
+				setChanged();
+				notifyObservers(new DBMessage(DBMessage.ERROR, e));
+			}
+		});
 	}
 
 	/* (non-Javadoc)
@@ -634,12 +669,16 @@ public class Database extends Observable implements IDatabase {
 			) throws DatabaseException{
 
 		//Some checks that are done locally
-		if(inputNickname == null || inputNickname.length() == 0) {
-			throw new DatabaseException(101,"Invalid nickname");
+		if(inputNickname == null || !Pattern.compile("^[A-Za-z]{2,16}$").matcher(inputNickname).matches()) {
+			throw new DatabaseException(2001,"Invalid nickname. \n - It should be between 2 and 16 characters.\n - It should only contain A-Z, a-z, 0-9 and underline");
+			//		} else if (!Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$;").matcher(inputEmail).matches()) {
+			//			throw new DatabaseException(2002,"Invalid e-mail.");
+		} else if (inputEmail == null || inputEmail.length() == 0) {
+			throw new DatabaseException(125, "Invalid e-mail address.");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
-			throw new DatabaseException(102,"Weak password");
+			throw new DatabaseException(2003,"Weak password");
 		} else if(!inputPassword.equals(inputRepeatPassword)){
-			throw new DatabaseException(103,"Unrepeated password");
+			throw new DatabaseException(2004,"Unrepeated password");
 		}
 
 		ParseUser user = new ParseUser();
@@ -655,6 +694,7 @@ public class Database extends Observable implements IDatabase {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
+
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#loginPlayer(java.lang.String, java.lang.String)

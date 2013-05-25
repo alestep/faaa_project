@@ -18,8 +18,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.example.wecharades.model.DataController;
-import com.example.wecharades.model.DatabaseException;
+
+import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
@@ -37,13 +37,13 @@ public class StartPresenter extends Presenter implements Observer{
 	private StartActivity activity;
 	//private LinkedHashMap<String, ArrayList<Game>> listMap; 
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
-	
+
 	// Adapter for ListView Contents and the actual listview
 	//private SeparatedListAdapter adapter;
 	private ListView gameListView;
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
-	
+
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
@@ -83,32 +83,34 @@ public class StartPresenter extends Presenter implements Observer{
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
 	}
-	
+
 	public void initiate(){
 		String string = dc.getCurrentPlayer().getName();
 		activity.setAccountName(string);
 	}
-	
+
 	public void update(){
-		setInvitationStatus();
-		
-		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		score = new TreeMap<Game, Map<Player, Integer>>();
-		parseList(listMap, dc.getGames());
-		
-		createListView(listMap);
+		updateList(dc.getGames());
+		dc.getInvitations();
 	}
 
 
-	/*
-	 * Called when a new updated game list is received from the database.
+	/**
+	 * Private Method - Called when a new updated game list is received from the database.
 	 */
-	private void updateFromDb(ArrayList<Game> dbGames){
+	private void updateList(ArrayList<Game> gameList){
 		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
 		score = new TreeMap<Game, Map<Player, Integer>>();
-		parseList(listMap, dbGames);
-		
+		parseList(listMap, gameList);
+
 		createListView(listMap);
+	}
+	
+	/**
+	 * Private method which is called after an updated list of invitations is received.
+	 */
+	private void setInvitationStatus(List<Invitation> invites){
+		activity.setInvitations(invites.size());
 	}
 
 	/**
@@ -147,33 +149,20 @@ public class StartPresenter extends Presenter implements Observer{
 				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer(), score));		
 			}
 		}
-		
+
 		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
-		
-        // Listen for Click events
-        gameListView.setOnItemClickListener(new OnItemClickListener() {
-        	@Override
-        	public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-        		Game game = (Game) adapter.getItem(position-1);
-        		Intent intent = new Intent(activity, GameDashboardActivity.class);
-        		intent.putExtra("Game", game);
-        		activity.startActivity(intent);
-            }
-        });
-	}
-	
 
-	/**
-	 * 
-	 */
-	private void setInvitationStatus() {
-		try {
-			ArrayList<Invitation> invites = dc.getInvitations();
-			activity.setInvitations(invites.size());
-		}catch (DatabaseException e){
-			activity.showMessage(e.prettyPrint());
-		}
+		// Listen for Click events
+		gameListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+				Game game = (Game) adapter.getItem(position-1);
+				Intent intent = new Intent(activity, GameDashboardActivity.class);
+				intent.putExtra("Game", game);
+				activity.startActivity(intent);
+			}
+		});
 	}
 
 	/**
@@ -185,29 +174,28 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	/**
-	 * Called in order to deregister this presenter from the list of observers in the db.
+	 * Called in order to unregister this presenter from the list of observers in the db.
 	 */
 	public void unRegisterObserver(){
 		dc.deleteObserver(this);
 	}
 
 	/**
-	 * Called whenever a message is reveived from the DataController
+	 * Called whenever a message is received from the DataController
 	 * 	This method will override the default, but will pass on the message
 	 * 	to super when appropriate
 	 * @param obs - The observer
 	 * @param obj - The object included in the message
 	 */
 	public void update(Observable obs, Object obj) {
-		if(obs.getClass().equals(DataController.class)
+		if(obj.getClass().equals(DCMessage.class)
 				&& obj != null){
-			if(obj instanceof ArrayList){
-				updateFromDb((ArrayList<Game>) obj);
+			DCMessage dcm = (DCMessage) obj;
+			if (dcm.getMessage() == DCMessage.DATABASE_GAMES){
+				updateList((ArrayList<Game>) dcm.getData());
+			} else if (dcm.getMessage() == DCMessage.INVITATIONS){
+				setInvitationStatus((List<Invitation>) dcm.getData());
 			}
-		} else{
-			//If anything else, send to super
-			super.update(obs, obj);
 		}
 	}
-
 }

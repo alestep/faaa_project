@@ -1,6 +1,6 @@
 package com.example.wecharades.presenter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,10 +17,10 @@ import com.example.wecharades.views.InvitationActivity;
 
 public class InvitationAdapter extends ArrayAdapter<Invitation> {
 	private LayoutInflater li;
-	private ArrayList<Invitation> invites;
+	private List<Invitation> invites;
 	private InvitationActivity activity;
 	
-	public InvitationAdapter(InvitationActivity activity, ArrayList<Invitation> invites) {
+	public InvitationAdapter(InvitationActivity activity, List<Invitation> invites) {
 		super(activity, 0, invites);
 		this.invites = invites;
 		this.activity = activity;

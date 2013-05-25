@@ -6,9 +6,35 @@
 
     <TextView
         android:id="@+id/my_title_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
         style="@style/title_bar_style"
-        android:text="@string/app_name"/>
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.5"
+        android:text="@string/app_name" />
+
+    <ImageButton
+        android:id="@+id/invitations"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/title_bar_buttons"
+        android:gravity="right|top"
+        android:onClick="onClickInvitations"
+        android:src="@drawable/social_group" />
+
+    <ImageButton
+        android:id="@+id/refresh"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/title_bar_buttons"
+        android:onClick="onClickRefresh"
+        android:src="@drawable/navigation_refresh" />
+
+    <ImageButton
+        android:id="@+id/global_score"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/title_bar_buttons"
+        android:onClick="onClickHighScore"
+        android:src="@drawable/star" />
 
 </LinearLayout>

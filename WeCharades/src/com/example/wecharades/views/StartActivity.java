@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 import com.parse.ParseAnalytics;
@@ -41,7 +41,7 @@ public class StartActivity extends GenericActivity {
 	// ListView Contents
 	private ListView gameListView;
 
-	private Button invitations;
+	private ImageButton invitations;
 	private Button account;
 
 	@Override
@@ -61,7 +61,7 @@ public class StartActivity extends GenericActivity {
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 
-		invitations = (Button) findViewById(R.id.invitations);
+		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
 
 		// Sets the presenter
@@ -80,7 +80,10 @@ public class StartActivity extends GenericActivity {
 	public void onStart(){
 		super.onStart();
 		presenter.initiate();
-		//TODO here the code for updating the view should be included.
+	}
+	
+	public void onResume(){
+		super.onResume();
 		presenter.update();
 		presenter.notificationUpdate();
 	}
@@ -143,7 +146,7 @@ public class StartActivity extends GenericActivity {
 
 	public void setInvitations(int nrInvites){
 		if (nrInvites != 0) {
-			invitations.setText("+" + nrInvites);
+			//invitations.setText("+" + nrInvites);
 		}
 	}
 

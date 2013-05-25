@@ -1,18 +1,18 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import android.content.Context;
-import android.util.Log;
 
 
 /**
@@ -29,7 +29,7 @@ public class DataController extends Observable implements Observer{
 		return m.getGame(gameId);
 	}
 
-	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
+	private static DataController dc;
 	private Model m;
 	private IDatabase db;
 	private DataController(Context context){
@@ -55,19 +55,35 @@ public class DataController extends Observable implements Observer{
 	 * This method is called when the database has finished fetching turn and game data.
 	 */
 	@Override
-	public void update(Observable db, Object obj) {
-		if(db.getClass().equals(Database.class)
-				& obj != null){
-			if(obj.getClass().equals(DatabaseException.class)){
+	public void update(Observable db, Object obj) { //TODO Create a DBMessage class as well...
+		if(obj != null && obj.getClass().equals(DBMessage.class)){
+			DBMessage dbm = (DBMessage) obj;
+			if(dbm.getMessage() == DBMessage.ERROR){
 				setChanged();
-				notifyObservers((DatabaseException)obj);
-			} else if(obj instanceof TreeMap){
-				ArrayList<Game> gameList = retrieveUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
+				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
+			} else if(dbm.getMessage() == DBMessage.GAMELIST){
+				ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();
-				notifyObservers(gameList);
+				notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
+			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
+				List<Invitation> invList = parseDbInvitations((List<Invitation>) dbm.getData());
+				setChanged();
+				notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
 			}
 		}
+	}
 
+	private Object getInternalObject(Collection col){
+		if(!col.isEmpty()){
+			return ((List) col).get(0);
+		}
+		return col;
+	}
+	private Object getInternalObject(Map map){
+		if(!map.isEmpty()){
+			return map.entrySet().iterator().next();
+		}
+		return map;
 	}
 
 	//Session handling -----------------------------------------------------------
@@ -237,7 +253,7 @@ public class DataController extends Observable implements Observer{
 	 * 	This method will sync the database with the model!
 	 * 	//TODO This MIGHT have problems with it and is untested
 	 */
-	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
+	private ArrayList<Game> parseUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
 		Game localGame;
 		for(Map.Entry<Game, ArrayList<Turn>> gameMap : dbGames.entrySet()){
 			localGame = m.getGame(gameMap.getKey().getGameId());
@@ -245,26 +261,27 @@ public class DataController extends Observable implements Observer{
 				//If the local game does not exist, or does not have any turns
 				m.putGame(gameMap.getKey());
 				m.putTurns(gameMap.getValue());
-				removeInvitations(gameMap.getKey());
 			} else if(Game.hasChanged(localGame, gameMap.getKey())){
-				Log.d("WORKS?", "YES!");
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
-					Log.d("DC: update", "Run if the local turn is older than the db one");
 					//Run if the local turn is older than the db one.
 					//It can then be deduced that the local turns are out-of-date.
 					//Because of the saveEventually, we do not have to check the other way around.
 					m.putGame(gameMap.getKey());
 					m.putTurns(gameMap.getValue());
-				} else if(localGame.isFinished() 
-						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
-					Log.d("DC: update", "This code deletes games and turns after they are finished!");
-
-					//This code deletes games and turns after they are finished!
-					//This code is only reachable for the receiving player
-					db.removeGame(localGame);
+				} else if(localGame.isFinished()){
+					//Removes the instance in sent invitations when game is finished
+					for(Invitation i : m.getSentInvitations()){
+						if(localGame.getPlayer1().equals(i.getInviter())){
+							m.removeSentInvitation(i);
+						}
+					}
+					if(!localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 					
+						//This code deletes games and turns after they are finished!
+						//This code is only reachable for the receiving player
+						db.removeGame(localGame);
+					}
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
 					//If current player of a game is different, we must check the turns
-					Log.d("DC: update", "If current player of a game is different, we must check the turns");
 					Turn localTurn = m.getCurrentTurn(localGame);
 					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
 					if(localTurn.getState() > dbTurn.getState()){
@@ -277,37 +294,28 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
-		removeOldGames(dbGames.keySet());
+		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 
 		return m.getGames();
-	}
-	/** 
-	 * A method to remove all accepted invitations from sent invitations.
-	 * @param dbGame
-	 */
-	private void removeInvitations(Game dbGame){
-		ArrayList<Invitation> invitations = m.getSentInvitations();
-		for(Invitation i : invitations){
-			if(i.getInvitee().equals(dbGame.getPlayer1())){
-				if(i.getTimeOfInvite().before(dbGame.getLastPlayed())){
-					m.removeSentInvitation(i);
-				}
-			}
-		}
 	}
 	/*
 	 * This part removes any games that are "to old".
 	 */
-	private void removeOldGames(Set<Game> dbGames){
+	private void removeOldGames(ArrayList<Game> dbGames){
 		ArrayList<Game> finishedGames = new ArrayList<Game>();
 		for(Game locGame : m.getGames()){
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
-				//TODO:remove notification on server
-			} else if(!dbGames.contains(locGame)
-					&& (new Date()).getTime() 
-						- locGame.getLastPlayed().getTime() > 1000L * 30L){
-				//We have a time restriction here, to avoid deleting new games.
+			} else if(!dbGames.contains(locGame)){
+				//Remove any sent invitations for the game in question
+				for(Invitation inv : m.getSentInvitations()){
+					//We know that the local player will always be player 2, because of how games are created
+					if(inv.getInvitee().equals(locGame.getPlayer2())){
+						m.removeSentInvitation(inv);
+					}
+				}
+				//remove the actual game
+				//TODO We could have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);
 			}
 		}
@@ -415,23 +423,33 @@ public class DataController extends Observable implements Observer{
 
 	/**
 	 * A method to get all current invitations from the database
-	 * @return
-	 * @throws DatabaseException
 	 */
-	public ArrayList<Invitation> getInvitations() throws DatabaseException{
-		ArrayList<Invitation> invitations = db.getInvitations(getCurrentPlayer());
+	public void getInvitations(){
+		try {
+			db.getInvitations(getCurrentPlayer());
+		} catch (DatabaseException e) {
+			setChanged();
+			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
+		}
+	}
+	public List<Invitation> parseDbInvitations(List<Invitation> dbInv){
 		Date currentTime = new Date();
 		long timeDifference;
 		ArrayList<Invitation> oldInvitations = new ArrayList<Invitation>();
-		for(Invitation inv : invitations){
+		for(Invitation inv : dbInv){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
 			if(timeDifference > Model.INVITATIONS_SAVETIME){ //if the invitations are considered to old
 				oldInvitations.add(inv);
-				invitations.remove(inv);
+				dbInv.remove(inv);
 			}
 		}
-		db.removeInvitations(oldInvitations);
-		return invitations;
+		try{
+			db.removeInvitations(oldInvitations);
+		} catch (DatabaseException e) {
+			setChanged();
+			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
+		}
+		return dbInv;
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package com.example.wecharades.presenter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
@@ -10,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
@@ -90,7 +91,17 @@ public class LoginPresenter extends Presenter{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
-				activity.showMessage(dbException.prettyPrint());
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle("Error!")
+				.setMessage(dbException.prettyPrint())
+				.setCancelable(false)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
 				exceptionState = NO_EXCEPTION;
 			}
 			hideProgressSpinner(myView, loginProgress);	
