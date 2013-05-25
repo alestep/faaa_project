@@ -73,19 +73,6 @@ public class DataController extends Observable implements Observer{
 		}
 	}
 
-	private Object getInternalObject(Collection col){
-		if(!col.isEmpty()){
-			return ((List) col).get(0);
-		}
-		return col;
-	}
-	private Object getInternalObject(Map map){
-		if(!map.isEmpty()){
-			return map.entrySet().iterator().next();
-		}
-		return map;
-	}
-
 	//Session handling -----------------------------------------------------------
 
 	/**
@@ -286,12 +273,12 @@ public class DataController extends Observable implements Observer{
 					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
 					if(localTurn.getState() > dbTurn.getState()){
 						//Update db.turn if local version is further ahead
-						db.updateTurn(localTurn);
 						db.updateGame(localGame);
+						db.updateTurn(localTurn);
 					} else {
 						//If something is wrong, allways use the "Golden master" - aka. the database
-						m.putTurn(dbTurn);
 						m.putGame(gameMap.getKey());
+						m.putTurn(dbTurn);
 					}
 				}
 			}

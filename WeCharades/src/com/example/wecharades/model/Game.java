@@ -141,8 +141,6 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 
 	@Override
 	public int compareTo(Game otherGame) {
-		if(otherGame == null)
-			throw new NullPointerException();
 		return this.getGameId().compareTo(otherGame.getGameId());
 	}
 }
