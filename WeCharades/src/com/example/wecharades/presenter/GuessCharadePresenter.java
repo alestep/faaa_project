@@ -9,20 +9,16 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
@@ -34,9 +30,9 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GuessCharadeActivity;
-import com.example.wecharades.views.StartActivity;
 
 public class GuessCharadePresenter extends Presenter {
 
@@ -286,5 +282,9 @@ public class GuessCharadePresenter extends Presenter {
 				alert.show();
 			}
 		}
+	}
+	
+	public Game getExtra(){
+		return dc.getGame(turn.getGameId());
 	}
 }
