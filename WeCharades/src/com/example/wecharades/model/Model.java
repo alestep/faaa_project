@@ -34,6 +34,9 @@ public class Model implements Serializable{
 	private boolean					SAVED = false;
 	//A variable that can be changed in order to purge the model
 	private static boolean			PURGE = false;
+	//A variable which is called when a user logs out 
+	// - the model exists a moment so we may finish any queries first
+	private static boolean 			RECREATE = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -65,15 +68,17 @@ public class Model implements Serializable{
 	public static Model getModelInstance(Context context){
 		if(PURGE){
 			eraseModel(context);
+			singleModel = null;
 			PURGE = false;
 		}
 		if(singleModel == null){
 			//Try to load from storage
 			singleModel = loadModel(context);
-			if(singleModel == null){
-				//If there were no previous models present, create new
-				singleModel = new Model(context);
-			}
+		}
+		if(singleModel == null || RECREATE){
+			//If there were no previous models present, create new
+			singleModel = new Model(context);
+			RECREATE = false;
 		}
 		return singleModel;
 	}
@@ -115,9 +120,10 @@ public class Model implements Serializable{
 
 	private static void eraseModel(Context context){
 		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
-		if(modelFile.delete())
+		if(modelFile.delete()){
 			Log.d("Model - File:","Removed file");
-		singleModel = null;
+		}
+		RECREATE = true;
 	}
 
 	//Games ---------------------------------------------------------------

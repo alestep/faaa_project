@@ -29,6 +29,8 @@ public class DataController extends Observable implements Observer{
 		return m.getGame(gameId);
 	}
 
+	private static boolean RECREATE = false;
+	
 	private static DataController dc;
 	private Model m;
 	private IDatabase db;
@@ -40,8 +42,9 @@ public class DataController extends Observable implements Observer{
 	}
 
 	public static DataController getDataController(Context context){
-		if(dc == null){
+		if(dc == null || RECREATE){
 			dc = new DataController(context);
+			RECREATE = false;
 		}
 		return dc;
 	}
@@ -94,8 +97,7 @@ public class DataController extends Observable implements Observer{
 	public void logOutPlayer(Context context){
 		m.logOutCurrentPlayer(context);
 		db.logOut();
-		//Dereference the model
-		m = null;
+		RECREATE = true;
 	}
 
 	/**
