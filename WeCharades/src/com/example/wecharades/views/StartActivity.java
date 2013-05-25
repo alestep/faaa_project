@@ -70,7 +70,10 @@ public class StartActivity extends GenericActivity {
 	public void onStart(){
 		super.onStart();
 		presenter.initiate();
-		//TODO here the code for updating the view should be included.
+	}
+	
+	public void onResume(){
+		super.onResume();
 		presenter.update();
 	}
 	

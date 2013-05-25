@@ -30,7 +30,7 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database extends Observable implements IDatabase {
-	
+
 	//TODO change how dbexceptions are sent
 
 	//This is used to avoid problems with using plain strings when calling the database.
@@ -277,31 +277,33 @@ public class Database extends Observable implements IDatabase {
 			ParseQuery masterQuery = ParseQuery.or(gameQueries);
 			masterQuery.findInBackground(new FindCallback(){
 				public void done(List<ParseObject> resultList, ParseException e){
-					if(e == null && !resultList.isEmpty()){
-						try{
-							ArrayList<Game> games = new ArrayList<Game>();
-							for(ParseObject obj : gameList){
-								games.add(dbc.parseGame(obj)); //TODO This should be fixed later
+					if(e == null){
+						if(!resultList.isEmpty()){
+							try{
+								ArrayList<Game> games = new ArrayList<Game>();
+								for(ParseObject obj : gameList){
+									games.add(dbc.parseGame(obj)); //TODO This should be fixed later
+								}
+								//First, we create a TreeMap with the games, and an index for reference:
+								TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+								TreeMap<String, Game> idList = new TreeMap<String, Game>();
+								for(Game game : games){
+									map.put(game, new ArrayList<Turn>());
+									idList.put(game.getGameId(), game);
+								}
+								//Then, we must parse the ParseObjects to turns and add them to the correct list
+								for(ParseObject obj : resultList){
+									Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
+									Game g = idList.get(turn.getGameId());
+									ArrayList<Turn> tl = map.get(g);
+									tl.add(turn);
+								}
+								setChanged();
+								notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
+							} catch(DatabaseException e2){
+								setChanged();
+								notifyObservers(new DBMessage(DBMessage.ERROR, e2));
 							}
-							//First, we create a TreeMap with the games, and an index for reference:
-							TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
-							TreeMap<String, Game> idList = new TreeMap<String, Game>();
-							for(Game game : games){
-								map.put(game, new ArrayList<Turn>());
-								idList.put(game.getGameId(), game);
-							}
-							//Then, we must parse the ParseObjects to turns and add them to the correct list
-							for(ParseObject obj : resultList){
-								Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
-								Game g = idList.get(turn.getGameId());
-								ArrayList<Turn> tl = map.get(g);
-								tl.add(turn);
-							}
-							setChanged();
-							notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
-						} catch(DatabaseException e2){
-							setChanged();
-							notifyObservers(new DBMessage(DBMessage.ERROR, e2));
 						}
 					} else{
 						setChanged();
