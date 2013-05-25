@@ -319,12 +319,20 @@ public class Model implements Serializable{
 	//Received invitations are not needed here, as they should allways be fetched from the database.
 
 	/**
-	 * 
-	 * @param invitation
+	 * Retrieve a list of Invitations sent from this device.
+	 * @param invitation - The invitation to add
 	 */
 	public void setSentInvitation(Invitation invitation){
 		sentInvitations.add(invitation);
 		SAVED = false;
+	}
+
+	/**
+	 * Removes a sent invitation from the list of sent invitation
+	 * @param invitation - the Invitation to delete
+	 */
+	public void removeSentInvitation(Invitation invitation){
+		sentInvitations.remove(invitation);
 	}
 
 	/**
