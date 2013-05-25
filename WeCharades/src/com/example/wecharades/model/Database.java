@@ -410,12 +410,13 @@ public class Database extends Observable implements IDatabase {
 	public void updateTurn(Turn theTurn){
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
-		try { //TODO background activity
+		query.whereEqualTo(TURN_GAME, ParseObject.createWithoutData(GAME, turn.getGameId()));
+		/*try { //TODO background activity
 			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
 		} catch (DatabaseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		query.whereEqualTo(TURN_TURN, turn.getTurnNumber());
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){

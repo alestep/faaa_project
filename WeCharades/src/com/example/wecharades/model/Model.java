@@ -33,7 +33,7 @@ public class Model implements Serializable{
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
 	//A variable that can be changed in order to purge the model
-	private static boolean			PURGE = true;
+	private static boolean			PURGE = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
