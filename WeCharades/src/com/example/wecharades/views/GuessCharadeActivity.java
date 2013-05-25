@@ -64,10 +64,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 * @param view
 	 */
 	public void onClickGuess(View view){
-		if(presenter.checkRightWord(answerWord) == true){
+		if(presenter.checkRightWord(answerWord)){
 			videoView.stopPlayback();
 			presenter.timer.cancel();
 			gameState = GAME_FINISHED;
+			//Update relevant information
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
 			turn.setState(Turn.FINISH);

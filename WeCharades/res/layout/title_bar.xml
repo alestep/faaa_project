@@ -3,14 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
-	
-    
-    
+
     <TextView
         android:id="@+id/my_title_bar"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="@string/app_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        style="@style/title_bar_style"
+        android:text="@string/app_name"/>
 
 </LinearLayout>

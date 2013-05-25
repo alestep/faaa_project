@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.util.Log;
 
 
 /**
@@ -45,6 +47,9 @@ public class DataController extends Observable implements Observer{
 			m.saveModel(context);
 	}
 
+	/**
+	 * This method is called when the database has finished fetching turn and game data.
+	 */
 	@Override
 	public void update(Observable db, Object obj) {
 		if(db.getClass().equals(Database.class)
@@ -206,7 +211,7 @@ public class DataController extends Observable implements Observer{
 	/**
 	 * Create a game. The local storage will not be updated
 	 * @param p1 - player 1
-	 * @param p2 - palyer 2
+	 * @param p2 - player 2
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public void createGame(Player p1, Player p2) throws DatabaseException{
@@ -237,7 +242,9 @@ public class DataController extends Observable implements Observer{
 				m.putGame(gameMap.getKey());
 				m.putTurns(gameMap.getValue());
 			} else if(Game.hasChanged(localGame, gameMap.getKey())){
+				Log.d("WORKS?", "YES!");
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
+					Log.d("DC: update", "Run if the local turn is older than the db one");
 					//Run if the local turn is older than the db one.
 					//It can then be deduced that the local turns are out-of-date.
 					//Because of the saveEventually, we do not have to check the other way around.
@@ -245,11 +252,14 @@ public class DataController extends Observable implements Observer{
 					m.putTurns(gameMap.getValue());
 				} else if(localGame.isFinished() 
 						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
+					Log.d("DC: update", "This code deletes games and turns after they are finished!");
+
 					//This code deletes games and turns after they are finished!
 					//This code is only reachable for the receiving player
 					db.removeGame(localGame);
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
 					//If current player of a game is different, we must check the turns
+					Log.d("DC: update", "If current player of a game is different, we must check the turns");
 					Turn localTurn = m.getCurrentTurn(localGame);
 					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
 					if(localTurn.getState() > dbTurn.getState()){
@@ -262,18 +272,24 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
-		removeOldGames();
+		removeOldGames(dbGames.keySet());
 
 		return m.getGames();
 	}
 	/*
 	 * This part removes any games that are "to old".
 	 */
-	private void removeOldGames(){
-		ArrayList<Game> finishedGames = new ArrayList<Game>(); 
+	private void removeOldGames(Set<Game> dbGames){
+		ArrayList<Game> finishedGames = new ArrayList<Game>();
 		for(Game locGame : m.getGames()){
-			if(locGame.isFinished())
+			if(locGame.isFinished()){
 				finishedGames.add(locGame);
+			} else if(!dbGames.contains(locGame)
+					&& (new Date()).getTime() 
+						- locGame.getLastPlayed().getTime() > 1000L * 30L){
+				//We have a time restriction here, to avoid deleting new games.
+				m.removeGame(locGame);
+			}
 		}
 		if(finishedGames.size() > 0){
 			//Sort the games using a cusom time-comparator
@@ -340,7 +356,6 @@ public class DataController extends Observable implements Observer{
 			game.setFinished();
 		}
 		db.updateGame(game);
-		db.updateTurn(m.getCurrentTurn(game));
 	}
 	/*
 	 * Helper method for updateGame()
@@ -362,10 +377,11 @@ public class DataController extends Observable implements Observer{
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
 		Game game = m.getGame(turn.getGameId());
+		db.updateTurn(m.getCurrentTurn(game));
 		switch(turn.getState()){
-		case Turn.INIT : 	game.setCurrentPlayer(turn.getAnsPlayer());
+		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
-		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getRecPlayer());
+		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
 		case Turn.FINISH : 	game.incrementTurn();
 		break;

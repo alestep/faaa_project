@@ -1,9 +1,11 @@
 package com.example.wecharades.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,15 +21,19 @@ import android.util.Log;
  * @author Anton Dahlström
  *
  */
-public class Model {
+public class Model implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8167671678222883965L;
 	private static final String 	SAVE_FILE = "model.save";
 	public static final int 		
-			FINISHEDGAMES_SAVETIME 			= 168
-			, FINISHEDGAMES_NUMBERSAVED 	= 10
-			, INVITATIONS_SAVETIME 			= 72;
+	FINISHEDGAMES_SAVETIME 			= 168
+	, FINISHEDGAMES_NUMBERSAVED 	= 10
+	, INVITATIONS_SAVETIME 			= 72;
 
 	//A variable to check if model is already saved.
-	private boolean					SAVED = true;
+	private boolean					SAVED = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -47,7 +53,10 @@ public class Model {
 	//Singleton
 	private static Model singleModel;
 
-	private Model(Context context){}
+	private Model(Context context){
+		//Creating a file
+		saveModel(context);
+	}
 
 	/**
 	 * Use this method to get the singleton instance of the model where necessary.
@@ -73,14 +82,13 @@ public class Model {
 	public void saveModel(Context context){
 		if(!SAVED){
 			try {
-				ObjectOutputStream oOut = new ObjectOutputStream(
-						context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE)
-						);
+				FileOutputStream ops = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
+				ObjectOutputStream oOut = new ObjectOutputStream(ops);
 				oOut.writeObject(singleModel);
 				oOut.close();
 				SAVED = true;
 			} catch (IOException e) {
-				Log.d("IO - Model save", "Save failed");
+				Log.d("IO - Model save", e.getMessage());
 			}
 		}
 	}
@@ -90,7 +98,7 @@ public class Model {
 		try {
 			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
 			Object obj = oIn.readObject();
-			if (obj.getClass().equals(Model.class)){
+			if (obj != null && obj.getClass().equals(Model.class)){
 				singleModel = (Model) obj;
 			}
 		} catch (IOException e){
@@ -129,11 +137,13 @@ public class Model {
 		//This is actually kind of fast, although it might look a bit weird.
 		ArrayList<Turn> tempTurns;
 		if(gameList.containsKey(game) && gameList.get(game) != null){
+			Log.d("Model: putGame()", "Game in List");
 			tempTurns = gameList.get(game);
 			gameList.remove(game);
 			gameList.put(game,tempTurns);
 			gameIdList.put(game.getGameId(), game);
 		} else{
+			Log.d("Model: putGame()", "game not in list, add game");
 			gameList.put(game, null);
 			gameIdList.put(game.getGameId(), game);
 		}
@@ -184,9 +194,9 @@ public class Model {
 			if(listOfTurns == null){
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
-			}else if(listOfTurns.contains(turn)) //Removes the old copy of the turn
+			}else if(listOfTurns.contains(turn)) 
 				listOfTurns.remove(turn);
-			listOfTurns.add(turn); //Adds the new copy of the game
+			listOfTurns.add(turn.getTurnNumber() - 1, turn); //put the updated turn in the right order!
 		}
 		SAVED = false;
 	}
@@ -223,8 +233,9 @@ public class Model {
 	 * @param game - the game to fetch from
 	 * @return a Turn
 	 */
-	public Turn getCurrentTurn(Game game){
-		return getTurns(game).get(game.getTurnNumber()-1);
+	public Turn getCurrentTurn(Game game) {
+		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1).getTurnNumber()));
+		return getTurns(game).get(game.getTurnNumber()-1); //HERE IS THE ERROR! THE TURN HAS BEEN INCREMENTED!
 	}
 
 	//Players ---------------------------------------------------------------

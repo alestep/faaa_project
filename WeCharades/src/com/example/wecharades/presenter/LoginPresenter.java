@@ -2,9 +2,15 @@ package com.example.wecharades.presenter;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
@@ -21,6 +27,20 @@ public class LoginPresenter extends Presenter{
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
 		this.activity = activity;
+	}
+
+	public void setListeners(EditText password) {		
+		password.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					activity.onClickLogin(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		
 	}
 
 	public void login(String username, String password, View myView, ProgressBar loginProgress){

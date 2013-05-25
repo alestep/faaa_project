@@ -32,7 +32,7 @@ public class VideoUploadActivity extends GenericActivity{
 		super.onCreate(savedInstanceState, new VideoUploadPresenter(this));
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces portrait orientation which is what the camera uses.
 		setContentView(R.layout.showvideo);
-		presenter = (VideoUploadPresenter) super.getPresenter(); //DOES NOT WORK.
+		presenter = (VideoUploadPresenter) super.getPresenter();
 		videoView = (VideoView) findViewById(R.id.satisfiedVideoView);
 		path = getPathFromURI(CaptureVideo.uriVideo);	
 	}
