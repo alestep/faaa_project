@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.Presenter;
 
-public abstract class GenericActivity extends Activity implements IMessage{
+public abstract class GenericActivity extends Activity{
 	
 	//TODO this should prbably be referenced in the subclasses. 
 	protected Presenter presenter;

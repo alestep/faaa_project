@@ -53,8 +53,24 @@ public class DataController extends Observable implements Observer{
 	 * This method is called when the database has finished fetching turn and game data.
 	 */
 	@Override
-	public void update(Observable db, Object obj) {
-		if(db.getClass().equals(Database.class)
+	public void update(Observable db, Object obj) { //TODO Create a DBMessage class as well...
+		if(obj != null && db.getClass().equals(DBMessage.class)){
+			DBMessage dbm = (DBMessage) obj;
+			
+			if(dbm.getMessage() == DBMessage.ERROR){
+				setChanged();
+				notifyObservers(dbm.getData());
+			} else if(dbm.getMessage() == DBMessage.GAMELIST){
+				ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
+				setChanged();
+				notifyObservers(gameList);
+			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
+				List<Invitation> invList = parseDbInvitations((List<Invitation>) dbm.getData());
+				setChanged();
+				notifyObservers(invList);
+			}
+		}
+		/*if(db.getClass().equals(Database.class)
 				& obj != null){
 			if(obj.getClass().equals(DatabaseException.class)){
 				setChanged();
@@ -74,7 +90,7 @@ public class DataController extends Observable implements Observer{
 					notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
 				}
 			}
-		} 
+		} */
 	}
 
 	private Object getInternalObject(Collection col){

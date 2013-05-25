@@ -31,6 +31,8 @@ import com.parse.ParseUser;
  */
 @SuppressLint("DefaultLocale")
 public class Database extends Observable implements IDatabase {
+	
+	//TODO change how dbexceptions are sent
 
 	//This is used to avoid problems with using plain strings when calling the database.
 	public static final String
@@ -66,7 +68,7 @@ public class Database extends Observable implements IDatabase {
 	private DatabaseConverter dbc;
 
 	private Database(Context context){
-		Parse.initialize(context, "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
+		Parse.initialize(context.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
 	public static IDatabase getDatabaseInstance(Context context){
@@ -159,7 +161,12 @@ public class Database extends Observable implements IDatabase {
 					game.deleteEventually();
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -178,7 +185,12 @@ public class Database extends Observable implements IDatabase {
 					}
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -240,7 +252,12 @@ public class Database extends Observable implements IDatabase {
 					}
 				} else{
 					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					notifyObservers(
+							new DBMessage(
+									DBMessage.ERROR
+									, new DatabaseException(e.getCode(), e.getMessage())
+									)
+							);
 				}
 			}
 		});
@@ -252,7 +269,7 @@ public class Database extends Observable implements IDatabase {
 		if(gameList.isEmpty()){
 			//If there are no games, we should still update screen to remove old games!
 			setChanged();
-			notifyObservers(new TreeMap<Game, ArrayList<Turn>>());
+			notifyObservers(new DBMessage(DBMessage.GAMELIST, new TreeMap<Game, ArrayList<Turn>>()));
 		} else{
 			LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
 			for(ParseObject game : gameList){
@@ -282,14 +299,15 @@ public class Database extends Observable implements IDatabase {
 								tl.add(turn);
 							}
 							setChanged();
-							notifyObservers(map);
+							notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
 						} catch(DatabaseException e2){
 							setChanged();
-							notifyObservers(e2);
+							notifyObservers(new DBMessage(DBMessage.ERROR, e2));
 						}
 					} else{
 						setChanged();
-						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+						notifyObservers(new DBMessage(DBMessage.ERROR
+								, new DatabaseException(e.getCode(), e.getMessage())));
 					}
 				}
 			});
@@ -523,13 +541,15 @@ public class Database extends Observable implements IDatabase {
 								db.removeRandom(p2);
 							} catch (DatabaseException e1) {
 								setChanged();
-								notifyObservers(new DatabaseException(e1.getCode(), e1.getMessage()));
+								notifyObservers(new DBMessage(DBMessage.ERROR
+										, e1));
 							}
 						}
 					}
 				} else{
-					setChanged();	
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					setChanged();
+					notifyObservers(new DBMessage(DBMessage.ERROR
+							, new DatabaseException(e.getCode(), e.getMessage())));
 				}
 			}
 		});
@@ -589,7 +609,7 @@ public class Database extends Observable implements IDatabase {
 							}
 						}
 						setChanged();
-						notifyObservers(invList);
+						notifyObservers(new DBMessage(DBMessage.INVITATIONS, invList));
 					} catch(DatabaseException e2){
 						sendError(e2);
 					}
@@ -599,19 +619,9 @@ public class Database extends Observable implements IDatabase {
 			}
 			private void sendError(DatabaseException e){
 				setChanged();
-				notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				notifyObservers(new DBMessage(DBMessage.ERROR, e));
 			}
 		});
-		/*try {
-			List<ParseObject> result = query.find();
-			for(ParseObject object : result){
-				returnList.add(dbc.parseInvitation(object));
-			}
-		} catch (ParseException e) {
-			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1009, "Failed to get invitations");
-		}
-		return returnList;*/
 	}
 
 	/* (non-Javadoc)

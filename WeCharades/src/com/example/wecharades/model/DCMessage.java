@@ -2,12 +2,14 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 
+import com.example.wecharades.views.IMessage;
+
 /**
  * A class to have better control over types when sending observer messages.
  * @author Anton Dahlström
  *
  */
-public class DCMessage {
+public class DCMessage implements IMessage{
 	public static final int 
 		UNDEFINED			= 0
 		, MESSAGE 			= 10

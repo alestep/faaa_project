@@ -3,8 +3,14 @@ package com.example.wecharades.views;
 public interface IMessage {
 	
 	/**
-	 * Method to show a message. Mainly intended to show error messages to the user.
-	 * @param message - the message to be shown
+	 * Intended to get the included message - used for determening types
+	 * @return A message (preferably stored as final values in the implementing class)
 	 */
-	public void showMessage(String message);
+	public int getMessage();
+	
+	/**
+	 * Get the accompanying data. Can be typecasted according to the message.
+	 * @return Object
+	 */
+	public Object getData();
 }
