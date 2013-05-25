@@ -51,37 +51,39 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
-		final Context c = context;
-		final String p = path;
-		
+//		final Context c = context;
+//		final String p = path;
+		setServerStorageLocation();
+		upload = new UploadVideo(context, path);
+		upload.execute();
 		//Check if the user has internet connection
-		if(isNetworkConnected()) {
-			setServerStorageLocation();
-			upload = new UploadVideo(context, path);
-			upload.execute();
-		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setTitle("Error!")
-			.setMessage("You've got no internet connection!")
-			.setCancelable(false)
-			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					//Try again...
-					uploadVideo(c,p);
-				}
-			})
-			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					//Go to homecreen
-					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
-					activity.startActivity(intent);
-					activity.finish();	
-					dialog.cancel();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
-		}
+//		if(isNetworkConnected()) {
+//			setServerStorageLocation();
+//			upload = new UploadVideo(context, path);
+//			upload.execute();
+//		} else {
+//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//			builder.setTitle("Error!")
+//			.setMessage("You've got no internet connection!")
+//			.setCancelable(false)
+//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Try again...
+//					uploadVideo(c,p);
+//				}
+//			})
+//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Go to homecreen
+//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
+//					activity.startActivity(intent);
+//					activity.finish();	
+//					dialog.cancel();
+//				}
+//			});
+//			AlertDialog alert = builder.create();
+//			alert.show();
+//		}
 	}
 
 	/**
@@ -124,6 +126,7 @@ public class VideoUploadPresenter extends Presenter {
 		File file = new File(path);
 		file.delete();
 		Intent intent = new Intent(activity.getApplicationContext(), CaptureVideo.class);
+		intent.putExtra(Database.TURN, turn);
 		activity.startActivity(intent);
 		activity.finish();	
 	}
