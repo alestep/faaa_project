@@ -12,8 +12,10 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.util.Log;
 
+import com.example.wecharades.presenter.StartPresenter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -133,10 +135,8 @@ public class Database extends Observable implements IDatabase {
 		newGame.put(GAME_PLAYER_CURRENT, player1.getParseId());
 		newGame.put(GAME_TURN, 1);
 		newGame.put(GAME_FINISH, false);
-
 		parseList.add(newGame);
 		//Adds all the six turns
-
 		String recP, ansP;
 		for(int i=1; i <= 6 ; i++){
 			if(i%2 == 0){

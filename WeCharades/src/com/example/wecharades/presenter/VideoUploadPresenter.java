@@ -44,7 +44,7 @@ public class VideoUploadPresenter extends Presenter {
 		this.activity = activity;
 		this.turn = (Turn) activity.getIntent().getSerializableExtra(Database.TURN);
 	}
-	
+
 	/**
 	 * Starts the VideoUpload
 	 * @param context
@@ -55,7 +55,7 @@ public class VideoUploadPresenter extends Presenter {
 		upload = new UploadVideo(context, path);
 		upload.execute();
 	}
-	
+
 	/**
 	 * Initiate and start the video.
 	 * @param videoView
@@ -77,7 +77,7 @@ public class VideoUploadPresenter extends Presenter {
 			Log.e("Video", "error: " + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * Sets the storage location of the videofile for the FTP-server. 
 	 * @return
@@ -86,10 +86,9 @@ public class VideoUploadPresenter extends Presenter {
 		String gameID = turn.getGameId();
 		String turnNumber = String.valueOf(turn.getTurnNumber());
 		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
-		System.out.println(serverPath);
 		this.serverPath = serverPath;
 	}
-	
+
 	/**	
 	 * Lets the player to re-record the video and deletes the current file.
 	 * @param path
@@ -108,13 +107,12 @@ public class VideoUploadPresenter extends Presenter {
 			e.printStackTrace();
 		}
 	}
-	private void pushNotficationtoAnotherPlayer(){
+	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
-		Log.d("VideoUpload", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getParseId());
-		push.setChannel(turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getParseId());
-//		push.setMessage("Your turn to charade against " + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).toString());
-//		push.setChannel("HEJ");
-		push.setMessage("TJENA MANNEN");
+//		Log.d("VideoUpload current borde vara felix", turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getName());
+//		Log.d("VideoUpload opponent borde vara adam", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
+		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
+		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		push.sendInBackground();
 	}
 
@@ -129,7 +127,7 @@ public class VideoUploadPresenter extends Presenter {
 			SAVE_PATH = path;
 			mDialog = new ProgressDialog(mContext);
 		}
-		
+
 		@Override
 		protected void onPreExecute(){
 			mDialog.setTitle("Uploading Charade");
@@ -137,17 +135,17 @@ public class VideoUploadPresenter extends Presenter {
 			mDialog.setCancelable(false);
 			mDialog.setCanceledOnTouchOutside(false);
 			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					
+
 				}
 			});
-			
+
 			mDialog.show();
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			FTPClient ftp = null;
@@ -199,7 +197,7 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setState(Turn.VIDEO);
 				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
-				pushNotficationtoAnotherPlayer();
+				pushNotficationtoOtherPlayer();
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);

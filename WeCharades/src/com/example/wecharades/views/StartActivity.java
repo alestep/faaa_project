@@ -71,21 +71,18 @@ public class StartActivity extends GenericActivity {
 
 		//Check if the user is logged in or saved in the cache
 		presenter.checkLogin();
-		PushService.setDefaultPushCallback(this, StartActivity.class);
-		ParseInstallation.getCurrentInstallation().saveEventually();
-		ParseAnalytics.trackAppOpened(getIntent());
-
 	}
 
 	public void onStart(){
 		super.onStart();
+		System.out.println("2");
 		presenter.initiate();
+		System.out.println("3");
 	}
 	
 	public void onResume(){
 		super.onResume();
 		presenter.update();
-		presenter.notificationUpdate();
 	}
 
 	/**
