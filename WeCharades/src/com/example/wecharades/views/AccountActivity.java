@@ -62,11 +62,11 @@ public class AccountActivity extends GenericActivity {
 	 * @param numberOfLostGames
 	 * @param numberOfDrawGames
 	 */
-	public void updatePlayerInformation(String newUsername, int newGlobalRanking,
+	public void updatePlayerInformation(String newUsername,
 			int globalScore, int numberOfFinishedGames, int numberOfWonGames,
 			int numberOfLostGames, int numberOfDrawGames) {
 		username.setText(newUsername);
-		globalRanking.setText("Global ranking: " + newGlobalRanking + " ("+ globalScore +" points)");
+		globalRanking.setText("Global ranking: " + "//TODO" + " ("+ globalScore +" points)");
 		playedGames.setText("Played games: " + numberOfFinishedGames);
 		wonGames.setText("Won games: " + numberOfWonGames);
 		lostGames.setText("Lost games: " + numberOfLostGames);

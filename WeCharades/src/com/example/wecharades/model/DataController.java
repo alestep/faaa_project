@@ -1,7 +1,6 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -212,6 +211,11 @@ public class DataController extends Observable implements Observer{
 	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
 		return db.getTopTenPlayers();
 	}
+	
+	public void updatePlayer(Player player){
+		m.putPlayer(player);
+		db.updatePlayer(player);
+	}
 
 	//Games -----------------------------------------------------------
 	public void putInRandomQueue(){
@@ -408,6 +412,27 @@ public class DataController extends Observable implements Observer{
 		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
 		updateGame(game);
+		if(turn.getTurnNumber() == 6){
+			TreeMap<Player, Integer> scoreMap = getGameScore(game);
+			Player rec = turn.getRecPlayer(); 
+			Player ans = turn.getAnsPlayer(); 
+			rec.setGlobalScore(rec.getGlobalScore() + turn.getRecPlayerScore());
+			ans.setGlobalScore(ans.getGlobalScore() + turn.getAnsPlayerScore());
+			if(turn.getRecPlayerScore() > turn.getAnsPlayerScore()){
+				rec.incrementWonGames();
+				ans.incrementLostGames();
+			} else if(turn.getRecPlayerScore() < turn.getAnsPlayerScore()){
+				ans.incrementWonGames();
+				rec.incrementLostGames();
+			} else{
+				rec.incrementDrawGames();
+				ans.incrementDrawGames();
+			}
+			rec.incrementFinishedGames();
+			ans.incrementFinishedGames();
+			updatePlayer(rec);
+			updatePlayer(ans);
+		}
 	}
 
 

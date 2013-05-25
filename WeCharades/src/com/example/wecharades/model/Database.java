@@ -57,6 +57,9 @@ public class Database extends Observable implements IDatabase {
 	PLAYER_USERNAME			= "username",
 	PLAYER_USERNAME_NATURAL	= "naturalUsername",
 	PLAYER_GLOBALSCORE		= "globalScore",
+	PLAYER_GAMES_PLAYED		= "gamesPlayed",
+	PLAYER_GAMES_LOST		= "gamesLost",
+	PLAYER_GAMES_DRAW		= "gamesDraw",
 	RANDOMQUEUE				= "RandomQueue",
 	RANDOMQUEUE_PLAYER		= "player",
 	INVITE 					= "invite",
@@ -493,6 +496,24 @@ public class Database extends Observable implements IDatabase {
 			throw new DatabaseException(1008,"Failed to fetch players");
 		}
 		return players;
+	}
+
+	public void updatePlayer(final Player player){
+		ParseQuery query = ParseUser.getQuery();
+		query.getInBackground(player.getParseId(), new GetCallback(){
+			public void done(ParseObject obj, ParseException e){
+				if(e == null){
+					obj.put(PLAYER_GAMES_DRAW, player.getDrawGames());
+					obj.put(PLAYER_GAMES_LOST, player.getLostGames());
+					obj.put(PLAYER_GAMES_PLAYED, player.getPlayedGames());
+					obj.put(PLAYER_GLOBALSCORE, player.getGlobalScore());
+					obj.saveEventually();
+				} else{
+					setChanged();
+					notifyObservers(new DBMessage(DBMessage.ERROR, new DatabaseException(e.getCode(), e.getMessage())));
+				}
+			}
+		});
 	}
 
 	/**
