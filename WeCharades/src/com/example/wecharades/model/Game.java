@@ -111,6 +111,13 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		return getGameId().hashCode();
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		return obj != null
+				&& obj.getClass().equals(Game.class)
+				&& this.equals((Game) obj);
+	}
+	
 	/**
 	 * Two games are considered equal if they have the same id 
 	 * 	

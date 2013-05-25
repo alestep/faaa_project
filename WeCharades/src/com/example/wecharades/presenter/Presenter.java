@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.GenericActivity;
@@ -134,11 +135,17 @@ public abstract class Presenter implements Observer{
 		dc.saveState(activity);
 	}
 	
-	@Override
+	/**
+	 * Called whenever an update is received from a class this presenter subscribes to.
+	 */
 	public void update(Observable dataController, Object obj){
 		if(dataController.getClass().equals(DataController.class) 
-				&& obj != null && obj.getClass().equals(DatabaseException.class)){
-			//activity
+				&& obj != null
+				&& obj.getClass().equals(DCMessage.class)){
+			DCMessage dcm = (DCMessage) obj;
+			if(dcm.getMessage() == DCMessage.ERROR){
+				activity.showMessage((String) dcm.getData());
+			}
 		}
 	}
 }

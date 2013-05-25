@@ -573,12 +573,34 @@ public class Database extends Observable implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#getInvitations(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public ArrayList<Invitation> getInvitations(Player player) throws DatabaseException {
-		ArrayList<Invitation> returnList = new ArrayList<Invitation>();
-
+	public void getInvitations(Player player) throws DatabaseException {
 		ParseQuery query = new ParseQuery(INVITE);
 		query.whereContains(INVITE_INVITEE, player.getParseId());
-		try {
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> result, ParseException e){
+				if(e == null){
+					if(!result.isEmpty()){
+						try{
+							ArrayList<Invitation> invList = new ArrayList<Invitation>();
+							for(ParseObject obj : result){
+								invList.add(dbc.parseInvitation(obj));
+							}
+							setChanged();
+							notifyObservers(invList);
+						} catch(DatabaseException e2){
+							sendError(e2);
+						}
+					}
+				} else{
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+			private void sendError(DatabaseException e){
+				setChanged();
+				notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+			}
+		});
+		/*try {
 			List<ParseObject> result = query.find();
 			for(ParseObject object : result){
 				returnList.add(dbc.parseInvitation(object));
@@ -587,7 +609,7 @@ public class Database extends Observable implements IDatabase {
 			Log.d("Database",e.getMessage());
 			throw new DatabaseException(1009, "Failed to get invitations");
 		}
-		return returnList;
+		return returnList;*/
 	}
 
 	/* (non-Javadoc)

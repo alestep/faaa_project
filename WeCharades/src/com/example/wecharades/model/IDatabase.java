@@ -126,7 +126,7 @@ public interface IDatabase{
 	 * @return an ArrayList with playerId:s
 	 * @throws DatabaseException 
 	 */
-	public abstract ArrayList<Invitation> getInvitations(Player player)
+	public abstract void getInvitations(Player player)
 			throws DatabaseException;
 
 	/**

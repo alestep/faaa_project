@@ -1,11 +1,14 @@
 package com.example.wecharades.presenter;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.DCMessage;
+import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.InvitationActivity;
@@ -14,14 +17,15 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
-	ArrayList<Invitation> invitationList;
+	//ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
 		this.activity = activity;
+		dc.addObserver(this);
 	}
 
-	private void setAdapter() {
+	private void setAdapter(List<Invitation> invitationList) {
 			ListView view = (ListView) activity.findViewById(R.id.list);
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No invitations found!");
@@ -30,14 +34,15 @@ public class InvitationPresenter extends Presenter {
 	}
 
 	public void update() {
-		if(invitationList == null){
+		dc.getInvitations();
+		/*if(invitationList == null){
 			try {
 				invitationList = dc.getInvitations();
 			} catch (DatabaseException e) {
 				activity.showMessage(e.prettyPrint());
 			}
 		}
-		setAdapter();
+		setAdapter();*/
 	}
 
 	public void setInvitation(Invitation invitation, boolean response) {
@@ -48,6 +53,19 @@ public class InvitationPresenter extends Presenter {
 				dc.rejectInvitation(invitation);
 		}catch (DatabaseException e) {
 			activity.showMessage(e.prettyPrint());
+		}
+	}
+	
+	/**
+	 * Called whenever an update is received from a class this presenter subscribes to.
+	 */
+	public void update(Observable obs, Object obj){
+		if(obs.getClass().equals(DataController.class)
+				&& obj != null && obj.getClass().equals(DCMessage.class)){
+			DCMessage dcm = (DCMessage) obj;
+			if(dcm.getMessage() == DCMessage.INVITATIONS){
+				setAdapter((List<Invitation>) dcm.getData());
+			}
 		}
 	}
 

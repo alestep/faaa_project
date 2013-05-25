@@ -1,9 +1,11 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,7 +27,7 @@ import android.util.Log;
  */
 public class DataController extends Observable implements Observer{
 
-	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
+	private static DataController dc;
 	private Model m;
 	private IDatabase db;
 	private DataController(Context context){
@@ -56,14 +58,36 @@ public class DataController extends Observable implements Observer{
 				& obj != null){
 			if(obj.getClass().equals(DatabaseException.class)){
 				setChanged();
-				notifyObservers((DatabaseException)obj);
-			} else if(obj instanceof TreeMap){
-				ArrayList<Game> gameList = retrieveUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
-				setChanged();
-				notifyObservers(gameList);
+				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException)obj).prettyPrint()));
+			} else if(obj instanceof Map){
+				Map col = (Map) obj;
+				if(getInternalObject(col).getClass().equals(Game.class) || col.isEmpty()){
+					ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) obj);
+					setChanged();
+					notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
+				}
+			} else if (obj instanceof Collection){
+				Collection map = (Collection) obj;
+				if(getInternalObject(map).getClass().equals(Invitation.class)){
+					List<Invitation> invList = parseDbInvitations((List<Invitation>) obj);
+					setChanged();
+					notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
+				}
 			}
-		}
+		} 
+	}
 
+	private Object getInternalObject(Collection col){
+		if(!col.isEmpty()){
+			return ((List) col).get(0);
+		}
+		return col;
+	}
+	private Object getInternalObject(Map map){
+		if(!map.isEmpty()){
+			return map.entrySet().iterator().next();
+		}
+		return map;
 	}
 
 	//Session handling -----------------------------------------------------------
@@ -233,7 +257,7 @@ public class DataController extends Observable implements Observer{
 	 * 	This method will sync the database with the model!
 	 * 	//TODO This MIGHT have problems with it and is untested
 	 */
-	private ArrayList<Game> retrieveUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
+	private ArrayList<Game> parseUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
 		Game localGame;
 		for(Map.Entry<Game, ArrayList<Turn>> gameMap : dbGames.entrySet()){
 			localGame = m.getGame(gameMap.getKey().getGameId());
@@ -278,22 +302,20 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
-		removeOldGames(dbGames.keySet());
+		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 
 		return m.getGames();
 	}
 	/*
 	 * This part removes any games that are "to old".
 	 */
-	private void removeOldGames(Set<Game> dbGames){
+	private void removeOldGames(ArrayList<Game> dbGames){
 		ArrayList<Game> finishedGames = new ArrayList<Game>();
 		for(Game locGame : m.getGames()){
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
-			} else if(!dbGames.contains(locGame)
-					&& (new Date()).getTime() 
-					- locGame.getLastPlayed().getTime() > 1000L * 30L){
-				//We have a time restriction here, to avoid deleting new games.
+			} else if(!dbGames.contains(locGame)){
+				//TODO We could have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);
 			}
 		}
@@ -401,23 +423,33 @@ public class DataController extends Observable implements Observer{
 
 	/**
 	 * A method to get all current invitations from the database
-	 * @return
-	 * @throws DatabaseException
 	 */
-	public ArrayList<Invitation> getInvitations() throws DatabaseException{
-		ArrayList<Invitation> invitations = db.getInvitations(getCurrentPlayer());
+	public void getInvitations(){
+		try {
+			db.getInvitations(getCurrentPlayer());
+		} catch (DatabaseException e) {
+			setChanged();
+			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
+		}
+	}
+	public List<Invitation> parseDbInvitations(List<Invitation> dbInv){
 		Date currentTime = new Date();
 		long timeDifference;
 		ArrayList<Invitation> oldInvitations = new ArrayList<Invitation>();
-		for(Invitation inv : invitations){
+		for(Invitation inv : dbInv){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
 			if(timeDifference > Model.INVITATIONS_SAVETIME){ //if the invitations are considered to old
 				oldInvitations.add(inv);
-				invitations.remove(inv);
+				dbInv.remove(inv);
 			}
 		}
-		db.removeInvitations(oldInvitations);
-		return invitations;
+		try{
+			db.removeInvitations(oldInvitations);
+		} catch (DatabaseException e) {
+			setChanged();
+			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
+		}
+		return dbInv;
 	}
 
 	/**
