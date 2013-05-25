@@ -241,6 +241,7 @@ public class DataController extends Observable implements Observer{
 				//If the local game does not exist, or does not have any turns
 				m.putGame(gameMap.getKey());
 				m.putTurns(gameMap.getValue());
+				removeInvitations(gameMap.getKey());
 			} else if(Game.hasChanged(localGame, gameMap.getKey())){
 				Log.d("WORKS?", "YES!");
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
@@ -275,6 +276,20 @@ public class DataController extends Observable implements Observer{
 		removeOldGames(dbGames.keySet());
 
 		return m.getGames();
+	}
+	/** 
+	 * A method to remove all accepted invitations from sent invitations.
+	 * @param dbGame
+	 */
+	private void removeInvitations(Game dbGame){
+		ArrayList<Invitation> invitations = m.getSentInvitations();
+		for(Invitation i : invitations){
+			if(i.getInvitee().equals(dbGame.getPlayer1())){
+				if(i.getTimeOfInvite().before(dbGame.getLastPlayed())){
+					m.removeSentInvitation(i);
+				}
+			}
+		}
 	}
 	/*
 	 * This part removes any games that are "to old".
