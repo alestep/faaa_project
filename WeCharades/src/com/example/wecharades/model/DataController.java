@@ -412,16 +412,16 @@ public class DataController extends Observable implements Observer{
 		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
 		updateGame(game);
-		if(turn.getTurnNumber() == 6){
+		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){
 			TreeMap<Player, Integer> scoreMap = getGameScore(game);
 			Player rec = turn.getRecPlayer(); 
 			Player ans = turn.getAnsPlayer(); 
-			rec.setGlobalScore(rec.getGlobalScore() + turn.getRecPlayerScore());
-			ans.setGlobalScore(ans.getGlobalScore() + turn.getAnsPlayerScore());
-			if(turn.getRecPlayerScore() > turn.getAnsPlayerScore()){
+			rec.setGlobalScore(rec.getGlobalScore() + scoreMap.get(turn.getRecPlayer()));
+			ans.setGlobalScore(ans.getGlobalScore() + scoreMap.get(turn.getAnsPlayer()));
+			if(scoreMap.get(turn.getRecPlayer()) > scoreMap.get(turn.getAnsPlayer())){
 				rec.incrementWonGames();
 				ans.incrementLostGames();
-			} else if(turn.getRecPlayerScore() < turn.getAnsPlayerScore()){
+			} else if(scoreMap.get(turn.getRecPlayer()) < scoreMap.get(turn.getAnsPlayer())){
 				ans.incrementWonGames();
 				rec.incrementLostGames();
 			} else{
