@@ -15,6 +15,7 @@ import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -123,6 +124,15 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onPreExecute(){
 			mDialog.setTitle("Uploading Charade");
 			mDialog.setMessage("Please Wait");
+			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					
+				}
+			});
+			mDialog.setCanceledOnTouchOutside(false);
 			mDialog.show();
 		}
 		

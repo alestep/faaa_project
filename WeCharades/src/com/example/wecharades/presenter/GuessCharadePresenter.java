@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.net.ftp.FTP;
@@ -16,8 +17,12 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
@@ -31,6 +36,7 @@ import android.widget.VideoView;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GuessCharadeActivity;
+import com.example.wecharades.views.StartActivity;
 
 public class GuessCharadePresenter extends Presenter {
 
@@ -47,7 +53,7 @@ public class GuessCharadePresenter extends Presenter {
 	private static final int NO_DOWNLOAD = 0;
 	public static final int DOWNLOAD_FINISHED = 1;
 	public int downloadState = NO_DOWNLOAD;
-	
+
 	public GuessCharadePresenter(GuessCharadeActivity activity) {
 		super(activity);
 		this.activity = activity;
@@ -95,19 +101,6 @@ public class GuessCharadePresenter extends Presenter {
 		this.turn = turn;
 		download = new DownloadVideo(context, SAVE_PATH);
 		download.execute();
-		try {
-			download.get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		playVideo();
-		timer.start();
-		timerView.setVisibility(0);
-		
 	}
 	/**
 	 * Sets video specifications and initiates the video.
@@ -204,6 +197,7 @@ public class GuessCharadePresenter extends Presenter {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
+			boolean result = false;
 			FTPClient con = null;
 			try{
 				con = new FTPClient();
@@ -216,7 +210,7 @@ public class GuessCharadePresenter extends Presenter {
 					System.out.println(SAVE_PATHTWO);
 					System.out.println(SAVE_PATHTWO.toString());
 					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
-					boolean result = con.retrieveFile(turn.getVideoLink(), out);// Todo: server path. //"/APP/PresentVideo.mp4"
+					result = con.retrieveFile(turn.getVideoLink(), out);// Todo: server path. //"/APP/PresentVideo.mp4"
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");
@@ -227,22 +221,28 @@ public class GuessCharadePresenter extends Presenter {
 				}
 			}
 			catch (SocketException e){
-				Log.v("download result", e.getMessage());
+				Log.v("download result Socket", e.getMessage());
+				cancel(true);
 			}
 			catch (UnknownHostException e){
-				Log.v("download result", e.getMessage());
+				Log.v("download result Unknown", e.getMessage());
+				cancel(true);
 			}
 			catch (FTPConnectionClosedException e){
-				Log.v("download result", e.getMessage());
+				Log.v("download result FTP CONNECTIONCLOSED", e.getMessage());
+				cancel(true);
 			}
 			catch (CopyStreamException e){
-				Log.v("download result", e.getMessage());
+				Log.v("download result COPYSTREAM", e.getMessage());
+				cancel(true);
 			}
 			catch (IOException e){
-				Log.v("download result", e.getMessage());
+				Log.v("download result IOE", e.getMessage());
+				cancel(true);
 			}
 			catch (Exception e){
-				Log.v("download result","failed " + e.getMessage());
+				Log.v("download result just exception","failed " + e.getMessage());
+				cancel(true);
 			}
 			return null;	
 		}
@@ -254,6 +254,27 @@ public class GuessCharadePresenter extends Presenter {
 				mDialog.dismiss();
 				activity.showMessage(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
+				timer.start();
+				timerView.setVisibility(0);
+				playVideo();
+			}
+		}
+		@Override
+		protected void onCancelled(Boolean result){
+			if(mDialog.isShowing()){
+				mDialog.dismiss();
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle("Downloading Charade")
+				.setMessage("Download failed, try again!")
+				.setCancelable(false)
+				.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+
 			}
 		}
 	}
