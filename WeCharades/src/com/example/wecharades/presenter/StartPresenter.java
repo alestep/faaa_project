@@ -25,6 +25,8 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.StartActivity;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 /**
@@ -49,44 +51,39 @@ public class StartPresenter extends Presenter implements Observer{
 		this.activity = activity;
 		dc.addObserver(this);
 	}
-	public void notificationUpdate(){
-		ArrayList<Game> arrayGames = dc.getGames();
-		PushService.subscribe(activity.getApplicationContext(),"HEJ", StartActivity.class);
-		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(activity.getApplicationContext());
-		List<String> list = new ArrayList<String>(setOfAllSubscriptions);
-		Collections.sort(arrayGames);
-		Collections.sort(list);
-		Log.d("Here", "Before for loop");
+	public void createNotificationInstallation() {
+		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
+		ParseInstallation.getCurrentInstallation().saveInBackground();
+		ParseAnalytics.trackAppOpened(activity.getIntent());
 		
-		for(Game g : arrayGames){
-			String gameIDcurrentPlayer = g.getGameId() + dc.getCurrentPlayer().getParseId();
-			String gameIDopponentPlayer = g.getGameId() + g.getOpponent(dc.getCurrentPlayer()).getParseId();
-			Log.d("Here", gameIDcurrentPlayer);
-			Log.d("Here", gameIDopponentPlayer);
-			for(String s : list){	
-
-				if(!s.equals(gameIDcurrentPlayer) && !s.equals(gameIDopponentPlayer)){
-					PushService.subscribe(activity.getApplicationContext(), gameIDopponentPlayer, StartActivity.class);
-					PushService.subscribe(activity.getApplicationContext(),gameIDcurrentPlayer, StartActivity.class);
-					Log.d("if1","current added");
-					break;
-				}
-				else if(g.isFinished() && (s.equals(gameIDcurrentPlayer) || s.equals(gameIDopponentPlayer))){
-					Log.d("Here", "else if");
-					PushService.unsubscribe(activity.getApplicationContext(), gameIDcurrentPlayer);
-					PushService.unsubscribe(activity.getApplicationContext(), gameIDopponentPlayer);
-				}
-			}		
-		}
 	}
+//	public void notificationUpdate(){//TODO: needs revision TODO: remove from parse if deleted account?
+//		ArrayList<Game> arrayGames = dc.getGames();
+//		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(activity.getApplicationContext());
+//		List<String> list = new ArrayList<String>(setOfAllSubscriptions);
+//		Log.d("Here", "Before for loop");
+//		
+//		for(Game g : arrayGames){
+////			String gameIDcurrentPlayer = g.getGameId() + dc.getCurrentPlayer().getParseId();
+////			String gameIDopponentPlayer = g.getGameId() + g.getOpponent(dc.getCurrentPlayer()).getParseId();
+//			//String gameIDcurrentPlayer = dc.getCurrentPlayer().getName();
+//			String gameIDopponentPlayer =g.getOpponent(dc.getCurrentPlayer()).getName();
+//			//Log.d("Here", gameIDcurrentPlayer);
+//			Log.d("Here", gameIDopponentPlayer);
+//			//PushService.subscribe(activity.getApplicationContext(), gameIDcurrentPlayer, StartActivity.class);
+//			//PushService.subscribe(activity.getApplicationContext(), gameIDopponentPlayer, StartActivity.class);
+//			Log.d("DINMAMMA","s");	
+//		}
+//	}
 
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
 	}
 
 	public void initiate(){
-		String string = dc.getCurrentPlayer().getName();
-		activity.setAccountName(string);
+		String currentPlayer = dc.getCurrentPlayer().getName();
+		activity.setAccountName(currentPlayer);
+		PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
 	}
 
 	public void update(){
@@ -122,6 +119,10 @@ public class StartPresenter extends Presenter implements Observer{
 	public void checkLogin() {
 		if(dc.getCurrentPlayer() == null){
 			goToLoginActivity();
+		}
+		else{	
+			createNotificationInstallation();
+			System.out.println("1");
 		}
 	}
 
@@ -192,4 +193,6 @@ public class StartPresenter extends Presenter implements Observer{
 			}
 		}
 	}
+
+
 }

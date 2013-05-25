@@ -134,11 +134,10 @@ public class VideoUploadPresenter extends Presenter {
 			e.printStackTrace();
 		}
 	}
-	private void pushNotficationtoAnotherPlayer(){
+	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
-		Log.d("VideoUpload", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getParseId());
-		push.setChannel(turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getParseId());
-		push.setMessage("TJENA MANNEN");
+		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
+		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		push.sendInBackground();
 	}
 
@@ -221,8 +220,7 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setVideoLink(serverPath);
 				turn.setState(Turn.VIDEO);
 				updateModel();
-				pushNotficationtoAnotherPlayer();
-
+				pushNotficationtoOtherPlayer();
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);
