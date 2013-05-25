@@ -137,13 +137,6 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	/**
-	 * Called in order to unregister this presenter from the list of observers in the db.
-	 */
-	public void unRegisterObserver(){
-		dc.deleteObserver(this);
-	}
-
-	/**
 	 * Called whenever a message is received from the DataController
 	 * 	This method will override the default, but will pass on the message
 	 * 	to super when appropriate
