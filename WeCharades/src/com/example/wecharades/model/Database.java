@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -634,12 +635,12 @@ public class Database extends Observable implements IDatabase {
 			) throws DatabaseException{
 
 		//Some checks that are done locally
-		if(inputNickname == null || inputNickname.length() == 0) {
-			throw new DatabaseException(101,"Invalid nickname");
+		if(inputNickname == null || Pattern.compile("^[A-za-z0-9_-]{2,16}$").matcher(inputNickname).matches()) {
+			throw new DatabaseException(2001,"Invalid nickname. \n - It should be between 2 and 16 characters.\n - It should only contain A-Z, a-z, 0-9 and underline");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
-			throw new DatabaseException(102,"Weak password");
+			throw new DatabaseException(2002,"Weak password");
 		} else if(!inputPassword.equals(inputRepeatPassword)){
-			throw new DatabaseException(103,"Unrepeated password");
+			throw new DatabaseException(2003,"Unrepeated password");
 		}
 
 		ParseUser user = new ParseUser();
