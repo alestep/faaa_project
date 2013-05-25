@@ -56,22 +56,19 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 	
 	public void update(){
-		setInvitationStatus();
+		updateList(dc.getGames());
 		
-		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
-		score = new TreeMap<Game, Map<Player, Integer>>();
-		parseList(listMap, dc.getGames());
-		
-		createListView(listMap);
 	}
 
 	/*
 	 * Called when a new updated game list is received from the database.
 	 */
-	private void updateFromDb(ArrayList<Game> dbGames){
+	private void updateList(ArrayList<Game> gameList){
+		setInvitationStatus();
+		
 		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
 		score = new TreeMap<Game, Map<Player, Integer>>();
-		parseList(listMap, dbGames);
+		parseList(listMap, gameList);
 		
 		createListView(listMap);
 	}
@@ -167,7 +164,7 @@ public class StartPresenter extends Presenter implements Observer{
 		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
 			if(obj instanceof ArrayList){
-				updateFromDb((ArrayList<Game>) obj);
+				updateList((ArrayList<Game>) obj);
 			}
 		} else{
 			//If anything else, send to super
