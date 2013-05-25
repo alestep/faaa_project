@@ -68,6 +68,16 @@ public class DatabaseException extends Exception{
 			break;
 			case 1010: message = "Error removing player from queue";
 			break;
+			case 2001: message = "Invalid nickname." +
+					"\n - It should be between 2 and 16 characters." +
+					"\n - It should only contain A-Z, a-z, 0-9 and underline";
+			break;
+			case 2002: message = "Invalid e-mail.";
+			break;
+			case 2003: message ="Weak password. It should contain at least 6 characters ";
+			break;
+			case 2004: message ="Unrepeated password";
+			break;
 		}
 
 		return message;

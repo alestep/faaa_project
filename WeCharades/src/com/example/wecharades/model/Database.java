@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -632,14 +634,18 @@ public class Database extends Observable implements IDatabase {
 			String inputPassword, 
 			String inputRepeatPassword
 			) throws DatabaseException{
-
+		
 		//Some checks that are done locally
-		if(inputNickname == null || inputNickname.length() == 0) {
-			throw new DatabaseException(101,"Invalid nickname");
+		if(inputNickname == null || !Pattern.compile("^[A-Za-z]{2,16}$").matcher(inputNickname).matches()) {
+			throw new DatabaseException(2001,"Invalid nickname. \n - It should be between 2 and 16 characters.\n - It should only contain A-Z, a-z, 0-9 and underline");
+//		} else if (!Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$;").matcher(inputEmail).matches()) {
+//			throw new DatabaseException(2002,"Invalid e-mail.");
+		} else if (inputEmail == null || inputEmail.length() == 0) {
+			throw new DatabaseException(125, "Invalid e-mail address.");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
-			throw new DatabaseException(102,"Weak password");
+			throw new DatabaseException(2003,"Weak password");
 		} else if(!inputPassword.equals(inputRepeatPassword)){
-			throw new DatabaseException(103,"Unrepeated password");
+			throw new DatabaseException(2004,"Unrepeated password");
 		}
 
 		ParseUser user = new ParseUser();
@@ -655,6 +661,7 @@ public class Database extends Observable implements IDatabase {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#loginPlayer(java.lang.String, java.lang.String)
