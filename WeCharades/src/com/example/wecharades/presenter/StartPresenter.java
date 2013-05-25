@@ -57,7 +57,6 @@ public class StartPresenter extends Presenter implements Observer{
 	
 	public void update(){
 		updateList(dc.getGames());
-		
 	}
 
 	/*

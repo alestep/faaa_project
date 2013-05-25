@@ -241,7 +241,6 @@ public class DataController extends Observable implements Observer{
 				//If the local game does not exist, or does not have any turns
 				m.putGame(gameMap.getKey());
 				m.putTurns(gameMap.getValue());
-				removeInvitations(gameMap.getKey());
 			} else if(Game.hasChanged(localGame, gameMap.getKey())){
 				Log.d("WORKS?", "YES!");
 				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
@@ -251,13 +250,19 @@ public class DataController extends Observable implements Observer{
 					//Because of the saveEventually, we do not have to check the other way around.
 					m.putGame(gameMap.getKey());
 					m.putTurns(gameMap.getValue());
-				} else if(localGame.isFinished() 
-						&& !localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
-					Log.d("DC: update", "This code deletes games and turns after they are finished!");
-
-					//This code deletes games and turns after they are finished!
-					//This code is only reachable for the receiving player
-					db.removeGame(localGame);
+				} else if(localGame.isFinished()){
+					//Removes the instance in sent invitations when game is finished
+					for(Invitation i : m.getSentInvitations()){
+						if(localGame.getPlayer1().equals(i.getInviter())){
+							m.removeSentInvitation(i);
+						}
+					}
+					if(!localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 
+						Log.d("DC: update", "This code deletes games and turns after they are finished!");					
+						//This code deletes games and turns after they are finished!
+						//This code is only reachable for the receiving player
+						db.removeGame(localGame);
+					}
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
 					//If current player of a game is different, we must check the turns
 					Log.d("DC: update", "If current player of a game is different, we must check the turns");
@@ -277,20 +282,6 @@ public class DataController extends Observable implements Observer{
 
 		return m.getGames();
 	}
-	/** 
-	 * A method to remove all accepted invitations from sent invitations.
-	 * @param dbGame
-	 */
-	private void removeInvitations(Game dbGame){
-		ArrayList<Invitation> invitations = m.getSentInvitations();
-		for(Invitation i : invitations){
-			if(i.getInvitee().equals(dbGame.getPlayer1())){
-				if(i.getTimeOfInvite().before(dbGame.getLastPlayed())){
-					m.removeSentInvitation(i);
-				}
-			}
-		}
-	}
 	/*
 	 * This part removes any games that are "to old".
 	 */
@@ -301,7 +292,7 @@ public class DataController extends Observable implements Observer{
 				finishedGames.add(locGame);
 			} else if(!dbGames.contains(locGame)
 					&& (new Date()).getTime() 
-						- locGame.getLastPlayed().getTime() > 1000L * 30L){
+					- locGame.getLastPlayed().getTime() > 1000L * 30L){
 				//We have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);
 			}
