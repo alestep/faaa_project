@@ -1,6 +1,7 @@
 package com.example.wecharades.views;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -19,6 +20,12 @@ public class GameInstructionsActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;
 	}

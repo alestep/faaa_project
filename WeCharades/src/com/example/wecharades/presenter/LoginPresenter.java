@@ -22,13 +22,13 @@ public class LoginPresenter extends Presenter{
 	private LoginActivity activity;
 	private String username;
 	private String password;
-	private View myView;
-	private ProgressBar loginProgress;
 	private DatabaseException dbException;
+	private View parentView;
 
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
 		this.activity = activity;
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void setListeners(EditText password) {		
@@ -45,11 +45,9 @@ public class LoginPresenter extends Presenter{
 		
 	}
 
-	public void login(String username, String password, View myView, ProgressBar loginProgress){
+	public void login(String username, String password){
 		this.username = username;
 		this.password = password;
-		this.myView = myView;
-		this.loginProgress = loginProgress;
 		Login login = new Login();
 		login.execute();
 	}
@@ -65,7 +63,7 @@ public class LoginPresenter extends Presenter{
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			showProgressSpinner(myView, loginProgress);
+			activity.showProgressSpinner(getAllChildren(parentView));
 		}
 
 		@Override
@@ -105,7 +103,7 @@ public class LoginPresenter extends Presenter{
 				alert.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			hideProgressSpinner(myView, loginProgress);	
+			activity.hideProgressSpinner(getAllChildren(parentView));	
 		}
 	}
 }

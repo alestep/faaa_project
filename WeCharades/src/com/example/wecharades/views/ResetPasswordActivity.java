@@ -31,7 +31,7 @@ public class ResetPasswordActivity extends GenericActivity {
 		emailInput				= (EditText) findViewById(R.id.resetPassword);
 		errorMsg				= (TextView) findViewById(R.id.error);
 		resetProgress			= (ProgressBar) findViewById(R.id.progress);
-		presenter.setProgressSpinnerInvisible(resetProgress);
+//		presenter.setProgressSpinnerInvisible(resetProgress);
 	}
 
 	/**
@@ -66,5 +66,11 @@ public class ResetPasswordActivity extends GenericActivity {
 	public void showSuccessMessage(String message) {
 		errorMsg.setTextColor(Color.parseColor("#458B00"));
 		errorMsg.setText(message);
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

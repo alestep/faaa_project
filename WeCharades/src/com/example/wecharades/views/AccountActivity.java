@@ -2,6 +2,7 @@ package com.example.wecharades.views;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -71,6 +72,12 @@ public class AccountActivity extends GenericActivity {
 		wonGames.setText("Won games: " + numberOfWonGames);
 		lostGames.setText("Lost games: " + numberOfLostGames);
 		drawGames.setText("Draw games: " + numberOfDrawGames);
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

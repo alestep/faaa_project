@@ -18,19 +18,17 @@ public class ResetPresenter extends Presenter {
 
 	private ResetPasswordActivity activity;
 	private String email;
-	private View myView;
-	private ProgressBar resetProgress;
+	private View parentView;
 	private DatabaseException dbException;
 
 	public ResetPresenter(ResetPasswordActivity activity) {
 		super(activity);
 		this.activity = activity;
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void resetPassword(String email, View myView, ProgressBar resetProgress) {
 		this.email = email;
-		this.myView = myView;
-		this.resetProgress = resetProgress;
 		ResetPasswordTask reset = new ResetPasswordTask();
 		reset.execute();
 
@@ -56,7 +54,7 @@ public class ResetPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			showProgressSpinner(myView, resetProgress);
+			activity.showProgressSpinner(getAllChildren(parentView));
 		}
 
 		@Override
@@ -104,7 +102,7 @@ public class ResetPresenter extends Presenter {
 				alert.show();
 			}
 			exceptionState = NO_EXCEPTION;
-			hideProgressSpinner(myView, resetProgress);
+			activity.hideProgressSpinner(getAllChildren(parentView));
 		}
 	}
 }

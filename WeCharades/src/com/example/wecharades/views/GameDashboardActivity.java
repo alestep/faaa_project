@@ -1,6 +1,7 @@
 package com.example.wecharades.views;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -40,5 +41,11 @@ public class GameDashboardActivity extends GenericActivity {
 	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
 		yourScore.setText("Your score: "+ currentPlayersScore + " points");
 		opponentsScore.setText("Opponent's score: "+ otherPlayerScore + " points");
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

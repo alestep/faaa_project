@@ -3,12 +3,12 @@ package com.example.wecharades.presenter;
 import java.util.List;
 import java.util.Observable;
 
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DCMessage;
-import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.InvitationActivity;
@@ -17,12 +17,14 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
+	private View parentView;
 	//ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	private void setAdapter(List<Invitation> invitationList) {

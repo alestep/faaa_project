@@ -23,13 +23,13 @@ public class RegisterPresenter extends Presenter {
 	private String inputEmail;
 	private String inputPassword;
 	private String inputRepeatPassword;
-	private View myView;
-	private ProgressBar registerProgress;
+	private View parentView;
 	private DatabaseException dbException;
 
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	/**
@@ -45,8 +45,6 @@ public class RegisterPresenter extends Presenter {
 		this.inputEmail = inputEmail;
 		this.inputPassword = inputPassword;
 		this.inputRepeatPassword = inputRepeatPassword;
-		this.myView = myView;
-		this.registerProgress = registerProgress;
 		RegisterTask register = new RegisterTask();
 		register.execute();
 	}
@@ -77,7 +75,7 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			showProgressSpinner(myView, registerProgress);
+			activity.showProgressSpinner(getAllChildren(parentView));
 		}
 
 		@Override
@@ -118,7 +116,7 @@ public class RegisterPresenter extends Presenter {
 
 				exceptionState = NO_EXCEPTION;
 			}
-			hideProgressSpinner(myView, registerProgress);
+			activity.hideProgressSpinner(getAllChildren(parentView));
 		}
 	}
 }

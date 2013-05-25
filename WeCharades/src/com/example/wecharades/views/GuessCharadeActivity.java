@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -171,6 +172,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 		});
 		AlertDialog mAlert = builder.create();
 		mAlert.show();
+	}
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

@@ -1,6 +1,7 @@
 package com.example.wecharades.views;
 
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,12 @@ public class HighScoreActivity extends GenericActivity {
 
 	public void updateGlobalRanking(int globalRankingPosition, int totalNumberOfUsers) {
 		globalRanking.setText("Your global ranking position is: " + globalRankingPosition + " out of " + totalNumberOfUsers);
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

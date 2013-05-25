@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -40,12 +41,9 @@ public class StartActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
-		
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		// Sets the View Layer
-		setContentView(R.layout.list_screen);
-		
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar); 
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.list_screen);
 
 		// Get a reference to views
 		gameListView = (ListView) findViewById(R.id.list);
@@ -59,7 +57,6 @@ public class StartActivity extends GenericActivity {
 
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
-
 		presenter.setGameListView(gameListView);
 
 		//Check if the user is logged in or saved in the cache
@@ -117,7 +114,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	/**
-	 * Nothing happens so far...
+	 * Go to Account Activity which provides information and statistics
 	 * @param view
 	 */
 	public void onClickUsername(View view) {
@@ -137,6 +134,12 @@ public class StartActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;
 	}
