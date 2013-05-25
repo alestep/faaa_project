@@ -218,7 +218,6 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void fetchGames(Player player){
 		final Database db = this;
-		final DatabaseConverter dbc = this.dbc;
 
 		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
 		ParseQuery query1 = new ParseQuery(GAME);
@@ -234,7 +233,7 @@ public class Database extends Observable implements IDatabase {
 		mainQuery.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> dbResult, ParseException e){
 				if(e == null){
-					if (db != null && !dbResult.isEmpty()){
+					if (db != null){
 						db.getTurnsInBackgrund(dbResult);
 					}
 				} else{
@@ -248,45 +247,51 @@ public class Database extends Observable implements IDatabase {
 	 * Helper method to fetch games. Games and turns are fetched in background.
 	 */
 	private void getTurnsInBackgrund(final List<ParseObject> gameList){
-		LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
-		for(ParseObject game : gameList){
-			gameQueries.add((new ParseQuery(TURN)).whereEqualTo(TURN_GAME, game));
-		}
-		ParseQuery masterQuery = ParseQuery.or(gameQueries);
-		masterQuery.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> resultList, ParseException e){
-				if(e == null && !resultList.isEmpty()){
-					try{
-						ArrayList<Game> games = new ArrayList<Game>();
-						for(ParseObject obj : gameList){
-							games.add(dbc.parseGame(obj)); //TODO This should be fixed later
-						}
-						//First, we create a TreeMap with the games, and an index for reference:
-						TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
-						TreeMap<String, Game> idList = new TreeMap<String, Game>();
-						for(Game game : games){
-							map.put(game, new ArrayList<Turn>());
-							idList.put(game.getGameId(), game);
-						}
-						//Then, we must parse the ParseObjects to turns and add them to the correct list
-						for(ParseObject obj : resultList){
-							Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
-							Game g = idList.get(turn.getGameId());
-							ArrayList<Turn> tl = map.get(g);
-							tl.add(turn);
-						}
-						setChanged();
-						notifyObservers(map);
-					} catch(DatabaseException e2){
-						setChanged();
-						notifyObservers(e2);
-					}
-				} else{
-					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
-				}
+		if(gameList.isEmpty()){
+			//If there are no games, we should still update screen to remove old games!
+			setChanged();
+			notifyObservers(new TreeMap<Game, ArrayList<Turn>>());
+		} else{
+			LinkedList<ParseQuery> gameQueries = new LinkedList<ParseQuery>();
+			for(ParseObject game : gameList){
+				gameQueries.add((new ParseQuery(TURN)).whereEqualTo(TURN_GAME, game));
 			}
-		});
+			ParseQuery masterQuery = ParseQuery.or(gameQueries);
+			masterQuery.findInBackground(new FindCallback(){
+				public void done(List<ParseObject> resultList, ParseException e){
+					if(e == null && !resultList.isEmpty()){
+						try{
+							ArrayList<Game> games = new ArrayList<Game>();
+							for(ParseObject obj : gameList){
+								games.add(dbc.parseGame(obj)); //TODO This should be fixed later
+							}
+							//First, we create a TreeMap with the games, and an index for reference:
+							TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
+							TreeMap<String, Game> idList = new TreeMap<String, Game>();
+							for(Game game : games){
+								map.put(game, new ArrayList<Turn>());
+								idList.put(game.getGameId(), game);
+							}
+							//Then, we must parse the ParseObjects to turns and add them to the correct list
+							for(ParseObject obj : resultList){
+								Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
+								Game g = idList.get(turn.getGameId());
+								ArrayList<Turn> tl = map.get(g);
+								tl.add(turn);
+							}
+							setChanged();
+							notifyObservers(map);
+						} catch(DatabaseException e2){
+							setChanged();
+							notifyObservers(e2);
+						}
+					} else{
+						setChanged();
+						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					}
+				}
+			});
+		}
 	}
 
 	/* (non-Javadoc)
@@ -513,7 +518,7 @@ public class Database extends Observable implements IDatabase {
 							try {
 								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
 								db.createGame(player, p2);
-								db.removeRandom(player);
+								db.removeRandom(p2);
 							} catch (DatabaseException e1) {
 								setChanged();
 								notifyObservers(new DatabaseException(e1.getCode(), e1.getMessage()));
@@ -539,10 +544,13 @@ public class Database extends Observable implements IDatabase {
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
 		//First fetches the player from the randomqueue, then deletes the player. All on speparate thread.
-		query.getFirstInBackground(new GetCallback(){
-			public void done(ParseObject thePlayer, ParseException e){
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> thePlayer, ParseException e){
 				if(e == null){
-					thePlayer.deleteEventually();
+					//Delete all instanses of a player.
+					for(ParseObject p : thePlayer){
+						p.deleteEventually();
+					}
 				} else{
 					Log.d("Database", "Could not remove random player");
 				}
