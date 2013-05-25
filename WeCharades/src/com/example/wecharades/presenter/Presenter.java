@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 

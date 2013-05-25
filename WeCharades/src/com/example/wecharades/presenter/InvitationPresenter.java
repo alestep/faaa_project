@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DCMessage;
-import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.InvitationActivity;
@@ -17,7 +16,6 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
-	//ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
@@ -35,14 +33,6 @@ public class InvitationPresenter extends Presenter {
 
 	public void update() {
 		dc.getInvitations();
-		/*if(invitationList == null){
-			try {
-				invitationList = dc.getInvitations();
-			} catch (DatabaseException e) {
-				activity.showMessage(e.prettyPrint());
-			}
-		}
-		setAdapter();*/
 	}
 
 	public void setInvitation(Invitation invitation, boolean response) {

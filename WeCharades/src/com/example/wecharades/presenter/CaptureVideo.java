@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.VideoUploadActivity;

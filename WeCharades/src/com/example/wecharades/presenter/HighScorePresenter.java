@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;

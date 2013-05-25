@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;

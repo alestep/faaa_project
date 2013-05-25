@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;

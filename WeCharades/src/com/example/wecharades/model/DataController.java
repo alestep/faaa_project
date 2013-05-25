@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import android.content.Context;
-import android.util.Log;
 
 
 /**
