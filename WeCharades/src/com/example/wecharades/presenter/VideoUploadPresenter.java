@@ -97,6 +97,7 @@ public class VideoUploadPresenter extends Presenter {
 		File file = new File(path);
 		file.delete();
 		Intent intent = new Intent(activity.getApplicationContext(), CaptureVideo.class);
+		intent.putExtra(Database.TURN, turn);
 		activity.startActivity(intent);
 		activity.finish();	
 	}

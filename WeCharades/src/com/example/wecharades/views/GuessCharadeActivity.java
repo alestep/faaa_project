@@ -139,7 +139,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			showDialog();
+			if(presenter.downloadState != presenter.NO_DOWNLOAD)
+				showDialog();
+			else{
+				finish();
+			}
 			return true;
 		}
 		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
