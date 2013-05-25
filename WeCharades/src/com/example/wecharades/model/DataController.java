@@ -68,7 +68,7 @@ public class DataController extends Observable implements Observer{
 				}
 			} else if (obj instanceof Collection){
 				Collection map = (Collection) obj;
-				if(getInternalObject(map).getClass().equals(Invitation.class)){
+				if(getInternalObject(map).getClass().equals(Invitation.class) || map.isEmpty()){
 					List<Invitation> invList = parseDbInvitations((List<Invitation>) obj);
 					setChanged();
 					notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));

@@ -163,5 +163,4 @@ public class StartPresenter extends Presenter implements Observer{
 			}
 		}
 	}
-
 }

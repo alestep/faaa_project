@@ -60,8 +60,7 @@ public class InvitationPresenter extends Presenter {
 	 * Called whenever an update is received from a class this presenter subscribes to.
 	 */
 	public void update(Observable obs, Object obj){
-		if(obs.getClass().equals(DataController.class)
-				&& obj != null && obj.getClass().equals(DCMessage.class)){
+		if(obj != null && obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.INVITATIONS){
 				setAdapter((List<Invitation>) dcm.getData());
