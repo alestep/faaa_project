@@ -1,16 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@drawable/section_list_header_box" >
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="@color/LightGrey" />
 
     <TextView
         android:id="@+id/list_header_title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="5dp"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        android:paddingTop="2dip" />
+        android:paddingLeft="5dp"
+        android:background="@drawable/section_list_header_box"/>
 
 </LinearLayout>

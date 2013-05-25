@@ -282,13 +282,17 @@ public class DataController extends Observable implements Observer{
 	 * @param dbGame
 	 */
 	private void removeInvitations(Game dbGame){
-		ArrayList<Invitation> invitations = m.getSentInvitations();
+		ArrayList<Invitation> invitations = (ArrayList<Invitation>) m.getSentInvitations();
+		ArrayList<Invitation> removeThese = new ArrayList<Invitation>();
 		for(Invitation i : invitations){
 			if(i.getInvitee().equals(dbGame.getPlayer1())){
 				if(i.getTimeOfInvite().before(dbGame.getLastPlayed())){
-					m.removeSentInvitation(i);
+					removeThese.add(i);
 				}
 			}
+		}
+		for(Invitation i : removeThese){
+			m.removeSentInvitation(i);
 		}
 	}
 	/*
