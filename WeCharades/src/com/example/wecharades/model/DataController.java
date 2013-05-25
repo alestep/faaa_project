@@ -24,6 +24,10 @@ import android.util.Log;
  *
  */
 public class DataController extends Observable implements Observer{
+	//TODO Delete later
+	public Game getGame(String gameId){
+		return m.getGame(gameId);
+	}
 
 	private static DataController dc = null; //TODO this is high coulpling... CODE SMELL
 	private Model m;
@@ -299,6 +303,7 @@ public class DataController extends Observable implements Observer{
 		for(Game locGame : m.getGames()){
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
+				//TODO:remove notification on server
 			} else if(!dbGames.contains(locGame)
 					&& (new Date()).getTime() 
 						- locGame.getLastPlayed().getTime() > 1000L * 30L){

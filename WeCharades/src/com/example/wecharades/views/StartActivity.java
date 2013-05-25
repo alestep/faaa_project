@@ -1,13 +1,15 @@
 package com.example.wecharades.views;
 
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,6 +18,9 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
+import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
+import com.parse.PushService;
 
 
 /**
@@ -66,6 +71,9 @@ public class StartActivity extends GenericActivity {
 
 		//Check if the user is logged in or saved in the cache
 		presenter.checkLogin();
+		PushService.setDefaultPushCallback(this, StartActivity.class);
+		ParseInstallation.getCurrentInstallation().saveEventually();
+		ParseAnalytics.trackAppOpened(getIntent());
 
 	}
 
@@ -74,7 +82,9 @@ public class StartActivity extends GenericActivity {
 		presenter.initiate();
 		//TODO here the code for updating the view should be included.
 		presenter.update();
+		presenter.notificationUpdate();
 	}
+	
 	
 	public void onStop(){
 		//Deregisters the presenter from the list of observers
