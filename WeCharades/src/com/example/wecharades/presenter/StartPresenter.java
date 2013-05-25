@@ -10,9 +10,11 @@ import java.util.TreeMap;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DataController;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
@@ -29,7 +31,7 @@ import com.example.wecharades.views.StartActivity;
 public class StartPresenter extends Presenter implements Observer{
 
 	private StartActivity activity;
-	//private LinkedHashMap<String, ArrayList<Game>> listMap;
+	//private LinkedHashMap<String, ArrayList<Game>> listMap; 
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 	
 	// Adapter for ListView Contents and the actual listview
@@ -41,8 +43,9 @@ public class StartPresenter extends Presenter implements Observer{
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		//adapter = new SeparatedListAdapter(activity);
+		dc.addObserver(this);
 	}
+
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
 	}
@@ -110,7 +113,7 @@ public class StartPresenter extends Presenter implements Observer{
 			}
 		}
 		
-		// Set the adapter on the ListView holder
+		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
 		
         // Listen for Click events
@@ -124,6 +127,7 @@ public class StartPresenter extends Presenter implements Observer{
             }
         });
 	}
+	
 
 	/**
 	 * 
@@ -159,17 +163,14 @@ public class StartPresenter extends Presenter implements Observer{
 	 * @param obs - The observer
 	 * @param obj - The object included in the message
 	 */
-	@Override
 	public void update(Observable obs, Object obj) {
 		if(obs.getClass().equals(DataController.class)
 				&& obj != null){
-			if(obj instanceof ArrayList
-					&& !((ArrayList) obj).isEmpty()
-					&& ((ArrayList) obj).get(0).getClass().equals(Game.class) ){
+			if(obj instanceof ArrayList){
 				updateFromDb((ArrayList<Game>) obj);
 			}
 		} else{
-			//If this 
+			//If anything else, send to super
 			super.update(obs, obj);
 		}
 	}

@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Activity headers strings -->
-	<string name="app_name">WeCharades</string>
-	<string name="menu">Menu</string>
+    <string name="app_name">WeCharades</string>
+    <string name="menu">Menu</string>
     <string name="login">Login</string>
     <string name="game">Let\'s play</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="invitations">Invitations</string>
-    
+    <string name="register">Register</string>
+
     <!-- Login screen strings -->
-   	<string name="username">Username</string>
-	<string name="password">Password</string>
-	<string name="forgot_password">Forgot your password?</string>
-	<string name="not_registered">Not registered?</string>
-		
-	<!-- Start screen strings -->
-	<string name="new_game">Start a new game</string>
-	<string name="account">Account</string>
-	<string name="logout">Logout</string>
-   
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="email">Email</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="not_registered">Not registered?</string>
+    <string name="registered">Already registered?</string>
+
+    <!-- Start screen strings -->
+    <string name="new_game">Start a new game</string>
+    <string name="account">Account</string>
+    <string name="logout">Logout</string>
+
     <!-- Search screen strings -->
     <string name="random">Find random player</string>
     <string name="facebook">Find through Facebook</string>
@@ -29,12 +34,10 @@
     <string name="search_result">Search result</string>
     <string name="play">Play</string>
     <string name="empty_list">No results found!</string>
-    
+
     <!-- Invitations screen strings -->
     <string name="accept">Accept</string>
-     <string name="reject">Reject</string>
-    
-    
+    <string name="reject">Reject</string>
     <string name="action_settings">Settings</string>
-    
+
 </resources>

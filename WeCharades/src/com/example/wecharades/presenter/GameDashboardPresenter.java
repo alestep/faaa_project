@@ -125,19 +125,18 @@ public class GameDashboardPresenter extends Presenter {
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
 		OnClickListener buttonListener = new View.OnClickListener() {
 			//boolean isAnsPLayer = ansPlayer;
-			Turn theTurn = turn;
 			@Override
 			public void onClick(View v) {
 				if(ansPlayer) {
 					//Go to GuessCharadeActivity
 					Intent intent = new Intent (activity.getApplicationContext(), GuessCharadeActivity.class);
-					intent.putExtra("Turn", theTurn);
+					intent.putExtra("Turn", turn);
 					activity.startActivity(intent);
 				}
 				else {
 					//Go to CaptureVideo
 					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
-					intent.putExtra("Turn", theTurn);
+					intent.putExtra("Turn", turn);
 					activity.startActivity(intent);
 				}
 			}

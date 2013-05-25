@@ -2,8 +2,16 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="wecharades_theme" parent="android:Theme">
+
+        <!-- Title bar styling -->
+        <item name="android:windowTitleStyle">@style/title_bar_style</item>
         <item name="android:windowTitleSize">35dip</item>
-        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground </item>
+        <item name="android:windowTitleBackgroundStyle">@style/title_bar_appearance</item>
+
+        <!-- Window styling -->
+        <item name="android:windowBackground">@color/LightGrey</item>
+        <item name="android:colorBackgroundCacheHint">@color/LightGrey</item>
+        <item name="android:textColorHint">@color/DarkGrey</item>
     </style>
 
 </resources>

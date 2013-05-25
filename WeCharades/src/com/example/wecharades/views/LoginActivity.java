@@ -28,45 +28,24 @@ public class LoginActivity extends GenericActivity {
 		setContentView(R.layout.login);
 
 		// Importing all assets like buttons, text fields
-		inputUsername		= (EditText) findViewById(R.id.loginUsername);
-		inputPassword		= (EditText) findViewById(R.id.loginPassword);
+		inputUsername		= (EditText) findViewById(R.id.login_username);
+		inputPassword		= (EditText) findViewById(R.id.login_password);
 		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
-		
+
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
-		
+
 		//initializing the presenter
 		presenter = (LoginPresenter) super.getPresenter();
 
 		presenter.setProgressSpinnerInvisible(loginProgress);
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
-		inputUsername.setOnEditorActionListener(new OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_NEXT) {
-					TextView nextField = (TextView) inputUsername.focusSearch(View.FOCUS_DOWN);
-					nextField.requestFocus();
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-		
-		inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					onClickLogin(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+		presenter.setListeners(inputPassword);
 	}
 
 	/**
@@ -83,12 +62,11 @@ public class LoginActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickForgotPassword(View view) {
-		Intent i = new Intent(getApplicationContext(),
-				ResetPasswordActivity.class);
+		Intent i = new Intent(getApplicationContext(), ResetPasswordActivity.class);
 		startActivity(i);
 		//finish();
 	}
-	
+
 	/**
 	 * Link to register screen
 	 * @param view
@@ -104,5 +82,5 @@ public class LoginActivity extends GenericActivity {
 		// TODO Auto-generated method stub
 		return loginErrorMsg;
 	}
-	
+
 }

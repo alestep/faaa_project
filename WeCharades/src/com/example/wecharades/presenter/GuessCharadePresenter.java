@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -37,6 +38,8 @@ public class GuessCharadePresenter extends Presenter {
 	private DownloadVideo download;
 	private VideoView videoView;
 	private final String SAVE_PATH = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
+	private File SAVE_PATHTWO = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	private Turn turn;
 	public String currentWord;
 	public CountDownTimer timer;
@@ -92,6 +95,19 @@ public class GuessCharadePresenter extends Presenter {
 		this.turn = turn;
 		download = new DownloadVideo(context, SAVE_PATH);
 		download.execute();
+		try {
+			download.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		playVideo();
+		timer.start();
+		timerView.setVisibility(0);
+		
 	}
 	/**
 	 * Sets video specifications and initiates the video.
@@ -159,12 +175,7 @@ public class GuessCharadePresenter extends Presenter {
 	 * @return True if answerWord matches currentWord.
 	 */
 	public boolean checkRightWord(EditText answerWord){
-		if(answerWord.getText().toString().equalsIgnoreCase(currentWord) ){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
 	}
 	/**
 	 * 
@@ -201,6 +212,9 @@ public class GuessCharadePresenter extends Presenter {
 					con.enterLocalPassiveMode(); // important!
 					System.out.println(turn.getVideoLink());
 					con.setFileType(FTP.BINARY_FILE_TYPE);
+					System.out.println(SAVE_PATH);
+					System.out.println(SAVE_PATHTWO);
+					System.out.println(SAVE_PATHTWO.toString());
 					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
 					boolean result = con.retrieveFile(turn.getVideoLink(), out);// Todo: server path. //"/APP/PresentVideo.mp4"
 					out.close();
@@ -240,10 +254,6 @@ public class GuessCharadePresenter extends Presenter {
 				mDialog.dismiss();
 				activity.showMessage(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
-				playVideo();
-				timer.start();
-				timerView.setVisibility(0);
-
 			}
 		}
 	}

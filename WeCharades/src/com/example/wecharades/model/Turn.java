@@ -105,10 +105,24 @@ public class Turn implements Serializable {
 			return -1;
 	}
 	
+	/**
+	 * Check if equals
+	 * @param obj - an object to check
+	 * @return - if the object equals the turn
+	 */
+	@Override
+	public boolean equals(Object obj){
+		return  obj != null
+				&& obj.getClass().equals(Turn.class)
+				&& this.equals((Turn) obj);
+	}
+	/**
+	 * Checks if equals
+	 * @param anotherTurn - a turn to check
+	 * @return - if the Turn equals this turn
+	 */
 	public boolean equals(Turn anotherTurn){
-		return anotherTurn != null
-				&& anotherTurn.getGameId().equals(this.getGameId())
-				&& anotherTurn.getTurnNumber() == (this.getTurnNumber());
-		
+		return anotherTurn.getGameId().equals(this.getGameId())
+		&& anotherTurn.getTurnNumber() == (this.getTurnNumber());
 	}
 }
