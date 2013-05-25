@@ -22,9 +22,7 @@ import android.util.Log;
  *
  */
 public class Model implements Serializable{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -8167671678222883965L;
 	private static final String 	SAVE_FILE = "model.save";
 	public static final int 		
@@ -34,6 +32,11 @@ public class Model implements Serializable{
 
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
+	//A variable that can be changed in order to purge the model
+	private static boolean			PURGE = false;
+	//A variable which is called when a user logs out 
+	// - the model exists a moment so we may finish any queries first
+	private static boolean 			RECREATE = false;
 
 	//Two maps for games for increased speed
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
@@ -63,13 +66,19 @@ public class Model implements Serializable{
 	 * @return the Model
 	 */
 	public static Model getModelInstance(Context context){
+		if(PURGE){
+			eraseModel(context);
+			singleModel = null;
+			PURGE = false;
+		}
 		if(singleModel == null){
 			//Try to load from storage
 			singleModel = loadModel(context);
-			if(singleModel == null){
-				//If there were no previous models present, create new
-				singleModel = new Model(context);
-			}
+		}
+		if(singleModel == null || RECREATE){
+			//If there were no previous models present, create new
+			singleModel = new Model(context);
+			RECREATE = false;
 		}
 		return singleModel;
 	}
@@ -111,9 +120,10 @@ public class Model implements Serializable{
 
 	private static void eraseModel(Context context){
 		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
-		if(modelFile.delete())
+		if(modelFile.delete()){
 			Log.d("Model - File:","Removed file");
-		singleModel = null;
+		}
+		RECREATE = true;
 	}
 
 	//Games ---------------------------------------------------------------
@@ -187,16 +197,22 @@ public class Model implements Serializable{
 	 */
 	public void putTurn(Turn turn){
 		if(turn != null){
-			Game game = getGame(turn.getGameId());
-			if( !gameList.containsKey(game))
+			if( !gameIdList.containsKey(turn.getGameId()))
 				throw new NoSuchElementException();
+			Game game = getGame(turn.getGameId());
 			ArrayList<Turn> listOfTurns = gameList.get(game);
 			if(listOfTurns == null){
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			}else if(listOfTurns.contains(turn)) 
 				listOfTurns.remove(turn);
-			listOfTurns.add(turn.getTurnNumber() - 1, turn); //put the updated turn in the right order!
+			listOfTurns.add(turn);
+			Collections.sort(listOfTurns, new Comparator<Turn>(){
+				@Override
+				public int compare(Turn lhs, Turn rhs) {
+					return lhs.getTurnNumber() - rhs.getTurnNumber();
+				}
+			});
 		}
 		SAVED = false;
 	}

@@ -3,13 +3,13 @@ package com.example.wecharades.presenter;
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;

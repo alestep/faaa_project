@@ -3,11 +3,11 @@
     package="com.example.wecharades"
     android:versionCode="1"
     android:versionName="1.0" >
- 
+
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
- 
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,32 +15,31 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
- 
     <uses-feature android:name="android.hardware.camera" />
- 
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/wecharades_theme">
- 
+        android:theme="@style/wecharades_theme" >
+
         <!-- Start Screen Activity -->
         <activity
             android:name=".views.StartActivity"
             android:label="@string/app_name" >
- 
+
             <!-- DEFAULT STARTING SCREEN -->
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
- 
+
         <!-- New Game Activity -->
         <activity
             android:name=".views.NewGameActivity"
-            android:label="@string/new_game">
+            android:label="@string/new_game" >
         </activity>
 
         <!-- Invitations Activity -->
@@ -48,51 +47,51 @@
             android:name=".views.InvitationActivity"
             android:label="@string/invitations" >
         </activity>
-        
+
         <!-- Search Player Activity -->
         <activity
             android:name=".views.SearchPlayerActivity"
             android:label="@string/player" >
         </activity>
- 
+
         <!-- Search Result Activity -->
         <activity
             android:name=".views.SearchResultActivity"
             android:label="@string/game" >
         </activity>
- 
+
         <!-- Game Dashboard Activity -->
         <activity
             android:name=".views.GameDashboardActivity"
             android:configChanges="orientation"
-            android:label="@string/game" 
+            android:label="@string/game"
             android:screenOrientation="portrait" >
         </activity>
- 
+
         <!-- Login Activity -->
         <activity
             android:name=".views.LoginActivity"
             android:label="Login Account" >
         </activity>
- 
+
         <!-- Register Activity -->
         <activity
             android:name=".views.RegisterActivity"
             android:label="Register New Account" >
         </activity>
- 
+
         <!-- Reset Password Activity -->
         <activity
             android:name=".views.ResetPasswordActivity"
             android:label="Reset Password" >
         </activity>
- 
+
         <!-- VideoUploadActivity -->
         <activity
             android:name=".views.VideoUploadActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" />
- 
+
         <!-- CaptureVideo Activity -->
         <activity
             android:name=".presenter.CaptureVideo"
@@ -100,11 +99,11 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.START_VIDEO_CAMERA" />
- 
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
- 
+
         <!-- GameActivity Activity -->
         <activity
             android:name=".views.GameActivity"
@@ -114,27 +113,36 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Main" />
         </activity>
- 
+
         <!-- GuessCharadeActivity Activity -->
         <activity
             android:name=".views.GuessCharadeActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" />
-        
+
         <!-- High Score Activity -->
         <activity
             android:name=".views.HighScoreActivity"
             android:label="Top 10 Charaders" />
-        
+
         <!-- AccountActivity -->
         <activity
             android:name=".views.AccountActivity"
             android:label="Statistics" />
-        
+
         <!-- GameInstructionsActivity -->
         <activity
             android:name=".views.GameInstructionsActivity"
             android:label="Game Instructions" />
+
+        <service android:name="com.parse.PushService" />
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
     </application>
- 
+
 </manifest>

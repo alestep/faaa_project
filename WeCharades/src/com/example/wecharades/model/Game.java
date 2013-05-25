@@ -134,17 +134,13 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 * @return - if the game has changed
 	 */
 	public static boolean hasChanged(Game game1, Game game2){
-		return game1 != null && game2 != null
-				&& game1.equals(game2) 
-				&& game1.getCurrentPlayer().equals(game2.getCurrentPlayer())
-				&& game1.getTurnNumber() == game2.getTurnNumber()
-				&& game1.isFinished() == game2.isFinished();
+		return !game1.getCurrentPlayer().equals(game2.getCurrentPlayer())
+				|| game1.getTurnNumber() != game2.getTurnNumber()
+				|| game1.isFinished() != game2.isFinished();
 	}
 
 	@Override
 	public int compareTo(Game otherGame) {
-		if(otherGame == null)
-			throw new NullPointerException();
 		return this.getGameId().compareTo(otherGame.getGameId());
 	}
 }

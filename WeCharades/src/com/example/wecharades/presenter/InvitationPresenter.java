@@ -37,14 +37,6 @@ public class InvitationPresenter extends Presenter {
 
 	public void update() {
 		dc.getInvitations();
-		/*if(invitationList == null){
-			try {
-				invitationList = dc.getInvitations();
-			} catch (DatabaseException e) {
-				activity.showMessage(e.prettyPrint());
-			}
-		}
-		setAdapter();*/
 	}
 
 	public void setInvitation(Invitation invitation, boolean response) {

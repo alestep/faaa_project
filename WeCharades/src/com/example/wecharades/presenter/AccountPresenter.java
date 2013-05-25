@@ -25,7 +25,6 @@ public class AccountPresenter extends Presenter {
 				currentPlayer.getNumberOfWonGames(),
 				currentPlayer.getNumberOfLostGames(),
 				currentPlayer.getNumberOfDrawGames());
-
 	}
 
 	/**

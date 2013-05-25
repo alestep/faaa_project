@@ -1,3 +1,6 @@
+/**
+ * @authos
+ */
 package com.example.wecharades.presenter;
 
 import android.app.AlertDialog;
@@ -12,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
@@ -51,6 +53,7 @@ public class LoginPresenter extends Presenter{
 		Login login = new Login();
 		login.execute();
 	}
+
 	private class Login extends AsyncTask<Void, Long, Boolean>{
 
 		private int exceptionState = 0;
