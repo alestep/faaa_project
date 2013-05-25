@@ -287,9 +287,11 @@ public class DataController extends Observable implements Observer{
 					if(localTurn.getState() > dbTurn.getState()){
 						//Update db.turn if local version is further ahead
 						db.updateTurn(localTurn);
+						db.updateGame(localGame);
 					} else {
 						//If something is wrong, allways use the "Golden master" - aka. the database
 						m.putTurn(dbTurn);
+						m.putGame(gameMap.getKey());
 					}
 				}
 			}

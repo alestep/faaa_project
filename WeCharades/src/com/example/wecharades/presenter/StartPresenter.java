@@ -90,6 +90,7 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	public void update(){
+		dc.addObserver(this);
 		updateList(dc.getGames());
 		dc.getInvitations();
 	}
