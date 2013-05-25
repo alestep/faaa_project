@@ -83,6 +83,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 				public void onClick(DialogInterface dialog,int id) {
 
 					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
+					intent.putExtra("Game",presenter.getExtra());
 					startActivity(intent);
 					finish();
 				}

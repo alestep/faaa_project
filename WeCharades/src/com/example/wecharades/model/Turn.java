@@ -6,7 +6,7 @@ import java.io.Serializable;
  * This class represents a turn in a game.
  *
  */
-public class Turn implements Serializable {
+public class Turn implements Serializable, Comparable<Turn> {
 	/**
 	 * auto-generated serialVersionUID
 	 */
@@ -124,5 +124,10 @@ public class Turn implements Serializable {
 	public boolean equals(Turn anotherTurn){
 		return anotherTurn.getGameId().equals(this.getGameId())
 		&& anotherTurn.getTurnNumber() == (this.getTurnNumber());
+	}
+
+	@Override
+	public int compareTo(Turn anotherTurn) {
+		return this.getTurnNumber() - anotherTurn.getTurnNumber();
 	}
 }

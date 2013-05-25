@@ -84,13 +84,6 @@ public class StartActivity extends GenericActivity {
 		super.onResume();
 		presenter.update();
 	}
-	
-	
-	public void onStop(){
-		//Deregisters the presenter from the list of observers
-		presenter.unRegisterObserver();
-		super.onStop();
-	}
 
 	/**
 	 * Updates the screen

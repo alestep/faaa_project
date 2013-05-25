@@ -29,6 +29,8 @@ public class DataController extends Observable implements Observer{
 		return m.getGame(gameId);
 	}
 
+	private static boolean RECREATE = false;
+	
 	private static DataController dc;
 	private Model m;
 	private IDatabase db;
@@ -40,8 +42,9 @@ public class DataController extends Observable implements Observer{
 	}
 
 	public static DataController getDataController(Context context){
-		if(dc == null){
+		if(dc == null || RECREATE){
 			dc = new DataController(context);
+			RECREATE = false;
 		}
 		return dc;
 	}
@@ -73,19 +76,6 @@ public class DataController extends Observable implements Observer{
 		}
 	}
 
-	private Object getInternalObject(Collection col){
-		if(!col.isEmpty()){
-			return ((List) col).get(0);
-		}
-		return col;
-	}
-	private Object getInternalObject(Map map){
-		if(!map.isEmpty()){
-			return map.entrySet().iterator().next();
-		}
-		return map;
-	}
-
 	//Session handling -----------------------------------------------------------
 
 	/**
@@ -107,8 +97,7 @@ public class DataController extends Observable implements Observer{
 	public void logOutPlayer(Context context){
 		m.logOutCurrentPlayer(context);
 		db.logOut();
-		//Dereference the model
-		m = null;
+		RECREATE = true;
 	}
 
 	/**
@@ -286,9 +275,11 @@ public class DataController extends Observable implements Observer{
 					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
 					if(localTurn.getState() > dbTurn.getState()){
 						//Update db.turn if local version is further ahead
+						db.updateGame(localGame);
 						db.updateTurn(localTurn);
 					} else {
 						//If something is wrong, allways use the "Golden master" - aka. the database
+						m.putGame(gameMap.getKey());
 						m.putTurn(dbTurn);
 					}
 				}
@@ -404,8 +395,8 @@ public class DataController extends Observable implements Observer{
 
 	public void updateTurn(Turn turn) throws DatabaseException{
 		m.putTurn(turn);
+		db.updateTurn(turn);
 		Game game = m.getGame(turn.getGameId());
-		db.updateTurn(m.getCurrentTurn(game));
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
@@ -414,6 +405,7 @@ public class DataController extends Observable implements Observer{
 		case Turn.FINISH : 	game.incrementTurn();
 		break;
 		}
+		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
 		updateGame(game);
 	}

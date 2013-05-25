@@ -87,6 +87,7 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	public void update(){
+		dc.addObserver(this);
 		updateList(dc.getGames());
 		dc.getInvitations();
 	}
@@ -172,13 +173,6 @@ public class StartPresenter extends Presenter implements Observer{
 	public void logOut() {
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
-	}
-
-	/**
-	 * Called in order to unregister this presenter from the list of observers in the db.
-	 */
-	public void unRegisterObserver(){
-		dc.deleteObserver(this);
 	}
 
 	/**
