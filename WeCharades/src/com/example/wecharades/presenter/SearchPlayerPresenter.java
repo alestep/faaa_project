@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.SearchPlayerActivity;
+import com.example.wecharades.views.StartActivity;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.PushService;
 
 public class SearchPlayerPresenter extends Presenter {
 	
@@ -51,9 +55,25 @@ public class SearchPlayerPresenter extends Presenter {
 	public void invite(String invitee) {
 		try {
 			dc.sendInvitation(dc.getPlayer(invitee));
+			sendNotificationtoOtherPlayer(invitee);
 		} catch (DatabaseException e){
 			activity.showMessage(e.prettyPrint());
 		}
 		
 	}
+
+	private void sendNotificationtoOtherPlayer(String invitee) {
+		ParsePush push = new ParsePush();
+		System.out.println(invitee);
+		push.setChannel(invitee);
+		push.setMessage("Charade invitation from: " + dc.getCurrentPlayer().getName());
+		try {
+			push.send();
+		} catch (ParseException e) {
+			System.out.println("ParseException");
+			push.sendInBackground();
+		}
+		System.out.println("4");
+	}
+
 }

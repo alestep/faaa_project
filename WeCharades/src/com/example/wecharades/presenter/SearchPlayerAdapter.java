@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.views.SearchPlayerActivity;
+import com.parse.ParsePush;
 
 public class SearchPlayerAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;
@@ -59,15 +61,13 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 
 			@Override
 			public void onClick(View v){
+				
 				activity.invite(s);	
 				play.setText("Sent");
-				play.setEnabled(false);
+				play.setEnabled(false);			
 			}
 		}); 
 		
 		return v;
 	}
-
-
-
 }
