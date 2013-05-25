@@ -13,6 +13,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +37,6 @@ public class VideoUploadPresenter extends Presenter {
 	private VideoUploadActivity activity;
 	private UploadVideo upload;
 	private Turn turn;
-	private String fileName = "PresentVideo.mp4";
 	private String serverPath;
 
 	public VideoUploadPresenter(VideoUploadActivity activity) {
@@ -44,18 +44,46 @@ public class VideoUploadPresenter extends Presenter {
 		this.activity = activity;
 		this.turn = (Turn) activity.getIntent().getSerializableExtra(Database.TURN);
 	}
-	
+
 	/**
 	 * Starts the VideoUpload
 	 * @param context
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
-		setServerStorageLocation();
-		upload = new UploadVideo(context, path);
-		upload.execute();
+		final Context c = context;
+		final String p = path;
+		
+		//Check if the user has internet connection
+		if(isNetworkConnected()) {
+			setServerStorageLocation();
+			upload = new UploadVideo(context, path);
+			upload.execute();
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			builder.setTitle("Error!")
+			.setMessage("You've got no internet connection!")
+			.setCancelable(false)
+			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					//Try again...
+					uploadVideo(c,p);
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					//Go to homecreen
+					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
+					activity.startActivity(intent);
+					activity.finish();	
+					dialog.cancel();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
 	}
-	
+
 	/**
 	 * Initiate and start the video.
 	 * @param videoView
@@ -77,19 +105,17 @@ public class VideoUploadPresenter extends Presenter {
 			Log.e("Video", "error: " + e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * Sets the storage location of the videofile for the FTP-server. 
 	 * @return
 	 */
 	private void setServerStorageLocation(){
 		String gameID = turn.getGameId();
-		String turnNumber = String.valueOf(turn.getTurnNumber());
-		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
-		System.out.println(serverPath);
+		String serverPath = "/APP/GAMES/" + gameID + ".mp4";
 		this.serverPath = serverPath;
 	}
-	
+
 	/**	
 	 * Lets the player to re-record the video and deletes the current file.
 	 * @param path
@@ -112,8 +138,6 @@ public class VideoUploadPresenter extends Presenter {
 		ParsePush push = new ParsePush();
 		Log.d("VideoUpload", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getParseId());
 		push.setChannel(turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getParseId());
-//		push.setMessage("Your turn to charade against " + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).toString());
-//		push.setChannel("HEJ");
 		push.setMessage("TJENA MANNEN");
 		push.sendInBackground();
 	}
@@ -129,7 +153,7 @@ public class VideoUploadPresenter extends Presenter {
 			SAVE_PATH = path;
 			mDialog = new ProgressDialog(mContext);
 		}
-		
+
 		@Override
 		protected void onPreExecute(){
 			mDialog.setTitle("Uploading Charade");
@@ -137,17 +161,17 @@ public class VideoUploadPresenter extends Presenter {
 			mDialog.setCancelable(false);
 			mDialog.setCanceledOnTouchOutside(false);
 			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					
+
 				}
 			});
-			
+
 			mDialog.show();
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			FTPClient ftp = null;
@@ -195,11 +219,10 @@ public class VideoUploadPresenter extends Presenter {
 			if(mDialog.isShowing()){
 				mDialog.dismiss();
 				turn.setVideoLink(serverPath);
-				Log.d("ServerPath in Presenter", serverPath);
 				turn.setState(Turn.VIDEO);
-				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
 				pushNotficationtoAnotherPlayer();
+
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);

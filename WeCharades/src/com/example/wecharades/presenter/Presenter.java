@@ -34,7 +34,7 @@ public abstract class Presenter implements Observer{
 		dc.addObserver(this);
 	}
 
-	
+
 
 	/**
 	 * To get all clickable objects in a list from a view
@@ -107,5 +107,13 @@ public abstract class Presenter implements Observer{
 				activity.showMessage((String) dcm.getData());
 			}
 		}
+	}
+	
+	/**
+	 * Check if the user has internet connection
+	 * @return true if the user has internet connection, false otherwise
+	 */
+	public boolean isNetworkConnected() {
+		return ((ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
 	}
 }
