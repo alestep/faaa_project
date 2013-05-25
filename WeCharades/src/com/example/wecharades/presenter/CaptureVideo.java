@@ -58,7 +58,8 @@ public class CaptureVideo extends Activity {
 		}
 		else if(resultCode == RESULT_CANCELED){
 			uriVideo = null;
-			Toast.makeText(CaptureVideo.this,"Cancelled!",Toast.LENGTH_LONG).show();
+			Toast.makeText(CaptureVideo.this,"Canceled!",Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 

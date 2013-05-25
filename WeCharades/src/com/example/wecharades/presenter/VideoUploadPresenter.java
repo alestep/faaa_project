@@ -15,6 +15,7 @@ import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -28,6 +29,7 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.StartActivity;
 import com.example.wecharades.views.VideoUploadActivity;
+import com.parse.ParsePush;
 
 public class VideoUploadPresenter extends Presenter {
 
@@ -106,6 +108,15 @@ public class VideoUploadPresenter extends Presenter {
 			e.printStackTrace();
 		}
 	}
+	private void pushNotficationtoAnotherPlayer(){
+		ParsePush push = new ParsePush();
+		Log.d("VideoUpload", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getParseId());
+		push.setChannel(turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getParseId());
+//		push.setMessage("Your turn to charade against " + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).toString());
+//		push.setChannel("HEJ");
+		push.setMessage("TJENA MANNEN");
+		push.sendInBackground();
+	}
 
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 
@@ -123,6 +134,17 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onPreExecute(){
 			mDialog.setTitle("Uploading Charade");
 			mDialog.setMessage("Please Wait");
+			mDialog.setCancelable(false);
+			mDialog.setCanceledOnTouchOutside(false);
+			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					
+				}
+			});
+			
 			mDialog.show();
 		}
 		
@@ -177,37 +199,12 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setState(Turn.VIDEO);
 				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
+				pushNotficationtoAnotherPlayer();
 				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
 			}
-		}
-		/**
-		* Utility to create an arbitrary directory hierarchy on the remote ftp server 
-		* @param client the FTP-client
-		* @param dirTree  the directory tree only delimited with / chars.  No file name!
-		* @throws Exception
-		*/
-		private void ftpCreateDirectoryTree( FTPClient client, String dirTree ) throws IOException {	
-		  boolean dirExists = true;
-		  //tokenize the string and attempt to change into each directory level.  If you cannot, then start creating.
-		  String[] directories = dirTree.split("/");
-		  for (String dir : directories ) {
-		    if (!dir.isEmpty() ) {
-		      if (dirExists) {
-		        dirExists = client.changeWorkingDirectory(dir);
-		      }
-		      if (!dirExists) {
-		        if (!client.makeDirectory(dir)) {
-		          throw new IOException("Unable to create remote directory '" + dir + "'.  error='" + client.getReplyString()+"'");
-		        }
-		        if (!client.changeWorkingDirectory(dir)) {
-		          throw new IOException("Unable to change into newly created remote directory '" + dir + "'.  error='" + client.getReplyString()+"'");
-		        }
-		      }
-		    }
-		  }     
 		}
 	}
 }

@@ -1,18 +1,23 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
@@ -20,6 +25,7 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.StartActivity;
+import com.parse.PushService;
 
 /**
  * 
@@ -43,6 +49,36 @@ public class StartPresenter extends Presenter implements Observer{
 		this.activity = activity;
 		dc.addObserver(this);
 	}
+	public void notificationUpdate(){
+		ArrayList<Game> arrayGames = dc.getGames();
+		PushService.subscribe(activity.getApplicationContext(),"HEJ", StartActivity.class);
+		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(activity.getApplicationContext());
+		List<String> list = new ArrayList<String>(setOfAllSubscriptions);
+		Collections.sort(arrayGames);
+		Collections.sort(list);
+		Log.d("Here", "Before for loop");
+		
+		for(Game g : arrayGames){
+			String gameIDcurrentPlayer = g.getGameId() + dc.getCurrentPlayer().getParseId();
+			String gameIDopponentPlayer = g.getGameId() + g.getOpponent(dc.getCurrentPlayer()).getParseId();
+			Log.d("Here", gameIDcurrentPlayer);
+			Log.d("Here", gameIDopponentPlayer);
+			for(String s : list){	
+
+				if(!s.equals(gameIDcurrentPlayer) && !s.equals(gameIDopponentPlayer)){
+					PushService.subscribe(activity.getApplicationContext(), gameIDopponentPlayer, StartActivity.class);
+					PushService.subscribe(activity.getApplicationContext(),gameIDcurrentPlayer, StartActivity.class);
+					Log.d("if1","current added");
+					break;
+				}
+				else if(g.isFinished() && (s.equals(gameIDcurrentPlayer) || s.equals(gameIDopponentPlayer))){
+					Log.d("Here", "else if");
+					PushService.unsubscribe(activity.getApplicationContext(), gameIDcurrentPlayer);
+					PushService.unsubscribe(activity.getApplicationContext(), gameIDopponentPlayer);
+				}
+			}		
+		}
+	}
 
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
@@ -57,6 +93,7 @@ public class StartPresenter extends Presenter implements Observer{
 		updateList(dc.getGames());
 		dc.getInvitations();
 	}
+
 
 	/**
 	 * Private Method - Called when a new updated game list is received from the database.

@@ -24,6 +24,10 @@ import android.content.Context;
  *
  */
 public class DataController extends Observable implements Observer{
+	//TODO Delete later
+	public Game getGame(String gameId){
+		return m.getGame(gameId);
+	}
 
 	private static DataController dc;
 	private Model m;
