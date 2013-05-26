@@ -99,7 +99,7 @@ public class GameDashboardPresenter extends Presenter {
 			buttonText = "Locked!";
 			button.setEnabled(false);
 		}
-		else if(turn.getState() == Turn.FINISH) {
+		else if(turn.getState() == Turn.FINISH || game.isFinished()) {
 			//Set current user's points received for the specific turn
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
