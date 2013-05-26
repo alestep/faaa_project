@@ -48,9 +48,15 @@
     <string name="wonGames">Wins</string>
     <string name="lostGames">Losses</string>
     <string name="drawGames">Draws</string>
-
+	
+    <!-- Game screen strings -->
+    <string name="recordVideo">Record video</string>
+    
     <!-- Other strings -->
     <string name="action_settings">Settings</string>
-    <string name="topTenCharaders">Top ten charaders</string>
+    <string name="topTenCharaders">Top charaders</string>
+    <string name="ok">OK</string>
+    <string name="errorTitle">Error!</string>
+    <string name="successTitle">Success!</string>
 
 </resources>

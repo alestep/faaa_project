@@ -36,7 +36,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 
 		final Game game = games.get(position);
 		if (game != null) {
-			v = li.inflate(R.layout.list_item_active_game, null);
+			v = li.inflate(R.layout.list_item_game, null);
 			final TextView title = (TextView) v.findViewById(R.id.opponent);
 			final TextView subtitle = (TextView) v.findViewById(R.id.score);
 			Player opponent = game.getPlayer1().equals(currentPlayer) ? game.getPlayer2() : game.getPlayer1();

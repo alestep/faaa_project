@@ -1,6 +1,9 @@
 package com.example.wecharades.views;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,8 +17,11 @@ public class GameInstructionsActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SimplePresenter(this));
-		this.presenter = (SimplePresenter) super.getPresenter();
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.gameinstructions);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
+		this.presenter = (SimplePresenter) super.getPresenter();
+		
 	}
 
 	@Override
@@ -28,5 +34,9 @@ public class GameInstructionsActivity extends GenericActivity {
 	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void onClickHome(View v){
+		startActivity(new Intent(this, StartActivity.class));
 	}
 }

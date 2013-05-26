@@ -1,7 +1,9 @@
 package com.example.wecharades.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,7 +16,11 @@ public class AccountActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.account_screen);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
+		
 		presenter  = new AccountPresenter(this);
 		username = (TextView) findViewById(R.id.username);
 		globalRanking = (TextView) findViewById(R.id.globalRanking);
@@ -80,6 +86,8 @@ public class AccountActivity extends GenericActivity {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
+	public void onClickHome(View v){
+		startActivity(new Intent(this, StartActivity.class));
+	}
 }
