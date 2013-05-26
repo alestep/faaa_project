@@ -273,23 +273,24 @@ public class DataController extends Observable implements Observer{
 						//This code is only reachable for the receiving player
 						db.removeGame(localGame);
 					}
-				}
-			} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-				//If current player of a game is different, we must check the turns
-				Turn localTurn = m.getCurrentTurn(localGame);
-				Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
-				if(localTurn.getState() > dbTurn.getState()){
-					//Update db.turn if local version is further ahead
-					db.updateGame(localGame);
-					db.updateTurn(localTurn);
-				} else {
-					//If something is wrong, allways use the "Golden master" - aka. the database
-					m.putGame(gameMap.getKey());
-					m.putTurn(dbTurn);
+				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+					//If current player of a game is different, we must check the turns
+					Turn localTurn = m.getCurrentTurn(localGame);
+					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+					if(localTurn.getState() > dbTurn.getState()){
+						//Update db.turn if local version is further ahead
+						db.updateGame(localGame);
+						db.updateTurn(localTurn);
+					} else {
+						//If something is wrong, allways use the "Golden master" - aka. the database
+						m.putGame(gameMap.getKey());
+						m.putTurn(dbTurn);
+					}
 				}
 			} else if (
 					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
-					|| !(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
+					|| 
+					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
 					){
 				//This is done in order to ensure that data has been fetched without errors. If so, we replace everything!
 				m.putGame(gameMap.getKey());
