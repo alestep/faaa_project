@@ -6,8 +6,8 @@
 
     <EditText
         android:id="@+id/search_window"
-        android:layout_width="match_parent"
         style="@style/edit_text_style"
+        android:background="@drawable/rectangle_light_grey"
         android:drawableRight="@drawable/ic_menu_search"
         android:ems="10"
         android:hint="@string/search_hint"
