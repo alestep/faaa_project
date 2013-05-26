@@ -46,7 +46,7 @@ public class GuessCharadePresenter extends Presenter {
 	public String currentWord;
 	public CountDownTimer timer;
 	private TextView timerView;
-	private static final int NO_DOWNLOAD = 0;
+	public static final int NO_DOWNLOAD = 0;
 	public static final int DOWNLOAD_FINISHED = 1;
 	public int downloadState = NO_DOWNLOAD;
 
