@@ -29,7 +29,7 @@ public class DataController extends Observable implements Observer{
 	}
 
 	private static boolean RECREATE = false;
-	
+
 	private static DataController dc;
 	private Model m;
 	private IDatabase db;
@@ -211,7 +211,7 @@ public class DataController extends Observable implements Observer{
 	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
 		return db.getTopTenPlayers();
 	}
-	
+
 	public void updatePlayer(Player player){
 		m.putPlayer(player);
 		db.updatePlayer(player);
@@ -273,19 +273,19 @@ public class DataController extends Observable implements Observer{
 						//This code is only reachable for the receiving player
 						db.removeGame(localGame);
 					}
-				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-					//If current player of a game is different, we must check the turns
-					Turn localTurn = m.getCurrentTurn(localGame);
-					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
-					if(localTurn.getState() > dbTurn.getState()){
-						//Update db.turn if local version is further ahead
-						db.updateGame(localGame);
-						db.updateTurn(localTurn);
-					} else {
-						//If something is wrong, allways use the "Golden master" - aka. the database
-						m.putGame(gameMap.getKey());
-						m.putTurn(dbTurn);
-					}
+				}
+			} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+				//If current player of a game is different, we must check the turns
+				Turn localTurn = m.getCurrentTurn(localGame);
+				Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+				if(localTurn.getState() > dbTurn.getState()){
+					//Update db.turn if local version is further ahead
+					db.updateGame(localGame);
+					db.updateTurn(localTurn);
+				} else {
+					//If something is wrong, allways use the "Golden master" - aka. the database
+					m.putGame(gameMap.getKey());
+					m.putTurn(dbTurn);
 				}
 			}
 		}
