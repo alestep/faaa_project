@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/LightGrey" >
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -22,24 +21,13 @@
                 android:orientation="horizontal" >
 
                 <!-- View Title Label -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/app_name"
-                    android:textColor="@color/White"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-
-                <!-- Error message -->
-
-                <TextView
-                    android:id="@+id/login_error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dip"
-                    android:textColor="@color/Red"
+                    android:text="@string/login"
+					android:textAppearance="@style/text_large"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -47,14 +35,9 @@
 
             <EditText
                 android:id="@+id/login_username"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/social_person"
-                android:hint="@string/username"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:nextFocusDown="@+id/login_password"
-                android:singleLine="true" >
+                style="@style/edit_text_style_username"
+                android:layout_marginBottom="5dp"
+                android:nextFocusDown="@+id/login_password" >
 
                 <requestFocus />
             </EditText>
@@ -63,57 +46,38 @@
 
             <EditText
                 android:id="@+id/login_password"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/password"
-                android:hint="@string/password"
+                style="@style/edit_text_style_password"
                 android:imeActionLabel="Done"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:singleLine="true" />
+                android:imeOptions="actionDone"/>
 
             <!-- Login Button -->
 
             <Button
                 android:id="@+id/btnLogin"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
+                style="@style/button_style"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/btn_default_normal"
+                android:layout_marginBottom="5dp"
                 android:onClick="onClickLogin"
                 android:text="@string/login"
-                android:textColor="@color/White" />
+                android:textStyle="bold"  />
 
             <!-- Link to Forgot Password Screen -->
 
             <Button
                 android:id="@+id/btnForgotPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:background="@null"
-                android:gravity="center_vertical|center_horizontal"
+                style="@style/button_style"
                 android:onClick="onClickForgotPassword"
+                android:layout_marginBottom="5dp"
                 android:text="@string/forgot_password"
-                android:textColor="@color/White"
-                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <!-- Link to Registration Screen -->
 
             <Button
                 android:id="@+id/btnLinkToRegisterScreen"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dip"
-                android:background="@null"
-                android:gravity="center_vertical|center_horizontal"
+                style="@style/button_style"
                 android:onClick="onClickRegister"
-                android:paddingLeft="10dp"
                 android:text="@string/not_registered"
-                android:textColor="@color/White"
-                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

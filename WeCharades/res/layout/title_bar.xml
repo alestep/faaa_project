@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/my_title_bar"
-        style="@style/title_bar_style"
+        style="@style/window_title"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_weight="0.5"
@@ -35,6 +35,6 @@
         android:layout_height="50dp"
         android:background="@drawable/title_bar_buttons"
         android:onClick="onClickHighScore"
-        android:src="@drawable/star" />
+        android:src="@drawable/global_score" />
 
 </LinearLayout>

@@ -107,6 +107,12 @@ public interface IDatabase{
 	 * @throws DatabaseException
 	 */
 	public abstract ArrayList<Player> getPlayers() throws DatabaseException;
+	
+	/**
+	 * A method to update the global statistics of players.
+	 * @param player
+	 */
+	public abstract void updatePlayer(Player player);
 
 	/**
 	 * Puts the playerId into the the random queue

@@ -6,13 +6,13 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="5dp"
-        android:background="@color/LightGrey" />
+        android:background="@color/DarkRed" />
 
     <TextView
         android:id="@+id/list_header_title"
+        android:textAppearance="@style/text_medium"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingLeft="5dp"
         android:background="@drawable/section_list_header_box"/>
 
 </LinearLayout>

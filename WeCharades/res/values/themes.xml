@@ -4,14 +4,24 @@
     <style name="wecharades_theme" parent="android:Theme">
 
         <!-- Title bar styling -->
-        <item name="android:windowTitleStyle">@style/title_bar_style</item>
+        <item name="android:windowTitleStyle">@style/window_title</item>
         <item name="android:windowTitleSize">50dp</item>
-        <item name="android:windowTitleBackgroundStyle">@style/title_bar_appearance</item>
+        <item name="android:windowTitleBackgroundStyle">@style/window_title_background</item>
 
-        <!-- Window styling -->
-        <item name="android:windowBackground">@color/LightGrey</item>
+        <!-- General styling -->
+        <item name="android:windowBackground">@color/DarkRed</item>
         <item name="android:colorBackgroundCacheHint">@color/LightGrey</item>
         <item name="android:textColorHint">@color/DarkGrey</item>
+        <item name="android:textAppearance">@style/general_text_style</item>
+        <item name="android:textAppearanceLarge">@style/text_large</item>
+        <item name="android:textAppearanceMedium">@style/text_medium</item>
+        <item name="android:textAppearanceSmall">@style/text_small</item>
+
+
+
+        <!-- Widget styling -->
+        <item name="android:editTextStyle">@android:style/Widget.EditText</item>
+        <item name="android:listViewStyle">@android:style/Widget.ListView</item>
     </style>
 
 </resources>

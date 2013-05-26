@@ -8,28 +8,26 @@
 
     <Button
         android:id="@+id/account"
+        style="@style/button_style"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_weight="0.34"
-        android:background="@drawable/btn_default_normal"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+    	android:layout_marginRight="5dp"
         android:drawableLeft="@drawable/action_about"
         android:gravity="left|center_vertical"
-        android:onClick="onClickUsername"
-        android:textColor="@color/White" />
+        android:onClick="onClickUsername"/>
 
     <Button
         android:id="@+id/new_game_button"
+        style="@style/button_style"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_gravity="left"
-        android:layout_weight="0.64"
-        android:background="@drawable/btn_default_normal_green"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/button_custom_green"
+        android:layout_weight="0.5"
         android:drawableRight="@drawable/content_new"
         android:gravity="left|center_vertical"
         android:onClick="onClickNewGame"
-        android:paddingLeft="20dp"
-        android:text="@string/new_game"
-        android:textColor="@color/White"
-        android:textSize="15sp" />
+        android:text="@string/new_game" />
 
 </LinearLayout>

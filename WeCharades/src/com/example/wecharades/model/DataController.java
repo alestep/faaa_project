@@ -1,7 +1,6 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,7 +29,7 @@ public class DataController extends Observable implements Observer{
 	}
 
 	private static boolean RECREATE = false;
-	
+
 	private static DataController dc;
 	private Model m;
 	private IDatabase db;
@@ -213,6 +212,11 @@ public class DataController extends Observable implements Observer{
 		return db.getTopTenPlayers();
 	}
 
+	public void updatePlayer(Player player){
+		m.putPlayer(player);
+		db.updatePlayer(player);
+	}
+
 	//Games -----------------------------------------------------------
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
@@ -269,19 +273,19 @@ public class DataController extends Observable implements Observer{
 						//This code is only reachable for the receiving player
 						db.removeGame(localGame);
 					}
-				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-					//If current player of a game is different, we must check the turns
-					Turn localTurn = m.getCurrentTurn(localGame);
-					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
-					if(localTurn.getState() > dbTurn.getState()){
-						//Update db.turn if local version is further ahead
-						db.updateGame(localGame);
-						db.updateTurn(localTurn);
-					} else {
-						//If something is wrong, allways use the "Golden master" - aka. the database
-						m.putGame(gameMap.getKey());
-						m.putTurn(dbTurn);
-					}
+				}
+			} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+				//If current player of a game is different, we must check the turns
+				Turn localTurn = m.getCurrentTurn(localGame);
+				Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+				if(localTurn.getState() > dbTurn.getState()){
+					//Update db.turn if local version is further ahead
+					db.updateGame(localGame);
+					db.updateTurn(localTurn);
+				} else {
+					//If something is wrong, allways use the "Golden master" - aka. the database
+					m.putGame(gameMap.getKey());
+					m.putTurn(dbTurn);
 				}
 			}
 		}
@@ -408,6 +412,27 @@ public class DataController extends Observable implements Observer{
 		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
 		updateGame(game);
+		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){
+			TreeMap<Player, Integer> scoreMap = getGameScore(game);
+			Player rec = turn.getRecPlayer(); 
+			Player ans = turn.getAnsPlayer(); 
+			rec.setGlobalScore(rec.getGlobalScore() + scoreMap.get(turn.getRecPlayer()));
+			ans.setGlobalScore(ans.getGlobalScore() + scoreMap.get(turn.getAnsPlayer()));
+			if(scoreMap.get(turn.getRecPlayer()) > scoreMap.get(turn.getAnsPlayer())){
+				rec.incrementWonGames();
+				ans.incrementLostGames();
+			} else if(scoreMap.get(turn.getRecPlayer()) < scoreMap.get(turn.getAnsPlayer())){
+				ans.incrementWonGames();
+				rec.incrementLostGames();
+			} else{
+				rec.incrementDrawGames();
+				ans.incrementDrawGames();
+			}
+			rec.incrementFinishedGames();
+			ans.incrementFinishedGames();
+			updatePlayer(rec);
+			updatePlayer(ans);
+		}
 	}
 
 

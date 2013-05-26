@@ -19,12 +19,11 @@ public class AccountPresenter extends Presenter {
 
 		activity.updatePlayerInformation(
 				currentPlayer.getName(),
-				currentPlayer.getGlobalRanking(),
 				currentPlayer.getGlobalScore(),
-				currentPlayer.getNumberOfFinishedGames(),
-				currentPlayer.getNumberOfWonGames(),
-				currentPlayer.getNumberOfLostGames(),
-				currentPlayer.getNumberOfDrawGames());
+				currentPlayer.getPlayedGames(),
+				currentPlayer.getWonGames(),
+				currentPlayer.getLostGames(),
+				currentPlayer.getDrawGames());
 	}
 
 	/**

@@ -19,15 +19,12 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/wecharades_theme" >
 
         <!-- Start Screen Activity -->
-        <activity
-            android:name=".views.StartActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".views.StartActivity" >
 
             <!-- DEFAULT STARTING SCREEN -->
             <intent-filter>
@@ -38,66 +35,52 @@
         </activity>
 
         <!-- New Game Activity -->
-        <activity
-            android:name=".views.NewGameActivity"
-            android:label="@string/new_game" >
+        <activity android:name=".views.NewGameActivity" >
         </activity>
 
         <!-- Invitations Activity -->
-        <activity
-            android:name=".views.InvitationActivity"
-            android:label="@string/invitations" >
+        <activity android:name=".views.InvitationActivity" >
         </activity>
 
         <!-- Search Player Activity -->
-        <activity
-            android:name=".views.SearchPlayerActivity"
-            android:label="@string/player" >
+        <activity android:name=".views.SearchPlayerActivity" >
         </activity>
 
         <!-- Search Result Activity -->
-        <activity
-            android:name=".views.SearchResultActivity"
-            android:label="@string/game" >
+        <activity android:name=".views.SearchResultActivity" >
         </activity>
 
         <!-- Game Dashboard Activity -->
         <activity
             android:name=".views.GameDashboardActivity"
+            android:allowBackup="true"
             android:configChanges="orientation"
-            android:label="@string/game"
             android:screenOrientation="portrait" >
         </activity>
 
         <!-- Login Activity -->
-        <activity
-            android:name=".views.LoginActivity"
-            android:label="Login Account" >
+        <activity android:name=".views.LoginActivity" >
         </activity>
 
         <!-- Register Activity -->
         <activity
-            android:name=".views.RegisterActivity"
-            android:label="Register New Account" >
+            android:name=".views.RegisterActivity" >
         </activity>
 
         <!-- Reset Password Activity -->
         <activity
-            android:name=".views.ResetPasswordActivity"
-            android:label="Reset Password" >
+            android:name=".views.ResetPasswordActivity" >
         </activity>
 
         <!-- VideoUploadActivity -->
         <activity
             android:name=".views.VideoUploadActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name" />
+            android:configChanges="orientation"/>
 
         <!-- CaptureVideo Activity -->
         <activity
             android:name=".presenter.CaptureVideo"
-            android:configChanges="orientation"
-            android:label="@string/app_name" >
+            android:configChanges="orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.START_VIDEO_CAMERA" />
 
@@ -107,9 +90,7 @@
 
         <!-- GameActivity Activity -->
         <activity
-            android:name=".views.GameActivity"
-            android:label="@string/title_activity_game"
-            android:parentActivityName=".views.Main" >
+            android:name=".views.GameActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Main" />
@@ -118,23 +99,19 @@
         <!-- GuessCharadeActivity Activity -->
         <activity
             android:name=".views.GuessCharadeActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name" />
+            android:configChanges="orientation"/>
 
         <!-- High Score Activity -->
         <activity
-            android:name=".views.HighScoreActivity"
-            android:label="Top 10 Charaders" />
+            android:name=".views.HighScoreActivity"/>
 
         <!-- AccountActivity -->
         <activity
-            android:name=".views.AccountActivity"
-            android:label="Statistics" />
+            android:name=".views.AccountActivity"/>
 
         <!-- GameInstructionsActivity -->
         <activity
-            android:name=".views.GameInstructionsActivity"
-            android:label="Game Instructions" />
+            android:name=".views.GameInstructionsActivity"/>
 
         <service android:name="com.parse.PushService" />
 
