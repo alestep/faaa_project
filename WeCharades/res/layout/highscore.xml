@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="10dp" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/header"
@@ -14,8 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="Top 10 Charaders"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="@string/topTenCharaders"
+            android:textAppearance="@style/text_large" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -37,22 +37,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="1." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name1" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="1234 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -60,22 +55,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="2." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name2" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="1031 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -83,22 +73,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -106,22 +91,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -129,22 +109,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -152,22 +127,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -175,22 +145,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -198,22 +163,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -221,22 +181,17 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="4"
-                        android:text="Name3" />
+                        style="@style/table_text"
+                        android:layout_weight="4" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
 
                 <TableRow
@@ -244,35 +199,32 @@
                     android:gravity="center" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="3." />
+                        style="@style/table_text"
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="4"
-                        android:text="Name3" />
+                        android:gravity="right" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
+                        style="@style/table_text"
                         android:layout_weight="2"
-                        android:text="934 points" />
+                        android:gravity="right" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/globalRanking"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/linearLayout1"
             android:layout_marginTop="20dp"
-            android:text="Your global ranking is 1337."
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:gravity="center"
+            android:textAppearance="@style/text_medium" />
+
     </RelativeLayout>
 
 </ScrollView>

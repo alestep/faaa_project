@@ -13,7 +13,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dip" >
+            android:padding="10dp" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -24,21 +24,10 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:text="@string/register"
-                    android:textColor="@color/White"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-
-                <!-- Error message -->
-
-                <TextView
-                    android:id="@+id/register_error"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/Red"
+                    android:layout_marginBottom="10dp"
+                    android:textAppearance="@style/text_large"
+                    android:text="@string/register"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -46,13 +35,9 @@
 
             <EditText
                 android:id="@+id/registerName"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:drawableRight="@drawable/social_person"
-                android:hint="@string/username"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:singleLine="true" >
+                style="@style/edit_text_style_username"
+                android:layout_marginBottom="5dp"
+                android:nextFocusDown="@+id/registerEmail" >
 
                 <requestFocus />
             </EditText>
@@ -61,50 +46,40 @@
 
             <EditText
                 android:id="@+id/registerEmail"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                style="@style/edit_text_style"
+                android:layout_marginBottom="5dp"
                 android:drawableRight="@drawable/content_email"
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
-                android:inputType="textEmailAddress"
-                android:singleLine="true" >
-            </EditText>
+                android:inputType="textEmailAddress" />
+
 
             <!-- Password TextField -->
 
             <EditText
                 android:id="@+id/registerPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:drawableRight="@drawable/new_password"
-                android:hint="@string/password"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:singleLine="true" />
+                style="@style/edit_text_style_password"
+                android:layout_marginBottom="5dp"
+                android:imeOptions="actionNext"/>
 
             <!-- Repeat password TextField -->
 
             <EditText
                 android:id="@+id/registerRepeatPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:drawableRight="@drawable/new_password"
+                style="@style/edit_text_style_password"
+                android:layout_marginBottom="5dp"
                 android:hint="@string/repeat_password"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:singleLine="true" />
+                android:imeOptions="actionDone"/>
 
             <!-- Link to Login Screen -->
 
             <Button
                 android:id="@+id/btnRegister"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:background="@drawable/btn_default_normal"
+                style="@style/button_style"
+                android:layout_marginTop="20dp"
                 android:onClick="onClickRegister"
                 android:text="@string/register"
-                android:textColor="@color/White" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ProgressBar

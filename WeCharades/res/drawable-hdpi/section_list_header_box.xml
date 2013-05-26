@@ -7,8 +7,11 @@
         android:topRightRadius="5dp"/>
     
     <padding
-        android:left="2dp" />
+        android:left="10dp"
+        android:right="10dp" 
+        android:top="5dp" 
+        android:bottom="5dp"  />
 
     <solid
-        android:color="@color/Black" />
+        android:color="@color/DarkBlue" />
 </shape>

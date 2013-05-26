@@ -67,11 +67,11 @@ public class AccountActivity extends GenericActivity {
 			int numberOfLostGames, int numberOfDrawGames) {
 		username.setText(newUsername);
 		//TODO fix global ranking by calculating position
-		globalRanking.setText("Global ranking: " + "//TODO" + " ("+ globalScore +" points)");
-		playedGames.setText("Played games: " + numberOfFinishedGames);
-		wonGames.setText("Won games: " + numberOfWonGames);
-		lostGames.setText("Lost games: " + numberOfLostGames);
-		drawGames.setText("Draw games: " + numberOfDrawGames);
+		globalRanking.setText(Integer.toString(0) + " ("+ globalScore +" points)");
+		playedGames.setText(Integer.toString(numberOfFinishedGames));
+		wonGames.setText(Integer.toString(numberOfWonGames));
+		lostGames.setText(Integer.toString(numberOfLostGames));
+		drawGames.setText(Integer.toString(numberOfDrawGames));
 	}
 
 

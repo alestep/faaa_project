@@ -27,7 +27,6 @@ public class LoginActivity extends GenericActivity {
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.login_username);
 		inputPassword		= (EditText) findViewById(R.id.login_password);
-		loginErrorMsg		= (TextView) findViewById(R.id.login_error);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
 
 		//Getting the view associated with this Activity

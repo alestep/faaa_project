@@ -63,7 +63,7 @@ public class HighScorePresenter extends Presenter {
 				tvList.get(2).setTypeface(null, Typeface.BOLD);
 			}
 			tvList.get(0).setVisibility(View.VISIBLE);
-			tvList.remove(0).setText(i+".");
+			tvList.remove(0).setText(Integer.toString(i));
 			tvList.get(0).setVisibility(View.VISIBLE);
 			tvList.remove(0).setText(p.getName());
 			tvList.get(0).setVisibility(View.VISIBLE);

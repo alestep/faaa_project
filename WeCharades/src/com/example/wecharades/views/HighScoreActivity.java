@@ -34,7 +34,7 @@ public class HighScoreActivity extends GenericActivity {
 	}
 
 	public void updateGlobalRanking(int globalRankingPosition, int totalNumberOfUsers) {
-		globalRanking.setText("Your global ranking position is: " + globalRankingPosition + " out of " + totalNumberOfUsers);
+		globalRanking.setText("Your global ranking position is " + globalRankingPosition + " out of " + totalNumberOfUsers);
 	}
 
 }
