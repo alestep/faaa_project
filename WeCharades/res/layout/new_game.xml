@@ -8,23 +8,19 @@
 
     <Button
         android:id="@+id/search_player"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button_style"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="201dp"
-        android:background="@drawable/btn_default_normal"
         android:onClick="onClickSearchPlayer"
         android:text="@string/search_player" />
 
     <Button
         android:id="@+id/random"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/button_style"
         android:layout_alignBottom="@+id/search_player"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="52dp"
-        android:background="@drawable/btn_default_normal"
         android:onClick="onClickRandom"
         android:text="@string/random" />
 

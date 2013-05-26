@@ -20,7 +20,7 @@
         android:layout_alignRight="@+id/satisfiedText"
         android:layout_below="@id/satisfiedText"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_default_normal_red"
+        android:background="@drawable/button_custom_red"
         android:drawableLeft="@drawable/undo"
         android:onClick="onClickNo" />
 
@@ -31,7 +31,7 @@
         android:layout_alignLeft="@+id/satisfiedText"
         android:layout_below="@+id/satisfiedText"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_default_normal_green"
+        android:background="@drawable/button_custom_green"
         android:drawableLeft="@drawable/navigation_upload"
         android:onClick="onClickYes" />
 

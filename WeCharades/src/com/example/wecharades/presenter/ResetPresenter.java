@@ -5,8 +5,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
@@ -33,15 +38,8 @@ public class ResetPresenter extends Presenter {
 		this.resetProgress = resetProgress;
 		ResetPasswordTask reset = new ResetPasswordTask();
 		reset.execute();
+		goToLoginActivity();
 
-	}
-
-	public void goToRegisterActivity() {
-		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		activity.startActivity(i);
-		// Close Registration View
-		activity.finish();
 	}
 
 	private class ResetPasswordTask extends AsyncTask<Void, Long, Boolean>{
@@ -106,5 +104,19 @@ public class ResetPresenter extends Presenter {
 			exceptionState = NO_EXCEPTION;
 			hideProgressSpinner(myView, resetProgress);
 		}
+	}
+
+	public void setListeners(EditText emailInput) {
+		emailInput.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					activity.onClickResetPassword(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		
 	}
 }

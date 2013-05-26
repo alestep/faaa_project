@@ -24,7 +24,7 @@
         android:layout_alignBottom="@+id/editAnswerCharade"
         android:layout_alignRight="@+id/streamedVideoSurface"
         android:layout_margin="8dp"
-        android:background="@drawable/btn_default_normal_green"
+        android:background="@drawable/rectangle_light_green"
         android:drawableLeft="@drawable/play"
         android:onClick="onClickGuess" />
 

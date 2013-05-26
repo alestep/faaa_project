@@ -7,18 +7,12 @@
     <EditText
         android:id="@+id/search_window"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/btn_default_normal"
+        style="@style/edit_text_style"
         android:drawableRight="@drawable/ic_menu_search"
         android:ems="10"
         android:hint="@string/search_hint"
         android:imeActionLabel="Search"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:singleLine="true" >
+        android:imeOptions="actionSearch" >
 
         <requestFocus />
     </EditText>
@@ -27,7 +21,6 @@
         android:id="@+id/empty_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="italic"
         android:visibility="gone" >
@@ -36,9 +29,7 @@
     <ListView
         android:id="@+id/result_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp" >
+        android:layout_height="wrap_content" >
     </ListView>
 
 </LinearLayout>

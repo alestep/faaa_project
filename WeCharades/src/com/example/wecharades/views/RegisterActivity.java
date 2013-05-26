@@ -41,7 +41,6 @@ public class RegisterActivity extends GenericActivity {
 		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
-		registerErrorMsg 	=	(TextView) 		findViewById(R.id.register_error);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
 		presenter.setProgressSpinnerInvisible(registerProgress);
 	}

@@ -1,15 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="title_bar_appearance">
-        <item name="android:background">@color/DarkGrey</item>
+    <!-- Title bar styling -->
+    <style name="window_title_background">
+        <item name="android:background">@color/LightRed</item>
     </style>
 
-    <style name="title_bar_style" parent="@android:style/TextAppearance">
+    <style name="window_title">
         <item name="android:text">@string/app_name</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textAppearance">@style/text_large</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:textColor">@color/White</item>
     </style>
+
+    <!-- Button styling -->
+    <style name="button_style" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/rectangle_light_red</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+
+    <!-- EditText styling -->
+    <style name="edit_text_style" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/rectangle_light_grey</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="edit_text_style_password" parent="edit_text_style">
+        <item name="android:inputType">textPassword</item>
+        <item name="android:drawableRight">@drawable/password</item>
+        <item name="android:hint">@string/password</item>
+    </style>
+
+    <style name="edit_text_style_username" parent="edit_text_style">
+        <item name="android:inputType">text</item>
+        <item name="android:drawableRight">@drawable/social_person</item>
+        <item name="android:hint">@string/username</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <!-- Text styling -->
+
+    <style name="general_text_style" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="text_large" parent="@android:style/TextAppearance.Large">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="text_medium" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="text_small" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="table_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textAppearance">@style/text_medium</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
+    <style name="table_text_account" parent="table_text">
+        <item name="android:layout_weight">1</item>
+    </style>
+
 </resources>
