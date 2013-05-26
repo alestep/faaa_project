@@ -9,12 +9,13 @@
     <Button
         android:id="@+id/account"
         style="@style/button_style"
+        android:background="@drawable/button_custom_grey_to_red"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_weight="0.5"
         android:paddingLeft="10dp"
     	android:layout_marginRight="5dp"
-        android:drawableLeft="@drawable/action_about"
+        android:drawableLeft="@drawable/info"
         android:gravity="left|center_vertical"
         android:onClick="onClickUsername"/>
 
@@ -23,9 +24,10 @@
         style="@style/button_style"
         android:layout_width="0dp"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/button_custom_green"
+        android:paddingLeft="10dp"
+        android:background="@drawable/button_custom_grey_to_green"
         android:layout_weight="0.5"
-        android:drawableRight="@drawable/content_new"
+        android:drawableRight="@drawable/add"
         android:gravity="left|center_vertical"
         android:onClick="onClickNewGame"
         android:text="@string/new_game" />

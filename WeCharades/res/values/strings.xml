@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Activity headers strings -->
-    <string name="app_name">WeCharade</string>
+    <string name="app_name">weCharade</string>
     <string name="menu">Menu</string>
     <string name="login">Login</string>
     <string name="game">Let\'s play</string>
