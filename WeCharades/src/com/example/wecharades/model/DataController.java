@@ -287,6 +287,13 @@ public class DataController extends Observable implements Observer{
 					m.putGame(gameMap.getKey());
 					m.putTurn(dbTurn);
 				}
+			} else if (
+					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
+					|| !(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
+					){
+				//This is done in order to ensure that data has been fetched without errors. If so, we replace everything!
+				m.putGame(gameMap.getKey());
+				m.putTurns(gameMap.getValue());
 			}
 		}
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
