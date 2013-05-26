@@ -8,12 +8,13 @@ import java.io.Serializable;
  *
  */
 public class Player implements Serializable, Comparable<Player> {
+
 	/**
 	 * auto-generated serialVersionUID
 	 */
 	private static final long serialVersionUID = 2165036941490853727L;
 	private String parseId, username;
-	private int globalScore, globalRanking, playedGames, wonGames, lostGames, drawGames;
+	private int globalScore, playedGames, wonGames, lostGames, drawGames;
 
 	/**
 	 * Creates a player with a parseId and a username
@@ -63,18 +64,10 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	/**
-	 * Get global ranking
-	 * @return global ranking
-	 */
-	public int getGlobalRanking() {
-		return globalRanking;
-	}
-
-	/**
 	 * Get the number of finished games
 	 * @return number of finished games
 	 */
-	public int getNumberOfFinishedGames() {
+	public int getPlayedGames() {
 		return playedGames;
 	}
 
@@ -82,7 +75,7 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Get the number of won games
 	 * @return number of won games
 	 */
-	public int getNumberOfWonGames() {
+	public int getWonGames() {
 		return wonGames;
 	}
 
@@ -90,7 +83,7 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Get the number of lost games
 	 * @return number of lost games
 	 */
-	public int getNumberOfLostGames() {
+	public int getLostGames() {
 		return lostGames;
 	}
 
@@ -98,7 +91,7 @@ public class Player implements Serializable, Comparable<Player> {
 	 * Get the number of draw games
 	 * @return number of draw games
 	 */
-	public int getNumberOfDrawGames() {
+	public int getDrawGames() {
 		return drawGames;
 	}
 
@@ -111,38 +104,30 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	/**
-	 * Set the global ranking
-	 * @param globalRanking
-	 */
-	public void setGlobalRanking(int globalRanking) {
-		this.globalRanking = globalRanking;
-	}
-
-	/**
 	 * Add one more finished game
 	 */
-	public void setNumberOfFinishedGames() {
+	public void incrementFinishedGames() {
 		this.playedGames++;
 	}
 
 	/**
 	 * Add one more won game
 	 */
-	public void setNumberOfWonGames() {
+	public void incrementWonGames() {
 		this.wonGames++;
 	}
 
 	/**
 	 * Add one more lost game
 	 */
-	public void  setNumberOfLostGames() {
+	public void  incrementLostGames() {
 		this.lostGames++;
 	}
 
 	/**
 	 * Add one more draw game
 	 */
-	public void setNumberOfDrawGames() {
+	public void incrementDrawGames() {
 		this.drawGames++;
 	}
 	

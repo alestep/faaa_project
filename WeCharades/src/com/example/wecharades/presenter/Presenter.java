@@ -6,6 +6,8 @@ import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -21,7 +23,7 @@ public abstract class Presenter implements Observer{
 
 	protected DataController dc;
 	protected GenericActivity activity;
-	
+
 	/**
 	 * Needed in order to use parse commands
 	 * @param context - the context (the activity: use 'this' most often)
@@ -31,30 +33,15 @@ public abstract class Presenter implements Observer{
 		this.dc = DataController.getDataController(activity);
 		dc.addObserver(this);
 	}
-	
-	/**
-	 * Enable or disable all clickable objects in view
-	 * @param view
-	 */
-	private void enableOrDisableViews(View view) {
-		ArrayList<View> allViewObject = getAllChildren(view);
-		for (View child : allViewObject) {
-			if (child instanceof TextView) {
-				if(child.isEnabled()) {
-					child.setEnabled(false);
-				} else {
-					child.setEnabled(true);
-				}
-			}
-		}
-	}
+
+
 
 	/**
 	 * To get all clickable objects in a list from a view
 	 * @param view
 	 * @return an ArrayList with all Views within the parameter view
 	 */
-	private ArrayList<View> getAllChildren(View view) {
+	ArrayList<View> getAllChildren(View view) {
 
 		if (!(view instanceof ViewGroup)) {
 			ArrayList<View> viewArrayList = new ArrayList<View>();
@@ -88,32 +75,6 @@ public abstract class Presenter implements Observer{
 		error.show();
 	}
 
-	public void setProgressSpinnerInvisible(ProgressBar progressSpinner) {
-		progressSpinner.setVisibility(4);
-	}
-
-	/**
-	 * Called to show progress spinning when waiting for the server
-	 * TODO: Where should we put these, they are used in both RegisterActivity, LoginActivity and ResetPasswordActivity
-	 * TODO: Consider using threads instead...
-	 */
-	public void showProgressSpinner(View view, ProgressBar progressSpinner) {
-		//show the spinner
-		progressSpinner.setVisibility(0);
-		//Enable buttons
-		enableOrDisableViews(view);
-	}
-
-	/**
-	 * Called to hide progress spinning when the server has responded
-	 */
-	public void hideProgressSpinner(View view, ProgressBar progressSpinner) {
-		//hide the progress spinner
-		progressSpinner.setVisibility(4);
-		//disable buttons
-		enableOrDisableViews(view);
-	}
-	
 	/**
 	 * Go to the login screen
 	 */
@@ -125,7 +86,7 @@ public abstract class Presenter implements Observer{
 		//TODO I do not think we should do this? at least not for the start screen!
 		activity.finish();
 	}
-	
+
 	/**
 	 * Called whenever an activity is closed.
 	 */
@@ -133,7 +94,7 @@ public abstract class Presenter implements Observer{
 		dc.deleteObserver(this);
 		dc.saveState(activity);
 	}
-	
+
 	/**
 	 * Called whenever an update is received from a class this presenter subscribes to.
 	 */
@@ -146,5 +107,13 @@ public abstract class Presenter implements Observer{
 				activity.showMessage((String) dcm.getData());
 			}
 		}
+	}
+	
+	/**
+	 * Check if the user has internet connection
+	 * @return true if the user has internet connection, false otherwise
+	 */
+	public boolean isNetworkConnected() {
+		return ((ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
 	}
 }

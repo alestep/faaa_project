@@ -216,7 +216,7 @@ public class GuessCharadePresenter extends Presenter {
 					System.out.println(SAVE_PATHTWO);
 					System.out.println(SAVE_PATHTWO.toString());
 					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
-					result = con.retrieveFile(turn.getVideoLink(), out);// Todo: server path. //"/APP/PresentVideo.mp4"
+					result = con.retrieveFile(turn.getVideoLink(), out);
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");

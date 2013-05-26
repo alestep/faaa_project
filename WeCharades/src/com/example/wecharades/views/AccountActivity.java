@@ -2,6 +2,7 @@ package com.example.wecharades.views;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -62,15 +63,22 @@ public class AccountActivity extends GenericActivity {
 	 * @param numberOfLostGames
 	 * @param numberOfDrawGames
 	 */
-	public void updatePlayerInformation(String newUsername, int newGlobalRanking,
+	public void updatePlayerInformation(String newUsername,
 			int globalScore, int numberOfFinishedGames, int numberOfWonGames,
 			int numberOfLostGames, int numberOfDrawGames) {
 		username.setText(newUsername);
-		globalRanking.setText(Integer.toString(newGlobalRanking) + " ("+ globalScore +" points)");
+		//TODO fix global ranking by calculating position
+		globalRanking.setText(Integer.toString(0) + " ("+ globalScore +" points)");
 		playedGames.setText(Integer.toString(numberOfFinishedGames));
 		wonGames.setText(Integer.toString(numberOfWonGames));
 		lostGames.setText(Integer.toString(numberOfLostGames));
 		drawGames.setText(Integer.toString(numberOfDrawGames));
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

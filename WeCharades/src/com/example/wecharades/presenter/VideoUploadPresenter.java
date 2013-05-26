@@ -13,6 +13,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +37,6 @@ public class VideoUploadPresenter extends Presenter {
 	private VideoUploadActivity activity;
 	private UploadVideo upload;
 	private Turn turn;
-	private String fileName = "PresentVideo.mp4";
 	private String serverPath;
 
 	public VideoUploadPresenter(VideoUploadActivity activity) {
@@ -51,9 +51,39 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
+//		final Context c = context;
+//		final String p = path;
 		setServerStorageLocation();
 		upload = new UploadVideo(context, path);
 		upload.execute();
+		//Check if the user has internet connection
+//		if(isNetworkConnected()) {
+//			setServerStorageLocation();
+//			upload = new UploadVideo(context, path);
+//			upload.execute();
+//		} else {
+//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//			builder.setTitle("Error!")
+//			.setMessage("You've got no internet connection!")
+//			.setCancelable(false)
+//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Try again...
+//					uploadVideo(c,p);
+//				}
+//			})
+//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Go to homecreen
+//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
+//					activity.startActivity(intent);
+//					activity.finish();	
+//					dialog.cancel();
+//				}
+//			});
+//			AlertDialog alert = builder.create();
+//			alert.show();
+//		}
 	}
 
 	/**
@@ -84,8 +114,7 @@ public class VideoUploadPresenter extends Presenter {
 	 */
 	private void setServerStorageLocation(){
 		String gameID = turn.getGameId();
-		String turnNumber = String.valueOf(turn.getTurnNumber());
-		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
+		String serverPath = "/APP/GAMES/" + gameID + ".mp4";
 		this.serverPath = serverPath;
 	}
 
@@ -110,8 +139,6 @@ public class VideoUploadPresenter extends Presenter {
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
-//		Log.d("VideoUpload current borde vara felix", turn.getGameId() + dc.getGame(turn.getGameId()).getCurrentPlayer().getName());
-//		Log.d("VideoUpload opponent borde vara adam", turn.getGameId() + dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		push.sendInBackground();
@@ -194,9 +221,7 @@ public class VideoUploadPresenter extends Presenter {
 			if(mDialog.isShowing()){
 				mDialog.dismiss();
 				turn.setVideoLink(serverPath);
-				Log.d("ServerPath in Presenter", serverPath);
 				turn.setState(Turn.VIDEO);
-				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
 				pushNotficationtoOtherPlayer();
 				//Send to startscreen on success

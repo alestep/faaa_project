@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -67,6 +68,12 @@ public class SearchPlayerActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;
 	}

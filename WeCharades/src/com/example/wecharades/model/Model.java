@@ -197,7 +197,7 @@ public class Model implements Serializable{
 	 */
 	public void putTurn(Turn turn){
 		if(turn != null){
-			if( !gameIdList.containsKey(turn.getGameId()))
+			if(!gameIdList.containsKey(turn.getGameId()))
 				throw new NoSuchElementException();
 			Game game = getGame(turn.getGameId());
 			ArrayList<Turn> listOfTurns = gameList.get(game);

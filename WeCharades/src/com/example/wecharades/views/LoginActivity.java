@@ -29,13 +29,8 @@ public class LoginActivity extends GenericActivity {
 		inputPassword		= (EditText) findViewById(R.id.login_password);
 		loginProgress		= (ProgressBar) findViewById(R.id.progress);
 
-		//Getting the view associated with this Activity
-		myView = getWindow().getDecorView().findViewById(android.R.id.content);
-
 		//initializing the presenter
 		presenter = (LoginPresenter) super.getPresenter();
-
-		presenter.setProgressSpinnerInvisible(loginProgress);
 	}
 
 	@Override
@@ -50,7 +45,7 @@ public class LoginActivity extends GenericActivity {
 	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
-		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString(), myView, loginProgress);
+		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
 
 	}
 	/**
@@ -75,8 +70,11 @@ public class LoginActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
-		// TODO Auto-generated method stub
 		return loginErrorMsg;
 	}
 
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		return loginProgress;
+	}
 }
