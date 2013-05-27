@@ -31,12 +31,6 @@ public abstract class Presenter implements Observer{
 	public Presenter(GenericActivity activity) {
 		this.activity = activity;
 		this.dc = DataController.getDataController(activity);
-		try {
-			dc.createGame(dc.getCurrentPlayer(), dc.getGames().get(0).getPlayer1());
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		dc.addObserver(this);
 	}
 

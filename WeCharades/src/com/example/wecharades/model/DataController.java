@@ -251,7 +251,6 @@ public class DataController extends Observable implements Observer{
 		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
 			//Fetch the local version of the game
 			localGame = m.getGame(dbGame.getKey().getGameId());
-			Log.d("Init test", m.getCurrentTurn(localGame).getRecPlayer().getParseId());
 			//If this game doesn't exist, create it
 			if(localGame == null){
 				m.putGame(dbGame.getKey());

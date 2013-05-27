@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.content.Intent;
 import android.view.View;
@@ -32,6 +33,7 @@ public class GameDashboardPresenter extends Presenter {
 		//Get the game from the clicked object in StartActivity
 		game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
 		turnList = dc.getTurns(game);
+		Collections.sort(turnList);
 		buttonList = getAllButtons(table);
 
 		activity.setTitle("Game with " + game.getOpponent(dc.getCurrentPlayer()));
@@ -101,7 +103,7 @@ public class GameDashboardPresenter extends Presenter {
 			buttonText = "Locked";
 			button.setEnabled(false);
 		}
-		else if(turn.getState() == Turn.FINISH || game.isFinished()) {
+		else if(turn.getState() == Turn.FINISH || game.isFinished() || turn.getTurnNumber() < game.getTurnNumber()) {
 			//Set current user's points received for the specific turn
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
