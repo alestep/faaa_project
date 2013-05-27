@@ -12,11 +12,10 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.util.Log;
 
-import com.example.wecharades.presenter.StartPresenter;
 import com.example.wecharades.views.StartActivity;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -162,7 +161,7 @@ public class Database extends Observable implements IDatabase {
 			public void done(ParseObject game, ParseException e){
 				if(e == null){
 					removeTurns(game);
-					game.deleteEventually();
+					game.deleteInBackground();
 				} else{
 					setChanged();
 					notifyObservers(
@@ -185,7 +184,7 @@ public class Database extends Observable implements IDatabase {
 			public void done(List<ParseObject> list, ParseException e){
 				if(e == null){
 					for(ParseObject turn : list){
-						turn.deleteEventually();
+						turn.deleteInBackground();
 					}
 				} else{
 					setChanged();
@@ -309,6 +308,9 @@ public class Database extends Observable implements IDatabase {
 								setChanged();
 								notifyObservers(new DBMessage(DBMessage.ERROR, e2));
 							}
+						} else{
+							setChanged();
+							notifyObservers(new DBMessage(DBMessage.GAMELIST, new TreeMap<Game, ArrayList<Turn>>()));
 						}
 					} else{
 						setChanged();
@@ -333,7 +335,7 @@ public class Database extends Observable implements IDatabase {
 					//Updates the game on the server with the latest info
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
 					object.put(GAME_TURN, game.getTurnNumber());
-					object.saveEventually();
+					object.saveInBackground();
 				} else{
 					Log.d("Database",e.getMessage());
 				}
@@ -430,7 +432,7 @@ public class Database extends Observable implements IDatabase {
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
-					dbTurn.saveEventually();
+					dbTurn.saveInBackground();
 				} else{
 					Log.d("Database",e.getMessage());
 				}
@@ -509,7 +511,7 @@ public class Database extends Observable implements IDatabase {
 					obj.put(PLAYER_GAMES_LOST, player.getLostGames());
 					obj.put(PLAYER_GAMES_PLAYED, player.getPlayedGames());
 					obj.put(PLAYER_GLOBALSCORE, player.getGlobalScore());
-					obj.saveEventually();
+					obj.saveInBackground();
 				} else{
 					setChanged();
 					notifyObservers(new DBMessage(DBMessage.ERROR, new DatabaseException(e.getCode(), e.getMessage())));
@@ -580,12 +582,12 @@ public class Database extends Observable implements IDatabase {
 		});
 	}
 	/*
-	 * Helper method for putInRandomQueue
+	 * Helper methods for putInRandomQueue
 	 */
 	private void putRandom(Player player){
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
-		queue.saveEventually();
+		queue.saveInBackground();
 	}
 	public void removeRandom(Player player){
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
@@ -596,7 +598,7 @@ public class Database extends Observable implements IDatabase {
 				if(e == null){
 					//Delete all instanses of a player.
 					for(ParseObject p : thePlayer){
-						p.deleteEventually();
+						p.deleteInBackground();
 					}
 				} else{
 					Log.d("Database", "Could not remove random player");
@@ -621,9 +623,16 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void getInvitations(Player player) throws DatabaseException {
-		ParseQuery query = new ParseQuery(INVITE);
-		query.whereContains(INVITE_INVITEE, player.getParseId());
-		query.findInBackground(new FindCallback(){
+		//Invitations
+		ParseQuery others = new ParseQuery(INVITE);
+		others.whereContains(INVITE_INVITEE, player.getParseId());
+		ParseQuery mine = new ParseQuery(INVITE);
+		mine.whereContains(INVITE_INVITER, player.getParseId());
+		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
+		ql.add(mine); ql.add(others);
+		ParseQuery query = ParseQuery.or(ql);
+
+		others.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> result, ParseException e){
 				if(e == null){
 					ArrayList<Invitation> invList = new ArrayList<Invitation>();
@@ -653,28 +662,58 @@ public class Database extends Observable implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#removeInvitation(com.example.wecharades.model.Invitation)
 	 */
 	@Override
-	public void removeInvitation(Invitation inv) throws DatabaseException{
-		try{
-			ParseQuery query = new ParseQuery(INVITE);
-			query.whereEqualTo(INVITE_INVITER, inv.getInviter().getParseId());
-			query.whereEqualTo(INVITE_INVITEE, inv.getInvitee().getParseId());
-			List<ParseObject> objectList = query.find();
-			for(ParseObject object : objectList){
-				object.delete();
+	public void removeInvitation(Invitation inv) {
+		ParseQuery query = new ParseQuery(INVITE);
+		query.whereEqualTo(INVITE_INVITER, inv.getInviter().getParseId());
+		query.whereEqualTo(INVITE_INVITEE, inv.getInvitee().getParseId());
+		query.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> result, ParseException e){
+				if(e == null){
+					for(ParseObject object : result){
+						object.deleteInBackground();
+					}
+				} else{
+					setChanged();
+					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+				}
 			}
-		} catch(ParseException e){
-			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1010,"Error removing player from queue");
-		}
+		});
 	}
 
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#removeInvitations(java.util.Collection)
 	 */
 	@Override
-	public void removeInvitations(Collection<Invitation> inv) throws DatabaseException{
-		for(Invitation invite : inv){
-			removeInvitation(invite);
+	public void removeInvitations(Collection<Invitation> inv){
+		if(!inv.isEmpty()){
+			LinkedList<ParseQuery> queries = new LinkedList<ParseQuery>();
+			ParseQuery q;
+			for(Invitation invite : inv){
+				q = new ParseQuery(INVITE);
+				q.whereEqualTo(INVITE_INVITER, invite.getInviter().getParseId());
+				q.whereEqualTo(INVITE_INVITEE, invite.getInvitee().getParseId());
+				queries.add(q);
+			}
+			ParseQuery main = ParseQuery.or(queries);
+			main.findInBackground(new FindCallback(){
+				public void done(List<ParseObject> result, ParseException e){
+					if(e == null){
+						for(ParseObject obj : result){
+							obj.deleteInBackground(new DeleteCallback(){
+								public void done(ParseException e){
+									if(e != null){
+										setChanged();
+										notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+									}
+								}
+							});
+						}
+					} else{
+						setChanged();
+						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					}
+				}
+			});
 		}
 	}
 
@@ -768,7 +807,7 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void subscribetoNotification(Context context) {
 		PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
-		
+
 	}
 
 }

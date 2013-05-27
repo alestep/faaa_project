@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
@@ -32,7 +34,7 @@ public class Model implements Serializable{
 
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
-	//A variable that can be changed in order to purge the model
+	//A variable that can be changed in order to purge the model - this is done manually now!
 	private static boolean			PURGE = false;
 	//A variable which is called when a user logs out 
 	// - the model exists a moment so we may finish any queries first
@@ -50,8 +52,7 @@ public class Model implements Serializable{
 	/*
 	 * Invitations are stored locally, in order to check that two invites aren't sent to one person (weak check).
 	 */
-	private ArrayList<Invitation> sentInvitations = new ArrayList<Invitation>(); 
-
+	private LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
 
 	//Singleton
 	private static Model singleModel;
@@ -335,27 +336,47 @@ public class Model implements Serializable{
 	//Received invitations are not needed here, as they should allways be fetched from the database.
 
 	/**
-	 * Retrieve a list of Invitations sent from this device.
+	 * Set all sent invitations from this player
 	 * @param invitation - The invitation to add
 	 */
-	public void setSentInvitation(Invitation invitation){
-		sentInvitations.add(invitation);
+	public void setSentInvitations(LinkedList<Invitation> invitations){
+		sentInvitations = invitations;
+		SAVED = false;
+	}
+	
+	/**
+	 * Retrieve a list of Invitations sent from this device.
+	 */
+	public List<Invitation> getSentInvitations(){
+		return sentInvitations;
+	}
+	
+/* 	//TODO Delete these later.
+	 * *//**
+	 * Removes a sent invitation from the list of sent invitation
+	 * @param invitation - the Invitation to delete
+	 *//*
+	public void removeSentInvitation(Invitation invitation){
+		sentInvitations.remove(invitation);
+		SAVED = false;
+	}
+	
+	*//**
+	 * Method to replace stored sent invitations from the list.
+	 * @param newInv
+	 *//*
+	public void updateSentInvitations(List<Invitation> newInv){
+		sentInvitations = new LinkedList<Invitation>(newInv);
 		SAVED = false;
 	}
 
-	/**
-	 * Removes a sent invitation from the list of sent invitation
-	 * @param invitation - the Invitation to delete
-	 */
-	public void removeSentInvitation(Invitation invitation){
-		sentInvitations.remove(invitation);
-	}
-
-	/**
+	*//**
 	 * Returns a set with all players the current player has sent invitations to. 
 	 * @return
-	 */
-	public ArrayList<Invitation> getSentInvitations(){
+	 *//*
+	public LinkedList<Invitation> getSentInvitations(){
 		return sentInvitations;
 	}
+	
+*/	
 }

@@ -50,6 +50,20 @@ public abstract class GenericActivity extends Activity{
 			enableOrDisableViews(view);
 		}
 	}
+	
+	/**
+	 * 
+	 */
+	public void showErrorDialog(){
+		
+	}
+	
+	/**
+	 * 
+	 */
+	public void showSuccessDialog(){ 
+		
+	}
 
 	/**
 	 * Enable or disable all clickable objects in view

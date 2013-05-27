@@ -51,6 +51,9 @@
 	
     <!-- Game screen strings -->
     <string name="recordVideo">Record video</string>
+    <string name="satisfiedText">Satisfied with video?</string>
+    <string name="yourScore">Your score</string>
+    <string name="opponentScore">Opponent\'s score</string>
     
     <!-- Other strings -->
     <string name="action_settings">Settings</string>
@@ -58,5 +61,6 @@
     <string name="ok">OK</string>
     <string name="errorTitle">Error!</string>
     <string name="successTitle">Success!</string>
+    
 
 </resources>

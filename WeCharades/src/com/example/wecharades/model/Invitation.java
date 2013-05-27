@@ -35,14 +35,22 @@ public class Invitation implements Serializable {
 		return timeOfInvite;
 	}
 	
-	public int hashCode(){
-		return (inviter.getParseId() + invitee.getParseId()).hashCode();
+	@Override
+	public boolean equals(Object obj){
+		return obj != null
+				&& obj.getClass().equals(Invitation.class)
+				&& this.equals((Invitation) obj) ;
 	}
 	
 	public boolean equals(Invitation otherInv){
 		return otherInv != null
 				&& this.getInvitee().equals(otherInv.getInvitee())
 				&& this.getInviter().equals(otherInv.getInviter());
+	}
+	
+	@Override
+	public int hashCode(){
+		return (getInviter() + "//" + getInvitee()).hashCode();
 	}
 	
 }

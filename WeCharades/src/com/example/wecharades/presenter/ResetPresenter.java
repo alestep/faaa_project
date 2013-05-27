@@ -43,7 +43,6 @@ public class ResetPresenter extends Presenter {
 		this.email = email;
 		ResetPasswordTask reset = new ResetPasswordTask();
 		reset.execute();
-		goToLoginActivity();
 
 	}
 
@@ -79,6 +78,7 @@ public class ResetPresenter extends Presenter {
 				final Dialog dialog = new Dialog(activity);
 				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 				dialog.setContentView(R.layout.dialog_error);
+				dialog.setCanceledOnTouchOutside(false);
 				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
 				TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
@@ -108,6 +108,7 @@ public class ResetPresenter extends Presenter {
 				ok.setOnClickListener(new OnClickListener() {          
 					public void onClick(View v) {
 						dialog.dismiss();
+						goToLoginActivity();
 					}
 				});
 
