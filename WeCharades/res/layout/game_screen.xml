@@ -1,174 +1,178 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:text="Large Text"
-        android:textAppearance="@style/text_large" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
-
-        <LinearLayout
-            android:id="@+id/scoreContainer"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal" >
+            android:text="Large Text"
+            android:textAppearance="@style/text_large" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/points_header_box"
-                    android:text="@string/yourScore" />
-
-                <TextView
-                    android:id="@+id/yourScore"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/points_left"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="5"
-                    android:textColor="@color/DarkGrey"
-                    android:textSize="40sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/points_header_box"
-                    android:text="@string/opponentScore" />
-
-                <TextView
-                    android:id="@+id/opponentScore"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="2dp"
-                    android:background="@drawable/points_right"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="5"
-                    android:textColor="@color/DarkGrey"
-                    android:textSize="40sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-			android:layout_below="@+id/scoreContainer"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content" >
 
-            <TableLayout
-                android:id="@+id/table"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:stretchColumns="*" >
+            <LinearLayout
+                android:id="@+id/scoreContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal" >
 
-                <TableRow
-                    android:layout_weight="1"
-                    android:gravity="center" >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical" >
 
-                    <Button
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/points_header_box"
+                        android:text="@string/yourScore" />
+
+                    <TextView
                         android:id="@+id/yourScore"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/game_table_left_top_custom"
-                        android:text="1" />
+                        android:background="@drawable/points_left"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="5"
+                        android:textColor="@color/DarkGrey"
+                        android:textSize="40sp" />
+                </LinearLayout>
 
-                    <Button
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/points_header_box"
+                        android:text="@string/opponentScore" />
+
+                    <TextView
                         android:id="@+id/opponentScore"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
                         android:layout_marginLeft="2dp"
+                        android:background="@drawable/points_right"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="5"
+                        android:textColor="@color/DarkGrey"
+                        android:textSize="40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/scoreContainer"
+                android:orientation="vertical" >
+
+                <TableLayout
+                    android:id="@+id/table"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:stretchColumns="*" >
+
+                    <TableRow
                         android:layout_weight="1"
-                        android:background="@drawable/game_table_right_top_custom"
-                        android:text="2" />
-                </TableRow>
+                        android:gravity="center" >
 
-                <TableRow
-                    android:layout_weight="1"
-                    android:gravity="center" >
+                        <Button
+                            android:id="@+id/yourScore"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_left_top_custom"
+                            android:text="1" />
 
-                    <Button
-                        android:id="@+id/button3"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginRight="2dp"
+                        <Button
+                            android:id="@+id/opponentScore"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_right_top_custom"
+                            android:text="2" />
+                    </TableRow>
+
+                    <TableRow
                         android:layout_weight="1"
-                        android:background="@drawable/game_table_middle_custom"
-                        android:text="3" />
+                        android:gravity="center" >
 
-                    <Button
-                        android:id="@+id/button4"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginLeft="2dp"
+                        <Button
+                            android:id="@+id/button3"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_middle_custom"
+                            android:text="3" />
+
+                        <Button
+                            android:id="@+id/button4"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_middle_custom"
+                            android:text="4" />
+                    </TableRow>
+
+                    <TableRow
                         android:layout_weight="1"
-                        android:background="@drawable/game_table_middle_custom"
-                        android:text="4" />
-                </TableRow>
+                        android:gravity="center" >
 
-                <TableRow
-                    android:layout_weight="1"
-                    android:gravity="center" >
+                        <Button
+                            android:id="@+id/button5"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_left_bottom_custom"
+                            android:text="5" />
 
-                    <Button
-                        android:id="@+id/button5"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/game_table_left_bottom_custom"
-                        android:text="5" />
+                        <Button
+                            android:id="@+id/button6"
+                            style="@style/button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="fill_parent"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/game_table_right_bottom_custom"
+                            android:text="6" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
-                    <Button
-                        android:id="@+id/button6"
-                        style="@style/button_style"
-                        android:layout_width="0dp"
-                        android:layout_height="fill_parent"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/game_table_right_bottom_custom"
-                        android:text="6" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+</ScrollView>
