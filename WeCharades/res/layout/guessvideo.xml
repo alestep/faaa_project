@@ -23,11 +23,14 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
                 android:text="LETTERS"
-                android:textAppearance="@style/text_medium" />
+                android:textAppearance="@style/text_large"
+                android:typeface="monospace" />
 
             <EditText
-                android:id="@+id/guessCharadeText"
+                android:id="@+id/editAnswerCharade"
                 style="@style/edit_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -48,6 +51,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
                 android:gravity="center"
+                android:layout_marginBottom="5dp"
                 android:text="1"
                 android:textSize="20dp" />
 

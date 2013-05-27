@@ -77,7 +77,8 @@ public class GuessCharadePresenter extends Presenter {
 		timer = new CountDownTimer(30000, 1000) {
 
 			public void onTick(long millisUntilFinished) {
-				timerView.setText("Seconds remaining: " + millisUntilFinished / 1000);
+
+				timerView.setText(String.valueOf(millisUntilFinished / 1000));
 			}
 
 			public void onFinish() {
