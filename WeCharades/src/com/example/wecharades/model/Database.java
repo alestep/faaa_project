@@ -693,8 +693,6 @@ public class Database extends Observable implements IDatabase {
 		//Some checks that are done locally
 		if(inputNickname == null || !Pattern.compile("^[A-Za-z0-9_]{2,16}$").matcher(inputNickname).matches()) {
 			throw new DatabaseException(2001,"Invalid nickname. \n - It should be between 2 and 16 characters.\n - It should only contain A-Z, a-z, 0-9 and underline");
-			//		} else if (!Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$;").matcher(inputEmail).matches()) {
-			//			throw new DatabaseException(2002,"Invalid e-mail.");
 		} else if (inputEmail == null || inputEmail.length() == 0) {
 			throw new DatabaseException(125, "Invalid e-mail address.");
 		} else if( inputPassword == null || inputPassword.length() <5 ){
