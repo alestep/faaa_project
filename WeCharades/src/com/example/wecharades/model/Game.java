@@ -53,7 +53,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	public Player getPlayer2() {
 		return player2;
 	}
-	
+
 	public Player getOpponent(Player otherPlayer){
 		if(otherPlayer.equals(player1) || otherPlayer.equals(player2)){
 			return (otherPlayer.equals(getPlayer1())) ? getPlayer2() : getPlayer1();
@@ -87,13 +87,13 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 * Increments the turn number.
 	 */
 	public void incrementTurn() {
-		turnNumber ++;
-		if(turnNumber == 6){
-			turnNumber = 5; //Revert turnNumber to 5 
+		if(turnNumber == 6){ 
 			isFinished = true;
+		} else{
+			turnNumber ++;
 		}
 	}
-	
+
 	public void setFinished(){
 		isFinished = true;
 	}
@@ -101,7 +101,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	public void setLastPlayed(Date lastPlayed) {
 		this.lastPlayed = lastPlayed;
 	}
-	
+
 	/**
 	 * Returns the hashcode for this game
 	 *  @return the hashcode
@@ -117,7 +117,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 				&& obj.getClass().equals(Game.class)
 				&& this.equals((Game) obj);
 	}
-	
+
 	/**
 	 * Two games are considered equal if they have the same id 
 	 * 	
@@ -127,7 +127,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	public boolean equals(Game otherGame){
 		return this.getGameId().equals(otherGame.getGameId());
 	}
-	
+
 	/**
 	 * A static method to check if a game has changed:
 	 * 	will look on current player, turn and finished state.

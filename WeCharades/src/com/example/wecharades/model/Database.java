@@ -63,6 +63,7 @@ public class Database extends Observable implements IDatabase {
 	PLAYER_GAMES_PLAYED		= "gamesPlayed",
 	PLAYER_GAMES_LOST		= "gamesLost",
 	PLAYER_GAMES_DRAW		= "gamesDraw",
+	PLAYER_GAMES_WON 		= "gamesWon",
 	RANDOMQUEUE				= "RandomQueue",
 	RANDOMQUEUE_PLAYER		= "player",
 	INVITE 					= "invite",
@@ -91,27 +92,9 @@ public class Database extends Observable implements IDatabase {
 		dbc = new DatabaseConverter(dc);
 	}
 
-	/**
-	 * Randomly get 6 unique word from the database 
-	 * @return an ArrayList with 6 words 
-	 */
-	private void getWords(final Player player1, final Player player2){
-		final Database db = this;
-		ParseQuery query = new ParseQuery(WORDLIST);
-		query.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> dblist, ParseException e){
-				if(e == null && db != null){
-					Stack<String> wordList = new Stack<String>();
-					for(ParseObject word : dblist){
-						wordList.add(word.getString("word"));
-					}
-					Collections.shuffle(wordList);
-					db.createGameInBackground(player1, player2, wordList);
-				} else{
-					Log.d("Database", "Failed to find word");
-				}
-			}
-		});
+	private void sendError(DatabaseException e){
+		setChanged();
+		notifyObservers(new DBMessage(DBMessage.ERROR, e));
 	}
 
 	//Games -----------------------------------------------------------------------------------------//	
@@ -121,35 +104,84 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void createGame(Player player1, Player player2){
-		//Fetch the list of words - on Callback, the rest of the game creation will take place
-		getWords(player1, player2);
+		//Begin the chain of methods in order to create a game.
+		checkExistingGame(player1, player2);
 	}
-	/*
-	 * Helper methdo for createGame - called after callback from fetching wordlist
+	/**
+	 * A query to check if a game between two players already exist
 	 */
-	private void createGameInBackground(Player player1, Player player2, Stack<String> wordList){
-		LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
-
-		ParseObject newGame = new ParseObject(GAME);
-		newGame.put(GAME_PLAYER_1, player1.getParseId());
-		newGame.put(GAME_PLAYER_2, player2.getParseId());
-		newGame.put(GAME_PLAYER_CURRENT, player1.getParseId());
-		newGame.put(GAME_TURN, 1);
-		newGame.put(GAME_FINISH, false);
-		parseList.add(newGame);
-		//Adds all the six turns
-		String recP, ansP;
-		for(int i=1; i <= 6 ; i++){
-			if(i%2 == 0){
-				recP = player2.getParseId();
-				ansP = player1.getParseId();
-			} else{
-				recP = player1.getParseId();
-				ansP = player2.getParseId();
+	private void checkExistingGame(final Player player1, final Player player2){
+		//Find games containing the two players
+		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
+		ParseQuery gameQuery = new ParseQuery(GAME);
+		gameQuery.whereEqualTo(GAME_PLAYER_1, player1.getParseId());
+		gameQuery.whereEqualTo(GAME_PLAYER_2, player2.getParseId());
+		ql.add(gameQuery);
+		ParseQuery gameQueryReverse = new ParseQuery(GAME);
+		gameQuery.whereEqualTo(GAME_PLAYER_1, player2.getParseId());
+		gameQuery.whereEqualTo(GAME_PLAYER_2, player1.getParseId());
+		ql.add(gameQueryReverse);
+		//Construct an OR query
+		ParseQuery mainQuery = ParseQuery.or(ql);
+		mainQuery.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> obj, ParseException e){
+				if(e == null){
+					//If a game doesn't exist, we can continue
+					if(obj.isEmpty()){
+						createGameInBackground(player1, player2);
+					}
+				} else{
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
+				}
 			}
-			parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
+		});
+	}
+	/**
+	 * Helper method for createGame. The thread calling this method should already be running in the background!
+	 */
+	private void createGameInBackground(Player player1, Player player2){
+		try{
+			Stack<String> wordList = getWords();
+			LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
+
+			ParseObject newGame = new ParseObject(GAME);
+			newGame.put(GAME_PLAYER_1, player1.getParseId());
+			newGame.put(GAME_PLAYER_2, player2.getParseId());
+			newGame.put(GAME_PLAYER_CURRENT, player1.getParseId());
+			newGame.put(GAME_TURN, 1);
+			newGame.put(GAME_FINISH, false);
+			parseList.add(newGame);
+			//Adds all the six turns
+			String recP, ansP;
+			for(int i=1; i <= 6 ; i++){
+				if(i%2 == 0){
+					recP = player2.getParseId();
+					ansP = player1.getParseId();
+				} else{
+					recP = player1.getParseId();
+					ansP = player2.getParseId();
+				}
+				parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
+			}
+			ParseObject.saveAll(parseList);
+		} catch(ParseException e){
+			sendError(new DatabaseException(e.getCode(), e.getMessage()));
 		}
-		ParseObject.saveAllInBackground(parseList);
+	}
+	/**
+	 * Randomly get 6 unique word from the database 
+	 * @return an ArrayList with 6 words 
+	 * @throws ParseException
+	 */
+	private Stack<String> getWords() throws ParseException{
+		ParseQuery query = new ParseQuery(WORDLIST);
+		List<ParseObject> dblist = query.find();
+		Stack<String> wordList = new Stack<String>();
+		for(ParseObject word : dblist){
+			wordList.add(word.getString(WORDLIST_WORD));
+		}
+		Collections.shuffle(wordList);
+		return wordList;
 	}
 
 	/**
@@ -163,13 +195,7 @@ public class Database extends Observable implements IDatabase {
 					removeTurns(game);
 					game.deleteInBackground();
 				} else{
-					setChanged();
-					notifyObservers(
-							new DBMessage(
-									DBMessage.ERROR
-									, new DatabaseException(e.getCode(), e.getMessage())
-									)
-							);
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -187,13 +213,7 @@ public class Database extends Observable implements IDatabase {
 						turn.deleteInBackground();
 					}
 				} else{
-					setChanged();
-					notifyObservers(
-							new DBMessage(
-									DBMessage.ERROR
-									, new DatabaseException(e.getCode(), e.getMessage())
-									)
-							);
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -211,7 +231,7 @@ public class Database extends Observable implements IDatabase {
 			game = dbc.parseGame(dbGame);
 		} catch (ParseException e) {
 			Log.d("Database",e.getMessage());
-			throw new DatabaseException(1001,"Failed to fetch game data");
+			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 		return game;
 	}
@@ -223,7 +243,7 @@ public class Database extends Observable implements IDatabase {
 			object = query.get(gameId);
 		} catch(ParseException e){
 			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1002, "Failed to get ParseObject");
+			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 
 		return object;
@@ -254,13 +274,7 @@ public class Database extends Observable implements IDatabase {
 						db.getTurnsInBackgrund(dbResult);
 					}
 				} else{
-					setChanged();
-					notifyObservers(
-							new DBMessage(
-									DBMessage.ERROR
-									, new DatabaseException(e.getCode(), e.getMessage())
-									)
-							);
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -305,17 +319,14 @@ public class Database extends Observable implements IDatabase {
 								setChanged();
 								notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
 							} catch(DatabaseException e2){
-								setChanged();
-								notifyObservers(new DBMessage(DBMessage.ERROR, e2));
+								sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 							}
 						} else{
 							setChanged();
 							notifyObservers(new DBMessage(DBMessage.GAMELIST, new TreeMap<Game, ArrayList<Turn>>()));
 						}
 					} else{
-						setChanged();
-						notifyObservers(new DBMessage(DBMessage.ERROR
-								, new DatabaseException(e.getCode(), e.getMessage())));
+						sendError(new DatabaseException(e.getCode(), e.getMessage()));
 					}
 				}
 			});
@@ -337,7 +348,7 @@ public class Database extends Observable implements IDatabase {
 					object.put(GAME_TURN, game.getTurnNumber());
 					object.saveInBackground();
 				} else{
-					Log.d("Database",e.getMessage());
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -434,7 +445,7 @@ public class Database extends Observable implements IDatabase {
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
 					dbTurn.saveInBackground();
 				} else{
-					Log.d("Database",e.getMessage());
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -502,19 +513,22 @@ public class Database extends Observable implements IDatabase {
 		return players;
 	}
 
-	public void updatePlayer(final Player player){
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#incrementPlayerStats(Player player)
+	 */
+	public void incrementPlayerStats(final Player player, final int scoreInc, final int won, final int draw, final int lost){
 		ParseQuery query = ParseUser.getQuery();
 		query.getInBackground(player.getParseId(), new GetCallback(){
 			public void done(ParseObject obj, ParseException e){
 				if(e == null){
-					obj.put(PLAYER_GAMES_DRAW, player.getDrawGames());
-					obj.put(PLAYER_GAMES_LOST, player.getLostGames());
-					obj.put(PLAYER_GAMES_PLAYED, player.getPlayedGames());
-					obj.put(PLAYER_GLOBALSCORE, player.getGlobalScore());
+					obj.increment(PLAYER_GAMES_DRAW, draw);
+					obj.increment(PLAYER_GAMES_LOST, lost);
+					obj.increment(PLAYER_GAMES_WON, won);
+					obj.increment(PLAYER_GAMES_PLAYED);
+					obj.increment(PLAYER_GLOBALSCORE, player.getGlobalScore());
 					obj.saveInBackground();
 				} else{
-					setChanged();
-					notifyObservers(new DBMessage(DBMessage.ERROR, new DatabaseException(e.getCode(), e.getMessage())));
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -558,25 +572,28 @@ public class Database extends Observable implements IDatabase {
 			public void done(List<ParseObject> queryList, ParseException e){
 				if(e == null){
 					if(db != null){
-						if(queryList.isEmpty()){
-							db.putRandom(player);
-						} else{
-							Collections.shuffle(queryList);
-							try {
-								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
-								db.createGame(player, p2);
-								db.removeRandom(p2);
-							} catch (DatabaseException e1) {
+						try{
+							if(queryList.isEmpty()){
+								db.putRandom(player);
+							} else if(queryList.contains(ParseObject.createWithoutData(PLAYER, player.getParseId()))){
 								setChanged();
-								notifyObservers(new DBMessage(DBMessage.ERROR
-										, e1));
+								notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
+							} else{
+								Collections.shuffle(queryList);
+								try {
+									Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
+									db.createGame(player, p2);
+									db.removeRandom(p2);
+								} catch (DatabaseException e1) {
+									sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
+								}
 							}
+						} catch(ParseException e2){
+							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
 					}
 				} else{
-					setChanged();
-					notifyObservers(new DBMessage(DBMessage.ERROR
-							, new DatabaseException(e.getCode(), e.getMessage())));
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -584,27 +601,19 @@ public class Database extends Observable implements IDatabase {
 	/*
 	 * Helper methods for putInRandomQueue
 	 */
-	private void putRandom(Player player){
+	private void putRandom(Player player) throws ParseException{
 		ParseObject queue = new ParseObject(RANDOMQUEUE);
 		queue.put(RANDOMQUEUE_PLAYER, player.getParseId());
-		queue.saveInBackground();
+		queue.save();
 	}
-	public void removeRandom(Player player){
+	private void removeRandom(Player player) throws ParseException{
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
 		query.whereEqualTo(RANDOMQUEUE_PLAYER, player.getParseId());
 		//First fetches the player from the randomqueue, then deletes the player. All on speparate thread.
-		query.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> thePlayer, ParseException e){
-				if(e == null){
-					//Delete all instanses of a player.
-					for(ParseObject p : thePlayer){
-						p.deleteInBackground();
-					}
-				} else{
-					Log.d("Database", "Could not remove random player");
-				}
-			}
-		});
+		List<ParseObject> thePlayer = query.find();
+		for(ParseObject p : thePlayer){
+			p.delete();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -632,7 +641,7 @@ public class Database extends Observable implements IDatabase {
 		ql.add(mine); ql.add(others);
 		ParseQuery query = ParseQuery.or(ql);
 
-		others.findInBackground(new FindCallback(){
+		query.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> result, ParseException e){
 				if(e == null){
 					ArrayList<Invitation> invList = new ArrayList<Invitation>();
@@ -650,10 +659,6 @@ public class Database extends Observable implements IDatabase {
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
-			}
-			private void sendError(DatabaseException e){
-				setChanged();
-				notifyObservers(new DBMessage(DBMessage.ERROR, e));
 			}
 		});
 	}
@@ -673,8 +678,7 @@ public class Database extends Observable implements IDatabase {
 						object.deleteInBackground();
 					}
 				} else{
-					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
 			}
 		});
@@ -698,19 +702,15 @@ public class Database extends Observable implements IDatabase {
 			main.findInBackground(new FindCallback(){
 				public void done(List<ParseObject> result, ParseException e){
 					if(e == null){
+						try{
 						for(ParseObject obj : result){
-							obj.deleteInBackground(new DeleteCallback(){
-								public void done(ParseException e){
-									if(e != null){
-										setChanged();
-										notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
-									}
-								}
-							});
+							obj.delete();
+						}
+						} catch(ParseException e2){
+							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
 					} else{
-						setChanged();
-						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+						sendError(new DatabaseException(e.getCode(), e.getMessage()));
 					}
 				}
 			});

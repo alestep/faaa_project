@@ -21,7 +21,7 @@ public interface IDatabase{
 	public abstract void setConverter(DataController dc);
 
 	/**
-	 * Creates a new game on the server
+	 * Creates a new game on the server. The game will not be added if a game between two players already exist.
 	 * 
 	 * @param 	player1: The player who created the game
 	 * 			player2: The player who received the game
@@ -111,10 +111,10 @@ public interface IDatabase{
 	public abstract ArrayList<Player> getPlayers() throws DatabaseException;
 	
 	/**
-	 * A method to update the global statistics of players.
+	 * A method to increment the global statistics of players.
 	 * @param player
 	 */
-	public abstract void updatePlayer(Player player);
+	public abstract void incrementPlayerStats(Player player, int scoreInc, int won, int draw, int lost);
 
 	/**
 	 * Puts the playerId into the the random queue

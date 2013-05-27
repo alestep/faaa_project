@@ -67,7 +67,7 @@ public class DataController extends Observable implements Observer{
 	 * This method is called when the database has finished fetching turn and game data.
 	 */
 	@Override
-	public void update(Observable db, Object obj) { //TODO Create a DBMessage class as well...
+	public void update(Observable db, Object obj) {
 		if(obj != null && obj.getClass().equals(DBMessage.class)){
 			DBMessage dbm = (DBMessage) obj;
 			if(dbm.getMessage() == DBMessage.ERROR){
@@ -221,11 +221,6 @@ public class DataController extends Observable implements Observer{
 		return db.getTopTenPlayers();
 	}
 
-	public void updatePlayer(Player player){
-		m.putPlayer(player);
-		db.updatePlayer(player);
-	}
-
 	//Games -----------------------------------------------------------
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
@@ -316,14 +311,6 @@ public class DataController extends Observable implements Observer{
 
 		return m.getGames();
 	}
-	/**
-	 * Removes video on the FTP server from the finished games.
-	 */
-	private void removeVideofromServer(Game game) {
-		RemoveVideoFromServer remove = new RemoveVideoFromServer(game.getGameId());
-		remove.execute();
-	}
-
 	/*
 	 * This part removes any games that are "to old".
 	 */
@@ -333,10 +320,7 @@ public class DataController extends Observable implements Observer{
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
 			} else if(!dbGames.contains(locGame)){
-				//Remove any sent invitations for the game in question
-
 				//remove the actual game
-				//TODO We could have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);//DB?
 			}
 		}
@@ -349,7 +333,7 @@ public class DataController extends Observable implements Observer{
 				}
 			});
 			//Removes games that are to old - also with a number restriction.
-			//The newest gemes are preferred (which is why we sort the list)
+			//The newest games are preferred (which is why we sort the list)
 			long timeDiff;
 			int numberSaved = 0;
 			for(Game game : finishedGames){
@@ -366,6 +350,13 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
+	}
+	/*
+	 * Removes video on the FTP server from the finished games.
+	 */
+	private void removeVideofromServer(Game game) {
+		RemoveVideoFromServer remove = new RemoveVideoFromServer(game.getGameId());
+		remove.execute();
 	}
 
 	public TreeMap<Player, Integer> getGameScore(Game game){
@@ -394,25 +385,6 @@ public class DataController extends Observable implements Observer{
 		return returnMap;
 	}
 
-	/**
-	 * Updates the database for the game. 
-	 * 	if the turn is finished, this will also be set here.
-	 * @param game - the game to be updated
-	 * @throws DatabaseException
-	 */
-	private void updateGame(Game game) throws DatabaseException{
-		if(isFinished(game)){
-			game.setFinished();
-		}
-		db.updateGame(game);
-	}
-	/*
-	 * Helper method for updateGame()
-	 */
-	private boolean isFinished(Game game){
-		return (game.getTurnNumber() == 6) && (m.getCurrentTurn(game).getState() == Turn.FINISH);
-	}
-
 	//Turn -----------------------------------------------------------
 	/**
 	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
@@ -432,33 +404,32 @@ public class DataController extends Observable implements Observer{
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn();
+		case Turn.FINISH : 	game.incrementTurn(); //Also sets game to finish!
 		break;
 		}
-		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
-		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){ //Update player stats
+		if(game.isFinished()){ //Update player stats
 			TreeMap<Player, Integer> scoreMap = getGameScore(game);
-			Player rec = turn.getRecPlayer(); 
-			Player ans = turn.getAnsPlayer(); 
-			rec.setGlobalScore(rec.getGlobalScore() + scoreMap.get(turn.getRecPlayer()));
-			ans.setGlobalScore(ans.getGlobalScore() + scoreMap.get(turn.getAnsPlayer()));
-			if(scoreMap.get(turn.getRecPlayer()) > scoreMap.get(turn.getAnsPlayer())){
-				rec.incrementWonGames();
-				ans.incrementLostGames();
-			} else if(scoreMap.get(turn.getRecPlayer()) < scoreMap.get(turn.getAnsPlayer())){
-				ans.incrementWonGames();
-				rec.incrementLostGames();
+			Player p1 = turn.getRecPlayer(); //This assignment is random, but it doesn't matter
+			Player p2 = turn.getAnsPlayer(); 
+			int p1GS = scoreMap.get(p1);
+			int p2GS = scoreMap.get(p2);
+			int p1W = 0;
+			int p2W = 0;
+			int p1L = 0;
+			int p2L = 0;
+			int draw = 0;
+			if(p1GS > p2GS){
+				p1W++;
+			} else if(p2GS > p1GS){
+				p2W++;
 			} else{
-				rec.incrementDrawGames();
-				ans.incrementDrawGames();
+				draw++;
 			}
-			rec.incrementFinishedGames();
-			ans.incrementFinishedGames();
-			updatePlayer(rec);
-			updatePlayer(ans);
+			db.incrementPlayerStats(p1, p1GS, p1W, draw, p1L);
+			db.incrementPlayerStats(p2, p2GS, p2W, draw, p2L);
 		}
-		updateGame(game);
+		db.updateGame(game);
 	}
 
 
@@ -507,11 +478,11 @@ public class DataController extends Observable implements Observer{
 		for(Game g : m.getGames()){ //Check if the invitation is in current games
 			if(	
 					(inv.getInviter().equals(g.getPlayer1()) 
-					&& inv.getInvitee().equals(g.getPlayer2()))
-					||
-					(inv.getInvitee().equals(g.getPlayer1())
-					&& inv.getInviter().equals(g.getPlayer2()))
-				){
+							&& inv.getInvitee().equals(g.getPlayer2()))
+							||
+							(inv.getInvitee().equals(g.getPlayer1())
+									&& inv.getInviter().equals(g.getPlayer2()))
+					){
 				return true;
 			}
 		}
