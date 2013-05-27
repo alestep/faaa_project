@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/LightGrey" >
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/satisfiedText"
@@ -10,56 +10,54 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor ="@color/Black"
-        android:text="Are you satisfied with your charade?" />
+        android:text="@string/satisfiedText"
+        android:textAppearance="@style/text_medium" />
 
-    <Button
-        android:id="@+id/NoButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+  		android:layout_below="@+id/satisfiedText"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/satisfiedText"
-        android:layout_below="@id/satisfiedText"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_custom_red"
-        android:drawableLeft="@drawable/undo"
-        android:onClick="onClickNo" />
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-    <Button
-        android:id="@+id/yesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/satisfiedText"
-        android:layout_below="@+id/satisfiedText"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_custom_green"
-        android:drawableLeft="@drawable/navigation_upload"
-        android:onClick="onClickYes" />
+        <ImageButton
+            android:id="@+id/yesButton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/button_custom_green"
+            android:onClick="onClickYes"
+            android:src="@drawable/navigation_upload" />
+
+        <ImageButton
+            android:id="@+id/NoButton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/button_custom_red"
+            android:onClick="onClickNo"
+            android:src="@drawable/undo" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/testtv"
+        android:layout_below="@+id/buttonContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:layout_below="@+id/NoButton" >
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="fill_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/tv" />
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/rectangle_light_red"
+        android:padding="5dp" >
 
         <VideoView
             android:id="@+id/satisfiedVideoView"
-            android:layout_width="289dp"
-            android:layout_height="167dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_alignTop="@+id/imageView1"
-            android:layout_marginTop="43dp"
             android:orientation="horizontal" />
 
     </RelativeLayout>

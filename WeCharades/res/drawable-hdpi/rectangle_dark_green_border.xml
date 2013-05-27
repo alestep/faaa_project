@@ -7,11 +7,10 @@
     <padding
         android:left="5dp"
         android:right="5dp" />
+    
+    <stroke android:width="3dp"
+        android:color="@color/LightGreen"/>
 
-    <stroke
-        android:width="3dp"
-        android:color="@color/LightMediumGrey" />
-
-    <solid android:color="@color/LightGrey" />
+    <solid android:color="@color/DarkGreen" />
 
 </shape>

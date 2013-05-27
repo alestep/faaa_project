@@ -33,7 +33,7 @@ public class GameDashboardPresenter extends Presenter {
 		turnList = dc.getTurns(game);
 		buttonList = getAllButtons(table);
 
-		generateTitle();
+		activity.setTitle("Game with " + game.getOpponent(dc.getCurrentPlayer()));
 		updateScore();
 
 		updateButtons(turnList, buttonList);
@@ -143,9 +143,5 @@ public class GameDashboardPresenter extends Presenter {
 			}
 		};
 		return buttonListener;
-	}
-
-	private void generateTitle() {
-		activity.showMessage("Game with " + game.getOpponent(dc.getCurrentPlayer()));
 	}
 }
