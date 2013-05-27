@@ -450,6 +450,43 @@ public class Database extends Observable implements IDatabase {
 			}
 		});
 	}
+	@Override
+	public void updateTurns(final List<Turn> turnList) {
+		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>(); 
+		for(Turn turn : turnList){
+			ParseQuery q = new ParseQuery(TURN);
+			q.whereEqualTo(TURN_GAME, ParseObject.createWithoutData(GAME, turn.getGameId()));
+			q.whereEqualTo(TURN_TURN, turn.getTurnNumber());
+			ql.add(q);
+		}
+		ParseQuery main = ParseQuery.or(ql);
+		main.findInBackground(new FindCallback(){
+			public void done(List<ParseObject> result, ParseException e){
+				if(e == null){
+					for(ParseObject dbTurn : result){
+						for(Turn turn : turnList){
+							if(turn.getGameId().equals(dbTurn.getString(TURN_GAME)) 
+									&& turn.getTurnNumber() == dbTurn.getInt(TURN_TURN)){
+								dbTurn.put(TURN_STATE, turn.getState());
+								dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
+								dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
+								dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
+							}
+							if(!result.isEmpty()){
+								try{
+									ParseObject.saveAll(result);
+								} catch(ParseException e2){
+									sendError(new DatabaseException(e.getCode(), e.getMessage()));
+								}
+							}
+						}
+					}
+				} else{
+					sendError(new DatabaseException(e.getCode(), e.getMessage()));
+				}
+			}
+		});
+	}
 
 	//Players -----------------------------------------------------------------------------------------//	
 
@@ -703,9 +740,9 @@ public class Database extends Observable implements IDatabase {
 				public void done(List<ParseObject> result, ParseException e){
 					if(e == null){
 						try{
-						for(ParseObject obj : result){
-							obj.delete();
-						}
+							for(ParseObject obj : result){
+								obj.delete();
+							}
 						} catch(ParseException e2){
 							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
@@ -809,5 +846,4 @@ public class Database extends Observable implements IDatabase {
 		//PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
 
 	}
-
 }

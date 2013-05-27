@@ -2,6 +2,7 @@ package com.example.wecharades.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Observer;
 
 import android.content.Context;
@@ -84,6 +85,12 @@ public interface IDatabase{
 	 */
 	public abstract void updateTurn(Turn theTurn);
 
+	/**
+	 * Updated a list of turns at once
+	 * @param turnList
+	 */
+	public abstract void updateTurns(List<Turn> turnList);
+	
 	/**
 	 * Gets the player with player Id from the database
 	 * @param playerId the Player's name

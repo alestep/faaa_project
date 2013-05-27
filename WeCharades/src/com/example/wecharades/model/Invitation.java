@@ -17,10 +17,19 @@ public class Invitation implements Serializable {
 	private Player invitee;
 	private Date timeOfInvite;
 
+	public Invitation(Player inviter, Player invitee) {
+		this.inviter = inviter;
+		this.invitee = invitee;
+	}
+	
 	public Invitation(Player inviter, Player invitee, Date timeOfInvite) {
 		this.inviter = inviter;
 		this.invitee = invitee;
 		this.timeOfInvite = timeOfInvite;
+	}
+	
+	public void setTime(Date date){
+		this.timeOfInvite = date;
 	}
 
 	public Player getInviter() {

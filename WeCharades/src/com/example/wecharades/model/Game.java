@@ -129,14 +129,32 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	}
 
 	/**
-	 * A static method to check if a game has changed:
+	 * A method to check if a game can be considered to be ahead of another.
 	 * 	will look on current player, turn and finished state.
-	 * @return - if the game has changed
+	 * @return - if the game has changed - will return false on null input
 	 */
-	public static boolean hasChanged(Game game1, Game game2){
-		return !game1.getCurrentPlayer().equals(game2.getCurrentPlayer())
-				|| game1.getTurnNumber() != game2.getTurnNumber()
-				|| game1.isFinished() != game2.isFinished();
+	public boolean aheadOf(Game game){
+		return game != null && //Check for null
+			(	this.isFinished 
+				|| this.getTurnNumber() > game.getTurnNumber()
+				|| this.playerTurnValue() > game.getTurnNumber()
+			);
+	}
+	/**
+	 * This method will give a turn value for this player.
+	 * 	There are two levels - high and low. This will be calculated from
+	 * 	the current turn number and player
+	 */
+	private int playerTurnValue(){
+		int 	AHEAD = Integer.MAX_VALUE,
+				BEHIND = Integer.MIN_VALUE;
+		Player aheadPlayer = null;
+		if(turnNumber == 1 || turnNumber == 4 || turnNumber == 5){
+			aheadPlayer = player2;
+		} else{
+			aheadPlayer = player1;
+		} 
+		return (currentPlayer.equals(aheadPlayer) ? AHEAD : BEHIND);
 	}
 
 	@Override

@@ -74,7 +74,7 @@ public class DataController extends Observable implements Observer{
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
 			} else if(dbm.getMessage() == DBMessage.GAMELIST){
-				ArrayList<Game> gameList = parseUpdatedGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
+				ArrayList<Game> gameList = parseGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
 			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
@@ -245,70 +245,40 @@ public class DataController extends Observable implements Observer{
 		db.fetchGames(getCurrentPlayer());
 		return m.getGames();
 	}
-	/*
-	 * This is one of the core methods of this application.
-	 * 	This method will sync the database with the model!
-	 * 	//TODO This MIGHT have problems with it and is untested
-	 */
-	private ArrayList<Game> parseUpdatedGameList(TreeMap<Game, ArrayList<Turn>> dbGames) {
-		Game localGame;
-		for(Map.Entry<Game, ArrayList<Turn>> gameMap : dbGames.entrySet()){
-			localGame = m.getGame(gameMap.getKey().getGameId());
-			if(localGame == null || m.getTurns(localGame) == null){
-				//If the local game does not exist, or does not have any turns
-				m.putGame(gameMap.getKey());
-				m.putTurns(gameMap.getValue());
-			} else if(Game.hasChanged(localGame, gameMap.getKey())){
-				if(localGame.getTurnNumber() < gameMap.getKey().getTurnNumber()){
-					//Run if the local turn is older than the db one.
-					//It can then be deduced that the local turns are out-of-date.
-					//Because of the saveEventually, we do not have to check the other way around.
-					m.putGame(gameMap.getKey());
-					m.putTurns(gameMap.getValue());
-				} else if(localGame.isFinished()){
-					//Removes the instance in sent invitations when game is finished
-					db.updateGame(localGame);
-					db.updateTurn(m.getTurns(localGame).get(5));
-					//					for(Invitation i : m.getSentInvitations()){
-					//						if(localGame.getPlayer1().equals(i.getInviter())){
-					//							m.removeSentInvitation(i);
-					//						}
-					//					}
 
-				} else if(gameMap.getKey().isFinished()){ //If the db-game is finished
-					//This code deletes games and turns after they are finished!
-					//This code is only reachable for the receiving player
-					m.putGame(gameMap.getKey());
-					m.putTurns(gameMap.getValue());
-					db.removeGame(localGame);
-					db.removeInvitation(new Invitation(localGame.getPlayer1(), localGame.getPlayer2(), new Date()));
+	private ArrayList<Game> parseGameList(TreeMap<Game, ArrayList<Turn>> dbGames){
+		Game localGame;
+		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
+			//Fetch the local version of the game
+			localGame = m.getGame(dbGame.getKey().getGameId());
+			//If this game doesn't exist, create it
+			if(localGame == null){
+				m.putGame(dbGame.getKey());
+				m.putTurns(dbGame.getValue());
+			} else if(localGame.aheadOf(dbGame.getKey())){
+				//This is also done in updateTurn, but for safety even here. Also updates ALL turns.
+				db.updateGame(localGame);
+				db.updateTurns(m.getTurns(localGame));
+			} else if(dbGame.getKey().aheadOf(localGame)){
+				//Update local - Also check for finish an delete db from db.
+				m.putGame(dbGame.getKey());
+				m.putTurns(dbGame.getValue());
+				if(dbGame.getKey().isFinished()){
+					db.removeGame(dbGame.getKey());
 					removeVideofromServer(localGame);
-				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-					//If current player of a game is different, we must check the turns
-					Turn localTurn = m.getCurrentTurn(localGame);
-					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
-					if(localTurn.getState() > dbTurn.getState()){
-						//Update db.turn if local version is further ahead
-						db.updateGame(localGame);
-						db.updateTurn(localTurn);
-					} else {
-						//If something is wrong, allways use the "Golden master" - aka. the database
-						m.putGame(gameMap.getKey());
-						m.putTurn(dbTurn);
-					}
 				}
-			} else if (
-					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
-					|| 
-					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
-					){
-				//This is done in order to ensure that data has been fetched without errors. If so, we replace everything!
-				m.putGame(gameMap.getKey());
-				m.putTurns(gameMap.getValue());
+			} else{
+				if ( //If there is a missmatch between current player and turn number/state.
+						!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
+						|| 
+						!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
+						){
+					m.putGame(dbGame.getKey());
+					m.putTurns(dbGame.getValue());
+				}
 			}
 		}
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
-
 		return m.getGames();
 	}
 	/*
@@ -320,12 +290,12 @@ public class DataController extends Observable implements Observer{
 			if(locGame.isFinished()){
 				finishedGames.add(locGame);
 			} else if(!dbGames.contains(locGame)){
-				//remove the actual game
-				m.removeGame(locGame);//DB?
+				//remove the local game if it is not found on the server
+				m.removeGame(locGame);
 			}
 		}
 		if(finishedGames.size() > 0){
-			//Sort the games using a cusom time-comparator
+			//Sort the games using a custom time-comparator
 			Collections.sort(finishedGames, new Comparator<Game>(){
 				@Override
 				public int compare(Game g1, Game g2) {
@@ -523,7 +493,7 @@ public class DataController extends Observable implements Observer{
 	 * @param player The player-representation of the player
 	 */
 	public void sendInvitation(Player player){
-		sendInvitation(new Invitation(getCurrentPlayer(), player, new Date()));
+		sendInvitation(new Invitation(getCurrentPlayer(), player));
 	}
 
 	/**
