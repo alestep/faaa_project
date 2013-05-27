@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
 
-    <RelativeLayout
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:orientation="vertical"
         android:padding="10dp" >
 
         <RelativeLayout
             android:id="@+id/titleContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/videoContainer"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp" >
+            android:layout_marginBottom="10dp" >
 
             <TextView
                 android:id="@+id/possibleLetters"
@@ -32,6 +30,7 @@
             <EditText
                 android:id="@+id/editAnswerCharade"
                 style="@style/edit_text_style"
+                android:background="@drawable/rectangle_light_grey"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
@@ -70,16 +69,14 @@
             android:id="@+id/videoContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/titleContainer"
             android:background="@drawable/rectangle_light_red"
             android:padding="5dp" >
 
             <VideoView
                 android:id="@+id/streamedVideoSurface"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
-    </RelativeLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-</ScrollView>
+        
+        </RelativeLayout>
+    </LinearLayout>
