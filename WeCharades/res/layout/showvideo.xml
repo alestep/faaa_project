@@ -1,68 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="10dp" >
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/satisfiedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/satisfiedText"
+        android:textAppearance="@style/text_medium" />
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp" >
+        android:layout_margin="10dp"
+        android:gravity="center" >
 
-        <TextView
-            android:id="@+id/satisfiedText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/satisfiedText"
-            android:textAppearance="@style/text_medium" />
+        <ImageButton
+            android:id="@+id/yesButton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/button_custom_accept"
+            android:onClick="onClickYes"
+            android:src="@drawable/navigation_upload" />
 
-        <LinearLayout
-            android:id="@+id/buttonContainer"
+        <ImageButton
+            android:id="@+id/NoButton"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/button_custom_reject"
+            android:onClick="onClickNo"
+            android:src="@drawable/undo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_light_red"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <VideoView
+            android:id="@+id/satisfiedVideoView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/satisfiedText"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:orientation="horizontal" />
+    </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/yesButton"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/button_custom_accept"
-                android:onClick="onClickYes"
-                android:src="@drawable/navigation_upload" />
-
-            <ImageButton
-                android:id="@+id/NoButton"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/button_custom_reject"
-                android:onClick="onClickNo"
-                android:src="@drawable/undo" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignRight="@+id/buttonContainer"
-            android:layout_below="@+id/buttonContainer"
-            android:background="@drawable/rectangle_light_red"
-            android:padding="5dp" >
-
-            <VideoView
-                android:id="@+id/satisfiedVideoView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-</ScrollView>
+</LinearLayout>
