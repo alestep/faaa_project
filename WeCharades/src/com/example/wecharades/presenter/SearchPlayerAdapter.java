@@ -44,7 +44,7 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 		final String s = resultList.get(position);
 
 		if (s != null) {
-				v = li.inflate(R.layout.result_list_item, null);
+				v = li.inflate(R.layout.list_item_search_result, null);
 				final TextView username = (TextView) v.findViewById(R.id.username);
 				if (username != null)
 					username.setText(s); 
@@ -53,19 +53,20 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 		final Button play = (Button) v.findViewById(R.id.play);
 
 		if (sentInvitations.contains(s)) {
-			play.setText("Sent");
 			play.setEnabled(false);
 			play.setClickable(false);
+			play.setText("Sent");
+
 		}
 
 		play.setOnClickListener(new OnClickListener(){ 
 
 			@Override
 			public void onClick(View v){
-				
+				play.setEnabled(false);		
 				activity.invite(s);	
 				play.setText("Sent");
-				play.setEnabled(false);			
+	
 			}
 		}); 
 		

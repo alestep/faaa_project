@@ -16,7 +16,7 @@
 
     <!-- Button styling -->
     <style name="button_style" parent="@android:style/Widget.Button">
-        <item name="android:background">@drawable/rectangle_light_red</item>
+        <item name="android:background">@drawable/button_custom_red</item>
         <item name="android:textSize">15sp</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">fill_parent</item>
@@ -27,7 +27,7 @@
 
     <!-- EditText styling -->
     <style name="edit_text_style" parent="@android:style/Widget.EditText">
-        <item name="android:background">@drawable/rectangle_light_grey</item>
+        <item name="android:background">@drawable/button_custom_grey</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:singleLine">true</item>
@@ -41,7 +41,7 @@
 
     <style name="edit_text_style_username" parent="edit_text_style">
         <item name="android:inputType">text</item>
-        <item name="android:drawableRight">@drawable/social_person</item>
+        <item name="android:drawableRight">@drawable/social_person_dark</item>
         <item name="android:hint">@string/username</item>
         <item name="android:imeOptions">actionNext</item>
     </style>

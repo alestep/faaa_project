@@ -13,5 +13,5 @@
         android:bottom="5dp"  />
 
     <solid
-        android:color="@color/DarkBlue" />
+        android:color="@color/DarkDarkRed" />
 </shape>

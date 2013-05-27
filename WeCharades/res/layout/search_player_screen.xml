@@ -6,8 +6,8 @@
 
     <EditText
         android:id="@+id/search_window"
-        android:layout_width="match_parent"
         style="@style/edit_text_style"
+        android:background="@drawable/rectangle_light_grey"
         android:drawableRight="@drawable/ic_menu_search"
         android:ems="10"
         android:hint="@string/search_hint"
@@ -21,7 +21,7 @@
         android:id="@+id/empty_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@style/text_medium"
         android:textStyle="italic"
         android:visibility="gone" >
     </TextView>
@@ -29,7 +29,8 @@
     <ListView
         android:id="@+id/result_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp" >
     </ListView>
-
+    
 </LinearLayout>

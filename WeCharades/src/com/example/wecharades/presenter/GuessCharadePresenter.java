@@ -1,3 +1,4 @@
+
 package com.example.wecharades.presenter;
 
 import java.io.File;
@@ -111,7 +112,7 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onPrepared(MediaPlayer mp) {
-					mp.setLooping(true);		
+					mp.setLooping(true);           
 				}
 			});
 			videoView.setVideoPath(SAVE_PATH);
@@ -127,10 +128,10 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	private String shuffleWord(){
 		currentWord = turn.getWord(); //TODO: Replace
-		String alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+		String alphabet = "abcdefghijklmnopqrstuvwxyzŒŠš";
 		alphabet = shuffle(alphabet);
 		alphabet = alphabet.substring(alphabet.length() - randomNumber(7,4));
-		String guessWord = currentWord + alphabet;	
+		String guessWord = currentWord + alphabet;     
 		guessWord = shuffle(guessWord);
 		return guessWord;
 	}
@@ -174,7 +175,7 @@ public class GuessCharadePresenter extends Presenter {
 	}//TODO: Oklar metod?
 
 	/**
-	 * 
+	 *
 	 * @author Adam
 	 *
 	 */
@@ -224,7 +225,6 @@ public class GuessCharadePresenter extends Presenter {
 						public void onClick(DialogInterface dialog, int id) {
 							dialog.cancel();
 							new DownloadVideo(mContext,SAVE_PATH).execute();
-							
 						}
 					});
 					AlertDialog alert = builder.create();
@@ -282,7 +282,7 @@ public class GuessCharadePresenter extends Presenter {
 				Log.v("download result just exception","failed " + e.getMessage());
 				cancel(true);
 			}
-			return null;	
+			return null;   
 		}
 
 		@Override
@@ -297,6 +297,7 @@ public class GuessCharadePresenter extends Presenter {
 				playVideo();
 			}
 		}
+
 		@Override
 		protected void onCancelled(Boolean result){
 			if(mDialog.isShowing()){
@@ -308,6 +309,9 @@ public class GuessCharadePresenter extends Presenter {
 				.setPositiveButton("Go back and retry later", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
+//						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
+//						intent.putExtra(Database.TURN, turn);
+//						activity.startActivity(intent);
 						activity.finish();
 
 					}
@@ -316,6 +320,7 @@ public class GuessCharadePresenter extends Presenter {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 						new DownloadVideo(mContext,SAVE_PATH).execute();
+
 					}
 				});
 				AlertDialog alert = builder.create();

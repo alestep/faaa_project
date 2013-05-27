@@ -42,7 +42,7 @@ public class RegisterActivity extends GenericActivity {
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
-		presenter.setProgressSpinnerInvisible(registerProgress);
+//		presenter.setProgressSpinnerInvisible(registerProgress);
 	}
 	
 	@Override
@@ -69,5 +69,11 @@ public class RegisterActivity extends GenericActivity {
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
 		return registerErrorMsg;
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

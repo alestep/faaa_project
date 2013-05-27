@@ -283,34 +283,40 @@ public class DataController extends Observable implements Observer{
 					m.putTurns(gameMap.getValue());
 				} else if(localGame.isFinished()){
 					//Removes the instance in sent invitations when game is finished
+					db.updateGame(localGame);
+					db.updateTurn(m.getTurns(localGame).get(5));
 					for(Invitation i : m.getSentInvitations()){
 						if(localGame.getPlayer1().equals(i.getInviter())){
 							m.removeSentInvitation(i);
 						}
 					}
-					if(!localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 					
-						//This code deletes games and turns after they are finished!
-						//This code is only reachable for the receiving player
-						db.removeGame(localGame);
-						removeVideosfromServer(localGame);
-					}
-				}
-			} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
-				//If current player of a game is different, we must check the turns
-				Turn localTurn = m.getCurrentTurn(localGame);
-				Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
-				if(localTurn.getState() > dbTurn.getState()){
-					//Update db.turn if local version is further ahead
-					db.updateGame(localGame);
-					db.updateTurn(localTurn);
-				} else {
-					//If something is wrong, allways use the "Golden master" - aka. the database
+
+				} else if(gameMap.getKey().isFinished()){ //If the db-game is finished
+					//This code deletes games and turns after they are finished!
+					//This code is only reachable for the receiving player
 					m.putGame(gameMap.getKey());
-					m.putTurn(dbTurn);
+					m.putTurns(gameMap.getValue());
+					db.removeGame(localGame);
+					removeVideofromServer(localGame);
+					
+				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
+					//If current player of a game is different, we must check the turns
+					Turn localTurn = m.getCurrentTurn(localGame);
+					Turn dbTurn = gameMap.getValue().get(gameMap.getKey().getTurnNumber()-1);
+					if(localTurn.getState() > dbTurn.getState()){
+						//Update db.turn if local version is further ahead
+						db.updateGame(localGame);
+						db.updateTurn(localTurn);
+					} else {
+						//If something is wrong, allways use the "Golden master" - aka. the database
+						m.putGame(gameMap.getKey());
+						m.putTurn(dbTurn);
+					}
 				}
 			} else if (
 					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
-					|| !(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
+					|| 
+					!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
 					){
 				//This is done in order to ensure that data has been fetched without errors. If so, we replace everything!
 				m.putGame(gameMap.getKey());
@@ -324,7 +330,7 @@ public class DataController extends Observable implements Observer{
 	/**
 	 * Removes video on the FTP server from the finished games.
 	 */
-	private void removeVideosfromServer(Game game) {
+	private void removeVideofromServer(Game game) {
 		RemoveVideoFromServer remove = new RemoveVideoFromServer(game.getGameId());
 		remove.execute();
 	}
@@ -447,8 +453,7 @@ public class DataController extends Observable implements Observer{
 		}
 		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
-		updateGame(game);
-		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){
+		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){ //Update player stats
 			TreeMap<Player, Integer> scoreMap = getGameScore(game);
 			Player rec = turn.getRecPlayer(); 
 			Player ans = turn.getAnsPlayer(); 
@@ -469,6 +474,7 @@ public class DataController extends Observable implements Observer{
 			updatePlayer(rec);
 			updatePlayer(ans);
 		}
+		updateGame(game);
 	}
 
 

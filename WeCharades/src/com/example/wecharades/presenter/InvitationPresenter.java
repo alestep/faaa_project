@@ -3,6 +3,7 @@ package com.example.wecharades.presenter;
 import java.util.List;
 import java.util.Observable;
 
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,19 +17,15 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
+	private View parentView;
+	private SeparatedListAdapter adapter;
+	//ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
-	}
-
-	private void setAdapter(List<Invitation> invitationList) {
-			ListView view = (ListView) activity.findViewById(R.id.list);
-			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
-			text.setText("No invitations found!");
-			view.setEmptyView(text);
-			view.setAdapter(new InvitationAdapter(activity, invitationList));
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void update() {
@@ -53,9 +50,24 @@ public class InvitationPresenter extends Presenter {
 		if(obj != null && obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.INVITATIONS){
-				setAdapter((List<Invitation>) dcm.getData());
+				setAdapter((List<Invitation>) dcm.getData(), dc.getSentInvitations());
 			}
 		}
 	}
-
+	
+	private void setAdapter(List<Invitation> receivedList, List<Invitation> sentList) {
+		ListView view = (ListView) activity.findViewById(R.id.list);
+		TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
+		text.setText("No invitations found!");
+		view.setEmptyView(text);
+		adapter = new SeparatedListAdapter(activity);
+		if (!receivedList.isEmpty())
+			adapter.addSection("Received invitations", new InvitationAdapter(activity, receivedList, dc.getCurrentPlayer()));
+		if(!sentList.isEmpty())
+			adapter.addSection("Sent invitations", new InvitationAdapter(activity, sentList, dc.getCurrentPlayer()));
+		
+		view.setAdapter(adapter);
+	}
+	
+		
 }

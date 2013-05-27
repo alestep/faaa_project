@@ -1,17 +1,24 @@
 package com.example.wecharades.presenter;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
@@ -23,13 +30,13 @@ public class RegisterPresenter extends Presenter {
 	private String inputEmail;
 	private String inputPassword;
 	private String inputRepeatPassword;
-	private View myView;
-	private ProgressBar registerProgress;
+	private View parentView;
 	private DatabaseException dbException;
 
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
+		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	/**
@@ -45,8 +52,6 @@ public class RegisterPresenter extends Presenter {
 		this.inputEmail = inputEmail;
 		this.inputPassword = inputPassword;
 		this.inputRepeatPassword = inputRepeatPassword;
-		this.myView = myView;
-		this.registerProgress = registerProgress;
 		RegisterTask register = new RegisterTask();
 		register.execute();
 	}
@@ -77,7 +82,7 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			showProgressSpinner(myView, registerProgress);
+			activity.showProgressSpinner(getAllChildren(parentView));
 		}
 
 		@Override
@@ -103,22 +108,27 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
+				
+				final Dialog dialog = new Dialog(activity);
+				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.setContentView(R.layout.dialog_error);
+				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Error!")
-				.setMessage(dbException.prettyPrint())
-				.setCancelable(false)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
+				TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
+				errorText.setText(dbException.prettyPrint());
+
+				Button ok = (Button) dialog.findViewById(R.id.ok);
+				ok.setOnClickListener(new OnClickListener() {          
+					public void onClick(View v) {
+						dialog.dismiss();
 					}
 				});
-				AlertDialog alert = builder.create();
-				alert.show();
 
+				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			hideProgressSpinner(myView, registerProgress);
+			activity.hideProgressSpinner(getAllChildren(parentView));
 		}
 	}
 }

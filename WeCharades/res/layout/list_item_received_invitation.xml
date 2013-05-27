@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:dividerHeight="0dp"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp" >
+
+    <TextView
+        android:id="@+id/inviter"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.60"
+        android:ellipsize="marquee"
+        android:gravity="left|center_vertical"
+        android:textAppearance="@style/text_large" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.4"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/accept"
+            style="@style/button_style"
+            android:layout_width="50dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/button_custom_accept"
+            android:src="@drawable/navigation_accept" />
+
+        <ImageButton
+            android:id="@+id/reject"
+            style="@style/button_style"
+            android:layout_width="50dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/button_custom_reject"
+            android:src="@drawable/navigation_cancel" />
+    </LinearLayout>
+
+</LinearLayout>

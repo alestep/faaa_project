@@ -3,31 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp" >
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
 
     <Button
         android:id="@+id/account"
         style="@style/button_style"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginRight="5dp"
         android:layout_weight="0.5"
-        android:paddingLeft="10dp"
-    	android:layout_marginRight="5dp"
-        android:drawableLeft="@drawable/action_about"
+        android:textColor="@color/DarkGrey"
+        android:background="@drawable/button_custom_grey_to_red"
+        android:drawableLeft="@drawable/info"
         android:gravity="left|center_vertical"
-        android:onClick="onClickUsername"/>
+        android:onClick="onClickUsername"
+        android:paddingLeft="10dp" />
 
     <Button
         android:id="@+id/new_game_button"
         style="@style/button_style"
         android:layout_width="0dp"
         android:layout_marginLeft="5dp"
-        android:background="@drawable/button_custom_green"
         android:layout_weight="0.5"
-        android:drawableRight="@drawable/content_new"
+        android:textColor="@color/DarkGrey"
+        android:background="@drawable/button_custom_grey_to_green"
+        android:drawableRight="@drawable/add"
         android:gravity="left|center_vertical"
         android:onClick="onClickNewGame"
+        android:paddingLeft="10dp"
         android:text="@string/new_game" />
 
 </LinearLayout>

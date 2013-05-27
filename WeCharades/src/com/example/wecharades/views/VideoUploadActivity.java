@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -70,6 +71,12 @@ public class VideoUploadActivity extends GenericActivity{
 
 	@Override
 	public TextView getTextArea() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;
 	}

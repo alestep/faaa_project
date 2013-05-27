@@ -1,6 +1,10 @@
 package com.example.wecharades.views;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -18,7 +22,9 @@ public class GameDashboardActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new GameDashboardPresenter(this));
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.game_screen);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_game); 
 		presenter = (GameDashboardPresenter) super.getPresenter();
 		title = (TextView) findViewById(R.id.titleText);
 		yourScore = (TextView) findViewById(R.id.yourScore);
@@ -38,7 +44,21 @@ public class GameDashboardActivity extends GenericActivity {
 	}
 	
 	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
-		yourScore.setText("Your score: "+ currentPlayersScore + " points");
-		opponentsScore.setText("Opponent's score: "+ otherPlayerScore + " points");
+		yourScore.setText(Integer.toString(currentPlayersScore));
+		opponentsScore.setText(Integer.toString(otherPlayerScore));
+	}
+
+	@Override
+	protected ProgressBar getProgressSpinner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void onClickRefresh(View v) {
+		//refresh dashboard
+	}
+	
+	public void onClickHome(View v){
+		startActivity(new Intent(this, StartActivity.class));
 	}
 }

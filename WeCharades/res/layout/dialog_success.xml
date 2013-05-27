@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="170dp" 
+    android:orientation="vertical"
+    android:background="@drawable/dialog_success"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/successTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/successTitle"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/text_large"
+        android:textColor="@color/LightGreen"
+        android:drawableRight="@drawable/success" />
+
+    <TextView
+        android:id="@+id/successText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="@style/text_medium"
+        android:textColor="@color/LightGreen"  />
+
+    <Button
+        android:id="@+id/ok"
+        style="@style/button_style"
+        android:background="@drawable/rectangle_light_green"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/ok" />
+
+</LinearLayout>

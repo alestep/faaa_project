@@ -84,14 +84,14 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	}
 
 	/**
-	 * Increments the turn number. If it is the last turn, the value will be set to 0
+	 * Increments the turn number.
 	 */
 	public void incrementTurn() {
+		turnNumber ++;
 		if(turnNumber == 6){
+			turnNumber = 5; //Revert turnNumber to 5 
 			isFinished = true;
 		}
-		else
-			turnNumber ++;
 	}
 	
 	public void setFinished(){

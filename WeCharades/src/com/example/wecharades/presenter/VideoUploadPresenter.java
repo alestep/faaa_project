@@ -14,17 +14,26 @@ import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
@@ -40,7 +49,6 @@ public class VideoUploadPresenter extends Presenter {
 	private VideoUploadActivity activity;
 	private UploadVideo upload;
 	private Turn turn;
-	private String fileName = "PresentVideo.mp4";
 	private String serverPath;
 
 	public VideoUploadPresenter(VideoUploadActivity activity) {
@@ -55,9 +63,39 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
+//		final Context c = context;
+//		final String p = path;
 		setServerStorageLocation();
 		upload = new UploadVideo(context, path);
 		upload.execute();
+		//Check if the user has internet connection
+//		if(isNetworkConnected()) {
+//			setServerStorageLocation();
+//			upload = new UploadVideo(context, path);
+//			upload.execute();
+//		} else {
+//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//			builder.setTitle("Error!")
+//			.setMessage("You've got no internet connection!")
+//			.setCancelable(false)
+//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Try again...
+//					uploadVideo(c,p);
+//				}
+//			})
+//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//Go to homecreen
+//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
+//					activity.startActivity(intent);
+//					activity.finish();	
+//					dialog.cancel();
+//				}
+//			});
+//			AlertDialog alert = builder.create();
+//			alert.show();
+//		}
 	}
 
 	/**
@@ -88,8 +126,7 @@ public class VideoUploadPresenter extends Presenter {
 	 */
 	private void setServerStorageLocation(){
 		String gameID = turn.getGameId();
-		String turnNumber = String.valueOf(turn.getTurnNumber());
-		String serverPath = "/APP/GAMES/" + gameID + turnNumber + ".mp4";
+		String serverPath = "/APP/GAMES/" + gameID + ".mp4";
 		this.serverPath = serverPath;
 	}
 
@@ -125,31 +162,44 @@ public class VideoUploadPresenter extends Presenter {
 
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 
-		private ProgressDialog mDialog;
+		private Dialog dialog;
 		Context mContext;
 		private String SAVE_PATH;
 
 		public UploadVideo(Context context, String path){
 			mContext = context;
 			SAVE_PATH = path;
-			mDialog = new ProgressDialog(mContext);
+			dialog = new Dialog(mContext);
 		}
 
 		@Override
 		protected void onPreExecute(){
-			mDialog.setTitle("Uploading Charade");
-			mDialog.setMessage("Please Wait");
-			mDialog.setCancelable(false);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+			
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.setContentView(R.layout.dialog_progress);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+
+			TextView progressTitle = (TextView) dialog.findViewById(R.id.progressTitle);
+			progressTitle.setText("Uploading");
+			
+			TextView progressText = (TextView) dialog.findViewById(R.id.progressText);
+			progressText.setText("Please wait");
+			
+			dialog.show();
+			Button cancelButton = (Button) dialog.findViewById(R.id.ok);
+			cancelButton.setOnClickListener(new OnClickListener(){
 
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-
+				public void onClick(View v) {
+					cancel(true);
+					
 				}
+				
 			});
-			mDialog.show();
+			
+
 		}
 
 		@Override
@@ -201,8 +251,8 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onCancelled(Boolean result) {
-			if(mDialog.isShowing()){
-				mDialog.dismiss();
+			if(dialog.isShowing()){
+				dialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 				builder.setTitle("Uploading Charade")
 				.setMessage("Upload failed, try again!")
@@ -219,12 +269,10 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(mDialog.isShowing()){
-				mDialog.dismiss();
+			if(dialog.isShowing()){
+				dialog.dismiss();
 				turn.setVideoLink(serverPath);
-				Log.d("ServerPath in Presenter", serverPath);
 				turn.setState(Turn.VIDEO);
-				Log.d("Turn's state in Presenter", String.valueOf(turn.getState()));
 				updateModel();
 				pushNotficationtoOtherPlayer();
 				//Send to startscreen on success
