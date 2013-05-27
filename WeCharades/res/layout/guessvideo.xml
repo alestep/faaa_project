@@ -1,74 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/guessCharadeText"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/titleContainer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:padding="4dp"
-        android:text="What is the person visualizing?"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white" />
+        android:layout_marginBottom="10dp" >
 
-    <Button
-        android:id="@+id/guessButton"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/timerView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/rectangle_light_red"
+            android:text="1"
+            android:textAppearance="@style/text_medium" />
+
+        <TextView
+            android:id="@+id/guessCharadeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/makeGuess"
+            android:textAppearance="@style/text_medium" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/editAnswerCharade"
-        android:layout_alignBottom="@+id/editAnswerCharade"
-        android:layout_alignRight="@+id/streamedVideoSurface"
-        android:layout_margin="8dp"
-        android:background="@drawable/rectangle_light_green"
-        android:drawableLeft="@drawable/play"
-        android:onClick="onClickGuess" />
+        android:layout_below="@+id/titleContainer"
+        android:background="@drawable/rectangle_light_red"
+        android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/possibleLetters"
-        android:layout_width="wrap_content"
+        <VideoView
+            android:id="@+id/streamedVideoSurface"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/streamedVideoSurface"
-        android:layout_centerHorizontal="true"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
+        android:layout_below="@+id/videoContainer"
+        android:orientation="vertical" >
 
-    <VideoView
-        android:id="@+id/streamedVideoSurface"
-        android:layout_width="wrap_content"
-        android:layout_height="330dp"
-        android:layout_below="@+id/timerView"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="4dp" />
+        <TextView
+            android:id="@+id/possibleLetters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/timerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/guessCharadeText"
-        android:layout_centerHorizontal="true"
-        android:text="TIMER"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/editAnswerCharade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/possibleLetters"
-        android:layout_below="@+id/possibleLetters"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:lines="1"
-        android:singleLine="true"
-        android:textColorHint="@android:color/background_light" >
+            <Button
+                android:id="@+id/guessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_light_green"
+                android:drawableLeft="@drawable/play"
+                android:onClick="onClickGuess" />
 
-        <requestFocus />
-    </EditText>
+            <EditText
+                android:id="@+id/editAnswerCharade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColorHint="@android:color/background_light" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
