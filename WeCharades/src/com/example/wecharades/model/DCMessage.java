@@ -11,11 +11,11 @@ import com.example.wecharades.views.IMessage;
  */
 public class DCMessage implements IMessage{
 	public static final int 
-		UNDEFINED			= 0
-		, MESSAGE 			= 10
-		, ERROR				= 20
-		, DATABASE_GAMES 	= 30
-		, INVITATIONS 		= 40;
+		UNDEFINED				= 0
+		, MESSAGE 				= 10
+		, ERROR					= 20
+		, DATABASE_GAMES 		= 30
+		, INVITATIONS		= 40;
 	
 	int message;
 	Object data;
@@ -31,7 +31,7 @@ public class DCMessage implements IMessage{
 							)
 						||	((ArrayList) data).isEmpty()
 						)//if
-						{this.message = DATABASE_GAMES; break;}
+						{this.message = message; break;}
 		case(40)	: if(data instanceof ArrayList 
 						&& (
 								!((ArrayList) data).isEmpty() 
@@ -39,7 +39,7 @@ public class DCMessage implements IMessage{
 							)
 						||	((ArrayList) data).isEmpty()
 						)//if
-						{this.message = INVITATIONS; break;};
+						{this.message = message; break;};
 		default		: this.message = UNDEFINED; break;
 		}
 		this.data = data;

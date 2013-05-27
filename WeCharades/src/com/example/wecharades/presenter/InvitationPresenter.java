@@ -1,5 +1,6 @@
 package com.example.wecharades.presenter;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
@@ -29,6 +30,7 @@ public class InvitationPresenter extends Presenter {
 	}
 
 	public void update() {
+		//TODO we should show a spinner here!
 		dc.getInvitations();
 	}
 
@@ -50,7 +52,18 @@ public class InvitationPresenter extends Presenter {
 		if(obj != null && obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.INVITATIONS){
-				setAdapter((List<Invitation>) dcm.getData(), dc.getSentInvitations());
+				List<Invitation> invList = (List<Invitation>) dcm.getData();
+				LinkedList<Invitation> sentList = new LinkedList<Invitation>();
+				LinkedList<Invitation> receivedList = new LinkedList<Invitation>();
+				for(Invitation inv : invList){
+					if(inv.getInviter().equals(dc.getCurrentPlayer())){
+						sentList.add(inv);
+					} else{
+						receivedList.add(inv);
+					}
+				}
+				setAdapter(receivedList, sentList);
+				//TODO we should stop the spinner here!
 			}
 		}
 	}
@@ -65,7 +78,6 @@ public class InvitationPresenter extends Presenter {
 			adapter.addSection("Received invitations", new InvitationAdapter(activity, receivedList, dc.getCurrentPlayer()));
 		if(!sentList.isEmpty())
 			adapter.addSection("Sent invitations", new InvitationAdapter(activity, sentList, dc.getCurrentPlayer()));
-		
 		view.setAdapter(adapter);
 	}
 	

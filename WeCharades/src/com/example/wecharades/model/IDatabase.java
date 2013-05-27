@@ -143,16 +143,14 @@ public interface IDatabase{
 	 * @param inv - an invitation to delete
 	 * @throws DatabaseException
 	 */
-	public abstract void removeInvitation(Invitation inv)
-			throws DatabaseException;
+	public abstract void removeInvitation(Invitation inv);
 
 	/**
 	 * Removes the entire collection of Invites from the database
 	 * @param inv - a collection of invitations
 	 * @throws DatabaseException
 	 */
-	public abstract void removeInvitations(Collection<Invitation> inv)
-			throws DatabaseException;
+	public abstract void removeInvitations(Collection<Invitation> inv);
 
 	/**
 	 * A method to register a user
