@@ -1,3 +1,4 @@
+
 package com.example.wecharades.presenter;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
@@ -29,9 +31,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
+import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 
 public class GuessCharadePresenter extends Presenter {
@@ -79,6 +83,7 @@ public class GuessCharadePresenter extends Presenter {
 			public void onFinish() {
 				activity.gameState = GuessCharadeActivity.GAME_FINISHED;
 				videoView.stopPlayback();
+				timerView.setText("Time is up!");
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
@@ -107,7 +112,7 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onPrepared(MediaPlayer mp) {
-					mp.setLooping(true);		
+					mp.setLooping(true);           
 				}
 			});
 			videoView.setVideoPath(SAVE_PATH);
@@ -123,10 +128,10 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	private String shuffleWord(){
 		currentWord = turn.getWord(); //TODO: Replace
-		String alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+		String alphabet = "abcdefghijklmnopqrstuvwxyzŒŠš";
 		alphabet = shuffle(alphabet);
 		alphabet = alphabet.substring(alphabet.length() - randomNumber(7,4));
-		String guessWord = currentWord + alphabet;	
+		String guessWord = currentWord + alphabet;     
 		guessWord = shuffle(guessWord);
 		return guessWord;
 	}
@@ -155,8 +160,7 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	private int randomNumber(int high, int low){
 		Random r = new Random();
-		int number = r.nextInt(high-low) + low;
-		return number;
+		return (r.nextInt(high-low) + low);
 	}
 	/**
 	 * Checks if the users word matches the current word.
@@ -166,8 +170,12 @@ public class GuessCharadePresenter extends Presenter {
 	public boolean checkRightWord(EditText answerWord){
 		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
 	}
+	public Game getExtra(){
+		return dc.getGame(turn.getGameId());
+	}//TODO: Oklar metod?
+
 	/**
-	 * 
+	 *
 	 * @author Adam
 	 *
 	 */
@@ -182,6 +190,13 @@ public class GuessCharadePresenter extends Presenter {
 			SAVE_PATH = path;
 		}
 
+		private void setReadable(File file){
+			if (file.exists()) {
+				// Set to Readable and MODE_WORLD_READABLE
+				file.setReadable(true,false);
+			}
+		}
+
 		@Override
 		protected void onPreExecute(){
 			downloadState = NO_DOWNLOAD;
@@ -191,11 +206,31 @@ public class GuessCharadePresenter extends Presenter {
 			mDialog.setCancelable(false);
 			mDialog.setCanceledOnTouchOutside(false);
 			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-				
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					
+					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+					builder.setTitle("Downloading Charade")
+					.setMessage("Download canceled!")
+					.setCancelable(false)
+					.setPositiveButton("Go back and download later", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+							activity.finish();
+
+						}
+					})
+					.setNegativeButton("Download now", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+							new DownloadVideo(mContext,SAVE_PATH).execute();
+
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
+
 				}
 			});
 			mDialog.show();
@@ -220,8 +255,7 @@ public class GuessCharadePresenter extends Presenter {
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");
-						//con.deleteFile(turn.getVideoLink());
-					}						
+					}                                              
 					con.logout();
 					con.disconnect();
 				}
@@ -250,7 +284,7 @@ public class GuessCharadePresenter extends Presenter {
 				Log.v("download result just exception","failed " + e.getMessage());
 				cancel(true);
 			}
-			return null;	
+			return null;   
 		}
 
 		@Override
@@ -265,6 +299,7 @@ public class GuessCharadePresenter extends Presenter {
 				playVideo();
 			}
 		}
+
 		@Override
 		protected void onCancelled(Boolean result){
 			if(mDialog.isShowing()){
@@ -273,18 +308,25 @@ public class GuessCharadePresenter extends Presenter {
 				builder.setTitle("Downloading Charade")
 				.setMessage("Download failed, try again!")
 				.setCancelable(false)
-				.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+				.setPositiveButton("Go back and retry later", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
+						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
+						intent.putExtra(Database.TURN, turn);
+						activity.startActivity(intent);
+						activity.finish();
+
+					}
+				})
+				.setNegativeButton("Retry now", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+						new DownloadVideo(mContext,SAVE_PATH);
 					}
 				});
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
 		}
-	}
-	
-	public Game getExtra(){
-		return dc.getGame(turn.getGameId());
 	}
 }

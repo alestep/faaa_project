@@ -98,6 +98,7 @@ public class ResetPresenter extends Presenter {
 				final Dialog dialog = new Dialog(activity);
 				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 				dialog.setContentView(R.layout.dialog_success);
+				dialog.setCanceledOnTouchOutside(false);
 				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
 				TextView successText = (TextView) dialog.findViewById(R.id.successText);
