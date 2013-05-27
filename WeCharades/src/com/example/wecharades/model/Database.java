@@ -358,6 +358,7 @@ public class Database extends Observable implements IDatabase {
 					//Updates the game on the server with the latest info
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
 					object.put(GAME_TURN, game.getTurnNumber());
+					object.put(GAME_FINISH, game.isFinished());
 					object.saveInBackground();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
