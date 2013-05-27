@@ -16,6 +16,7 @@ import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.util.Log;
 
 import com.example.wecharades.presenter.StartPresenter;
+import com.example.wecharades.views.StartActivity;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -23,6 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -757,6 +759,16 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void logOut(){
 		ParseUser.logOut();
+	}
+	@Override
+	public void removePushNotification(Context context){
+		PushService.unsubscribe(context, getCurrentPlayer().getName());
+	}
+
+	@Override
+	public void subscribetoNotification(Context context) {
+		PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
+		
 	}
 
 }

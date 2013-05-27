@@ -37,8 +37,11 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
+import com.example.wecharades.views.CaptureVideoActivity;
+import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.StartActivity;
 import com.example.wecharades.views.VideoUploadActivity;
+import com.parse.ParseException;
 import com.parse.ParsePush;
 
 public class VideoUploadPresenter extends Presenter {
@@ -121,7 +124,7 @@ public class VideoUploadPresenter extends Presenter {
 	 * Sets the storage location of the videofile for the FTP-server. 
 	 * @return
 	 */
-	private void setServerStorageLocation(){
+	private void setServerStorageLocation() {
 		String gameID = turn.getGameId();
 		String serverPath = "/APP/GAMES/" + gameID + ".mp4";
 		this.serverPath = serverPath;
@@ -134,7 +137,7 @@ public class VideoUploadPresenter extends Presenter {
 	public void reRecord(String path) {
 		File file = new File(path);
 		file.delete();
-		Intent intent = new Intent(activity.getApplicationContext(), CaptureVideo.class);
+		Intent intent = new Intent(activity.getApplicationContext(), CaptureVideoActivity.class);
 		intent.putExtra(Database.TURN, turn);
 		activity.startActivity(intent);
 		activity.finish();	
@@ -150,7 +153,11 @@ public class VideoUploadPresenter extends Presenter {
 		ParsePush push = new ParsePush();
 		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
-		push.sendInBackground();
+		try {
+			push.send();
+		} catch (ParseException e) {
+			push.sendInBackground();
+		}
 	}
 
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
@@ -181,6 +188,17 @@ public class VideoUploadPresenter extends Presenter {
 			progressText.setText("Please wait");
 			
 			dialog.show();
+			Button cancelButton = (Button) dialog.findViewById(R.id.ok);
+			cancelButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					cancel(true);
+					
+				}
+				
+			});
+			
 
 		}
 
@@ -194,8 +212,7 @@ public class VideoUploadPresenter extends Presenter {
 
 				if (ftp.login("mklcompetencia.se", "ypkq4w")){
 					ftp.enterLocalPassiveMode();
-					ftp.setFileType(FTP.BINARY_FILE_TYPE);					
-					//ftpCreateDirectoryTree(ftp, serverPath);				
+					ftp.setFileType(FTP.BINARY_FILE_TYPE);									
 					FileInputStream in = new FileInputStream(new File(SAVE_PATH));
 					boolean result = ftp.storeFile(serverPath, in);					
 					in.close();
@@ -207,23 +224,47 @@ public class VideoUploadPresenter extends Presenter {
 			}
 			catch (SocketException e){
 				Log.v("download result", e.getMessage());
+				cancel(true);
 			}
 			catch (UnknownHostException e){
 				Log.v("download result", e.getMessage());
+				cancel(true);
 			}
 			catch (FTPConnectionClosedException e){
 				Log.v("download result", e.getMessage());
+				cancel(true);
 			}
 			catch (CopyStreamException e){
 				Log.v("download result", e.getMessage());
+				cancel(true);
 			}
 			catch (IOException e){
 				Log.v("download result", e.getMessage());
+				cancel(true);
 			}
 			catch (Exception e){
 				Log.v("download result","failed " + e.getMessage());
+				cancel(true);
 			}
 			return null;
+		}
+
+		@Override
+		protected void onCancelled(Boolean result) {
+			if(dialog.isShowing()){
+				dialog.dismiss();
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle("Uploading Charade")
+				.setMessage("Upload failed, try again!")
+				.setCancelable(false)
+				.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+			}
 		}
 
 		@Override

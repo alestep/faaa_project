@@ -192,7 +192,7 @@ public class GuessCharadePresenter extends Presenter {
 
 		private void setReadable(File file){
 			if (file.exists()) {
-				// Set to Readable and MODE_WORLD_READABLE
+				System.out.println("in SetReadAble");
 				file.setReadable(true,false);
 			}
 		}
@@ -225,7 +225,6 @@ public class GuessCharadePresenter extends Presenter {
 						public void onClick(DialogInterface dialog, int id) {
 							dialog.cancel();
 							new DownloadVideo(mContext,SAVE_PATH).execute();
-
 						}
 					});
 					AlertDialog alert = builder.create();
@@ -247,15 +246,14 @@ public class GuessCharadePresenter extends Presenter {
 					con.enterLocalPassiveMode(); // important!
 					System.out.println(turn.getVideoLink());
 					con.setFileType(FTP.BINARY_FILE_TYPE);
-					System.out.println(SAVE_PATH);
-					System.out.println(SAVE_PATHTWO);
-					System.out.println(SAVE_PATHTWO.toString());
-					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
+					File file = new File(SAVE_PATH);
+					OutputStream out = new FileOutputStream(file);
 					result = con.retrieveFile(turn.getVideoLink(), out);
 					out.close();
 					if (result) {
 						Log.v("download result", "succeeded");
-					}                                              
+						setReadable(file);
+					}						
 					con.logout();
 					con.disconnect();
 				}
@@ -311,9 +309,9 @@ public class GuessCharadePresenter extends Presenter {
 				.setPositiveButton("Go back and retry later", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
-						intent.putExtra(Database.TURN, turn);
-						activity.startActivity(intent);
+//						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
+//						intent.putExtra(Database.TURN, turn);
+//						activity.startActivity(intent);
 						activity.finish();
 
 					}
@@ -321,7 +319,8 @@ public class GuessCharadePresenter extends Presenter {
 				.setNegativeButton("Retry now", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-						new DownloadVideo(mContext,SAVE_PATH);
+						new DownloadVideo(mContext,SAVE_PATH).execute();
+
 					}
 				});
 				AlertDialog alert = builder.create();

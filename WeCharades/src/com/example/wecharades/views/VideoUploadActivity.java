@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.presenter.CaptureVideo;
 import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
@@ -35,7 +34,7 @@ public class VideoUploadActivity extends GenericActivity{
 		setContentView(R.layout.showvideo);
 		presenter = (VideoUploadPresenter) super.getPresenter();
 		videoView = (VideoView) findViewById(R.id.satisfiedVideoView);
-		path = getPathFromURI(CaptureVideo.uriVideo);	
+		path = getPathFromURI(CaptureVideoActivity.uriVideo);	
 	}
 	
 	@Override
