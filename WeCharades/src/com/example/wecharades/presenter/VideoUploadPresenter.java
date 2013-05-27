@@ -112,7 +112,7 @@ public class VideoUploadPresenter extends Presenter {
 	 * Sets the storage location of the videofile for the FTP-server. 
 	 * @return
 	 */
-	private void setServerStorageLocation(){
+	private void setServerStorageLocation() {
 		String gameID = turn.getGameId();
 		String serverPath = "/APP/GAMES/" + gameID + ".mp4";
 		this.serverPath = serverPath;
