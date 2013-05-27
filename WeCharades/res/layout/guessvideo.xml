@@ -21,20 +21,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
-                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:text="LETTERS"
                 android:textAppearance="@style/text_large"
-                android:typeface="monospace" />
+                android:typeface="monospace"
+                android:layout_marginBottom="10dp" />
 
             <EditText
                 android:id="@+id/editAnswerCharade"
                 style="@style/edit_text_style"
-                android:background="@drawable/rectangle_light_grey"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/possibleLetters"
+                android:layout_toLeftOf="@+id/guessButton"
+                android:background="@drawable/rectangle_light_grey"
                 android:drawableRight="@drawable/guess"
                 android:ems="10"
                 android:hint="@string/makeGuess" >
@@ -50,8 +52,8 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
                 android:gravity="center"
-                android:layout_marginBottom="5dp"
                 android:text="1"
+                android:layout_marginBottom="10dp"
                 android:textSize="20dp" />
 
             <Button
