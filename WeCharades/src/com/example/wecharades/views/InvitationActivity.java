@@ -19,9 +19,9 @@ public class InvitationActivity extends GenericActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState, new InvitationPresenter(this));
-		
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        
         setContentView(R.layout.list_screen);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
         

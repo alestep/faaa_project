@@ -3,7 +3,7 @@
     android:layout_width="300dp"
     android:layout_height="170dp" 
     android:orientation="vertical"
-    android:background="@drawable/success_dialog"
+    android:background="@drawable/dialog_success"
     android:padding="10dp">
 
     <TextView

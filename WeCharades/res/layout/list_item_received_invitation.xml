@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
     android:dividerHeight="0dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp" >
 
     <TextView
         android:id="@+id/inviter"
@@ -19,8 +20,8 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="0.4"
-        android:orientation="horizontal"
-        android:gravity="right" >
+        android:gravity="right"
+        android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/accept"
@@ -28,15 +29,15 @@
             android:layout_width="50dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/button_custom_accept"
-            android:src="@drawable/navigation_accept"/>
+            android:src="@drawable/navigation_accept" />
 
         <ImageButton
             android:id="@+id/reject"
             style="@style/button_style"
+            android:layout_width="50dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/button_custom_reject"
-            android:src="@drawable/navigation_cancel"
-            android:layout_width="50dp" />
+            android:src="@drawable/navigation_cancel" />
     </LinearLayout>
 
 </LinearLayout>

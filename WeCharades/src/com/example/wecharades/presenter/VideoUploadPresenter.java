@@ -14,17 +14,26 @@ import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
@@ -146,32 +155,33 @@ public class VideoUploadPresenter extends Presenter {
 
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
 
-		private ProgressDialog mDialog;
+		private Dialog dialog;
 		Context mContext;
 		private String SAVE_PATH;
 
 		public UploadVideo(Context context, String path){
 			mContext = context;
 			SAVE_PATH = path;
-			mDialog = new ProgressDialog(mContext);
+			dialog = new Dialog(mContext);
 		}
 
 		@Override
 		protected void onPreExecute(){
-			mDialog.setTitle("Uploading Charade");
-			mDialog.setMessage("Please Wait");
-			mDialog.setCancelable(false);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+			
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.setContentView(R.layout.dialog_progress);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
+			TextView progressTitle = (TextView) dialog.findViewById(R.id.progressTitle);
+			progressTitle.setText("Uploading");
+			
+			TextView progressText = (TextView) dialog.findViewById(R.id.progressText);
+			progressText.setText("Please wait");
+			
+			dialog.show();
 
-				}
-			});
-
-			mDialog.show();
 		}
 
 		@Override
@@ -218,8 +228,8 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(mDialog.isShowing()){
-				mDialog.dismiss();
+			if(dialog.isShowing()){
+				dialog.dismiss();
 				turn.setVideoLink(serverPath);
 				turn.setState(Turn.VIDEO);
 				updateModel();

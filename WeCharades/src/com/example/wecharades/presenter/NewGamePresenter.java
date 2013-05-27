@@ -25,6 +25,7 @@ public class NewGamePresenter extends Presenter {
 		
 		final Dialog dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.setContentView(R.layout.dialog_success);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
