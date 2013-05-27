@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
-import com.example.wecharades.views.CaptureVideoActivity;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 import com.example.wecharades.views.ShowCharadeWordActivity;

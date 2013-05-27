@@ -1,6 +1,5 @@
 package com.example.wecharades.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.wecharades.views.IMessage;

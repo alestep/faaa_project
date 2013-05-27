@@ -10,10 +10,8 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.SearchPlayerActivity;
-import com.example.wecharades.views.StartActivity;
 import com.parse.ParseException;
 import com.parse.ParsePush;
-import com.parse.PushService;
 
 public class SearchPlayerPresenter extends Presenter {
 	
