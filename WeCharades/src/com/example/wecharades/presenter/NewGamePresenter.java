@@ -22,9 +22,7 @@ public class NewGamePresenter extends Presenter {
 
 	public void randomInvitation() {
 		dc.putInRandomQueue();
-			
 		activity.showToast("Invitation sent");
-		
 	}
 
 }
