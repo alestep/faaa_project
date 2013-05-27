@@ -1,4 +1,4 @@
-package com.example.wecharades.presenter;
+package com.example.wecharades.views;
 
 import java.util.List;
 
@@ -13,13 +13,12 @@ import android.widget.Toast;
 
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
-import com.example.wecharades.views.VideoUploadActivity;
 /**
  * 
  * @author Adam Lewestam
  *Fix isIntentAvailable Method
  */
-public class CaptureVideo extends Activity {
+public class CaptureVideoActivity extends Activity {
 
 	final static int REQUEST_VIDEO_CAPTURED = 1;
 	public static Uri uriVideo = null;
@@ -48,7 +47,7 @@ public class CaptureVideo extends Activity {
 			if(requestCode == REQUEST_VIDEO_CAPTURED){
 				uriVideo = data.getData();
 				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
-				Intent intentShowVideo = new Intent(CaptureVideo.this, VideoUploadActivity.class);
+				Intent intentShowVideo = new Intent(CaptureVideoActivity.this, VideoUploadActivity.class);
 				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
 				finishActivity(REQUEST_VIDEO_CAPTURED);
@@ -58,7 +57,7 @@ public class CaptureVideo extends Activity {
 		}
 		else if(resultCode == RESULT_CANCELED){
 			uriVideo = null;
-			Toast.makeText(CaptureVideo.this,"Canceled!",Toast.LENGTH_LONG).show();
+			Toast.makeText(CaptureVideoActivity.this,"Canceled!",Toast.LENGTH_LONG).show();
 			finish();
 		}
 	}

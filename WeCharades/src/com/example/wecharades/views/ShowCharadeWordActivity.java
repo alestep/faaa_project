@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Turn;
-import com.example.wecharades.presenter.CaptureVideo;
 import com.example.wecharades.presenter.SimplePresenter;
 
 public class ShowCharadeWordActivity extends GenericActivity {
@@ -28,9 +27,10 @@ public class ShowCharadeWordActivity extends GenericActivity {
 	
 	public void onClickRecord(View v) {
 		//Go to CaptureVideo
-		Intent intent = new Intent (this, CaptureVideo.class);
+		Intent intent = new Intent (this, CaptureVideoActivity.class);
 		intent.putExtra("Turn", turn);
 		startActivity(intent);
+		finish();
 	}
 	
 	@Override

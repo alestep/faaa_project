@@ -54,6 +54,7 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 
 		if (sentInvitations.contains(s)) {
 			play.setEnabled(false);
+			play.setClickable(false);
 			play.setText("Sent");
 
 		}
