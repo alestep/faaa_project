@@ -255,6 +255,10 @@ public class DataController extends Observable implements Observer{
 			if(localGame == null){
 				m.putGame(dbGame.getKey());
 				m.putTurns(dbGame.getValue());
+				if(dbGame.getKey().isFinished()){
+					db.removeGame(dbGame.getKey());
+					removeVideofromServer(dbGame.getKey());
+				}
 			} else if(localGame.aheadOf(dbGame.getKey())){
 				//This is also done in updateTurn, but for safety even here. Also updates ALL turns.
 				db.updateGame(localGame);
@@ -265,7 +269,7 @@ public class DataController extends Observable implements Observer{
 				m.putTurns(dbGame.getValue());
 				if(dbGame.getKey().isFinished()){
 					db.removeGame(dbGame.getKey());
-					removeVideofromServer(localGame);
+					removeVideofromServer(dbGame.getKey());
 				}
 			} else{
 				Player p1 = localGame.getCurrentPlayer();

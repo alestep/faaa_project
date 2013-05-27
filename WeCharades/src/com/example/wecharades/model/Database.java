@@ -111,18 +111,6 @@ public class Database extends Observable implements IDatabase {
 	 * A query to check if a game between two players already exist
 	 */
 	private void checkExistingGame(final Player player1, final Player player2){
-		//Find games containing the two players
-		/*LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
-		ParseQuery gameQuery = new ParseQuery(GAME);
-		gameQuery.whereEqualTo(GAME_PLAYER_1, player1.getParseId());
-		gameQuery.whereEqualTo(GAME_PLAYER_2, player2.getParseId());
-		ql.add(gameQuery);
-		ParseQuery gameQueryReverse = new ParseQuery(GAME);
-		gameQuery.whereEqualTo(GAME_PLAYER_1, player2.getParseId());
-		gameQuery.whereEqualTo(GAME_PLAYER_2, player1.getParseId());
-		ql.add(gameQueryReverse);
-		//Construct an OR query
-		ParseQuery mainQuery = ParseQuery.or(ql);*/
 		ArrayList<String> idList = new ArrayList<String>();
 		idList.add(player1.getParseId()); idList.add(player2.getParseId());
 		ParseQuery mainQuery = new ParseQuery(GAME);
@@ -208,8 +196,8 @@ public class Database extends Observable implements IDatabase {
 			public void done(ParseObject game, ParseException e){
 				if(e == null){
 					try{
-					removeTurns(game);
-					game.delete();
+						removeTurns(game);
+						game.delete();
 					} catch(ParseException e2){
 						sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 					}
