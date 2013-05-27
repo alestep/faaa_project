@@ -112,7 +112,7 @@ public class Database extends Observable implements IDatabase {
 	 */
 	private void checkExistingGame(final Player player1, final Player player2){
 		//Find games containing the two players
-		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
+		/*LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
 		ParseQuery gameQuery = new ParseQuery(GAME);
 		gameQuery.whereEqualTo(GAME_PLAYER_1, player1.getParseId());
 		gameQuery.whereEqualTo(GAME_PLAYER_2, player2.getParseId());
@@ -122,11 +122,26 @@ public class Database extends Observable implements IDatabase {
 		gameQuery.whereEqualTo(GAME_PLAYER_2, player1.getParseId());
 		ql.add(gameQueryReverse);
 		//Construct an OR query
-		ParseQuery mainQuery = ParseQuery.or(ql);
+		ParseQuery mainQuery = ParseQuery.or(ql);*/
+		ArrayList<String> idList = new ArrayList<String>();
+		idList.add(player1.getParseId()); idList.add(player2.getParseId());
+		ParseQuery mainQuery = new ParseQuery(GAME);
+		mainQuery.whereContainedIn(GAME_PLAYER_1, idList);
 		mainQuery.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> obj, ParseException e){
 				if(e == null){
 					//If a game doesn't exist, we can continue
+					List<ParseObject> actualList = new LinkedList<ParseObject>();
+					for(ParseObject o : obj){
+						if( (o.getString(GAME_PLAYER_1).equals(player1.getParseId())
+								&& o.getString(GAME_PLAYER_2).equals(player2.getParseId()))
+							||
+							(o.getString(GAME_PLAYER_1).equals(player2.getParseId())
+									&& o.getString(GAME_PLAYER_2).equals(player1.getParseId()))
+								){
+							actualList.add(o);
+						}
+					}
 					if(obj.isEmpty()){
 						createGameInBackground(player1, player2);
 					}

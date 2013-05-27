@@ -206,11 +206,9 @@ public class Model implements Serializable{
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			} else if(listOfTurns.contains(turn)){
-				Log.d("Turn deleted", "Turnnumber: "+Integer.toString(turn.getTurnNumber())+" || RecPlayer: "+turn.getRecPlayer());
 				listOfTurns.remove(turn);
 			}
 			listOfTurns.add(turn);
-			Log.d("Turn added", "Turnnumber: "+Integer.toString(turn.getTurnNumber())+" || RecPlayer: "+turn.getRecPlayer());
 		}
 		SAVED = false;
 	}

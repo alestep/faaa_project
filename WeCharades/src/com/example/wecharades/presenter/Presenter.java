@@ -1,21 +1,21 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 
@@ -31,6 +31,12 @@ public abstract class Presenter implements Observer{
 	public Presenter(GenericActivity activity) {
 		this.activity = activity;
 		this.dc = DataController.getDataController(activity);
+		try {
+			dc.createGame(dc.getCurrentPlayer(), dc.getGames().get(0).getPlayer1());
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		dc.addObserver(this);
 	}
 
