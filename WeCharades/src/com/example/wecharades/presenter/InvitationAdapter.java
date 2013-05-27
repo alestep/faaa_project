@@ -13,55 +13,79 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.views.InvitationActivity;
 
 public class InvitationAdapter extends ArrayAdapter<Invitation> {
-	private LayoutInflater li;
-	private List<Invitation> invites;
+	private List<Invitation> invitations;
 	private InvitationActivity activity;
-	
-	public InvitationAdapter(InvitationActivity activity, List<Invitation> invites) {
-		super(activity, 0, invites);
-		this.invites = invites;
+	private Player player;
+
+	public InvitationAdapter(InvitationActivity activity, List<Invitation> invitations, Player player) {
+		super(activity, 0, invitations);
+		this.invitations = invitations;
 		this.activity = activity;
-		li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.player = player;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
 		View v = convertView;
-
-		final Invitation invitation = invites.get(position);
+		LayoutInflater li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		final Invitation invitation = invitations.get(position);
 		if (invitation != null) {
-				v = li.inflate(R.layout.received_invite_item, null);
+			if(invitation.getInvitee().equals(player)){
+				v = li.inflate(R.layout.list_item_received_invitation, null);
 				final TextView invitor = (TextView) v.findViewById(R.id.inviter);
 				if (invitor != null)
 					invitor.setText(invitation.getInviter().getName());
-			}
-			
-			final ImageButton accept = (ImageButton) v.findViewById(R.id.accept);
-			final ImageButton reject = (ImageButton) v.findViewById(R.id.reject);
-			
-			accept.setOnClickListener(new OnClickListener(){ 
-				@Override
-				public void onClick(View v){
-					accept.setEnabled(false);
-					reject.setEnabled(false);
-					activity.setInvitation(invitation, true);	
-				}
-			});
-			
-			reject.setOnClickListener(new OnClickListener(){ 
-				@Override
-				public void onClick(View v){
-					accept.setEnabled(false);
-					reject.setEnabled(false);
-					activity.setInvitation(invitation, false);	
-				}
-			});
 				
+				final ImageButton accept = (ImageButton) v.findViewById(R.id.accept);
+				final ImageButton reject = (ImageButton) v.findViewById(R.id.reject);
+				
+				accept.setOnClickListener(new OnClickListener(){ 
+					@Override
+					public void onClick(View v){
+						accept.setEnabled(false);
+						reject.setEnabled(false);
+						activity.setInvitation(invitation, true);	
+					}
+				});
+
+				reject.setOnClickListener(new OnClickListener(){ 
+					@Override
+					public void onClick(View v){
+						accept.setEnabled(false);
+						reject.setEnabled(false);
+						activity.setInvitation(invitation, false);	
+					}
+				});
+				
+			} else {
+				v = li.inflate(R.layout.list_item_sent_invitation, null);
+				final TextView invitee = (TextView) v.findViewById(R.id.invitee);
+				if (invitee != null)
+					invitee.setText(invitation.getInvitee().getName());
+				
+				final ImageButton remove = (ImageButton) v.findViewById(R.id.remove);
+
+				remove.setOnClickListener(new OnClickListener(){ 
+					@Override
+					public void onClick(View v){
+						//Uppdatera invite-list direkt!
+					}
+				});
+				
+			}
+		}
+
+
+
+
 		return v;
 	}
-	
-	
+
+
 }

@@ -8,6 +8,10 @@
         android:left="5dp"
         android:right="5dp" />
 
-    <solid android:color="@color/DarkRed" />
+    <stroke
+        android:width="3dp"
+        android:color="@color/DarkMediumGrey" />
+
+    <solid android:color="@color/LightMediumGrey" />
 
 </shape>

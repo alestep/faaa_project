@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -63,19 +64,20 @@
         </activity>
 
         <!-- Register Activity -->
-        <activity
-            android:name=".views.RegisterActivity" >
+        <activity android:name=".views.RegisterActivity" >
         </activity>
 
         <!-- Reset Password Activity -->
-        <activity
-            android:name=".views.ResetPasswordActivity" >
+        <activity android:name=".views.ResetPasswordActivity" >
         </activity>
+
+        <!-- Show Charade Word Activity -->
+        <activity android:name=".views.ShowCharadeWordActivity" />
 
         <!-- VideoUploadActivity -->
         <activity
             android:name=".views.VideoUploadActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation" />
 
         <!-- CaptureVideo Activity -->
         <activity
@@ -89,8 +91,7 @@
         </activity>
 
         <!-- GameActivity Activity -->
-        <activity
-            android:name=".views.GameActivity" >
+        <activity android:name=".views.GameActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Main" />
@@ -99,19 +100,16 @@
         <!-- GuessCharadeActivity Activity -->
         <activity
             android:name=".views.GuessCharadeActivity"
-            android:configChanges="orientation"/>
+            android:configChanges="orientation" />
 
         <!-- High Score Activity -->
-        <activity
-            android:name=".views.HighScoreActivity"/>
+        <activity android:name=".views.HighScoreActivity" />
 
         <!-- AccountActivity -->
-        <activity
-            android:name=".views.AccountActivity"/>
+        <activity android:name=".views.AccountActivity" />
 
         <!-- GameInstructionsActivity -->
-        <activity
-            android:name=".views.GameInstructionsActivity"/>
+        <activity android:name=".views.GameInstructionsActivity" />
 
         <service android:name="com.parse.PushService" />
 

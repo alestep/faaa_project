@@ -1,9 +1,11 @@
 package com.example.wecharades.views;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -29,7 +31,11 @@ public class SearchPlayerActivity extends GenericActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
+
+		
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.search_player_screen);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
 		presenter = (SearchPlayerPresenter) super.getPresenter();
 		
 		// Get reference to search box
@@ -64,6 +70,10 @@ public class SearchPlayerActivity extends GenericActivity {
 	
 	public void invite(String invitee){
 		presenter.invite(invitee);
+	}
+	
+	public void onClickHome(View v){
+		startActivity(new Intent(this, StartActivity.class));
 	}
 
 	@Override

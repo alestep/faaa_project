@@ -5,13 +5,12 @@
     android:layout_height="wrap_content"
     android:dividerHeight="0dp"
     android:gravity="center_vertical"
-    android:background="@color/LightRed"
-    android:paddingRight="?android:attr/scrollbarSize">
+    android:background="@drawable/list_item_custom">
     
     <ImageView
         android:id="@+id/list_item_entry_drawable"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/social_person"/>
     
     <RelativeLayout

@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_vertical"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_weight="0.1"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="5dp"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="@style/text_large" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0.4"
+        android:layout_marginBottom="5dp" >
+
+        <TextView
+            android:id="@+id/yourScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/rectangle_light_grey"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="5"
+            android:textColor="@color/DarkGrey"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/opponentScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/rectangle_light_grey"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="5"
+            android:textColor="@color/DarkGrey"
+            android:textSize="40sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/yourScore"
-        android:layout_below="@+id/titleText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
         android:orientation="vertical" >
 
         <!-- TODO: fix padding/margins -->
@@ -30,7 +62,7 @@
         <TableLayout
             android:id="@+id/table"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="250dp"
             android:stretchColumns="*" >
 
             <TableRow
@@ -38,17 +70,25 @@
                 android:gravity="center" >
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/yourScore"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_left_top_custom"
                     android:text="1" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/opponentScore"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_right_top_custom"
                     android:text="2" />
             </TableRow>
 
@@ -58,16 +98,24 @@
 
                 <Button
                     android:id="@+id/button3"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_middle_custom"
                     android:text="3" />
 
                 <Button
                     android:id="@+id/button4"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_middle_custom"
                     android:text="4" />
             </TableRow>
 
@@ -77,39 +125,27 @@
 
                 <Button
                     android:id="@+id/button5"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_left_bottom_custom"
                     android:text="5" />
 
                 <Button
                     android:id="@+id/button6"
+                    style="@style/button_style"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
+                    android:background="@drawable/game_table_right_bottom_custom"
                     android:text="6" />
             </TableRow>
         </TableLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/yourScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="5dp"
-        android:text="Your score: 5 points" />
-
-    <TextView
-        android:id="@+id/opponentScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="5dp"
-        android:text="Name&apos;s score: 4 points" />
-
-</RelativeLayout>
+</LinearLayout>

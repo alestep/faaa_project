@@ -41,7 +41,7 @@ public abstract class Presenter implements Observer{
 	 * @param view
 	 * @return an ArrayList with all Views within the parameter view
 	 */
-	ArrayList<View> getAllChildren(View view) {
+	protected ArrayList<View> getAllChildren(View view) {
 
 		if (!(view instanceof ViewGroup)) {
 			ArrayList<View> viewArrayList = new ArrayList<View>();

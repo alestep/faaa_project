@@ -1,12 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:paddingTop="5dp"
+    android:background="@drawable/list_item_custom" >
 
     <Button
         android:id="@+id/play"
         style="@style/button_style"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/button_custom_search"
@@ -20,6 +21,6 @@
         android:layout_alignBaseline="@+id/play"
         android:layout_alignBottom="@+id/play"
         android:layout_alignParentLeft="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="@style/text_large" />
 
 </RelativeLayout>

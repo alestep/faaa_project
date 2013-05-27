@@ -50,7 +50,7 @@ public class StartActivity extends GenericActivity {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.list_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar); 
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start); 
 
 		// Get a reference to views
 		gameListView = (ListView) findViewById(R.id.list);

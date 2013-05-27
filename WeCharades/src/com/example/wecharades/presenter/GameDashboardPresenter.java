@@ -14,6 +14,7 @@ import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
+import com.example.wecharades.views.ShowCharadeWordActivity;
 public class GameDashboardPresenter extends Presenter {
 
 	private GameDashboardActivity activity;
@@ -96,10 +97,10 @@ public class GameDashboardPresenter extends Presenter {
 		//TODO: Fix design stuff! enabled/disabled styles for example
 		String buttonText = "";
 		if (turn.getTurnNumber() > game.getTurnNumber()) {
-			buttonText = "Locked!";
+			buttonText = "Locked";
 			button.setEnabled(false);
 		}
-		else if(turn.getState() == Turn.FINISH) {
+		else if(turn.getState() == Turn.FINISH || game.isFinished()) {
 			//Set current user's points received for the specific turn
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
@@ -107,11 +108,11 @@ public class GameDashboardPresenter extends Presenter {
 			button.setEnabled(false);
 
 		} else if (turn.getState() == Turn.INIT && turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
-			buttonText = "Record Video\n" + "Charade: " + turn.getWord();
+			buttonText = "Record video";
 			button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 		
 		} else if (turn.getState() == Turn.VIDEO && turn.getAnsPlayer().equals(dc.getCurrentPlayer())){
-				buttonText = "Guess Charade!";
+				buttonText = "Guess charade";
 				button.setOnClickListener(buttonListener(true, turn)); //the player should guess charade
 		
 		} else {
@@ -134,8 +135,8 @@ public class GameDashboardPresenter extends Presenter {
 					activity.startActivity(intent);
 				}
 				else {
-					//Go to CaptureVideo
-					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
+					//Go to ShowCharadeWordActivity
+					Intent intent = new Intent (activity.getApplicationContext(), ShowCharadeWordActivity.class);
 					intent.putExtra("Turn", turn);
 					activity.startActivity(intent);
 				}
@@ -145,6 +146,6 @@ public class GameDashboardPresenter extends Presenter {
 	}
 
 	private void generateTitle() {
-		activity.showMessage("Game between you and " + game.getOpponent(dc.getCurrentPlayer()));
+		activity.showMessage("Game with " + game.getOpponent(dc.getCurrentPlayer()));
 	}
 }

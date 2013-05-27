@@ -263,16 +263,19 @@ public class DataController extends Observable implements Observer{
 					m.putTurns(gameMap.getValue());
 				} else if(localGame.isFinished()){
 					//Removes the instance in sent invitations when game is finished
+					db.updateGame(localGame);
+					db.updateTurn(m.getTurns(localGame).get(5));
 					for(Invitation i : m.getSentInvitations()){
 						if(localGame.getPlayer1().equals(i.getInviter())){
 							m.removeSentInvitation(i);
 						}
 					}
-					if(!localGame.getCurrentPlayer().equals(getCurrentPlayer())){ 					
-						//This code deletes games and turns after they are finished!
-						//This code is only reachable for the receiving player
-						db.removeGame(localGame);
-					}
+				} else if(gameMap.getKey().isFinished()){ //If the db-game is finished
+					//This code deletes games and turns after they are finished!
+					//This code is only reachable for the receiving player
+					m.putGame(gameMap.getKey());
+					m.putTurns(gameMap.getValue());
+					db.removeGame(localGame);
 				} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
 					//If current player of a game is different, we must check the turns
 					Turn localTurn = m.getCurrentTurn(localGame);
@@ -419,8 +422,7 @@ public class DataController extends Observable implements Observer{
 		}
 		db.updateTurn(m.getCurrentTurn(game));
 		game.setLastPlayed(new Date());
-		updateGame(game);
-		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){
+		if(turn.getTurnNumber() == 6 && turn.getState() == Turn.FINISH){ //Update player stats
 			TreeMap<Player, Integer> scoreMap = getGameScore(game);
 			Player rec = turn.getRecPlayer(); 
 			Player ans = turn.getAnsPlayer(); 
@@ -441,6 +443,7 @@ public class DataController extends Observable implements Observer{
 			updatePlayer(rec);
 			updatePlayer(ans);
 		}
+		updateGame(game);
 	}
 
 
