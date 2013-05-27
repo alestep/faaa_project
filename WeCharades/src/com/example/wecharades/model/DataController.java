@@ -275,7 +275,6 @@ public class DataController extends Observable implements Observer{
 						||
 						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO)
 						){
-					Log.d("Ifcheck", "Should not enter here now");
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
 				}
