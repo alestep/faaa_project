@@ -40,12 +40,16 @@ public class GameDashboardActivity extends GenericActivity {
 	@Override
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
-		return title;
+		return null;
 	}
 	
 	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
 		yourScore.setText(Integer.toString(currentPlayersScore));
 		opponentsScore.setText(Integer.toString(otherPlayerScore));
+	}
+	
+	public void setTitle(String title) {
+		this.title.setText(title);
 	}
 
 	@Override
@@ -55,7 +59,7 @@ public class GameDashboardActivity extends GenericActivity {
 	}
 	
 	public void onClickRefresh(View v) {
-		//refresh dashboard
+		//uppdatera dashboard
 	}
 	
 	public void onClickHome(View v){
