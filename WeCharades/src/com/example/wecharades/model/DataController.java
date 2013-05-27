@@ -251,6 +251,7 @@ public class DataController extends Observable implements Observer{
 		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
 			//Fetch the local version of the game
 			localGame = m.getGame(dbGame.getKey().getGameId());
+			Log.d("Init test", m.getCurrentTurn(localGame).getRecPlayer().getParseId());
 			//If this game doesn't exist, create it
 			if(localGame == null){
 				m.putGame(dbGame.getKey());
@@ -268,11 +269,14 @@ public class DataController extends Observable implements Observer{
 					removeVideofromServer(localGame);
 				}
 			} else{
+				Player p1 = localGame.getCurrentPlayer();
+				Turn t = m.getCurrentTurn(localGame);
 				if ( //If there is a missmatch between current player and turn number/state.
-						!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.INIT)
-						|| 
-						!(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() == Turn.VIDEO)
+						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
+						||
+						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO)
 						){
+					Log.d("Ifcheck", "Should not enter here now");
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
 				}

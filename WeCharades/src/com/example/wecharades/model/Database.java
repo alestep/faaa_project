@@ -298,14 +298,11 @@ public class Database extends Observable implements IDatabase {
 					if(e == null){
 						if(!resultList.isEmpty()){
 							try{
-								ArrayList<Game> games = new ArrayList<Game>();
-								for(ParseObject obj : gameList){
-									games.add(dbc.parseGame(obj)); //TODO This should be fixed later
-								}
-								//First, we create a TreeMap with the games, and an index for reference:
 								TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
 								TreeMap<String, Game> idList = new TreeMap<String, Game>();
-								for(Game game : games){
+								Game game;
+								for(ParseObject obj : gameList){
+									game = dbc.parseGame(obj);
 									map.put(game, new ArrayList<Turn>());
 									idList.put(game.getGameId(), game);
 								}
