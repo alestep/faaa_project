@@ -135,9 +135,9 @@ public class Database extends Observable implements IDatabase {
 					for(ParseObject o : obj){
 						if( (o.getString(GAME_PLAYER_1).equals(player1.getParseId())
 								&& o.getString(GAME_PLAYER_2).equals(player2.getParseId()))
-							||
-							(o.getString(GAME_PLAYER_1).equals(player2.getParseId())
-									&& o.getString(GAME_PLAYER_2).equals(player1.getParseId()))
+								||
+								(o.getString(GAME_PLAYER_1).equals(player2.getParseId())
+										&& o.getString(GAME_PLAYER_2).equals(player1.getParseId()))
 								){
 							actualList.add(o);
 						}
@@ -207,8 +207,12 @@ public class Database extends Observable implements IDatabase {
 		query.getInBackground(game.getGameId(), new GetCallback(){
 			public void done(ParseObject game, ParseException e){
 				if(e == null){
+					try{
 					removeTurns(game);
-					game.deleteInBackground();
+					game.delete();
+					} catch(ParseException e2){
+						sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
+					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
@@ -218,20 +222,13 @@ public class Database extends Observable implements IDatabase {
 	/*
 	 * Helper method to removeTurns - called when the game has been fetched from the db.
 	 */
-	private void removeTurns(ParseObject game){
+	private void removeTurns(ParseObject game) throws ParseException{
 		ParseQuery turnQuery = new ParseQuery(TURN);
 		turnQuery.whereEqualTo(TURN_GAME, game);
-		turnQuery.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> list, ParseException e){
-				if(e == null){
-					for(ParseObject turn : list){
-						turn.deleteInBackground();
-					}
-				} else{
-					sendError(new DatabaseException(e.getCode(), e.getMessage()));
-				}
-			}
-		});
+		List<ParseObject> list = turnQuery.find();
+		for(ParseObject turn : list){
+			turn.delete();
+		}
 	}
 
 	/* (non-Javadoc)
