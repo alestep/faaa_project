@@ -63,9 +63,10 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 
 			@Override
 			public void onClick(View v){
-				play.setEnabled(false);		
-				activity.invite(s);	
+				play.setEnabled(false);	
+				play.setClickable(false);
 				play.setText("Sent");
+				activity.invite(s);	
 	
 			}
 		}); 
