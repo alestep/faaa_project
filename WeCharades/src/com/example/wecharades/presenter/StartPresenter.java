@@ -57,24 +57,6 @@ public class StartPresenter extends Presenter implements Observer{
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 		
 	}
-//	public void notificationUpdate(){//TODO: needs revision TODO: remove from parse if deleted account?
-//		ArrayList<Game> arrayGames = dc.getGames();
-//		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(activity.getApplicationContext());
-//		List<String> list = new ArrayList<String>(setOfAllSubscriptions);
-//		Log.d("Here", "Before for loop");
-//		
-//		for(Game g : arrayGames){
-////			String gameIDcurrentPlayer = g.getGameId() + dc.getCurrentPlayer().getParseId();
-////			String gameIDopponentPlayer = g.getGameId() + g.getOpponent(dc.getCurrentPlayer()).getParseId();
-//			//String gameIDcurrentPlayer = dc.getCurrentPlayer().getName();
-//			String gameIDopponentPlayer =g.getOpponent(dc.getCurrentPlayer()).getName();
-//			//Log.d("Here", gameIDcurrentPlayer);
-//			Log.d("Here", gameIDopponentPlayer);
-//			//PushService.subscribe(activity.getApplicationContext(), gameIDcurrentPlayer, StartActivity.class);
-//			//PushService.subscribe(activity.getApplicationContext(), gameIDopponentPlayer, StartActivity.class);
-//			Log.d("DINMAMMA","s");	
-//		}
-//	}
 
 	public void setGameListView(ListView gameListView){
 		this.gameListView = gameListView;
@@ -83,7 +65,7 @@ public class StartPresenter extends Presenter implements Observer{
 	public void initiate(){
 		String currentPlayer = dc.getCurrentPlayer().getName();
 		activity.setAccountName(currentPlayer);
-		PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
+		dc.subscribetoNotification(activity.getApplicationContext());
 	}
 
 	public void update(){

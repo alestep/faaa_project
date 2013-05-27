@@ -75,7 +75,6 @@ public class LoginActivity extends GenericActivity {
 
 	@Override
 	public TextView getTextArea() {
-		// TODO Auto-generated method stub
 		return loginErrorMsg;
 	}
 

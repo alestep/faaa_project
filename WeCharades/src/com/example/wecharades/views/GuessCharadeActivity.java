@@ -128,6 +128,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+				intent.putExtra("Game",presenter.getExtra());
 				startActivity(intent);
 				finish();
 			}
@@ -161,10 +162,13 @@ public class GuessCharadeActivity extends GenericActivity  {
 		.setCancelable(true)
 		.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				turn.setRecPlayerScore(1);//TODO: what score should rec player get if answerplayer exits?
+				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
 				turn.setState(Turn.FINISH);
 				presenter.updateModel();
+				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+				intent.putExtra("Game",presenter.getExtra());
+				startActivity(intent);
 				dialog.cancel();
 				finish();
 			}

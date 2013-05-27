@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
+import com.example.wecharades.views.CaptureVideoActivity;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 public class GameDashboardPresenter extends Presenter {
@@ -135,7 +136,7 @@ public class GameDashboardPresenter extends Presenter {
 				}
 				else {
 					//Go to CaptureVideo
-					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideo.class);
+					Intent intent = new Intent (activity.getApplicationContext(), CaptureVideoActivity.class);
 					intent.putExtra("Turn", turn);
 					activity.startActivity(intent);
 				}

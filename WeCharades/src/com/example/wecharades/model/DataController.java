@@ -1,5 +1,11 @@
 package com.example.wecharades.model;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +17,20 @@ import java.util.Observer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.io.CopyStreamException;
+
+import com.example.wecharades.views.GameDashboardActivity;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 
 
 /**
@@ -96,6 +115,7 @@ public class DataController extends Observable implements Observer{
 	public void logOutPlayer(Context context){
 		m.logOutCurrentPlayer(context);
 		db.logOut();
+		db.removePushNotification(context);
 		RECREATE = true;
 	}
 
@@ -272,6 +292,7 @@ public class DataController extends Observable implements Observer{
 						//This code deletes games and turns after they are finished!
 						//This code is only reachable for the receiving player
 						db.removeGame(localGame);
+						removeVideosfromServer(localGame);
 					}
 				}
 			} else if(!localGame.getCurrentPlayer().equals(gameMap.getKey().getCurrentPlayer())){
@@ -300,6 +321,14 @@ public class DataController extends Observable implements Observer{
 
 		return m.getGames();
 	}
+	/**
+	 * Removes video on the FTP server from the finished games.
+	 */
+	private void removeVideosfromServer(Game game) {
+		RemoveVideoFromServer remove = new RemoveVideoFromServer(game.getGameId());
+		remove.execute();
+	}
+
 	/*
 	 * This part removes any games that are "to old".
 	 */
@@ -533,6 +562,74 @@ public class DataController extends Observable implements Observer{
 	 */
 	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
 		db.removeInvitation(invitaiton);
+	}
+
+	private class RemoveVideoFromServer extends AsyncTask <Void, Long, Boolean> {
+		
+		String gameId;
+				
+		public RemoveVideoFromServer(String game) {
+			this.gameId = gameId;
+		}
+
+		@Override
+		protected void onPreExecute(){
+			
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			boolean result = false;
+			FTPClient con = null;
+			try{
+				con = new FTPClient();
+				con.connect("ftp.mklcompetencia.se", 21);
+				if (con.login("mklcompetencia.se", "ypkq4w")){
+					con.enterLocalPassiveMode();
+						result = con.deleteFile(gameId);
+						if (result) {
+							Log.v("deletion on FTP", "succeeded");
+						}
+					con.logout();
+					con.disconnect();
+				}
+			}
+			catch (SocketException e){
+				Log.v("download result Socket", e.getMessage());
+				cancel(true);
+			}
+			catch (UnknownHostException e){
+				Log.v("download result Unknown", e.getMessage());
+				cancel(true);
+			}
+			catch (FTPConnectionClosedException e){
+				Log.v("download result FTP CONNECTIONCLOSED", e.getMessage());
+				cancel(true);
+			}
+			catch (CopyStreamException e){
+				Log.v("download result COPYSTREAM", e.getMessage());
+				cancel(true);
+			}
+			catch (IOException e){
+				Log.v("download result IOE", e.getMessage());
+				cancel(true);
+			}
+			catch (Exception e){
+				Log.v("download result just exception","failed " + e.getMessage());
+				cancel(true);
+			}
+			return null;	
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result){
+
+		}
+
+	}
+
+	public void subscribetoNotification(Context context) {
+		db.subscribetoNotification(context);
 	}
 
 }

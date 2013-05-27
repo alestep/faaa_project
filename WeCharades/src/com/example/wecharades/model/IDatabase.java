@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observer;
 
+import android.content.Context;
+
 import com.parse.ParseException;
 
 public interface IDatabase{
@@ -198,5 +200,10 @@ public interface IDatabase{
 	 * @throws DatabaseException
 	 */
 	public ArrayList<Player> getTopTenPlayers() throws DatabaseException;
+
+	void removePushNotification(Context context);
+
+	public void subscribetoNotification(Context context);
+
 
 }
