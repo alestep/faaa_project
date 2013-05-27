@@ -83,7 +83,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
 
-					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
+					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);
 					intent.putExtra("Game",presenter.getExtra());
 					startActivity(intent);
 					finish();

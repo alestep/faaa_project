@@ -81,7 +81,7 @@
 
         <!-- CaptureVideo Activity -->
         <activity
-            android:name="views.CaptureVideoActivity"
+            android:name=".views.CaptureVideoActivity"
             android:configChanges="orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.START_VIDEO_CAMERA" />

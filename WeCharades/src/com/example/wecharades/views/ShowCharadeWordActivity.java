@@ -27,9 +27,9 @@ public class ShowCharadeWordActivity extends GenericActivity {
 	
 	public void onClickRecord(View v) {
 		//Go to CaptureVideo
-		Intent intent = new Intent (this, CaptureVideoActivity.class);
-		intent.putExtra("Turn", turn);
-		startActivity(intent);
+		Intent i = new Intent(this, CaptureVideoActivity.class);
+		i.putExtra("Turn", turn);
+		startActivity(i);
 		finish();
 	}
 	
