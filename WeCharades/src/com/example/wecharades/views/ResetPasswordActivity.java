@@ -30,7 +30,6 @@ public class ResetPasswordActivity extends GenericActivity {
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		emailInput				= (EditText) findViewById(R.id.resetPassword);
 		resetProgress			= (ProgressBar) findViewById(R.id.progress);
-//		presenter.setProgressSpinnerInvisible(resetProgress);
 	}
 	
 	/**
