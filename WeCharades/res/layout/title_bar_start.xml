@@ -18,7 +18,7 @@
         android:layout_height="50dp"
         android:background="@drawable/title_bar_buttons"
         android:onClick="onClickInvitations"
-        android:src="@drawable/social_group" />
+        android:src="@drawable/invitation" />
 
     <ImageButton
         android:id="@+id/refresh"

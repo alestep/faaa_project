@@ -28,7 +28,7 @@
         android:layout_weight="0.5"
         android:textColor="@color/DarkGrey"
         android:background="@drawable/button_custom_grey_to_green"
-        android:drawableRight="@drawable/add"
+        android:drawableRight="@drawable/add_dark"
         android:gravity="left|center_vertical"
         android:onClick="onClickNewGame"
         android:paddingLeft="10dp"

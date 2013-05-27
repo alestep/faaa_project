@@ -22,25 +22,9 @@ public class NewGamePresenter extends Presenter {
 
 	public void randomInvitation() {
 		dc.putInRandomQueue();
+			
+		activity.showToast("Invitation sent");
 		
-		final Dialog dialog = new Dialog(activity);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setCanceledOnTouchOutside(false);
-		dialog.setContentView(R.layout.dialog_success);
-		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
-
-		TextView successText = (TextView) dialog.findViewById(R.id.successText);
-		successText.setText("Invitation has been sent");
-
-		Button ok = (Button) dialog.findViewById(R.id.ok);
-		ok.setOnClickListener(new OnClickListener() {          
-			public void onClick(View v) {
-				dialog.dismiss();
-				activity.startActivity(new Intent(activity, StartActivity.class));
-			}
-		});
-
-		dialog.show();
 	}
 
 }
