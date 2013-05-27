@@ -32,7 +32,7 @@
                 android:id="@+id/registerEmail"
                 style="@style/edit_text_style"
                 android:layout_marginBottom="5dp"
-                android:drawableRight="@drawable/content_email"
+                android:drawableRight="@drawable/email"
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress" />

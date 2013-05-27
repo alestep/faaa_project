@@ -1,12 +1,9 @@
 package com.example.wecharades.views;
 
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -19,9 +16,6 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
-import com.parse.PushService;
 
 
 /**
@@ -132,9 +126,13 @@ public class StartActivity extends GenericActivity {
 	}
 
 	public void setInvitations(int nrInvites){
-		if (nrInvites != 0) {
-			//invitations.setText("+" + nrInvites);
+		if(nrInvites>0) {
+			invitations.setImageResource(R.drawable.invitation_new);
 		}
+		else {
+			invitations.setImageResource(R.drawable.invitation);
+		}
+		
 	}
 
 	@Override

@@ -17,7 +17,7 @@
             <TextView
                 android:id="@+id/possibleLetters"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
@@ -31,7 +31,6 @@
                 android:id="@+id/editAnswerCharade"
                 style="@style/edit_text_style"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/possibleLetters"
@@ -46,8 +45,8 @@
 
             <TextView
                 android:id="@+id/timerView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/rectangle_light_red"
@@ -56,14 +55,14 @@
                 android:layout_marginBottom="10dp"
                 android:textSize="20dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/guessButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/timerView"
                 android:background="@drawable/rectangle_light_green"
-                android:drawableLeft="@drawable/play"
+                android:src="@drawable/next"
                 android:onClick="onClickGuess" />
         </RelativeLayout>
 
