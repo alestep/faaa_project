@@ -10,6 +10,7 @@
         android:background="@drawable/rectangle_light_grey"
         android:drawableRight="@drawable/ic_menu_search"
         android:ems="10"
+        android:layout_marginBottom="5dp"
         android:hint="@string/search_hint"
         android:imeActionLabel="Search"
         android:imeOptions="actionSearch" >
@@ -30,7 +31,8 @@
         android:id="@+id/result_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0dp" >
+        android:dividerHeight="0dp"
+        android:divider="@null" >
     </ListView>
     
 </LinearLayout>

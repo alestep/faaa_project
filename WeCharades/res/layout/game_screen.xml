@@ -1,76 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:text="Large Text"
-        android:textAppearance="@style/text_large" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:text="Large Text"
+            android:textAppearance="@style/text_large" />
 
         <LinearLayout
-            android:id="@+id/scoreContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/scoreContainer"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical" >
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal" >
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/points_header_box"
-                    android:text="@string/yourScore" />
+                    android:layout_weight="0.5"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/yourScore"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/points_left"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="5"
-                    android:textColor="@color/DarkGrey"
-                    android:textSize="40sp" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/points_header_box"
+                        android:text="@string/yourScore" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/yourScore"
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/points_left"
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@color/DarkGrey"
+                        android:textSize="40sp" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/points_header_box"
-                    android:text="@string/opponentScore" />
+                    android:layout_weight="0.5"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/opponentScore"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="2dp"
-                    android:background="@drawable/points_right"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="5"
-                    android:textColor="@color/DarkGrey"
-                    android:textSize="40sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="@drawable/points_header_box"
+                        android:text="@string/opponentScore" />
+
+                    <TextView
+                        android:id="@+id/opponentScore"
+                        android:layout_width="fill_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="2dp"
+                        android:background="@drawable/points_right"
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@color/DarkGrey"
+                        android:textSize="40sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -78,7 +84,7 @@
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-			android:layout_below="@+id/scoreContainer"
+            android:layout_below="@+id/scoreContainer"
             android:orientation="vertical" >
 
             <TableLayout
@@ -169,6 +175,5 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

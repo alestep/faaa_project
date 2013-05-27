@@ -29,8 +29,6 @@ public class CaptureVideoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.main);
-		//TODO Can we do like this?
 		this.turn = (Turn) getIntent().getSerializableExtra(Database.TURN);
 		dispatchTakeVideoIntent();
 	}
@@ -38,7 +36,7 @@ public class CaptureVideoActivity extends Activity {
 			intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
 			intentCamera.putExtra(android.provider.MediaStore.EXTRA_DURATION_LIMIT, 8);
 			intentCamera.putExtra(android.provider.MediaStore.EXTRA_VIDEO_QUALITY, 1);
-			intentCamera.putExtra(android.provider.MediaStore.EXTRA_SIZE_LIMIT, 10	);
+			//intentCamera.putExtra(android.provider.MediaStore.EXTRA_SIZE_LIMIT, 10);
 			startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);	
 	}
 

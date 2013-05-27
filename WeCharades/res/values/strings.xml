@@ -55,6 +55,7 @@
     <string name="yourScore">Your score</string>
     <string name="opponentScore">Opponent\'s score</string>
     <string name="makeGuess">Make a guess!</string>
+    <string name="charadeWord">Your charade word</string>
     
     <!-- Other strings -->
     <string name="action_settings">Settings</string>

@@ -582,8 +582,8 @@ public class DataController extends Observable implements Observer{
 		}
 	}
 
-	public void subscribetoNotification(Context context) {
-		db.subscribetoNotification(context);
-	}
+//	public void subscribetoNotification(Context context) {
+//		db.subscribetoNotification(context);
+//	}
 
 }
