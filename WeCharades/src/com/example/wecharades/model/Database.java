@@ -14,8 +14,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.wecharades.views.StartActivity;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -111,22 +109,25 @@ public class Database extends Observable implements IDatabase {
 	 * A query to check if a game between two players already exist
 	 */
 	private void checkExistingGame(final Player player1, final Player player2){
-		//Find games containing the two players
-		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>();
-		ParseQuery gameQuery = new ParseQuery(GAME);
-		gameQuery.whereEqualTo(GAME_PLAYER_1, player1.getParseId());
-		gameQuery.whereEqualTo(GAME_PLAYER_2, player2.getParseId());
-		ql.add(gameQuery);
-		ParseQuery gameQueryReverse = new ParseQuery(GAME);
-		gameQuery.whereEqualTo(GAME_PLAYER_1, player2.getParseId());
-		gameQuery.whereEqualTo(GAME_PLAYER_2, player1.getParseId());
-		ql.add(gameQueryReverse);
-		//Construct an OR query
-		ParseQuery mainQuery = ParseQuery.or(ql);
+		ArrayList<String> idList = new ArrayList<String>();
+		idList.add(player1.getParseId()); idList.add(player2.getParseId());
+		ParseQuery mainQuery = new ParseQuery(GAME);
+		mainQuery.whereContainedIn(GAME_PLAYER_1, idList);
 		mainQuery.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> obj, ParseException e){
 				if(e == null){
 					//If a game doesn't exist, we can continue
+					List<ParseObject> actualList = new LinkedList<ParseObject>();
+					for(ParseObject o : obj){
+						if( (o.getString(GAME_PLAYER_1).equals(player1.getParseId())
+								&& o.getString(GAME_PLAYER_2).equals(player2.getParseId()))
+								||
+								(o.getString(GAME_PLAYER_1).equals(player2.getParseId())
+										&& o.getString(GAME_PLAYER_2).equals(player1.getParseId()))
+								){
+							actualList.add(o);
+						}
+					}
 					if(obj.isEmpty()){
 						createGameInBackground(player1, player2);
 					}
@@ -192,8 +193,12 @@ public class Database extends Observable implements IDatabase {
 		query.getInBackground(game.getGameId(), new GetCallback(){
 			public void done(ParseObject game, ParseException e){
 				if(e == null){
-					removeTurns(game);
-					game.deleteInBackground();
+					try{
+						removeTurns(game);
+						game.delete();
+					} catch(ParseException e2){
+						sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
+					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
@@ -203,20 +208,13 @@ public class Database extends Observable implements IDatabase {
 	/*
 	 * Helper method to removeTurns - called when the game has been fetched from the db.
 	 */
-	private void removeTurns(ParseObject game){
+	private void removeTurns(ParseObject game) throws ParseException{
 		ParseQuery turnQuery = new ParseQuery(TURN);
 		turnQuery.whereEqualTo(TURN_GAME, game);
-		turnQuery.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> list, ParseException e){
-				if(e == null){
-					for(ParseObject turn : list){
-						turn.deleteInBackground();
-					}
-				} else{
-					sendError(new DatabaseException(e.getCode(), e.getMessage()));
-				}
-			}
-		});
+		List<ParseObject> list = turnQuery.find();
+		for(ParseObject turn : list){
+			turn.delete();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -343,6 +341,7 @@ public class Database extends Observable implements IDatabase {
 					//Updates the game on the server with the latest info
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
 					object.put(GAME_TURN, game.getTurnNumber());
+					object.put(GAME_FINISH, game.isFinished());
 					object.saveInBackground();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));

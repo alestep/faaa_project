@@ -251,11 +251,14 @@ public class DataController extends Observable implements Observer{
 		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
 			//Fetch the local version of the game
 			localGame = m.getGame(dbGame.getKey().getGameId());
-			Log.d("Init test", m.getCurrentTurn(localGame).getRecPlayer().getParseId());
 			//If this game doesn't exist, create it
 			if(localGame == null){
 				m.putGame(dbGame.getKey());
 				m.putTurns(dbGame.getValue());
+				if(dbGame.getKey().isFinished()){
+					db.removeGame(dbGame.getKey());
+					removeVideofromServer(dbGame.getKey());
+				}
 			} else if(localGame.aheadOf(dbGame.getKey())){
 				//This is also done in updateTurn, but for safety even here. Also updates ALL turns.
 				db.updateGame(localGame);
@@ -266,7 +269,7 @@ public class DataController extends Observable implements Observer{
 				m.putTurns(dbGame.getValue());
 				if(dbGame.getKey().isFinished()){
 					db.removeGame(dbGame.getKey());
-					removeVideofromServer(localGame);
+					removeVideofromServer(dbGame.getKey());
 				}
 			} else{
 				Player p1 = localGame.getCurrentPlayer();
@@ -276,7 +279,6 @@ public class DataController extends Observable implements Observer{
 						||
 						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO)
 						){
-					Log.d("Ifcheck", "Should not enter here now");
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
 				}

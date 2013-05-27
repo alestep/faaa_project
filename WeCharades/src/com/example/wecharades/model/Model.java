@@ -8,8 +8,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -206,11 +204,9 @@ public class Model implements Serializable{
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			} else if(listOfTurns.contains(turn)){
-				Log.d("Turn deleted", "Turnnumber: "+Integer.toString(turn.getTurnNumber())+" || RecPlayer: "+turn.getRecPlayer());
 				listOfTurns.remove(turn);
 			}
 			listOfTurns.add(turn);
-			Log.d("Turn added", "Turnnumber: "+Integer.toString(turn.getTurnNumber())+" || RecPlayer: "+turn.getRecPlayer());
 		}
 		SAVED = false;
 	}

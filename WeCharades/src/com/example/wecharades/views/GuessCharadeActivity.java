@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
 
@@ -46,11 +45,12 @@ public class GuessCharadeActivity extends GenericActivity  {
 		possibleLetters.setVisibility(4);
 		timerView = (TextView) findViewById(R.id.timerView);
 		timerView.setVisibility(4);
-		turn = (Turn) getIntent().getExtras().getSerializable(Database.TURN);
+		turn = (Turn) getIntent().getExtras().getSerializable("Turn");
 		
 		presenter = (GuessCharadePresenter) super.getPresenter();
+		presenter.setTurn(turn);
 		presenter.initializeTimer(timerView);
-		presenter.downloadVideo(GuessCharadeActivity.this, videoView, turn);
+		presenter.downloadVideo(GuessCharadeActivity.this, videoView);
 		
 	}
 	@Override
@@ -84,7 +84,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 				public void onClick(DialogInterface dialog,int id) {
 
 					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
-					intent.putExtra("Game",presenter.getExtra());
+					intent.putExtra("Game",presenter.getGame());
 					startActivity(intent);
 					finish();
 				}
@@ -129,7 +129,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game",presenter.getExtra());
+				intent.putExtra("Game",presenter.getGame());
 				startActivity(intent);
 				finish();
 			}
@@ -168,7 +168,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 				turn.setState(Turn.FINISH);
 				presenter.updateModel();
 				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game",presenter.getExtra());
+				intent.putExtra("Game",presenter.getGame());
 				startActivity(intent);
 				dialog.cancel();
 				finish();

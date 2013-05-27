@@ -20,7 +20,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
@@ -31,11 +30,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.example.wecharades.model.Database;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
-import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 
 public class GuessCharadePresenter extends Presenter {
@@ -59,12 +56,16 @@ public class GuessCharadePresenter extends Presenter {
 		this.activity = activity;
 
 	}
+	public void setTurn(Turn turn){
+		this.turn = turn;
+	}
 	public void updateModel(){
 		try {
 			dc.updateTurn(turn);
 		} catch (DatabaseException e) {
 			Log.e("GuessCharadePresenter", e.getMessage());
 			e.printStackTrace();
+			activity.showMessage(e.prettyPrint());
 		}
 	}
 
@@ -100,9 +101,8 @@ public class GuessCharadePresenter extends Presenter {
 	 * @param context
 	 * @param videoView
 	 */
-	public void downloadVideo(Context context, VideoView videoView, Turn turn){
+	public void downloadVideo(Context context, VideoView videoView){
 		this.videoView = videoView;
-		this.turn = turn;
 		download = new DownloadVideo(context, SAVE_PATH);
 		download.execute();
 	}
@@ -173,7 +173,7 @@ public class GuessCharadePresenter extends Presenter {
 	public boolean checkRightWord(EditText answerWord){
 		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
 	}
-	public Game getExtra(){
+	public Game getGame(){
 		return dc.getGame(turn.getGameId());
 	}//TODO: Oklar metod?
 
