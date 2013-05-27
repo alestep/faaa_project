@@ -1,6 +1,7 @@
 package com.example.wecharades.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.wecharades.views.IMessage;
 
@@ -24,20 +25,20 @@ public class DCMessage implements IMessage{
 		switch(message){
 		case(10)	: if(data instanceof String) 	{this.message = MESSAGE; break;}
 		case(20)	: if(data instanceof Exception)	{this.message = ERROR; break;}
-		case(30)	: if(data instanceof ArrayList 
+		case(30)	: if(data instanceof List 
 						&& (
-								!((ArrayList) data).isEmpty() 
-								&& ((ArrayList) data).get(0).getClass().equals(Game.class)
+								!((List) data).isEmpty() 
+								&& ((List) data).get(0).getClass().equals(Game.class)
 							)
-						||	((ArrayList) data).isEmpty()
+						||	((List) data).isEmpty()
 						)//if
 						{this.message = message; break;}
-		case(40)	: if(data instanceof ArrayList 
+		case(40)	: if(data instanceof List 
 						&& (
-								!((ArrayList) data).isEmpty() 
-								&& ((ArrayList) data).get(0).getClass().equals(Invitation.class)
+								!((List) data).isEmpty() 
+								&& ((List) data).get(0).getClass().equals(Invitation.class)
 							)
-						||	((ArrayList) data).isEmpty()
+						||	((List) data).isEmpty()
 						)//if
 						{this.message = message; break;};
 		default		: this.message = UNDEFINED; break;

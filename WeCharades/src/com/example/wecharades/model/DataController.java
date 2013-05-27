@@ -274,11 +274,11 @@ public class DataController extends Observable implements Observer{
 					//Removes the instance in sent invitations when game is finished
 					db.updateGame(localGame);
 					db.updateTurn(m.getTurns(localGame).get(5));
-//					for(Invitation i : m.getSentInvitations()){
-//						if(localGame.getPlayer1().equals(i.getInviter())){
-//							m.removeSentInvitation(i);
-//						}
-//					}
+					//					for(Invitation i : m.getSentInvitations()){
+					//						if(localGame.getPlayer1().equals(i.getInviter())){
+					//							m.removeSentInvitation(i);
+					//						}
+					//					}
 
 				} else if(gameMap.getKey().isFinished()){ //If the db-game is finished
 					//This code deletes games and turns after they are finished!
@@ -334,7 +334,7 @@ public class DataController extends Observable implements Observer{
 				finishedGames.add(locGame);
 			} else if(!dbGames.contains(locGame)){
 				//Remove any sent invitations for the game in question
-				
+
 				//remove the actual game
 				//TODO We could have a time restriction here, to avoid deleting new games.
 				m.removeGame(locGame);//DB?
@@ -483,9 +483,11 @@ public class DataController extends Observable implements Observer{
 		LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
 		for(Invitation inv : dbInv){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
-			if(timeDifference > Model.INVITATIONS_SAVETIME && currentInvitations.contains(inv)){ //if the invitations are considered to old
+			//if the invitations are considered to old OR already in current games
+			if(timeDifference > Model.INVITATIONS_SAVETIME 
+					|| inCurrentGames(inv)){
 				oldInvitations.add(inv);
-			} else{
+			} else if(!currentInvitations.contains(inv)){
 				currentInvitations.add(inv);
 				if(inv.getInviter().equals(getCurrentPlayer())){
 					sentInvitations.add(inv);
@@ -497,6 +499,23 @@ public class DataController extends Observable implements Observer{
 		setChanged();
 		notifyObservers(new DCMessage(DCMessage.INVITATIONS, currentInvitations));
 		return currentInvitations;
+	}
+	/*
+	 * Helper method to check if Invitation is in current games
+	 */
+	private boolean inCurrentGames(Invitation inv){
+		for(Game g : m.getGames()){ //Check if the invitation is in current games
+			if(	
+					(inv.getInviter().equals(g.getPlayer1()) 
+					&& inv.getInvitee().equals(g.getPlayer2()))
+					||
+					(inv.getInvitee().equals(g.getPlayer1())
+					&& inv.getInviter().equals(g.getPlayer2()))
+				){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -556,16 +575,16 @@ public class DataController extends Observable implements Observer{
 	}
 
 	private class RemoveVideoFromServer extends AsyncTask <Void, Long, Boolean> {
-		
+
 		String gameId;
-				
+
 		public RemoveVideoFromServer(String game) {
 			this.gameId = gameId;
 		}
 
 		@Override
 		protected void onPreExecute(){
-			
+
 		}
 
 		@Override
@@ -577,10 +596,10 @@ public class DataController extends Observable implements Observer{
 				con.connect("ftp.mklcompetencia.se", 21);
 				if (con.login("mklcompetencia.se", "ypkq4w")){
 					con.enterLocalPassiveMode();
-						result = con.deleteFile(gameId);
-						if (result) {
-							Log.v("deletion on FTP", "succeeded");
-						}
+					result = con.deleteFile(gameId);
+					if (result) {
+						Log.v("deletion on FTP", "succeeded");
+					}
 					con.logout();
 					con.disconnect();
 				}

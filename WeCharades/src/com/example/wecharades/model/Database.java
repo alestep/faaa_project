@@ -623,6 +623,7 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void getInvitations(Player player) throws DatabaseException {
+		//Invitations
 		ParseQuery others = new ParseQuery(INVITE);
 		others.whereContains(INVITE_INVITEE, player.getParseId());
 		ParseQuery mine = new ParseQuery(INVITE);
@@ -684,34 +685,36 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void removeInvitations(Collection<Invitation> inv){
-		LinkedList<ParseQuery> queries = new LinkedList<ParseQuery>();
-		ParseQuery q;
-		for(Invitation invite : inv){
-			q = new ParseQuery(INVITE);
-			q.whereEqualTo(INVITE_INVITER, invite.getInviter().getParseId());
-			q.whereEqualTo(INVITE_INVITEE, invite.getInvitee().getParseId());
-			queries.add(q);
-		}
-		ParseQuery main = ParseQuery.or(queries);
-		main.findInBackground(new FindCallback(){
-			public void done(List<ParseObject> result, ParseException e){
-				if(e == null){
-					for(ParseObject obj : result){
-						obj.deleteInBackground(new DeleteCallback(){
-							public void done(ParseException e){
-								if(e != null){
-									setChanged();
-									notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
-								}
-							}
-						});
-					}
-				} else{
-					setChanged();
-					notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
-				}
+		if(!inv.isEmpty()){
+			LinkedList<ParseQuery> queries = new LinkedList<ParseQuery>();
+			ParseQuery q;
+			for(Invitation invite : inv){
+				q = new ParseQuery(INVITE);
+				q.whereEqualTo(INVITE_INVITER, invite.getInviter().getParseId());
+				q.whereEqualTo(INVITE_INVITEE, invite.getInvitee().getParseId());
+				queries.add(q);
 			}
-		});
+			ParseQuery main = ParseQuery.or(queries);
+			main.findInBackground(new FindCallback(){
+				public void done(List<ParseObject> result, ParseException e){
+					if(e == null){
+						for(ParseObject obj : result){
+							obj.deleteInBackground(new DeleteCallback(){
+								public void done(ParseException e){
+									if(e != null){
+										setChanged();
+										notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+									}
+								}
+							});
+						}
+					} else{
+						setChanged();
+						notifyObservers(new DatabaseException(e.getCode(), e.getMessage()));
+					}
+				}
+			});
+		}
 	}
 
 	//User login, registration and logout -----------------------------------------------------------------------------
