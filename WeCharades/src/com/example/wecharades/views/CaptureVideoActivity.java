@@ -36,8 +36,9 @@ public class CaptureVideoActivity extends Activity {
 	}
 	private void dispatchTakeVideoIntent(){
 			intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-			intentCamera.putExtra("android.intent.extra.durationLimit", 8);
-			intentCamera.putExtra("android.intent.extra.videoQuality", 1);
+			intentCamera.putExtra(android.provider.MediaStore.EXTRA_DURATION_LIMIT, 8);
+			intentCamera.putExtra(android.provider.MediaStore.EXTRA_VIDEO_QUALITY, 1);
+			intentCamera.putExtra(android.provider.MediaStore.EXTRA_SIZE_LIMIT, 10	);
 			startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);	
 	}
 
@@ -46,13 +47,11 @@ public class CaptureVideoActivity extends Activity {
 		if(resultCode == RESULT_OK){
 			if(requestCode == REQUEST_VIDEO_CAPTURED){
 				uriVideo = data.getData();
-				//Toast.makeText(CaptureVideo.this,uriVideo.getPath(),Toast.LENGTH_LONG).show();
 				Intent intentShowVideo = new Intent(CaptureVideoActivity.this, VideoUploadActivity.class);
 				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
 				finishActivity(REQUEST_VIDEO_CAPTURED);
 				finish();
-				
 			}
 		}
 		else if(resultCode == RESULT_CANCELED){

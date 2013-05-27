@@ -27,7 +27,7 @@
 
     <!-- EditText styling -->
     <style name="edit_text_style" parent="@android:style/Widget.EditText">
-        <item name="android:background">@drawable/button_custom_grey</item>
+        <item name="android:background">@drawable/edittext_custom</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:singleLine">true</item>

@@ -275,7 +275,6 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setState(Turn.VIDEO);
 				updateModel();
 				pushNotficationtoOtherPlayer();
-				//Send to startscreen on success
 				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
 				activity.startActivity(intent);
 				activity.finish();

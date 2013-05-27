@@ -1,17 +1,15 @@
 package com.example.wecharades.presenter;
 
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +21,6 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
-import com.example.wecharades.views.StartActivity;
 
 
 public class ResetPresenter extends Presenter {
@@ -108,7 +105,9 @@ public class ResetPresenter extends Presenter {
 				ok.setOnClickListener(new OnClickListener() {          
 					public void onClick(View v) {
 						dialog.dismiss();
-						goToLoginActivity();
+						Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
+						i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						activity.startActivity(i);
 					}
 				});
 

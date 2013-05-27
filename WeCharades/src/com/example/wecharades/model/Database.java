@@ -806,7 +806,7 @@ public class Database extends Observable implements IDatabase {
 
 	@Override
 	public void subscribetoNotification(Context context) {
-		PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
+		//PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
 
 	}
 
