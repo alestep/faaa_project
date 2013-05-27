@@ -22,7 +22,7 @@
     <application
         android:icon="@drawable/wc_launcher"
         android:label="@string/app_name"
-        android:theme="@style/wecharades_theme" >
+        android:theme="@style/wecharades_theme" android:debuggable="true">
 
         <!-- Start Screen Activity -->
         <activity android:name=".views.StartActivity" >
