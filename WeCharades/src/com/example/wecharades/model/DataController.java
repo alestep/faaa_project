@@ -107,8 +107,8 @@ public class DataController extends Observable implements Observer{
 	 * Log out the current player
 	 */
 	public void logOutPlayer(Context context){
-		m.logOutCurrentPlayer(context);
 		db.removePushNotification(context);
+		m.logOutCurrentPlayer(context);
 		db.logOut();
 		RECREATE = true;
 	}
@@ -118,10 +118,7 @@ public class DataController extends Observable implements Observer{
 	 * @return
 	 */
 	public Player getCurrentPlayer(){
-		if(m.getCurrentPlayer() == null){
-			m.setCurrentPlayer(db.getCurrentPlayer());
-		}
-		return m.getCurrentPlayer();
+		return db.getCurrentPlayer();
 	}
 
 	/**
@@ -385,10 +382,9 @@ public class DataController extends Observable implements Observer{
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn(); //Also sets game to finish!
+		case Turn.FINISH : 	game.incrementTurn(); //Also sets game to finished!
 		break;
 		}
-		game.setLastPlayed(new Date());
 		if(game.isFinished()){ //Update player stats
 			TreeMap<Player, Integer> scoreMap = getGameScore(game);
 			Player p1 = turn.getRecPlayer(); //This assignment is random, but it doesn't matter

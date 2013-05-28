@@ -59,8 +59,7 @@ public class LoginPresenter extends Presenter{
 	private class Login extends AsyncTask<Void, Long, Boolean>{
 
 		private int exceptionState = 0;
-		private final static int NO_EXCEPTION = 0;
-		private final static int CAUGHT_EXCEPTION = 1;
+		private DatabaseException dbException = null;
 
 		public Login(){
 		}
@@ -81,8 +80,6 @@ public class LoginPresenter extends Presenter{
 				activity.finish();//We do not need the login-activity any more
 			} catch (DatabaseException e) {
 				dbException = e;
-				activity.showErrorDialog(e.prettyPrint());
-				//TODO exceptionState = CAUGHT_EXCEPTION;
 			}
 			finally{
 				if(loginSucceeded){
@@ -95,26 +92,8 @@ public class LoginPresenter extends Presenter{
 		}
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(exceptionState == CAUGHT_EXCEPTION){
-
-				final Dialog dialog = new Dialog(activity);
-				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dialog.setCanceledOnTouchOutside(false);
-				dialog.setContentView(R.layout.dialog_error);
-				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
-
-				TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
-				errorText.setText(dbException.prettyPrint());
-
-				Button ok = (Button) dialog.findViewById(R.id.ok);
-				ok.setOnClickListener(new OnClickListener() {          
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-				
-				dialog.show();
-				exceptionState = NO_EXCEPTION;
+			if(dbException != null){
+				activity.showErrorDialog(dbException.prettyPrint());
 			}
 			activity.hideProgressBar();
 			activity.enabledView();

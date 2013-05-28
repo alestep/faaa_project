@@ -1,10 +1,10 @@
 package com.example.wecharades.views;
-/** TODO: 
+/** TODO:
  * REGISTER SCORE POINTS IF GUESSED RIGHT
  * DO NOT DOWNLOAD EVERYTIME. OVERRIDE THE ONRESUME and ONPAUSE?
- * 
+ *
  */
-
+ 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
-
+ 
 public class GuessCharadeActivity extends GenericActivity  {
 
 	private TextView possibleLetters;
@@ -209,4 +209,3 @@ public class GuessCharadeActivity extends GenericActivity  {
 		return null;
 	}
 }
-

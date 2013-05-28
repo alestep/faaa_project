@@ -3,6 +3,7 @@ package com.example.wecharades.presenter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.InvitationActivity;
 
 
-public class InvitationPresenter extends Presenter {
+public class InvitationPresenter extends Presenter implements Observer{
 	
 	private InvitationActivity activity;
 	private SeparatedListAdapter adapter;
@@ -62,6 +63,7 @@ public class InvitationPresenter extends Presenter {
 				setAdapter(receivedList, sentList);
 			}
 		}
+		super.update(obs, obj);
 	}
 	
 	private void setAdapter(List<Invitation> receivedList, List<Invitation> sentList) {

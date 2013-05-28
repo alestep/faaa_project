@@ -81,7 +81,6 @@ public class DatabaseException extends Exception{
 			default : message = "Unknown error";
 			break;
 		}
-
 		return message;
 	}
 

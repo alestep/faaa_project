@@ -50,24 +50,22 @@ public class StartActivity extends GenericActivity {
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
 
-		//Check if the user is logged in
-		if(presenter.checkLogin()){
-			requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-			setContentView(R.layout.list_screen);
-			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.list_screen);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
 
-			// Get a reference to views
-			gameListView = (ListView) findViewById(R.id.list);
+		// Get a reference to views
+		gameListView = (ListView) findViewById(R.id.list);
 
-			// Inflate Start screen header in the ListView
-			View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-			gameListView.addHeaderView(header);
-			
-			refresh = (RefreshProgressBar) findViewById(R.id.refresh);
-			invitations = (ImageButton) findViewById(R.id.invitations);
-			account = (Button) findViewById(R.id.account);
-			presenter.initiate();
-		}
+
+		// Inflate Start screen header in the ListView
+		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
+		gameListView.addHeaderView(header);
+
+		refresh = (RefreshProgressBar) findViewById(R.id.refresh);
+		invitations = (ImageButton) findViewById(R.id.invitations);
+		account = (Button) findViewById(R.id.account);
+		presenter.initiate();
 	}
 
 	public void onStart(){
