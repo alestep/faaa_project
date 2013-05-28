@@ -5,11 +5,11 @@ import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
 
@@ -35,7 +35,7 @@ public class RegisterPresenter extends Presenter {
 	 * @param inputPassword
 	 * @param inputRepeatPassword
 	 */
-	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword, ProgressBar registerProgress) {
+	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword) {
 		this.inputNickname = inputNickname;
 		this.inputEmail = inputEmail;
 		this.inputPassword = inputPassword;

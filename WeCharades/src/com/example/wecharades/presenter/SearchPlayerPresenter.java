@@ -14,10 +14,10 @@ import com.parse.ParseException;
 import com.parse.ParsePush;
 
 public class SearchPlayerPresenter extends Presenter {
-	
+
 	private SearchPlayerActivity activity;
-	
-	
+
+
 	/**
 	 * 
 	 * @param activity
@@ -26,9 +26,12 @@ public class SearchPlayerPresenter extends Presenter {
 		super(activity);
 		this.activity = (SearchPlayerActivity) activity;
 	}
-	
+
 	public void update(String s){
+		activity.showProgressBar();
 		performSearch(s);
+		activity.hideProgressBar();
+		
 	}
 
 	private void performSearch(String searchString) {
@@ -38,16 +41,18 @@ public class SearchPlayerPresenter extends Presenter {
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No results found!");
 			view.setEmptyView(text);
-			
+
 			SortedSet<String> list = dc.getAllOtherPlayerNames().subSet(searchString, searchString + Character.MAX_VALUE);
 			TreeSet<String> sentInvitations = dc.getSentInvitationsAsUsernames();
 			ArrayList<String> resultList = new ArrayList<String>(list);
-			if (!list.isEmpty())
+			
+			if (!list.isEmpty()) {
 				view.setAdapter(new SearchPlayerAdapter(activity, resultList, sentInvitations));
+			}
+			
 		} catch (DatabaseException e) {
 			activity.showErrorDialog(e.prettyPrint());
 		}
-		
 	}
 
 	public void invite(String invitee) {
@@ -57,7 +62,7 @@ public class SearchPlayerPresenter extends Presenter {
 		} catch (DatabaseException e){
 			activity.showErrorDialog(e.prettyPrint());
 		}
-		
+
 	}
 
 	private void sendNotificationtoOtherPlayer(String invitee) {

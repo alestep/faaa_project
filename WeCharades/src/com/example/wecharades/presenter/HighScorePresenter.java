@@ -28,6 +28,7 @@ public class HighScorePresenter extends Presenter {
 	 * @param table
 	 */
 	public void updateHighScores(TableLayout table){
+		activity.showProgressBar();
 		try{
 			ArrayList<Player> allPlayers = dc.getAllPlayerObjects();
 			Collections.sort(allPlayers, new Comparator<Player>(){
@@ -50,6 +51,7 @@ public class HighScorePresenter extends Presenter {
 		} catch(DatabaseException e) {
 			activity.showErrorDialog(e.prettyPrint());
 		}
+		activity.hideProgressBar();
 	}
 
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {

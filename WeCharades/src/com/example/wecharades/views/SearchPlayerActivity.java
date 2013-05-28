@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.LoadProgressBar;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**
@@ -24,6 +26,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	
 	private EditText searchBox;
 	private SearchPlayerPresenter presenter;
+	private RefreshProgressBar refresh;
 	
 	/**
 	 * 
@@ -35,11 +38,12 @@ public class SearchPlayerActivity extends GenericActivity {
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.search_player_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
-		presenter = (SearchPlayerPresenter) super.getPresenter();
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh); 
 		
-		// Get reference to search box
+        // Get references to instances
+        presenter = (SearchPlayerPresenter) super.getPresenter();
 		searchBox = (EditText) findViewById(R.id.search_window);
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 	
 	@Override
@@ -77,8 +81,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	}
 
 	@Override
-	protected LoadProgressBar getProgressBar() {
-		// TODO Auto-generated method stub
-		return null;
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }
