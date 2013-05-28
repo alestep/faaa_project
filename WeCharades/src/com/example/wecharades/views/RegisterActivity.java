@@ -64,13 +64,6 @@ public class RegisterActivity extends GenericActivity {
 		
 	}
 
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return registerErrorMsg;
-	}
-
 	@Override
 	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub

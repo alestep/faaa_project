@@ -77,12 +77,6 @@ public class SearchPlayerActivity extends GenericActivity {
 	}
 
 	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected ProgressBar getProgressSpinner() {
 		// TODO Auto-generated method stub
 		return null;

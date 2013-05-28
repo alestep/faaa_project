@@ -11,12 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
@@ -166,12 +165,6 @@ public class StartActivity extends GenericActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -10,9 +10,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,13 +30,6 @@ public abstract class GenericActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		this.presenter = presenter;
 	}
-
-	//To be implemented by subclasses
-	/**
-	 * This method will return an area of the screen to print messages on
-	 * @return a TextView to set text on
-	 */
-	public abstract TextView getTextArea();
 
 	//To be implemented by subclasses
 	/**

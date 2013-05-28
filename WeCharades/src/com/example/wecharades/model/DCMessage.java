@@ -2,7 +2,6 @@ package com.example.wecharades.model;
 
 import java.util.List;
 
-import com.example.wecharades.views.IMessage;
 
 /**
  * A class to have better control over types when sending observer messages.
