@@ -78,11 +78,12 @@ public class GuessCharadePresenter extends Presenter {
 		 timer = new CountDownTimer(30000, 100) {
 
 			 public void onTick(long millisUntilFinished) {
-				 if (millisUntilFinished>10000)
-					 if (millisUntilFinished%1000 == 0)
-						 activity.setTime(String.valueOf(millisUntilFinished / 1000));
-					 else
-						 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+				 activity.setTime(String.valueOf(millisUntilFinished / 1000));
+//				 if (millisUntilFinished>10000)
+//					 if (millisUntilFinished%1000 == 0)
+//						 activity.setTime(String.valueOf(millisUntilFinished / 1000));
+//					 else
+//						 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
 			 }
 
 			 public void onFinish() {
