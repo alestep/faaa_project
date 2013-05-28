@@ -26,7 +26,6 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.model.DatabaseException;
