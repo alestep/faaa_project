@@ -10,13 +10,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.Game;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
@@ -45,37 +48,30 @@ public class StartActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.list_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start); 
-
-		// Get a reference to views
-		gameListView = (ListView) findViewById(R.id.list);
-
-		// Inflate Start screen header in the ListView
-		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-		gameListView.addHeaderView(header);
-
-		invitations = (ImageButton) findViewById(R.id.invitations);
-		account = (Button) findViewById(R.id.account);
-
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
-		presenter.setGameListView(gameListView);
 
-		//Check if the user is logged in or saved in the cache
-		presenter.checkLogin();
+		//Check if the user is logged in
+		if(presenter.checkLogin()){
+			requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+			setContentView(R.layout.list_screen);
+			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
+
+			// Get a reference to views
+			gameListView = (ListView) findViewById(R.id.list);
+
+			// Inflate Start screen header in the ListView
+			View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
+			gameListView.addHeaderView(header);
+
+			invitations = (ImageButton) findViewById(R.id.invitations);
+			account = (Button) findViewById(R.id.account);
+			presenter.initiate();
+		}
 	}
 
 	public void onStart(){
 		super.onStart();
-		System.out.println("2");
-		presenter.initiate();
-		System.out.println("3");
-	}
-	
-	public void onResume(){
-		super.onResume();
 		presenter.update();
 	}
 
@@ -127,6 +123,25 @@ public class StartActivity extends GenericActivity {
 	public void setAccountName(String user){
 		account.setText(user);
 	}
+	
+	public void setGameList(final SeparatedListAdapter adapter){
+		//Final-declarations in order to reference from inner class later
+		final Activity activity = this;
+		
+		// Set the adapter on the ListView holder 
+		gameListView.setAdapter(adapter);
+
+		// Listen for Click events
+		gameListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
+				Game game = (Game) adapter.getItem(position-1);
+				Intent intent = new Intent(activity, GameDashboardActivity.class);
+				intent.putExtra("Game", game);
+				startActivity(intent);
+			}
+		});
+	}
 
 	public void setInvitations(int nrInvites){
 		if(nrInvites>0) {
@@ -135,27 +150,27 @@ public class StartActivity extends GenericActivity {
 		else {
 			invitations.setImageResource(R.drawable.invitation);
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.options_menu, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_menu, menu);
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.about:
-	            startActivity(new Intent(this, GameInstructionsActivity.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.about:
+			startActivity(new Intent(this, GameInstructionsActivity.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	@Override
 	public TextView getTextArea() {
 		// TODO Auto-generated method stub
