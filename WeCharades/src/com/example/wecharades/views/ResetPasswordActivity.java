@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.ResetPresenter;
 
 
@@ -14,7 +15,7 @@ public class ResetPasswordActivity extends GenericActivity {
 
 	EditText emailInput;
 	TextView errorMsg;
-	ProgressBar resetProgress;
+	LoadProgressBar resetProgress;
 	View myView;
 	ResetPresenter presenter;
 
@@ -28,7 +29,7 @@ public class ResetPasswordActivity extends GenericActivity {
 		//Getting the view associated with this Activity
 		myView = getWindow().getDecorView().findViewById(android.R.id.content);
 		emailInput				= (EditText) findViewById(R.id.resetPassword);
-		resetProgress			= (ProgressBar) findViewById(R.id.progress);
+		resetProgress			= (LoadProgressBar) findViewById(R.id.progress);
 	}
 	
 	/**
@@ -54,7 +55,7 @@ public class ResetPasswordActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		return resetProgress;
 	}
 }

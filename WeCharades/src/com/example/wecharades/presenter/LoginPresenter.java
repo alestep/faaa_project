@@ -66,7 +66,7 @@ public class LoginPresenter extends Presenter{
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner();
+			activity.showProgressBar();
 			activity.disableView();
 		}
 
@@ -95,7 +95,7 @@ public class LoginPresenter extends Presenter{
 			if(dbException != null){
 				activity.showErrorDialog(dbException.prettyPrint());
 			}
-			activity.hideProgressSpinner();
+			activity.hideProgressBar();
 			activity.enabledView();
 		}
 	}

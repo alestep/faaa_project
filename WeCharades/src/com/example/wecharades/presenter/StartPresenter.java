@@ -55,6 +55,7 @@ public class StartPresenter extends Presenter implements Observer{
 		dc.addObserver(this);
 		updateList(dc.getGames());
 		dc.getInvitations();
+		activity.showProgressBar();
 	}
 
 

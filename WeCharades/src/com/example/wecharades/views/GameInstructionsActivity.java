@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ProgressBar;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.IProgress;
 import com.example.wecharades.presenter.SimplePresenter;
 
 public class GameInstructionsActivity extends GenericActivity {
@@ -24,7 +24,7 @@ public class GameInstructionsActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected IProgress getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -10,15 +10,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
@@ -39,6 +41,7 @@ public class StartActivity extends GenericActivity {
 	private ListView gameListView;
 
 	private ImageButton invitations;
+	private RefreshProgressBar refresh;
 	private Button account;
 
 	@Override
@@ -54,10 +57,12 @@ public class StartActivity extends GenericActivity {
 		// Get a reference to views
 		gameListView = (ListView) findViewById(R.id.list);
 
+
 		// Inflate Start screen header in the ListView
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 
+		refresh = (RefreshProgressBar) findViewById(R.id.refresh);
 		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
 
@@ -168,8 +173,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
-		// TODO Auto-generated method stub
-		return null;
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }

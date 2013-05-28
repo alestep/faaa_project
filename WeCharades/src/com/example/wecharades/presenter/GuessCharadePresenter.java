@@ -55,15 +55,10 @@ public class GuessCharadePresenter extends Presenter {
 		this.activity = activity;
 
 	}
-
+	
 	public void initialize() {
-		setTurn(turn);
 		initializeTimer();
 		downloadVideo(activity, videoView);
-	}
-
-	public void setTurn(Turn turn){
-		this.turn = turn;
 	}
 
 	public void updateModel(){
@@ -80,6 +75,7 @@ public class GuessCharadePresenter extends Presenter {
 	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
+
 	 public void initializeTimer (){
 		 timer = new CountDownTimer(30000, 100) {
 
@@ -244,6 +240,7 @@ public class GuessCharadePresenter extends Presenter {
 			 });
 			 mDialog.show();
 		 }
+
 
 		 @Override
 		 protected Boolean doInBackground(Void... params) {
