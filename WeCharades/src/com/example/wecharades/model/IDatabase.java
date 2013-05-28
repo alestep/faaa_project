@@ -29,8 +29,7 @@ public interface IDatabase{
 	 * @return - The newly created game
 	 * @throws DatabaseException 
 	 */
-	public abstract void createGame(Player player1, Player player2)
-			throws DatabaseException;
+	public abstract void createGame(Player player1, Player player2);
 	
 	/**
 	 * Removed a game from the database
