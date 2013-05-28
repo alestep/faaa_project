@@ -1,4 +1,4 @@
-package com.example.wecharades.test;
+package com.example.wecharades.views.test;
 
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
@@ -37,53 +37,53 @@ public class RegisterActivityTest extends
 	/**
 	 * Variation 2
 	 */
-//	public void testUsernameRestEmptyFields(){
-//		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
-//		solo.enterText(0, "a");
-//		solo.clickOnButton("Register");
-//		solo.waitForDialogToOpen(5000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(5000);
-//	}
+	public void testUsernameRestEmptyFields(){
+		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
+		solo.enterText(0, "a");
+		solo.clickOnButton("Register");
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(5000);
+	}
 	/**
 	 * Variation 3
 	 */
-//	public void testUnvalidEmail(){
-//		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
-//		solo.enterText(0, "validUsername");
-//		solo.enterText(1, "abc.se");
-//		solo.clickOnButton("Register");
-//		solo.waitForDialogToOpen(5000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(5000);
-//	}
+	public void testUnvalidEmail(){
+		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
+		solo.enterText(0, "validUsername");
+		solo.enterText(1, "abc.se");
+		solo.clickOnButton("Register");
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(5000);
+	}
 	/**
 	 * Variation 4
 	 */
-//	public void testUnvalidPassword(){
-//		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
-//		solo.enterText(0, "validUsername");
-//		solo.enterText(1, "valid@email.se");
-//		solo.enterText(2,"myPw");
-//		solo.clickOnButton("Register");
-//		solo.waitForDialogToOpen(3000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(3000);
-//	}
+	public void testUnvalidPassword(){
+		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
+		solo.enterText(0, "validUsername");
+		solo.enterText(1, "valid@email.se");
+		solo.enterText(2,"myPw");
+		solo.clickOnButton("Register");
+		solo.waitForDialogToOpen(3000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(3000);
+	}
 	/**
 	 * Variation 5
 	 */
-//	public void testMissmatchPassword(){
-//		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
-//		solo.enterText(0, "validUsername");
-//		solo.enterText(1, "valid@email.se");
-//		solo.enterText(2,"myPw");
-//		solo.enterText(3,"missMatch");
-//		solo.clickOnButton("Register");
-//		solo.waitForDialogToOpen(3000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(3000);
-//	}
+	public void testMissmatchPassword(){
+		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
+		solo.enterText(0, "validUsername");
+		solo.enterText(1, "valid@email.se");
+		solo.enterText(2,"myPw");
+		solo.enterText(3,"missMatch");
+		solo.clickOnButton("Register");
+		solo.waitForDialogToOpen(3000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(3000);
+	}
 	/**
 	 * Variation 6 - All 4 Cases. Depending on the user database in parse or internet connection.
 	 */

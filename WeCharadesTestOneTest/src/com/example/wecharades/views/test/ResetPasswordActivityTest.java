@@ -1,4 +1,4 @@
-package com.example.wecharades.test;
+package com.example.wecharades.views.test;
 
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
@@ -22,24 +22,24 @@ ActivityInstrumentationTestCase2<ResetPasswordActivity> {
 	/**
 	 * Variation 1
 	 */
-//	public void testEmptyEmail(){
-//		solo.assertCurrentActivity("ResetPasswordActivity", ResetPasswordActivity.class);
-//		solo.clickOnButton("Send me a new password");
-//		solo.waitForDialogToOpen(3000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(3000);
-//	}
+	public void testEmptyEmail(){
+		solo.assertCurrentActivity("ResetPasswordActivity", ResetPasswordActivity.class);
+		solo.clickOnButton("Send me a new password");
+		solo.waitForDialogToOpen(3000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(3000);
+	}
 	/**
 	 * Variation 2
 	 */
-//	public void testInvalidEmail(){
-//		solo.assertCurrentActivity("ResetPasswordActivity", ResetPasswordActivity.class);
-//		solo.enterText(0, "invalidEmail");
-//		solo.clickOnButton("Send me a new password");
-//		solo.waitForDialogToOpen(3000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(3000);
-//	}
+	public void testInvalidEmail(){
+		solo.assertCurrentActivity("ResetPasswordActivity", ResetPasswordActivity.class);
+		solo.enterText(0, "invalidEmail");
+		solo.clickOnButton("Send me a new password");
+		solo.waitForDialogToOpen(3000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(3000);
+	}
 	/**
 	 * Variation 3 Case 1 and 2. Case 2 needs to be done without internetconnection.
 	 */

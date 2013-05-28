@@ -1,4 +1,4 @@
-package com.example.wecharades.test;
+package com.example.wecharades.views.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -55,6 +55,7 @@ public class LoginActivityTest extends
 		solo.enterText(0, "adam");
 		solo.enterText(1, "adam92");
 		solo.clickOnButton("Login");
+		solo.waitForActivity(StartActivity.class);
 		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
 	}
 	/**
