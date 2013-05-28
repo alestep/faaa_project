@@ -107,8 +107,8 @@ public class DataController extends Observable implements Observer{
 	 * Log out the current player
 	 */
 	public void logOutPlayer(Context context){
-		m.logOutCurrentPlayer(context);
 		db.removePushNotification(context);
+		m.logOutCurrentPlayer(context);
 		db.logOut();
 		RECREATE = true;
 	}
