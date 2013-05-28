@@ -12,12 +12,12 @@ import com.jayway.android.robotium.solo.Solo;
  * Test class to test the LoginActivity Test ID: T02
  */
 
-public class LoginActivityTest extends
+public class LoginAndGuessCharadeActivityTest extends
 		ActivityInstrumentationTestCase2<LoginActivity> {
 	
 	private Solo solo;
 	
-	public LoginActivityTest() {
+	public LoginAndGuessCharadeActivityTest() {
 		super(LoginActivity.class);
 	}
 
