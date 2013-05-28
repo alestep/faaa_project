@@ -67,7 +67,7 @@ public class VideoUploadPresenter extends Presenter {
 		upload = new UploadVideo(context, path);
 		upload.execute();
 		//Check if the user has internet connection
-//		if(isNetworkConnected()) {
+//		if(isNetworkConnected()) { //TODO KOlla lite på detta sen
 //			setServerStorageLocation();
 //			upload = new UploadVideo(context, path);
 //			upload.execute();
@@ -141,11 +141,7 @@ public class VideoUploadPresenter extends Presenter {
 		activity.finish();	
 	}
 	private void updateModel(){
-		try {
-			dc.updateTurn(turn);
-		} catch (DatabaseException e) {
-			e.printStackTrace();
-		}
+		dc.updateTurn(turn);
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();

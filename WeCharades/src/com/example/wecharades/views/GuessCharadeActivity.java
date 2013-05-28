@@ -53,6 +53,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 */
 	@Override
 	public void onStart() {
+		super.onStart();
 		presenter.initialize();
 	}
 	
@@ -65,6 +66,10 @@ public class GuessCharadeActivity extends GenericActivity  {
 			presenter.playVideo();
 		}
 		super.onResume();
+	}
+	
+	public VideoView getVideoView(){
+		return videoView;
 	}
 	
 	/**
