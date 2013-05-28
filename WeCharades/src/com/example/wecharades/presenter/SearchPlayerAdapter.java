@@ -19,17 +19,19 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 	private ArrayList<String> resultList;
 	private LayoutInflater li;
 	private SearchPlayerActivity activity;
-	private TreeSet<String> sentInvitations;
+	private TreeSet<String> alreadyPlaying;
+	private TreeSet<String> alreadySent;
 	
 	/**
 	 * 
 	 * @param activity
 	 * @param resultList
-	 * @param sentInvitations
+	 * @param disallowNames
 	 */
-	public SearchPlayerAdapter(SearchPlayerActivity activity, ArrayList<String> resultList, TreeSet<String> sentInvitations) {
+	public SearchPlayerAdapter(SearchPlayerActivity activity, ArrayList<String> resultList, TreeSet<String> alreadySent, TreeSet<String> alreadyPlaying) {
 		super(activity, 0, resultList);
-		this.sentInvitations = sentInvitations;
+		this.alreadyPlaying = alreadyPlaying;
+		this.alreadySent = alreadySent;
 		this.resultList = resultList;
 		this.activity = activity;
 		this.li = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,11 +52,15 @@ public class SearchPlayerAdapter extends ArrayAdapter<String> {
 
 		final Button play = (Button) v.findViewById(R.id.play);
 
-		if (sentInvitations.contains(s)) {
+		if (alreadySent.contains(s)) {
 			play.setEnabled(false);
 			play.setClickable(false);
-			play.setText("Sent");
-
+			play.setText("Inv.Sent");
+		}
+		if (alreadyPlaying.contains(s)) {
+			play.setEnabled(false);
+			play.setClickable(false);
+			play.setText("Ongoing game");
 		}
 
 		play.setOnClickListener(new OnClickListener(){ 

@@ -40,7 +40,6 @@ public class InvitationActivity extends GenericActivity {
 	 */
 	public void setInvitation(Invitation invitation, boolean response) {
 		presenter.setInvitation(invitation, response);
-		
 	}
 
 	@Override
