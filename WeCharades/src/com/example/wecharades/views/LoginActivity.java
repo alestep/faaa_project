@@ -69,11 +69,6 @@ public class LoginActivity extends GenericActivity {
 	}
 
 	@Override
-	public TextView getTextArea() {
-		return loginErrorMsg;
-	}
-
-	@Override
 	protected ProgressBar getProgressSpinner() {
 		return loginProgress;
 	}

@@ -108,14 +108,9 @@ public class GuessCharadeActivity extends GenericActivity  {
 	}
 
 	@Override
-	public TextView getTextArea() {
-		return possibleLetters;
-	}
-
-	@Override
-	public void showMessage(String str){
+	public void showErrorDialog(String str){
 		possibleLetters.setVisibility(0);
-		super.showMessage(str);
+		super.showErrorDialog(str);
 	}
 	/**
 	 * Shows up an finishAlertDialog and stops the video.

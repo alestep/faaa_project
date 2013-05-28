@@ -1,11 +1,11 @@
 package com.example.wecharades.views.test;
 
+
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
-
-import android.net.wifi.WifiManager;
-import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * @author Adam
@@ -54,6 +54,7 @@ public class LoginActivityTest extends
 		solo.enterText(0, "adam"); //Correct username
 		solo.enterText(1, "adam92"); //Correct password
 		solo.clickOnButton("Login");
+		solo.waitForActivity(StartActivity.class);
 		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
 	}
 	/**

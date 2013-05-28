@@ -35,12 +35,6 @@ public class HighScoreActivity extends GenericActivity {
 		presenter.updateHighScores(myTable);
 	}
 
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void updateGlobalRanking(int globalRankingPosition, int totalNumberOfUsers) {
 		globalRanking.setText("Your global ranking position is " + globalRankingPosition + " out of " + totalNumberOfUsers);
 	}

@@ -73,12 +73,17 @@ public class DataController extends Observable implements Observer{
 			if(dbm.getMessage() == DBMessage.ERROR){
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
+			} else if(dbm.getMessage() == DBMessage.MESSAGE){
+				setChanged();
+				notifyObservers(new DCMessage(DCMessage.MESSAGE, (String) dbm.getData())); 
 			} else if(dbm.getMessage() == DBMessage.GAMELIST){
 				ArrayList<Game> gameList = parseGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
 			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
 				List<Invitation> invList = parseDbInvitations((List<Invitation>) dbm.getData());
+				setChanged();
+				notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
 			}
 		}
 	}
@@ -422,6 +427,11 @@ public class DataController extends Observable implements Observer{
 			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
 		}
 	}
+	/**
+	 * A method to parse received database invitations.
+	 * @param dbInv - received invitations from database.
+	 * @return A List of current invitations. The list will be of size 0 if no elements are found.
+	 */
 	public List<Invitation> parseDbInvitations(List<Invitation> dbInv){
 		Date currentTime = new Date();
 		long timeDifference;
@@ -443,8 +453,6 @@ public class DataController extends Observable implements Observer{
 		}
 		db.removeInvitations(oldInvitations);
 		m.setSentInvitations(sentInvitations);
-		setChanged();
-		notifyObservers(new DCMessage(DCMessage.INVITATIONS, currentInvitations));
 		return currentInvitations;
 	}
 	/*

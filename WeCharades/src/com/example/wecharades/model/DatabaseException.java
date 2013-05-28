@@ -78,6 +78,8 @@ public class DatabaseException extends Exception{
 			break;
 			case 2004: message ="Unrepeated password";
 			break;
+			default : message = "Unknown error";
+			break;
 		}
 
 		return message;

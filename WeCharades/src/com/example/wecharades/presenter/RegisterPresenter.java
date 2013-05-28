@@ -28,13 +28,13 @@ public class RegisterPresenter extends Presenter {
 	private String inputEmail;
 	private String inputPassword;
 	private String inputRepeatPassword;
-	private View parentView;
+	//TODO private View parentView;
 	private DatabaseException dbException;
 
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
-		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+		// TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	/**
@@ -80,7 +80,8 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner(getAllChildren(parentView));
+			activity.showProgressSpinner();
+			activity.disableView();
 		}
 
 		@Override
@@ -126,7 +127,8 @@ public class RegisterPresenter extends Presenter {
 				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			activity.hideProgressSpinner(getAllChildren(parentView));
+			activity.hideProgressSpinner();
+			activity.enabledView();
 		}
 	}
 }

@@ -36,12 +36,6 @@ public class AccountActivity extends GenericActivity {
 		((AccountPresenter) presenter).update();
 	}
 
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * Called when Game Instructions button is clicked
 	 * @param view
