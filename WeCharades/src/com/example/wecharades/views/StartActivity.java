@@ -63,11 +63,11 @@ public class StartActivity extends GenericActivity {
 
 		//Check if the user is logged in
 		presenter.checkLogin();
-		presenter.initiate();
 	}
 
 	public void onStart(){
 		super.onStart();
+		presenter.initiate();
 		presenter.update();
 	}
 
