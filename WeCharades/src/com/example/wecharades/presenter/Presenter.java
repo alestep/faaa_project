@@ -1,14 +1,11 @@
 package com.example.wecharades.presenter;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
@@ -31,45 +28,14 @@ public abstract class Presenter implements Observer{
 		dc.addObserver(this);
 	}
 
-
-
-	/**
-	 * To get all clickable objects in a list from a view
-	 * @param view
-	 * @return an ArrayList with all Views within the parameter view
-	 */
-	protected ArrayList<View> getAllChildren(View view) {
-
-		if (!(view instanceof ViewGroup)) {
-			ArrayList<View> viewArrayList = new ArrayList<View>();
-			viewArrayList.add(view);
-			return viewArrayList;
-		}
-
-		ArrayList<View> result = new ArrayList<View>();
-
-		ViewGroup vg = (ViewGroup) view;
-		for (int i = 0; i < vg.getChildCount(); i++) {
-
-			View child = vg.getChildAt(i);
-
-			ArrayList<View> viewArrayList = new ArrayList<View>();
-			viewArrayList.add(view);
-			viewArrayList.addAll(getAllChildren(child));
-
-			result.addAll(viewArrayList);
-		}
-		return result;
-	}
-
 	/**
 	 * A method to show a toast
 	 * @param context
 	 * @param msg
 	 */
 	protected void showToast(Context context, String msg) {
-		Toast error = Toast.makeText(context, msg, Toast.LENGTH_LONG);
-		error.show();
+		Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+		toast.show();
 	}
 
 	/**
@@ -79,8 +45,7 @@ public abstract class Presenter implements Observer{
 		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
-		// Close current view
-		//TODO I do not think we should do this? at least not for the start screen!
+		// Close current view, effectively restarting the app
 		activity.finish();
 	}
 
@@ -101,7 +66,9 @@ public abstract class Presenter implements Observer{
 				&& obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.ERROR){
-				activity.showMessage((String) dcm.getData());
+				activity.showErrorDialog((String) dcm.getData());
+			} else if(dcm.getMessage() == DCMessage.MESSAGE){
+				activity.showToast((String) dcm.getData());
 			}
 		}
 	}

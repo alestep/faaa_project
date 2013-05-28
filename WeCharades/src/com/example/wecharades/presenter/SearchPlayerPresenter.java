@@ -45,7 +45,7 @@ public class SearchPlayerPresenter extends Presenter {
 			if (!list.isEmpty())
 				view.setAdapter(new SearchPlayerAdapter(activity, resultList, sentInvitations));
 		} catch (DatabaseException e) {
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 		
 	}
@@ -55,7 +55,7 @@ public class SearchPlayerPresenter extends Presenter {
 			dc.sendInvitation(dc.getPlayer(invitee));
 			sendNotificationtoOtherPlayer(invitee);
 		} catch (DatabaseException e){
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 		
 	}

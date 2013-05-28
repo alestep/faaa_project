@@ -65,7 +65,7 @@ public class GuessCharadePresenter extends Presenter {
 		} catch (DatabaseException e) {
 			Log.e("GuessCharadePresenter", e.getMessage());
 			e.printStackTrace();
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 	}
 
@@ -293,7 +293,7 @@ public class GuessCharadePresenter extends Presenter {
 			if(mDialog.isShowing()){
 				mDialog.setMessage("Download Success!");
 				mDialog.dismiss();
-				activity.showMessage(shuffleWord().toUpperCase());
+				activity.showErrorDialog(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
 				timerView.setVisibility(0);
