@@ -141,8 +141,7 @@ public interface IDatabase{
 	 * @return an ArrayList with playerId:s
 	 * @throws DatabaseException 
 	 */
-	public abstract void getInvitations(Player player)
-			throws DatabaseException;
+	public abstract void getInvitations(Player player);
 
 	/**
 	 * Removes an invitation from the database

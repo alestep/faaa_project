@@ -3,22 +3,24 @@ package com.example.wecharades.model;
 import android.content.Context;
 import android.widget.ProgressBar;
 
-public class LoadProgressBar extends ProgressBar implements IProgress {
+public class LoadProgressBar implements IProgress {
 
-	public LoadProgressBar(Context context) {
-		super(context);
-		
+	private ProgressBar progressBar;
+	private Context context;
+	
+	public LoadProgressBar(Context context, ProgressBar progressBar) {
+		this.context = context;
+		this.progressBar = progressBar;
 	}
 
 	@Override
 	public void show() {
-		setVisibility(ProgressBar.VISIBLE);
-		
+		progressBar.setVisibility(ProgressBar.VISIBLE);
 	}
 
 	@Override
 	public void hide() {
-		setVisibility(ProgressBar.INVISIBLE);
+		progressBar.setVisibility(ProgressBar.INVISIBLE);
 	}
 
 }

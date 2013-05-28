@@ -60,9 +60,6 @@ public class DatabaseConverter {
 			return null;
 		}
 	}
-	
-	/*globalScore, playedGames, wonGames, lostGames, drawGames*/
-	
 
 	protected Invitation parseInvitation(ParseObject invitation) throws DatabaseException{
 		if(invitation.getClassName().equals(Database.INVITE)){

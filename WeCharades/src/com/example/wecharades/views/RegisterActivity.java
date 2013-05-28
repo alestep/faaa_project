@@ -21,12 +21,7 @@ public class RegisterActivity extends GenericActivity {
 	EditText inputPassword;
 	EditText inputRepeatPassword;
 	TextView registerErrorMsg;
-	ProgressBar registerProgress;
-	//View myView;
-//=======
-//	LoadProgressBar registerProgress;
-//	View myView;
-//>>>>>>> origin/master
+	LoadProgressBar registerProgress;
 	RegisterPresenter presenter;
 
 
@@ -46,7 +41,7 @@ public class RegisterActivity extends GenericActivity {
 		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
-		registerProgress 	=	(LoadProgressBar) 	findViewById(R.id.progress);
+		registerProgress 	=	new LoadProgressBar(this, (ProgressBar)	findViewById(R.id.progress));
 	}
 	
 	@Override

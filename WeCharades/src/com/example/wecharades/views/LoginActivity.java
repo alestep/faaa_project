@@ -28,7 +28,7 @@ public class LoginActivity extends GenericActivity {
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.login_username);
 		inputPassword		= (EditText) findViewById(R.id.login_password);
-		loginProgress		= (LoadProgressBar) findViewById(R.id.progress);
+		loginProgress		= new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
 
 		//initializing the presenter
 		presenter = (LoginPresenter) super.getPresenter();

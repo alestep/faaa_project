@@ -274,8 +274,6 @@ public class DataController extends Observable implements Observer{
 					removeVideofromServer(dbGame.getKey());
 				}
 			} else{
-				Player p1 = localGame.getCurrentPlayer();
-				Turn t = m.getCurrentTurn(localGame);
 				if ( //If there is a missmatch between current player and turn number/state.
 						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 						||
@@ -416,24 +414,20 @@ public class DataController extends Observable implements Observer{
 	 * A method to get all current invitations from the database
 	 */
 	public void getInvitations(){
-		try {
-			db.getInvitations(getCurrentPlayer());
-		} catch (DatabaseException e) {
-			setChanged();
-			notifyObservers(new DCMessage(DCMessage.MESSAGE, e.prettyPrint()));
-		}
+		db.getInvitations(getCurrentPlayer());
 	}
 	/**
 	 * A method to parse received database invitations.
 	 * @param dbInv - received invitations from database.
 	 * @return A List of current invitations. The list will be of size 0 if no elements are found.
 	 */
-	public List<Invitation> parseDbInvitations(List<Invitation> dbInv){
+	private List<Invitation> parseDbInvitations(List<Invitation> dbInv){
 		Date currentTime = new Date();
 		long timeDifference;
 		LinkedList<Invitation> oldInvitations = new LinkedList<Invitation>();
 		LinkedList<Invitation> currentInvitations = new LinkedList<Invitation>();
 		LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
+		LinkedList<Invitation> receivedInvitations = new LinkedList<Invitation>();		
 		for(Invitation inv : dbInv){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
 			//if the invitations are considered to old OR already in current games
@@ -444,11 +438,14 @@ public class DataController extends Observable implements Observer{
 				currentInvitations.add(inv);
 				if(inv.getInviter().equals(getCurrentPlayer())){
 					sentInvitations.add(inv);
+				} else{
+					
 				}
 			}
 		}
 		db.removeInvitations(oldInvitations);
 		m.setSentInvitations(sentInvitations);
+		m.setReceivedInvitations(receivedInvitations);
 		return currentInvitations;
 	}
 	/*
@@ -473,7 +470,7 @@ public class DataController extends Observable implements Observer{
 	 * Retrieves a list of all invitations sent form this device.
 	 * @return An ArrayList containing Invitations
 	 */
-	private List<Invitation> getSentInvitations(){
+	public List<Invitation> getSentInvitations(){
 		return m.getSentInvitations();
 	}
 
@@ -489,6 +486,10 @@ public class DataController extends Observable implements Observer{
 		}
 		return usernames;
 	}
+	public List<Invitation> getReceivedInvitations(){
+		return m.getReceivedInvitations();
+	}
+	
 
 	/**
 	 * Send an invitation to another player
@@ -588,8 +589,8 @@ public class DataController extends Observable implements Observer{
 		}
 	}
 
-//	public void subscribetoNotification(Context context) {
-//		db.subscribetoNotification(context);
-//	}
+	//	public void subscribetoNotification(Context context) {
+	//		db.subscribetoNotification(context);
+	//	}
 
 }

@@ -51,6 +51,7 @@ public class Model implements Serializable{
 	 * Invitations are stored locally, in order to check that two invites aren't sent to one person (weak check).
 	 */
 	private LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
+	private LinkedList<Invitation> receiveInvitations = new LinkedList<Invitation>();
 
 	//Singleton
 	private static Model singleModel;
@@ -328,7 +329,7 @@ public class Model implements Serializable{
 
 	/**
 	 * Set all sent invitations from this player
-	 * @param invitation - The invitation to add
+	 * @param invitations - The invitations to add
 	 */
 	public void setSentInvitations(LinkedList<Invitation> invitations){
 		sentInvitations = invitations;
@@ -342,32 +343,19 @@ public class Model implements Serializable{
 		return sentInvitations;
 	}
 	
-/* 	//TODO Delete these later.
-	 * *//**
-	 * Removes a sent invitation from the list of sent invitation
-	 * @param invitation - the Invitation to delete
-	 *//*
-	public void removeSentInvitation(Invitation invitation){
-		sentInvitations.remove(invitation);
-		SAVED = false;
+	/**
+	 * Set all received invitations to this player
+	 * @param invitations - The invitations to add
+	 */
+	public void setReceivedInvitations(LinkedList<Invitation> invitations){
+		receiveInvitations = invitations;
 	}
 	
-	*//**
-	 * Method to replace stored sent invitations from the list.
-	 * @param newInv
-	 *//*
-	public void updateSentInvitations(List<Invitation> newInv){
-		sentInvitations = new LinkedList<Invitation>(newInv);
-		SAVED = false;
-	}
-
-	*//**
-	 * Returns a set with all players the current player has sent invitations to. 
-	 * @return
-	 *//*
-	public LinkedList<Invitation> getSentInvitations(){
-		return sentInvitations;
+	/**
+	 * Retrieve a list of Invitations the current player has received
+	 */
+	public List<Invitation> getReceivedInvitations(){
+		return receiveInvitations;
 	}
 	
-*/	
 }
