@@ -70,7 +70,8 @@ public class LoginActivityTest extends
 		
 	}
 	/**
-	 * Variation 3 - Case 3 Requires no internet connection. TODO: turn internet autmatically off.
+	 * Variation 3 - Case 3 Requires no internet connection.
+	 * @pre: no internet connection
 	 */
 	public void testValidUsernameAndPasswordCaseThree(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
@@ -81,6 +82,7 @@ public class LoginActivityTest extends
 		solo.clickOnButton("OK");
 		
 	}
+	
 	@Override
 	public void tearDown() throws Exception{
 		solo.finishOpenedActivities();
