@@ -32,6 +32,7 @@ public class StartPresenter extends Presenter implements Observer{
 	// Adapter for ListView Contents and the actual listview
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
+	private boolean isUpdating = false;
 
 	public StartPresenter(StartActivity activity) {
 		super(activity);
@@ -42,7 +43,6 @@ public class StartPresenter extends Presenter implements Observer{
 		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
 		ParseAnalytics.trackAppOpened(activity.getIntent());
-		
 	}
 
 	public void initiate(){
@@ -53,10 +53,12 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	public void update(){
-		dc.addObserver(this);
-		updateList(dc.getGames());
-		dc.getInvitations();
-		activity.showProgressBar();
+		if(!isUpdating){
+			isUpdating = true;
+			updateList(dc.getGames());
+			dc.getInvitations();
+			activity.showProgressBar();
+		}
 	}
 
 
@@ -135,6 +137,10 @@ public class StartPresenter extends Presenter implements Observer{
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
+	
+	public void resetDownloadStatus(){
+		isUpdating = false;
+	}
 
 	/**
 	 * Called whenever a message is received from the DataController
@@ -155,12 +161,14 @@ public class StartPresenter extends Presenter implements Observer{
 				recent++;
 				setInvitationStatus((List<Invitation>) dcm.getData());
 			} else{
+				recent++;
 				//Send message to superclass as well
 				super.update(obs, obj);
 			}
-			if(recent == 1){
+			if(recent == 2){
 				activity.hideProgressBar();
 				recent = 0;
+				isUpdating = false;
 			}
 		}
 	}

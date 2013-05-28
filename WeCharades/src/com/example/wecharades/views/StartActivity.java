@@ -73,6 +73,11 @@ public class StartActivity extends GenericActivity {
 		presenter.initiate();
 		presenter.update();
 	}
+	
+	public void onPause(){
+		super.onPause();
+		presenter.resetDownloadStatus();
+	}
 
 	/**
 	 * Updates the screen
