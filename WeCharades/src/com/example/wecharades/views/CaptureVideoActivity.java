@@ -14,9 +14,7 @@ import android.widget.Toast;
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
 /**
- * 
  * @author Adam Lewestam
- *Fix isIntentAvailable Method
  */
 public class CaptureVideoActivity extends Activity {
 

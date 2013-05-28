@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.RegisterPresenter;
 
 
@@ -20,8 +21,7 @@ public class RegisterActivity extends GenericActivity {
 	EditText inputPassword;
 	EditText inputRepeatPassword;
 	TextView registerErrorMsg;
-	ProgressBar registerProgress;
-	View myView;
+	LoadProgressBar registerProgress;
 	RegisterPresenter presenter;
 
 
@@ -34,15 +34,14 @@ public class RegisterActivity extends GenericActivity {
 		presenter = (RegisterPresenter) super.getPresenter();
 
 		//Getting the view associated with this Activity
-		myView = getWindow().getDecorView().findViewById(android.R.id.content);
+		//myView = getWindow().getDecorView().findViewById(android.R.id.content);
 
 		// Importing all assets like buttons, text fields
 		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
 		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
-		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
-//		presenter.setProgressSpinnerInvisible(registerProgress);
+		registerProgress 	=	new LoadProgressBar(this, (ProgressBar)	findViewById(R.id.progress));
 	}
 	
 	@Override
@@ -60,12 +59,11 @@ public class RegisterActivity extends GenericActivity {
 				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
-				inputRepeatPassword.getText().toString(), myView, registerProgress);
-		
+				inputRepeatPassword.getText().toString());	
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -39,8 +39,8 @@ public class GuessCharadePresenter extends Presenter {
 	private DownloadVideo download;
 	private VideoView videoView;
 	private final String SAVE_PATH = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
-	private File SAVE_PATHTWO = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
+//	private File SAVE_PATHTWO = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	private Turn turn;
 	public String currentWord;
 	public CountDownTimer timer;
@@ -52,17 +52,11 @@ public class GuessCharadePresenter extends Presenter {
 		super(activity);
 		this.turn = turn;
 		this.activity = activity;
-
 	}
-
+	
 	public void initialize() {
-		setTurn(turn);
 		initializeTimer();
 		downloadVideo(activity, videoView);
-	}
-
-	public void setTurn(Turn turn){
-		this.turn = turn;
 	}
 
 	public void updateModel(){
@@ -79,6 +73,7 @@ public class GuessCharadePresenter extends Presenter {
 	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
+
 	 public void initializeTimer (){
 		 timer = new CountDownTimer(30000, 100) {
 
@@ -209,7 +204,7 @@ public class GuessCharadePresenter extends Presenter {
 		 @Override
 		 protected void onPreExecute(){
 			 downloadState = NO_DOWNLOAD;
-			 mDialog = new ProgressDialog(mContext);
+			 mDialog = new ProgressDialog(mContext); //TODO move out from here?
 			 mDialog.setTitle("Downloading Charade");
 			 mDialog.setMessage("Please Wait");
 			 mDialog.setCancelable(false);
@@ -243,6 +238,7 @@ public class GuessCharadePresenter extends Presenter {
 			 });
 			 mDialog.show();
 		 }
+
 
 		 @Override
 		 protected Boolean doInBackground(Void... params) {

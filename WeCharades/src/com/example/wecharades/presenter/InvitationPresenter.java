@@ -27,7 +27,7 @@ public class InvitationPresenter extends Presenter implements Observer{
 	}
 
 	public void update() {
-		activity.showProgressSpinner();
+		activity.showProgressBar();
 		dc.getInvitations();
 	}
 
@@ -59,7 +59,7 @@ public class InvitationPresenter extends Presenter implements Observer{
 						receivedList.add(inv);
 					}
 				}
-				activity.hideProgressSpinner();
+				activity.hideProgressBar();
 				setAdapter(receivedList, sentList);
 			}
 		}

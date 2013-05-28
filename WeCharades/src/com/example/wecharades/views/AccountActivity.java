@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.AccountPresenter;
 
 public class AccountActivity extends GenericActivity {
@@ -76,7 +76,7 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected RefreshProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

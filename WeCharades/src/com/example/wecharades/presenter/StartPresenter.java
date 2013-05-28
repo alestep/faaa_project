@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -31,6 +32,7 @@ public class StartPresenter extends Presenter implements Observer{
 	// Adapter for ListView Contents and the actual listview
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
+	private boolean isUpdating = false;
 
 	public StartPresenter(StartActivity activity) {
 		super(activity);
@@ -41,7 +43,6 @@ public class StartPresenter extends Presenter implements Observer{
 		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
 		ParseAnalytics.trackAppOpened(activity.getIntent());
-		
 	}
 
 	public void initiate(){
@@ -52,9 +53,12 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	public void update(){
-		dc.addObserver(this);
-		updateList(dc.getGames());
-		dc.getInvitations();
+		if(!isUpdating){
+			isUpdating = true;
+			updateList(dc.getGames());
+			dc.getInvitations();
+			activity.showProgressBar();
+		}
 	}
 
 
@@ -73,7 +77,13 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Private method which is called after an updated list of invitations is received.
 	 */
 	private void setInvitationStatus(List<Invitation> invites){
-		activity.setInvitations(invites.size());
+		LinkedList<Invitation> recInv = new LinkedList<Invitation>();
+		for(Invitation inv : invites){
+			if(inv.getInvitee().equals(dc.getCurrentPlayer())){
+				recInv.add(inv);
+			}
+		}
+		activity.setInvitations(recInv.size());
 	}
 
 	/**
@@ -127,6 +137,10 @@ public class StartPresenter extends Presenter implements Observer{
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
+	
+	public void resetDownloadStatus(){
+		isUpdating = false;
+	}
 
 	/**
 	 * Called whenever a message is received from the DataController
@@ -135,17 +149,26 @@ public class StartPresenter extends Presenter implements Observer{
 	 * @param obs - The observer
 	 * @param obj - The object included in the message
 	 */
+	private int recent = 0;
 	public void update(Observable obs, Object obj) {
 		if(obj.getClass().equals(DCMessage.class)
 				&& obj != null){
 			DCMessage dcm = (DCMessage) obj;
 			if (dcm.getMessage() == DCMessage.DATABASE_GAMES){
+				recent++;
 				updateList((ArrayList<Game>) dcm.getData());
 			} else if (dcm.getMessage() == DCMessage.INVITATIONS){
+				recent++;
 				setInvitationStatus((List<Invitation>) dcm.getData());
 			} else{
+				recent++;
 				//Send message to superclass as well
 				super.update(obs, obj);
+			}
+			if(recent == 2){
+				activity.hideProgressBar();
+				recent = 0;
+				isUpdating = false;
 			}
 		}
 	}

@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.ProgressBar;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.InvitationPresenter;
 
 public class InvitationActivity extends GenericActivity {
@@ -38,11 +38,10 @@ public class InvitationActivity extends GenericActivity {
 
 	public void setInvitation(Invitation invitation, boolean response) {
 		presenter.setInvitation(invitation, response);
-		
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected RefreshProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}
