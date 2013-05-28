@@ -13,15 +13,15 @@ import com.jayway.android.robotium.solo.Solo;
 /**
  * 
  * @author Adam
- *Test class to test the LoginActivity Test ID: T02
+ *Test class to test the LoginActivity and GuessCharadeActivity Test ID: T02, T07.
  */
 
-public class LoginActivityTest extends
+public class LoginAndGuessCharadeActivityTest extends
 		ActivityInstrumentationTestCase2<LoginActivity> {
 	
 	private Solo solo;
 	
-	public LoginActivityTest() {
+	public LoginAndGuessCharadeActivityTest() {
 		super(LoginActivity.class);
 		// TODO Auto-generated constructor stub
 	}
@@ -87,25 +87,48 @@ public class LoginActivityTest extends
 //		
 //	}
 	/**
-	 * Test ID
+	 * Test ID: T07. Variation One. Uses precondition 1
 	 */
-	public void testGuessCharadeVideo(){
+	public void testGuessCharadeVideoGuessWrong(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
 		solo.enterText(0, "adam");
 		solo.enterText(1, "adam92");
 		solo.clickOnButton("Login");
 		solo.waitForActivity(StartActivity.class);
+		/*---------------------------------------*/
 		solo.clickOnText("Antz");
 		solo.waitForActivity(GameDashboardActivity.class);
 		solo.clickOnButton("Guess charade");
-		solo.waitForDialogToOpen(3000);
-		solo.waitForDialogToClose(15000);
+		solo.waitForDialogToOpen(2000);
+		solo.waitForDialogToClose(3000);
 		solo.enterText(0, "LOL");
-//		solo.clickOnButton(0);
-//		solo.waitForDialogToOpen(5000);
-//		solo.clickOnButton("Retry");
-//		solo.waitForDialogToClose(5000);
 		
+		solo.clickOnImageButton(0);
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("Retry");
+		solo.waitForDialogToClose(5000);
+	}
+	/**
+	 * Variation 2 - requires the right word. Precondition: Comment away row 99-102 which update the database.
+	 */
+	public void testGuessCharadeVideoGuessRight(){
+		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+		solo.enterText(0, "adam");
+		solo.enterText(1, "adam92");
+		solo.clickOnButton("Login");
+		solo.waitForActivity(StartActivity.class);
+		/*---------------------------------------*/
+		solo.clickOnText("Antz");
+		solo.waitForActivity(GameDashboardActivity.class);
+		solo.clickOnButton("Guess charade");
+		solo.waitForDialogToOpen(2000);
+		solo.waitForDialogToClose(3000);
+		solo.enterText(0, "skriva");
+		solo.clickOnImageButton(0);
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("Continue");
+		solo.waitForDialogToClose(5000);
+		solo.waitForActivity(GameDashboardActivity.class);
 		
 	}
 	
