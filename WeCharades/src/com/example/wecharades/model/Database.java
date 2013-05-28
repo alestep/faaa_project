@@ -128,7 +128,7 @@ public class Database extends Observable implements IDatabase {
 							actualList.add(o);
 						}
 					}
-					if(obj.isEmpty()){
+					if(actualList.isEmpty()){
 						createGameInBackground(player1, player2);
 					} else{
 						sendError(new DatabaseException(1000,""));
