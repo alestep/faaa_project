@@ -37,7 +37,23 @@ public class Player implements Serializable, Comparable<Player> {
 		this.username = username;
 		this.globalScore = globalScore;
 	}
-
+	
+	/**
+	 * Creates a player with a parseId, username, global score, number of played games, number of won games,
+	 * number of lost games and number of draw games
+	 * @param parseId
+	 * @param username
+	 * @param globalScore
+	 * @param playedGames
+	 * @param wonGames
+	 * @param lostGames
+	 * @param drawGames
+	 */
+	public Player(String parseId, String username, int globalScore, int playedGames, int wonGames, int lostGames, int drawGames){
+		this.parseId = parseId;
+		this.username = username;
+		this.globalScore = globalScore;
+	}
 
 	/**
 	 * Get the player id
