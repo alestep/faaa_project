@@ -21,7 +21,7 @@ public class RegisterActivity extends GenericActivity {
 	EditText inputRepeatPassword;
 	TextView registerErrorMsg;
 	ProgressBar registerProgress;
-	View myView;
+	//View myView;
 	RegisterPresenter presenter;
 
 
@@ -34,7 +34,7 @@ public class RegisterActivity extends GenericActivity {
 		presenter = (RegisterPresenter) super.getPresenter();
 
 		//Getting the view associated with this Activity
-		myView = getWindow().getDecorView().findViewById(android.R.id.content);
+		//myView = getWindow().getDecorView().findViewById(android.R.id.content);
 
 		// Importing all assets like buttons, text fields
 		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
@@ -42,7 +42,6 @@ public class RegisterActivity extends GenericActivity {
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
 		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
-//		presenter.setProgressSpinnerInvisible(registerProgress);
 	}
 	
 	@Override
@@ -60,8 +59,7 @@ public class RegisterActivity extends GenericActivity {
 				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
-				inputRepeatPassword.getText().toString(), myView, registerProgress);
-		
+				inputRepeatPassword.getText().toString(), registerProgress);	
 	}
 
 	@Override
