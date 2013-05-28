@@ -64,7 +64,7 @@ public class TurnTest extends TestCase {
 	}
 
 	public void testCompareTo() {
-		assertEquals(t1.compareTo(t2) == 0, true);
+		assertEquals(t1.compareTo(t2) != 0, true);
 
 	}
 
