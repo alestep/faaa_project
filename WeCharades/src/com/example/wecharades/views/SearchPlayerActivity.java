@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**
@@ -77,7 +77,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

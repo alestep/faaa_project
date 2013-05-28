@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.RegisterPresenter;
 
 
@@ -20,7 +20,7 @@ public class RegisterActivity extends GenericActivity {
 	EditText inputPassword;
 	EditText inputRepeatPassword;
 	TextView registerErrorMsg;
-	ProgressBar registerProgress;
+	LoadProgressBar registerProgress;
 	View myView;
 	RegisterPresenter presenter;
 
@@ -41,7 +41,7 @@ public class RegisterActivity extends GenericActivity {
 		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
 		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
-		registerProgress 	=	(ProgressBar) 	findViewById(R.id.progress);
+		registerProgress 	=	(LoadProgressBar) 	findViewById(R.id.progress);
 //		presenter.setProgressSpinnerInvisible(registerProgress);
 	}
 	
@@ -65,7 +65,7 @@ public class RegisterActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -46,19 +46,22 @@ public class GuessCharadePresenter extends Presenter {
 	private Turn turn;
 	public String currentWord;
 	public CountDownTimer timer;
-	private TextView timerView;
 	public static final int NO_DOWNLOAD = 0;
 	public static final int DOWNLOAD_FINISHED = 1;
 	public int downloadState = NO_DOWNLOAD;
 
-	public GuessCharadePresenter(GuessCharadeActivity activity) {
+	public GuessCharadePresenter(GuessCharadeActivity activity, Turn turn) {
 		super(activity);
+		this.turn = turn;
 		this.activity = activity;
 
 	}
-	public void setTurn(Turn turn){
-		this.turn = turn;
+	
+	public void initialize() {
+		initializeTimer();
+		downloadVideo(activity, videoView);
 	}
+	
 	public void updateModel(){
 		try {
 			dc.updateTurn(turn);
@@ -73,21 +76,20 @@ public class GuessCharadePresenter extends Presenter {
 	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
-	public void initializeTimer (final TextView timerView){
-		this.timerView = timerView;
-		timer = new CountDownTimer(30000, 1000) {
+	public void initializeTimer (){
+		timer = new CountDownTimer(30000, 100) {
 
 			public void onTick(long millisUntilFinished) {
 				if (millisUntilFinished>10000)
-					timerView.setText(String.valueOf(millisUntilFinished / 1000));
+					if (millisUntilFinished%1000 == 0)
+						activity.setTime(String.valueOf(millisUntilFinished / 1000));
 				else 
-					timerView.setText(millisUntilFinished / 1000 + "." + millisUntilFinished / 100);
+					activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
 			}
 
 			public void onFinish() {
 				activity.gameState = GuessCharadeActivity.GAME_FINISHED;
 				videoView.stopPlayback();
-				timerView.setText("Time is up!");
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
@@ -173,6 +175,7 @@ public class GuessCharadePresenter extends Presenter {
 	public boolean checkRightWord(EditText answerWord){
 		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
 	}
+	
 	public Game getGame(){
 		return dc.getGame(turn.getGameId());
 	}//TODO: Oklar metod?
@@ -293,10 +296,9 @@ public class GuessCharadePresenter extends Presenter {
 			if(mDialog.isShowing()){
 				mDialog.setMessage("Download Success!");
 				mDialog.dismiss();
-				activity.showErrorDialog(shuffleWord().toUpperCase());
+				activity.setPossibleLetters(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
-				timerView.setVisibility(0);
 				playVideo();
 			}
 		}
@@ -309,7 +311,7 @@ public class GuessCharadePresenter extends Presenter {
 				builder.setTitle("Downloading Charade")
 				.setMessage("Download failed, try again!")
 				.setCancelable(false)
-				.setPositiveButton("Go back and retry later", new DialogInterface.OnClickListener() {
+				.setPositiveButton("Retry later", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 //						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);

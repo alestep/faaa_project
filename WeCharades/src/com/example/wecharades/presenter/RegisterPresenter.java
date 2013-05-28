@@ -80,7 +80,7 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner();
+			activity.showProgressBar();
 			activity.disableView();
 		}
 
@@ -127,7 +127,7 @@ public class RegisterPresenter extends Presenter {
 				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			activity.hideProgressSpinner();
+			activity.hideProgressBar();
 			activity.enabledView();
 		}
 	}

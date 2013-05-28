@@ -7,10 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.IProgress;
 import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
@@ -69,7 +69,7 @@ public class VideoUploadActivity extends GenericActivity{
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected IProgress getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

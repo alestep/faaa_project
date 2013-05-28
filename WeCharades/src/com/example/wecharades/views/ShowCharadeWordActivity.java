@@ -3,11 +3,11 @@ package com.example.wecharades.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
+import com.example.wecharades.model.IProgress;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.SimplePresenter;
 
@@ -35,7 +35,7 @@ public class ShowCharadeWordActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected IProgress getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}

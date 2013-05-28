@@ -26,7 +26,7 @@ public class InvitationPresenter extends Presenter {
 	}
 
 	public void update() {
-		activity.showProgressSpinner();
+		activity.showProgressBar();
 		dc.getInvitations();
 	}
 
@@ -58,7 +58,7 @@ public class InvitationPresenter extends Presenter {
 						receivedList.add(inv);
 					}
 				}
-				activity.hideProgressSpinner();
+				activity.hideProgressBar();
 				setAdapter(receivedList, sentList);
 			}
 		}
