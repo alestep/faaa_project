@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.NewGamePresenter;
@@ -41,12 +40,6 @@ public class NewGameActivity extends GenericActivity {
 	public void onClickSearchPlayer(View view) {
 		Intent intent = new Intent (getApplicationContext(), SearchPlayerActivity.class);
 		startActivity(intent);
-	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
