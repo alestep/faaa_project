@@ -11,7 +11,7 @@
         android:id="@+id/list_item_entry_drawable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/social_person"/>
+        android:src="@drawable/user_image_light"/>
     
     <RelativeLayout
         android:layout_width="0dp"

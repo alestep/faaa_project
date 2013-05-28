@@ -15,33 +15,35 @@ public class DBMessage implements IMessage{
 	public static final int 
 	UNDEFINED			= 0
 	, ERROR 			= 10
-	, GAMELIST			= 20
-	, INVITATIONS		= 30;
+	, MESSAGE			= 20
+	, GAMELIST			= 30
+	, INVITATIONS		= 40;
 
 int message;
 Object data;
 
 public DBMessage(int message, Object data){
 	switch(message){
-	case(10)	: if(data.getClass().equals(DatabaseException.class)){this.data = data; break;} 
-	case(20)	: if(data instanceof Map
-						&& ( 
-								(!((Map) data).isEmpty() 
-										&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
-								|| ((Map) data).isEmpty()
-							)
-					)
-					{this.message = message; break;}
-	case(30)	: if(data instanceof List
-						&& (	
-								(!((List) data).isEmpty()
-									&& ((List) data).iterator().next().getClass().equals(Invitation.class) 
+	case(ERROR)		: if(data.getClass().equals(DatabaseException.class)){this.message = message; break;}
+	case(MESSAGE)	: if(data.getClass().equals(String.class)){this.message = message; break;}
+	case(GAMELIST)	: if(data instanceof Map
+							&& ( 
+									(!((Map) data).isEmpty() 
+											&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
+									|| ((Map) data).isEmpty()
 								)
-								|| ((List) data).isEmpty()
-							)
-					)
-					{this.message = message; break;}
-	default 	: this.message = UNDEFINED; break;
+						)
+						{this.message = message; break;}
+	case(INVITATIONS): 	if(data instanceof List
+							&& (	
+									(!((List) data).isEmpty()
+										&& ((List) data).iterator().next().getClass().equals(Invitation.class) 
+									)
+									|| ((List) data).isEmpty()
+								)
+						)
+						{this.message = message; break;}
+	default 		: this.message = UNDEFINED; break;
 	}
 	this.data = data;
 }

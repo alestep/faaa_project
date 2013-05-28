@@ -8,7 +8,7 @@
         android:id="@+id/search_window"
         style="@style/edit_text_style"
         android:background="@drawable/rectangle_light_grey"
-        android:drawableRight="@drawable/ic_menu_search"
+        android:drawableRight="@drawable/search"
         android:ems="10"
         android:layout_marginBottom="5dp"
         android:hint="@string/search_hint"

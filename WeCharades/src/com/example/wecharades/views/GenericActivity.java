@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.wecharades.R;
 import com.example.wecharades.presenter.Presenter;
 
 public abstract class GenericActivity extends Activity{
@@ -50,20 +55,6 @@ public abstract class GenericActivity extends Activity{
 			enableOrDisableViews(view);
 		}
 	}
-	
-	/**
-	 * 
-	 */
-	public void showErrorDialog(){
-		
-	}
-	
-	/**
-	 * 
-	 */
-	public void showSuccessDialog(){ 
-		
-	}
 
 	/**
 	 * Enable or disable all clickable objects in view
@@ -79,6 +70,24 @@ public abstract class GenericActivity extends Activity{
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @param msg
+	 */
+	public void showToast(String msg) {
+		
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_success, (ViewGroup) findViewById(R.id.toast_layout_root));
+
+		TextView text = (TextView) layout.findViewById(R.id.toastText);
+		text.setText(msg);
+
+		Toast toast = new Toast(getApplicationContext());
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
+		toast.show();
 	}
 
 	public void showMessage(String error) {

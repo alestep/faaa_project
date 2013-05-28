@@ -205,15 +205,10 @@ public class Model implements Serializable{
 			if(listOfTurns == null){
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
-			}else if(listOfTurns.contains(turn)) 
+			} else if(listOfTurns.contains(turn)){
 				listOfTurns.remove(turn);
+			}
 			listOfTurns.add(turn);
-			Collections.sort(listOfTurns, new Comparator<Turn>(){
-				@Override
-				public int compare(Turn lhs, Turn rhs) {
-					return lhs.getTurnNumber() - rhs.getTurnNumber();
-				}
-			});
 		}
 		SAVED = false;
 	}
@@ -225,12 +220,6 @@ public class Model implements Serializable{
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
-		Collections.sort(turnList, new Comparator<Turn>(){
-			@Override
-			public int compare(Turn lhs, Turn rhs) {
-				return lhs.getTurnNumber() - rhs.getTurnNumber();
-			}
-		});
 		for(Turn turn : turnList){
 			putTurn(turn);
 		}
@@ -251,8 +240,12 @@ public class Model implements Serializable{
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game) {
-		Log.d("Model: getCurrentTurn->Integer", String.valueOf(getTurns(game).get(game.getTurnNumber()-1).getTurnNumber()));
-		return getTurns(game).get(game.getTurnNumber()-1); //HERE IS THE ERROR! THE TURN HAS BEEN INCREMENTED!
+		for(Turn t : getTurns(game)){
+			if(t.getTurnNumber() == game.getTurnNumber()){
+				return t;
+			}
+		}
+		return null;
 	}
 
 	//Players ---------------------------------------------------------------

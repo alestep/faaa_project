@@ -141,6 +141,11 @@ public class Player implements Serializable, Comparable<Player> {
 				&& this.getParseId().equals(otherPlayer.getParseId());
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		return(obj != null && obj.getClass().equals(Player.class) && this.equals((Player) obj));
+	}
+	
 	/**
 	 * Get the hashcode
 	 */

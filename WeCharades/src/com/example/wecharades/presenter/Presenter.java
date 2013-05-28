@@ -1,21 +1,21 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
+import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 
