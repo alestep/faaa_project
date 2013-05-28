@@ -59,7 +59,7 @@ public class GameDashboardActivity extends GenericActivity {
 	}
 	
 	public void onClickRefresh(View v) {
-		//uppdatera dashboard
+		presenter.createDashboard(myTable);
 	}
 	
 	public void onClickHome(View v){

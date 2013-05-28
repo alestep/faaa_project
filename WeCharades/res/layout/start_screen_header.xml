@@ -15,7 +15,7 @@
         android:layout_weight="0.5"
         android:textColor="@color/DarkGrey"
         android:background="@drawable/button_custom_grey_to_red"
-        android:drawableLeft="@drawable/info"
+        android:drawableLeft="@drawable/info_dark"
         android:gravity="left|center_vertical"
         android:onClick="onClickUsername"
         android:paddingLeft="10dp" />

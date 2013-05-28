@@ -10,10 +10,8 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.SearchPlayerActivity;
-import com.example.wecharades.views.StartActivity;
 import com.parse.ParseException;
 import com.parse.ParsePush;
-import com.parse.PushService;
 
 public class SearchPlayerPresenter extends Presenter {
 	
@@ -47,7 +45,7 @@ public class SearchPlayerPresenter extends Presenter {
 			if (!list.isEmpty())
 				view.setAdapter(new SearchPlayerAdapter(activity, resultList, sentInvitations));
 		} catch (DatabaseException e) {
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 		
 	}
@@ -57,7 +55,7 @@ public class SearchPlayerPresenter extends Presenter {
 			dc.sendInvitation(dc.getPlayer(invitee));
 			sendNotificationtoOtherPlayer(invitee);
 		} catch (DatabaseException e){
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 		
 	}

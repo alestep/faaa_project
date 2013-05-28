@@ -1,6 +1,5 @@
 package com.example.wecharades.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.wecharades.views.IMessage;
@@ -12,11 +11,11 @@ import com.example.wecharades.views.IMessage;
  */
 public class DCMessage implements IMessage{
 	public static final int 
-		UNDEFINED				= 0
+		UNDEFINED				=  0
 		, MESSAGE 				= 10
 		, ERROR					= 20
 		, DATABASE_GAMES 		= 30
-		, INVITATIONS		= 40;
+		, INVITATIONS			= 40;
 	
 	int message;
 	Object data;
@@ -24,7 +23,7 @@ public class DCMessage implements IMessage{
 	public DCMessage(int message, Object data){
 		switch(message){
 		case(10)	: if(data instanceof String) 	{this.message = MESSAGE; break;}
-		case(20)	: if(data instanceof Exception)	{this.message = ERROR; break;}
+		case(20)	: if(data instanceof String)	{this.message = ERROR; break;}
 		case(30)	: if(data instanceof List 
 						&& (
 								!((List) data).isEmpty() 

@@ -2,7 +2,6 @@ package com.example.wecharades.presenter;
 
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -19,7 +18,6 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
 
 
@@ -27,13 +25,13 @@ public class ResetPresenter extends Presenter {
 
 	private ResetPasswordActivity activity;
 	private String email;
-	private View parentView;
+	//TODO private View parentView;
 	private DatabaseException dbException;
 
 	public ResetPresenter(ResetPasswordActivity activity) {
 		super(activity);
 		this.activity = activity;
-		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+		//TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void resetPassword(String email, View myView, ProgressBar resetProgress) {
@@ -66,7 +64,8 @@ public class ResetPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner(getAllChildren(parentView));
+			activity.showProgressSpinner();
+			activity.disableView();
 		}
 
 		@Override
@@ -106,7 +105,8 @@ public class ResetPresenter extends Presenter {
 				goToLoginActivity();
 			}
 			exceptionState = NO_EXCEPTION;
-			activity.hideProgressSpinner(getAllChildren(parentView));
+			activity.hideProgressSpinner();
+			activity.enabledView();
 		}
 	}
 }

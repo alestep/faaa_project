@@ -1,16 +1,14 @@
 package com.example.wecharades.presenter;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,13 +28,13 @@ public class RegisterPresenter extends Presenter {
 	private String inputEmail;
 	private String inputPassword;
 	private String inputRepeatPassword;
-	private View parentView;
+	//TODO private View parentView;
 	private DatabaseException dbException;
 
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
-		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+		// TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	/**
@@ -82,7 +80,8 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner(getAllChildren(parentView));
+			activity.showProgressSpinner();
+			activity.disableView();
 		}
 
 		@Override
@@ -128,7 +127,8 @@ public class RegisterPresenter extends Presenter {
 				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			activity.hideProgressSpinner(getAllChildren(parentView));
+			activity.hideProgressSpinner();
+			activity.enabledView();
 		}
 	}
 }

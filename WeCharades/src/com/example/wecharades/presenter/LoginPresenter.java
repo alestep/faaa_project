@@ -29,12 +29,10 @@ public class LoginPresenter extends Presenter{
 	private String username;
 	private String password;
 	private DatabaseException dbException;
-	private View parentView;
 
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
 		this.activity = activity;
-		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void setListeners(EditText password) {		
@@ -70,7 +68,8 @@ public class LoginPresenter extends Presenter{
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner(getAllChildren(parentView));
+			activity.showProgressSpinner();
+			activity.disableView();
 		}
 
 		@Override
@@ -113,11 +112,12 @@ public class LoginPresenter extends Presenter{
 						dialog.dismiss();
 					}
 				});
-
+				
 				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}
-			activity.hideProgressSpinner(getAllChildren(parentView));
+			activity.hideProgressSpinner();
+			activity.enabledView();
 		}
 	}
 }

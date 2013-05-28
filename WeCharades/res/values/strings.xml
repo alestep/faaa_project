@@ -63,6 +63,8 @@
     <string name="ok">OK</string>
     <string name="errorTitle">Error!</string>
     <string name="successTitle">Success!</string>
+    <string name="quit">Quit</string>
+    <string name="about">About</string>
     
 
 </resources>
