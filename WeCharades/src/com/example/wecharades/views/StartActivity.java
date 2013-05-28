@@ -10,13 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
@@ -78,6 +80,10 @@ public class StartActivity extends GenericActivity {
 	 */
 	public void onClickRefresh(View v) {
 		presenter.update();
+		ImageButton refresh = (ImageButton) findViewById(R.id.refresh);
+		Animation rotation = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
+		rotation.setRepeatCount(Animation.INFINITE);
+		refresh.startAnimation(rotation);
 	}
 
 	/**
@@ -120,11 +126,11 @@ public class StartActivity extends GenericActivity {
 	public void setAccountName(String user){
 		account.setText(user);
 	}
-	
+
 	public void setGameList(final SeparatedListAdapter adapter){
 		//Final-declarations in order to reference from inner class later
 		final Activity activity = this;
-		
+
 		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
 
