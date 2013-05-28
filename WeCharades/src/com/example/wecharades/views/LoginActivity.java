@@ -56,7 +56,6 @@ public class LoginActivity extends GenericActivity {
 	public void onClickForgotPassword(View view) {
 		Intent i = new Intent(getApplicationContext(), ResetPasswordActivity.class);
 		startActivity(i);
-		//finish();
 	}
 
 	/**
@@ -66,7 +65,6 @@ public class LoginActivity extends GenericActivity {
 	public void onClickRegister(View view) {
 		Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
 		startActivity(i);
-		//finish();
 	}
 
 	@Override

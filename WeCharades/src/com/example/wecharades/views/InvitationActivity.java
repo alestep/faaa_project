@@ -21,7 +21,7 @@ public class InvitationActivity extends GenericActivity {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState, new InvitationPresenter(this));
         setContentView(R.layout.list_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh); 
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
         
         //Get references to instances
 		presenter = (InvitationPresenter) getPresenter();
@@ -54,8 +54,13 @@ public class InvitationActivity extends GenericActivity {
 	 */
 	public void onClickHome(View v){
 		startActivity(new Intent(this, StartActivity.class));
+		finish();
 	}
 	
+	/**
+	 * Updates the screen
+	 * @param v
+	 */
 	public void onClickRefresh(View v){
 		presenter.update();
 	}

@@ -19,13 +19,14 @@ public class HighScoreActivity extends GenericActivity {
 	private HighScorePresenter presenter;
 	private TextView globalRanking;
 	private RefreshProgressBar refresh;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new HighScorePresenter(this));
 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.highscore);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh); 
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 		
 		//Get references to instances
 		myTable = (TableLayout) findViewById(R.id.table);
@@ -54,6 +55,7 @@ public class HighScoreActivity extends GenericActivity {
 	
 	public void onClickHome(View v){
 		startActivity(new Intent(this, StartActivity.class));
+		finish();
 	}
 
 }

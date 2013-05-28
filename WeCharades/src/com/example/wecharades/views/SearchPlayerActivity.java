@@ -38,7 +38,7 @@ public class SearchPlayerActivity extends GenericActivity {
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.search_player_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh); 
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 		
         // Get references to instances
         presenter = (SearchPlayerPresenter) super.getPresenter();

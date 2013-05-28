@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
@@ -11,29 +12,26 @@ import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.AccountPresenter;
 
 public class AccountActivity extends GenericActivity {
-	private TextView username, globalRanking, playedGames, wonGames, lostGames, drawGames;
+	private AccountPresenter presenter;
+	private RefreshProgressBar refresh;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+		super.onCreate(savedInstanceState, new AccountPresenter(this));
+
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.account_screen);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
-		
-		presenter  = new AccountPresenter(this);
-		username = (TextView) findViewById(R.id.username);
-		globalRanking = (TextView) findViewById(R.id.globalRanking);
-		playedGames = (TextView) findViewById(R.id.playedGames);
-		wonGames = (TextView) findViewById(R.id.wonGames);
-		lostGames = (TextView) findViewById(R.id.lostGames);
-		drawGames = (TextView) findViewById(R.id.drawGames);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
+
+		//Get references to instances
+		presenter = (AccountPresenter) super.getPresenter();
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		((AccountPresenter) presenter).update();
+		presenter.update();
 	}
 
 	/**
@@ -41,15 +39,32 @@ public class AccountActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickGameInstructions(View view) {
-		((AccountPresenter) presenter).gameInstructions();
+		presenter.gameInstructions();
 	}
-	
+
 	/**
 	 * Called when Logout button is clicked
 	 * @param view
 	 */
 	public void onClickLogout(View view) {
-		((AccountPresenter) presenter).logOut();
+		presenter.logOut();
+	}
+	
+	/**
+	 * Updates the screen
+	 * @param view
+	 */
+	public void onClickRefresh(View view){
+		presenter.update();
+	}
+	
+	/**
+	 * Go to Home screen
+	 * @param view
+	 */
+	public void onClickHome(View view){
+		startActivity(new Intent(this, StartActivity.class));
+		finish();
 	}
 
 
@@ -63,12 +78,20 @@ public class AccountActivity extends GenericActivity {
 	 * @param numberOfLostGames
 	 * @param numberOfDrawGames
 	 */
-	public void updatePlayerInformation(String newUsername,
+	public void updatePlayerInformation(String newUsername, int globalRanking,
 			int globalScore, int numberOfFinishedGames, int numberOfWonGames,
 			int numberOfLostGames, int numberOfDrawGames) {
+
+		TextView username = (TextView) findViewById(R.id.username);
+		TextView ranking = (TextView) findViewById(R.id.globalRanking);
+		TextView playedGames = (TextView) findViewById(R.id.playedGames);
+		TextView wonGames = (TextView) findViewById(R.id.wonGames);
+		TextView lostGames = (TextView) findViewById(R.id.lostGames);
+		TextView drawGames = (TextView) findViewById(R.id.drawGames);
+
 		username.setText(newUsername);
 		//TODO fix global ranking by calculating position
-		globalRanking.setText(Integer.toString(0) + " ("+ globalScore +" points)");
+		ranking.setText(Integer.toString(globalRanking) + " ("+ globalScore +" points)");
 		playedGames.setText(Integer.toString(numberOfFinishedGames));
 		wonGames.setText(Integer.toString(numberOfWonGames));
 		lostGames.setText(Integer.toString(numberOfLostGames));
@@ -77,11 +100,6 @@ public class AccountActivity extends GenericActivity {
 
 	@Override
 	protected RefreshProgressBar getProgressBar() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void onClickHome(View v){
-		startActivity(new Intent(this, StartActivity.class));
+		return refresh;
 	}
 }

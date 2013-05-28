@@ -1,5 +1,8 @@
 package com.example.wecharades.presenter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
+import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 
@@ -26,16 +31,6 @@ public abstract class Presenter implements Observer{
 		this.activity = activity;
 		this.dc = DataController.getDataController(activity);
 		dc.addObserver(this);
-	}
-
-	/**
-	 * A method to show a toast
-	 * @param context
-	 * @param msg
-	 */
-	protected void showToast(Context context, String msg) {
-		Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
-		toast.show();
 	}
 
 	/**
@@ -72,7 +67,7 @@ public abstract class Presenter implements Observer{
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if the user has internet connection
 	 * @return true if the user has internet connection, false otherwise

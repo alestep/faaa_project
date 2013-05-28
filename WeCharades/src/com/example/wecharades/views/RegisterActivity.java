@@ -29,7 +29,7 @@ public class RegisterActivity extends GenericActivity {
 		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.register);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_back); 
 		
 		// Get references to instances
 		presenter 			= 	(RegisterPresenter) super.getPresenter();
@@ -56,6 +56,14 @@ public class RegisterActivity extends GenericActivity {
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString());	
+	}
+	
+	/**
+	 * Go back to Login screen
+	 * @param v
+	 */
+	public void onClickBack(View v){
+		presenter.goToLoginActivity();
 	}
 
 	@Override

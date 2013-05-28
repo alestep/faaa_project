@@ -27,7 +27,7 @@ public class GameDashboardActivity extends GenericActivity {
 		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.game_screen);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh); 
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 		
 		//Get references to instances
 		presenter = (GameDashboardPresenter) super.getPresenter();
@@ -63,5 +63,6 @@ public class GameDashboardActivity extends GenericActivity {
 	
 	public void onClickHome(View v){
 		startActivity(new Intent(this, StartActivity.class));
+		finish();
 	}
 }

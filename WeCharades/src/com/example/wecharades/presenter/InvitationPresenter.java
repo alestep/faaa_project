@@ -36,7 +36,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 	public void initialize() {
 		activity.showProgressBar();
 		setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
-		activity.hideProgressBar();
 		
 	}
 	
@@ -46,7 +45,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 	public void update() {
 		activity.showProgressBar();
 		dc.getInvitations();
-		activity.hideProgressBar();
 	}
 	
 	/**
@@ -89,5 +87,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 		if(!sentList.isEmpty())
 			adapter.addSection("Sent invitations", new InvitationAdapter(activity, sentList, dc.getCurrentPlayer()));
 		view.setAdapter(adapter);
+		activity.hideProgressBar();
 	}		
 }
