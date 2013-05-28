@@ -143,10 +143,11 @@ public class StartPresenter extends Presenter implements Observer{
 				updateList((ArrayList<Game>) dcm.getData());
 			} else if (dcm.getMessage() == DCMessage.INVITATIONS){
 				setInvitationStatus((List<Invitation>) dcm.getData());
+			} else{
+				//Send message to superclass as well
+				super.update(obs, obj);
 			}
 		}
-		//Send message to superclass as well
-		super.update(obs, obj);
 	}
 
 

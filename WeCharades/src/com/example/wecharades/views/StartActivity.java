@@ -47,25 +47,23 @@ public class StartActivity extends GenericActivity {
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
 
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.list_screen);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
+
+		// Get a reference to views
+		gameListView = (ListView) findViewById(R.id.list);
+
+		// Inflate Start screen header in the ListView
+		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
+		gameListView.addHeaderView(header);
+
+		invitations = (ImageButton) findViewById(R.id.invitations);
+		account = (Button) findViewById(R.id.account);
+
 		//Check if the user is logged in
-		if(presenter.checkLogin()){
-			requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-			setContentView(R.layout.list_screen);
-			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
-
-			// Get a reference to views
-			gameListView = (ListView) findViewById(R.id.list);
-
-			// Inflate Start screen header in the ListView
-			View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-			gameListView.addHeaderView(header);
-
-			invitations = (ImageButton) findViewById(R.id.invitations);
-			account = (Button) findViewById(R.id.account);
-			presenter.initiate();
-		} else{
-			finish();
-		}
+		presenter.checkLogin();
+		presenter.initiate();
 	}
 
 	public void onStart(){
@@ -121,11 +119,11 @@ public class StartActivity extends GenericActivity {
 	public void setAccountName(String user){
 		account.setText(user);
 	}
-	
+
 	public void setGameList(final SeparatedListAdapter adapter){
 		//Final-declarations in order to reference from inner class later
 		final Activity activity = this;
-		
+
 		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
 
