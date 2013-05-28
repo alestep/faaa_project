@@ -30,6 +30,7 @@ public class GameDashboardPresenter extends Presenter {
 	}
 
 	public void createDashboard(TableLayout table) {
+		activity.showProgressBar();
 		//Get the game from the clicked object in StartActivity
 		game = (Game) activity.getIntent().getSerializableExtra("Game"); //TODO: check if null?
 		turnList = dc.getTurns(game);
@@ -40,6 +41,7 @@ public class GameDashboardPresenter extends Presenter {
 		updateScore();
 
 		updateButtons(turnList, buttonList);
+		activity.hideProgressBar();
 	}
 
 	/**

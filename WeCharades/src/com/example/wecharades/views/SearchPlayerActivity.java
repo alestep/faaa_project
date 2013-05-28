@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.LoadProgressBar;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**
@@ -24,10 +26,8 @@ public class SearchPlayerActivity extends GenericActivity {
 	
 	private EditText searchBox;
 	private SearchPlayerPresenter presenter;
+	private RefreshProgressBar refresh;
 	
-	/**
-	 * 
-	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
@@ -35,31 +35,22 @@ public class SearchPlayerActivity extends GenericActivity {
 		
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.search_player_screen);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
-		presenter = (SearchPlayerPresenter) super.getPresenter();
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 		
-		// Get reference to search box
+        // Get references to instances
+        presenter = (SearchPlayerPresenter) super.getPresenter();
 		searchBox = (EditText) findViewById(R.id.search_window);
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
-		searchBox.setOnEditorActionListener(new OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-					onClickSearch(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+		presenter.setListeners(searchBox);
 	}
 	
 	/**
-	 * 
+	 * Perform a search
 	 * @param view
 	 */
 	public void onClickSearch(View view){
@@ -68,17 +59,33 @@ public class SearchPlayerActivity extends GenericActivity {
 		
 	}
 	
+	/**
+	 * Send invitation to player
+	 * @param invitee
+	 */
 	public void invite(String invitee){
 		presenter.invite(invitee);
 	}
 	
+	/**
+	 * Go back to Home screen
+	 * @param v
+	 */
 	public void onClickHome(View v){
 		startActivity(new Intent(this, StartActivity.class));
+		finish();
+	}
+	
+	/**
+	 * Refresh screen
+	 * @param v
+	 */
+	public void onClickRefresh(View v){
+		presenter.update(searchBox.getText().toString());
 	}
 
 	@Override
-	protected LoadProgressBar getProgressBar() {
-		// TODO Auto-generated method stub
-		return null;
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }
