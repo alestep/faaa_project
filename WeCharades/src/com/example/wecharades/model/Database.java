@@ -609,17 +609,31 @@ public class Database extends Observable implements IDatabase {
 					try{
 						if(queryList.isEmpty()){
 							db.putRandom(player);
-						} else if(queryList.contains(ParseObject.createWithoutData(PLAYER, player.getParseId()))){
 							setChanged();
-							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
-						} else{
-							Collections.shuffle(queryList);
-							try {
-								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
-								db.createGame(player, p2);
-								db.removeRandom(p2);
-							} catch (DatabaseException e1) {
-								sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
+							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Put in queue"));
+						} else {
+							ParseObject thisPlayer = null;
+							for(ParseObject obj : queryList){
+								String objid = obj.getString(RANDOMQUEUE_PLAYER);
+								String pid = player.getParseId();
+								if(obj.getString(RANDOMQUEUE_PLAYER).equals(player.getParseId())){
+									thisPlayer = obj;
+								}
+							}
+							if(thisPlayer != null){
+								setChanged();
+								notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
+							} else {
+								Collections.shuffle(queryList);//This is hardly necessary...
+								try {
+									Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
+									db.createGame(player, p2);
+									db.removeRandom(p2);
+									setChanged();
+									notifyObservers(new DBMessage(DBMessage.MESSAGE, "Game created against " + p2.getName()));
+								} catch (DatabaseException e1) {
+									sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
+								}
 							}
 						}
 					} catch(ParseException e2){
