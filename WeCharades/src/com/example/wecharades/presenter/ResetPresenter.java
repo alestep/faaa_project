@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -34,7 +33,7 @@ public class ResetPresenter extends Presenter {
 		//TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
-	public void resetPassword(String email, View myView, ProgressBar resetProgress) {
+	public void resetPassword(String email, View myView) {
 		this.email = email;
 		ResetPasswordTask reset = new ResetPasswordTask();
 		reset.execute();

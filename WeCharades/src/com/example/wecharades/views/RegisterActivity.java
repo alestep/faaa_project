@@ -59,7 +59,7 @@ public class RegisterActivity extends GenericActivity {
 				inputNickname.getText().toString(),
 				inputEmail.getText().toString().toLowerCase(),
 				inputPassword.getText().toString(),
-				inputRepeatPassword.getText().toString(), registerProgress);	
+				inputRepeatPassword.getText().toString());	
 	}
 
 	@Override
