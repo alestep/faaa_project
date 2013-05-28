@@ -1,11 +1,10 @@
 package com.example.wecharades.test;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
-
-import android.net.wifi.WifiManager;
-import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * 
