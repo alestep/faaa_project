@@ -192,11 +192,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
 				turn.setState(Turn.FINISH);
-				presenter.updateModel();
 				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
 				intent.putExtra("Game",presenter.getGame());
 				startActivity(intent);
 				dialog.cancel();
+				presenter.updateModel();
 				finish();
 			}
 		})
