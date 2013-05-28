@@ -53,12 +53,13 @@ public class GuessCharadePresenter extends Presenter {
 		this.turn = turn;
 		this.activity = activity;
 	}
-	
+
 	public void initialize() {
-		this.videoView = activity.getVideoView();
 		initializeTimer();
 		downloadVideo(activity, videoView);
 	}
+
+	
 
 	public void updateModel(){
 			dc.updateTurn(turn);
@@ -74,15 +75,17 @@ public class GuessCharadePresenter extends Presenter {
 
 			 public void onTick(long millisUntilFinished) {
 				 activity.setTime(String.valueOf(millisUntilFinished / 1000));
-//				 if (millisUntilFinished>10000)
+//				 if (millisUntilFinished>10000){
 //					 if (millisUntilFinished%1000 == 0)
 //						 activity.setTime(String.valueOf(millisUntilFinished / 1000));
-//					 else
-//						 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+//				 }
+//				 else{
+//					 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+//				 }	 
 			 }
 
 			 public void onFinish() {
-				 activity.gameState = GuessCharadeActivity.GAME_FINISHED;//TODO We can check on turn state instead...
+				 activity.gameState = GuessCharadeActivity.GAME_FINISHED;
 				 videoView.stopPlayback();
 				 turn.setRecPlayerScore(0);
 				 turn.setAnsPlayerScore(0);
@@ -200,7 +203,7 @@ public class GuessCharadePresenter extends Presenter {
 		 @Override
 		 protected void onPreExecute(){
 			 downloadState = NO_DOWNLOAD;
-			 mDialog = new ProgressDialog(mContext); //TODO move out from here?
+			 mDialog = new ProgressDialog(mContext);
 			 mDialog.setTitle("Downloading Charade");
 			 mDialog.setMessage("Please Wait");
 			 mDialog.setCancelable(false);
@@ -234,7 +237,6 @@ public class GuessCharadePresenter extends Presenter {
 			 });
 			 mDialog.show();
 		 }
-
 
 		 @Override
 		 protected Boolean doInBackground(Void... params) {

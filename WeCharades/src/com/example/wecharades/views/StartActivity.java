@@ -68,10 +68,11 @@ public class StartActivity extends GenericActivity {
 		presenter.checkLogin();
 	}
 
-	public void onStart(){
-		super.onStart();
+
+	public void onStart(){	
 		presenter.initiate();
 		presenter.update();
+		super.onStart();
 	}
 	
 	public void onPause(){
