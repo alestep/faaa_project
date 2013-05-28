@@ -29,13 +29,10 @@ public class LoginPresenter extends Presenter{
 	private String username;
 	private String password;
 	private DatabaseException dbException;
-	//TODO private View parentView;
 
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
 		this.activity = activity;
-		//TODO this SHOULD be movable to generic activity...
-		//parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void setListeners(EditText password) {		
@@ -115,7 +112,7 @@ public class LoginPresenter extends Presenter{
 						dialog.dismiss();
 					}
 				});
-
+				
 				dialog.show();
 				exceptionState = NO_EXCEPTION;
 			}

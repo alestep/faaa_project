@@ -147,6 +147,7 @@ public class StartPresenter extends Presenter implements Observer{
 				setInvitationStatus((List<Invitation>) dcm.getData());
 			}
 		}
+		super.update(obs, obj);
 	}
 
 

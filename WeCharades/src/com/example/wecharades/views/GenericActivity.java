@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -135,8 +141,24 @@ public abstract class GenericActivity extends Activity{
 	 * Show a message to the user. This is most often error states.
 	 * @param error
 	 */
-	public void showMessage(String error) {
-		getTextArea().setText(error);
+	public void showErrorDialog(String error) {
+		final Dialog dialog = new Dialog(this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_error);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+		
+		TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
+		errorText.setText(error);
+
+		Button ok = (Button) dialog.findViewById(R.id.ok);
+		ok.setOnClickListener(new OnClickListener() {          
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		dialog.show();
 	}
 
 

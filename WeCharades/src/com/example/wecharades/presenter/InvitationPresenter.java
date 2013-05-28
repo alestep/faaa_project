@@ -18,19 +18,16 @@ import com.example.wecharades.views.InvitationActivity;
 public class InvitationPresenter extends Presenter {
 	
 	private InvitationActivity activity;
-	private View parentView;
 	private SeparatedListAdapter adapter;
-	//ArrayList<Invitation> invitationList;
 	
 	public InvitationPresenter(InvitationActivity activity) {
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
-		parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	public void update() {
-		//TODO we should show a spinner here!
+		activity.showProgressSpinner();
 		dc.getInvitations();
 	}
 
@@ -41,7 +38,7 @@ public class InvitationPresenter extends Presenter {
 			else	
 				dc.rejectInvitation(invitation);
 		}catch (DatabaseException e) {
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 	}
 	
@@ -62,8 +59,8 @@ public class InvitationPresenter extends Presenter {
 						receivedList.add(inv);
 					}
 				}
+				activity.hideProgressSpinner();
 				setAdapter(receivedList, sentList);
-				//TODO we should stop the spinner here!
 			}
 		}
 	}

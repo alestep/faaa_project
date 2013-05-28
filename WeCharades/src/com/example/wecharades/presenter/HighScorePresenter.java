@@ -48,7 +48,7 @@ public class HighScorePresenter extends Presenter {
 			updateHighScoreList(new ArrayList<Player>(allPlayers.subList(0, allPlayers.size() < 9 ? allPlayers.size() : 9)), getAllTextViews(table));
 			activity.updateGlobalRanking(globalRanking, allPlayers.size());
 		} catch(DatabaseException e) {
-			activity.showMessage(e.prettyPrint());
+			activity.showErrorDialog(e.prettyPrint());
 		}
 	}
 

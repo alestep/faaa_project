@@ -73,6 +73,9 @@ public class DataController extends Observable implements Observer{
 			if(dbm.getMessage() == DBMessage.ERROR){
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
+			} else if(dbm.getMessage() == DBMessage.MESSAGE){
+				setChanged();
+				notifyObservers(new DCMessage(DCMessage.MESSAGE, (String) dbm.getData())); 
 			} else if(dbm.getMessage() == DBMessage.GAMELIST){
 				ArrayList<Game> gameList = parseGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();

@@ -36,9 +36,6 @@ public class StartActivity extends GenericActivity {
 
 	private StartPresenter presenter;
 
-	// Adapter for ListView Contents
-	private SeparatedListAdapter adapter;
-
 	// ListView Contents
 	private ListView gameListView;
 

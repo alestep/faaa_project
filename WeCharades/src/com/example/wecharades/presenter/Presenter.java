@@ -1,14 +1,11 @@
 package com.example.wecharades.presenter;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
@@ -69,7 +66,9 @@ public abstract class Presenter implements Observer{
 				&& obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.ERROR){
-				activity.showMessage((String) dcm.getData());
+				activity.showErrorDialog((String) dcm.getData());
+			} else if(dcm.getMessage() == DCMessage.MESSAGE){
+				activity.showToast((String) dcm.getData());
 			}
 		}
 	}

@@ -253,7 +253,7 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void fetchGames(Player player){
 		final Database db = this;
-
+		sendError(new DatabaseException(0, ""));
 		ArrayList<ParseQuery> queries = new ArrayList<ParseQuery>();
 		ParseQuery query1 = new ParseQuery(GAME);
 		query1.whereContains(GAME_PLAYER_1, player.getParseId());
