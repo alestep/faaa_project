@@ -559,7 +559,7 @@ public class Database extends Observable implements IDatabase {
 					obj.increment(PLAYER_GAMES_LOST, lost);
 					obj.increment(PLAYER_GAMES_WON, won);
 					obj.increment(PLAYER_GAMES_PLAYED);
-					obj.increment(PLAYER_GLOBALSCORE, player.getGlobalScore());
+					obj.increment(PLAYER_GLOBALSCORE, scoreInc);
 					obj.saveInBackground();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));

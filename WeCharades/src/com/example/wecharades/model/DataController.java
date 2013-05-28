@@ -257,7 +257,8 @@ public class DataController extends Observable implements Observer{
 			if(localGame == null){
 				m.putGame(dbGame.getKey());
 				m.putTurns(dbGame.getValue());
-				if(dbGame.getKey().isFinished()){
+				if(dbGame.getKey().isFinished() 
+						&& dbGame.getKey().getPlayer2().equals(getCurrentPlayer())){
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
