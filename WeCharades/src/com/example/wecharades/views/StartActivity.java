@@ -76,7 +76,6 @@ public class StartActivity extends GenericActivity {
 	
 	public void onPause(){
 		super.onPause();
-		presenter.resetDownloadStatus();
 	}
 
 	/**
