@@ -9,12 +9,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
+import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -55,11 +57,21 @@ public class StartPresenter extends Presenter implements Observer{
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 	}
 
+	/**
+	 * Initiates the view
+	 */
 	public void initiate(){
-		String currentPlayer = dc.getCurrentPlayer().getName();
-		activity.setAccountName(currentPlayer);
+		if(activity.getIntent().getBooleanExtra("finish", false)){
+			activity.startActivity(new Intent(activity, LoginActivity.class));
+			activity.finish();
+		} else {
+			activity.setAccountName(dc.getCurrentPlayer().getName());
+		}
 	}
 
+	/**
+	 * Updates the view
+	 */
 	public void update(){
 		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
 			updateList(dc.getGames());
@@ -103,7 +115,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * 
 	 */
 	public boolean checkLogin() {
-		if(dc.getCurrentPlayer() == null){
+		if(dc.getCurrentPlayer() == null) {
 			goToLoginActivity();
 			return false;
 		}

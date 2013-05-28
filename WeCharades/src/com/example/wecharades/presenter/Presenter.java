@@ -1,22 +1,17 @@
 package com.example.wecharades.presenter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
-import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.Player;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
+import com.example.wecharades.views.StartActivity;
 
 public abstract class Presenter implements Observer{
 
@@ -41,6 +36,16 @@ public abstract class Presenter implements Observer{
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view, effectively restarting the app
+		activity.finish();
+	}
+	
+	/**
+	 * Go to the home screen
+	 */
+	public void goToStartActivity(){
+		Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(i);
 		activity.finish();
 	}
 

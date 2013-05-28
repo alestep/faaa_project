@@ -49,7 +49,7 @@ public class AccountActivity extends GenericActivity {
 	public void onClickLogout(View view) {
 		presenter.logOut();
 	}
-	
+
 	/**
 	 * Updates the screen
 	 * @param view
@@ -57,13 +57,16 @@ public class AccountActivity extends GenericActivity {
 	public void onClickRefresh(View view){
 		presenter.update();
 	}
-	
+
 	/**
 	 * Go to Home screen
 	 * @param view
 	 */
 	public void onClickHome(View view){
-		startActivity(new Intent(this, StartActivity.class));
+		Intent intent = new Intent(this, StartActivity.class);
+		intent.putExtra("finish", true);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 		finish();
 	}
 
