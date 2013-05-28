@@ -28,7 +28,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
-		setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
 	}
 	
 	/**
@@ -89,9 +88,14 @@ public class InvitationPresenter extends Presenter implements Observer{
 		super.update(obs, obj);
 	}
 	
+	/**
+	 * Sets the adapter and fills the list
+	 * @param receivedList
+	 * @param sentList
+	 */
 	private void setAdapter(List<Invitation> receivedList, List<Invitation> sentList) {
-		ListView view = (ListView) activity.findViewById(R.id.list);
-		TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
+		ListView view = (ListView) activity.findViewById(R.id.invitationList);
+		TextView text = (TextView) activity.findViewById(R.id.emptyInvitationList);
 		text.setText("No invitations found!");
 		view.setEmptyView(text);
 		adapter = new SeparatedListAdapter(activity);

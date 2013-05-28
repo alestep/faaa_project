@@ -6,14 +6,14 @@
     android:padding="10dp" >
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/invitationList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="0dp"
         android:divider="@null"/>
 
     <TextView
-        android:id="@+id/empty_list_item"
+        android:id="@+id/emptyInvitationList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="@style/text_medium"
