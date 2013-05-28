@@ -63,6 +63,8 @@ public class StartActivity extends GenericActivity {
 			invitations = (ImageButton) findViewById(R.id.invitations);
 			account = (Button) findViewById(R.id.account);
 			presenter.initiate();
+		} else{
+			finish();
 		}
 	}
 
