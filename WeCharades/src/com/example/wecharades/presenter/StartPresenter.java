@@ -57,6 +57,7 @@ public class StartPresenter extends Presenter implements Observer{
 		String currentPlayer = dc.getCurrentPlayer().getName();
 		activity.setAccountName(currentPlayer);
 		PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
+		System.out.println("Subscribed to notifications");
 		//dc.subscribetoNotification(activity.getApplicationContext());
 	}
 

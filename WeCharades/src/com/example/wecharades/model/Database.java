@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
@@ -834,7 +835,13 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void removePushNotification(Context context){
 		Player p = getCurrentPlayer();
-		PushService.unsubscribe(context, getCurrentPlayer().getName());
+		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(context);
+		for(String s: setOfAllSubscriptions){
+			if(s.equals(p.getName())){
+				PushService.unsubscribe(context, p.getName());
+				System.out.println("Unsubcribed from push notifications");
+			}
+		}		
 	}
 
 	@Override

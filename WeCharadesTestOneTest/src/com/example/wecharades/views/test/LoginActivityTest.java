@@ -30,62 +30,62 @@ public class LoginActivityTest extends
 		super.setUp();
 		solo = new Solo(getInstrumentation(),getActivity());
 	}
-	/**
-	 * Variation 1
-	 */
-	public void testEmptyFieldsLogin(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "");
-		solo.enterText(1, "");
-		solo.clickOnButton("Login");
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("OK");
-	}
-	/**
-	 * Variation 2
-	 */
-	public void testPasswordEmptyFieldLogin(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0,"adam");
-		solo.clickOnButton("Login");
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("OK");
-	}
-	/**
-	 * Variation 3 - Case 1
-	 */
-	public void testValidUsernameAndPasswordCaseOne(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam");
-		solo.enterText(1, "adam92");
-		solo.clickOnButton("Login");
-		solo.waitForActivity(StartActivity.class);
-		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
-	}
-	/**
-	 * Variation 3 - Case 2
-	 */
-	public void testValidUsernameAndPasswordCaseTwo(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam");
-		solo.enterText(1, "WRONG_PASSWORD");
-		solo.clickOnButton("Login");
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("OK");
-		
-	}
-	/**
-	 * Variation 3 - Case 3 Requires no internet connection. TODO: turn internet autmatically off.
-	 */
-	public void testValidUsernameAndPasswordCaseThree(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam");
-		solo.enterText(1, "WRONG_PASSWORD");
-		solo.clickOnButton("Login");
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("OK");
-		
-	}
+//	/**
+//	 * Variation 1
+//	 */
+//	public void testEmptyFieldsLogin(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0, "");
+//		solo.enterText(1, "");
+//		solo.clickOnButton("Login");
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("OK");
+//	}
+//	/**
+//	 * Variation 2
+//	 */
+//	public void testPasswordEmptyFieldLogin(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0,"adam");
+//		solo.clickOnButton("Login");
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("OK");
+//	}
+//	/**
+//	 * Variation 3 - Case 1
+//	 */
+//	public void testValidUsernameAndPasswordCaseOne(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0, "adam");
+//		solo.enterText(1, "adam92");
+//		solo.clickOnButton("Login");
+//		solo.waitForActivity(StartActivity.class);
+//		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
+//	}
+//	/**
+//	 * Variation 3 - Case 2
+//	 */
+//	public void testValidUsernameAndPasswordCaseTwo(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0, "adam");
+//		solo.enterText(1, "WRONG_PASSWORD");
+//		solo.clickOnButton("Login");
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("OK");
+//		
+//	}
+//	/**
+//	 * Variation 3 - Case 3 Requires no internet connection. TODO: turn internet autmatically off.
+//	 */
+//	public void testValidUsernameAndPasswordCaseThree(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0, "adam");
+//		solo.enterText(1, "WRONG_PASSWORD");
+//		solo.clickOnButton("Login");
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("OK");
+//		
+//	}
 	/**
 	 * Test ID
 	 */
@@ -94,21 +94,17 @@ public class LoginActivityTest extends
 		solo.enterText(0, "adam");
 		solo.enterText(1, "adam92");
 		solo.clickOnButton("Login");
-		solo.clickOnButton("OK");
 		solo.waitForActivity(StartActivity.class);
-		solo.assertCurrentActivity("StartScreen", StartActivity.class);
-		Assert.assertTrue(solo.searchText("Antz"));
 		solo.clickOnText("Antz");
 		solo.waitForActivity(GameDashboardActivity.class);
-		solo.assertCurrentActivity("", GameDashboardActivity.class);
-		solo.clickOnButton("Guess Charade");
+		solo.clickOnButton("Guess charade");
 		solo.waitForDialogToOpen(3000);
 		solo.waitForDialogToClose(15000);
-		solo.enterText(0, "hello, is it me you're looking for?");
-		solo.clickOnButton(0);
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("Retry");
-		solo.waitForDialogToClose(5000);
+		solo.enterText(0, "LOL");
+//		solo.clickOnButton(0);
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("Retry");
+//		solo.waitForDialogToClose(5000);
 		
 		
 	}
