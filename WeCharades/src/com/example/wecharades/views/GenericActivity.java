@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.IProgress;
 import com.example.wecharades.presenter.Presenter;
 
 public abstract class GenericActivity extends Activity{
@@ -38,26 +39,26 @@ public abstract class GenericActivity extends Activity{
 	 * 	in the background. 
 	 * @return The progressbar of the view.
 	 */
-	protected abstract ProgressBar getProgressSpinner();
+	protected abstract IProgress getProgressBar();
 	
 
 	/**
 	 * Called to show progress spinning when waiting for the server
 	 */
-	public void showProgressSpinner() {
-		if(getProgressSpinner() != null) {
-			//show the spinner
-			getProgressSpinner().setVisibility(ProgressBar.VISIBLE);
+	public void showProgressBar() {
+		if(getProgressBar() != null) {
+			getProgressBar().show();
+			
+			
 		}
 	}
 
 	/**
 	 * Called to hide progress spinning when the server has responded
 	 */
-	public void hideProgressSpinner() {
-		if(getProgressSpinner() != null) {
-			//hide the progress spinner
-			getProgressSpinner().setVisibility(ProgressBar.INVISIBLE);
+	public void hideProgressBar() {
+		if(getProgressBar() != null) {
+			getProgressBar().hide();
 		}
 	}
 	

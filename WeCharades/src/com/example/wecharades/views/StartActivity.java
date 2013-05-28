@@ -15,10 +15,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 
@@ -39,6 +39,7 @@ public class StartActivity extends GenericActivity {
 	private ListView gameListView;
 
 	private ImageButton invitations;
+	private RefreshProgressBar refresh;
 	private Button account;
 
 	@Override
@@ -47,29 +48,29 @@ public class StartActivity extends GenericActivity {
 		// Sets the presenter
 		presenter = (StartPresenter) super.getPresenter();
 
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.list_screen);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
+
+		// Get a reference to views
+		gameListView = (ListView) findViewById(R.id.list);
+
+
+		// Inflate Start screen header in the ListView
+		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
+		gameListView.addHeaderView(header);
+
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
+		invitations = (ImageButton) findViewById(R.id.invitations);
+		account = (Button) findViewById(R.id.account);
+
 		//Check if the user is logged in
-		if(presenter.checkLogin()){
-			requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-			setContentView(R.layout.list_screen);
-			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
-
-			// Get a reference to views
-			gameListView = (ListView) findViewById(R.id.list);
-
-			// Inflate Start screen header in the ListView
-			View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-			gameListView.addHeaderView(header);
-
-			invitations = (ImageButton) findViewById(R.id.invitations);
-			account = (Button) findViewById(R.id.account);
-			presenter.initiate();
-		} else{
-			finish();
-		}
+		presenter.checkLogin();
 	}
 
 	public void onStart(){
 		super.onStart();
+		presenter.initiate();
 		presenter.update();
 	}
 
@@ -121,11 +122,11 @@ public class StartActivity extends GenericActivity {
 	public void setAccountName(String user){
 		account.setText(user);
 	}
-	
+
 	public void setGameList(final SeparatedListAdapter adapter){
 		//Final-declarations in order to reference from inner class later
 		final Activity activity = this;
-		
+
 		// Set the adapter on the ListView holder 
 		gameListView.setAdapter(adapter);
 
@@ -170,8 +171,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
-		// TODO Auto-generated method stub
-		return null;
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }

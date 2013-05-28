@@ -64,7 +64,7 @@ public class ResetPresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner();
+			activity.showProgressBar();
 			activity.disableView();
 		}
 
@@ -105,7 +105,7 @@ public class ResetPresenter extends Presenter {
 				goToLoginActivity();
 			}
 			exceptionState = NO_EXCEPTION;
-			activity.hideProgressSpinner();
+			activity.hideProgressBar();
 			activity.enabledView();
 		}
 	}

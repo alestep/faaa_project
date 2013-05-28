@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.LoginPresenter;
 
 
@@ -15,7 +16,7 @@ public class LoginActivity extends GenericActivity {
 	EditText inputUsername;
 	EditText inputPassword;
 	TextView loginErrorMsg;
-	ProgressBar loginProgress;
+	LoadProgressBar loginProgress;
 	View myView;
 	LoginPresenter presenter;
 
@@ -27,7 +28,7 @@ public class LoginActivity extends GenericActivity {
 		// Importing all assets like buttons, text fields
 		inputUsername		= (EditText) findViewById(R.id.login_username);
 		inputPassword		= (EditText) findViewById(R.id.login_password);
-		loginProgress		= (ProgressBar) findViewById(R.id.progress);
+		loginProgress		= (LoadProgressBar) findViewById(R.id.progress);
 
 		//initializing the presenter
 		presenter = (LoginPresenter) super.getPresenter();
@@ -69,7 +70,7 @@ public class LoginActivity extends GenericActivity {
 	}
 
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		return loginProgress;
 	}
 }

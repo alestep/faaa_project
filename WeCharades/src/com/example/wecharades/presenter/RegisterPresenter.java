@@ -1,22 +1,14 @@
 package com.example.wecharades.presenter;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
@@ -28,13 +20,11 @@ public class RegisterPresenter extends Presenter {
 	private String inputEmail;
 	private String inputPassword;
 	private String inputRepeatPassword;
-	//TODO private View parentView;
 	private DatabaseException dbException;
 
 	public RegisterPresenter(RegisterActivity activity) {
 		super(activity);
 		this.activity = activity;
-		// TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
 	/**
@@ -45,7 +35,7 @@ public class RegisterPresenter extends Presenter {
 	 * @param inputPassword
 	 * @param inputRepeatPassword
 	 */
-	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword, View myView, ProgressBar registerProgress) {
+	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword, ProgressBar registerProgress) {
 		this.inputNickname = inputNickname;
 		this.inputEmail = inputEmail;
 		this.inputPassword = inputPassword;
@@ -70,17 +60,13 @@ public class RegisterPresenter extends Presenter {
 
 	private class RegisterTask extends AsyncTask<Void, Long, Boolean>{
 
-		private int exceptionState = 0;
-		private final static int NO_EXCEPTION = 0;
-		private final static int CAUGHT_EXCEPTION = 1;
-
 		public RegisterTask(){
 
 		}
 		@Override
 		protected void onPreExecute(){
 			//Show the progress spinner
-			activity.showProgressSpinner();
+			activity.showProgressBar();
 			activity.disableView();
 		}
 
@@ -92,7 +78,6 @@ public class RegisterPresenter extends Presenter {
 				registerSucceeded = true;
 			} catch (DatabaseException e) {
 				dbException = e;
-				exceptionState = CAUGHT_EXCEPTION;
 			}
 			finally {
 				if(registerSucceeded) {
@@ -106,28 +91,10 @@ public class RegisterPresenter extends Presenter {
 
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(exceptionState == CAUGHT_EXCEPTION){
-				
-				final Dialog dialog = new Dialog(activity);
-				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dialog.setCanceledOnTouchOutside(false);
-				dialog.setContentView(R.layout.dialog_error);
-				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
-
-				TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
-				errorText.setText(dbException.prettyPrint());
-
-				Button ok = (Button) dialog.findViewById(R.id.ok);
-				ok.setOnClickListener(new OnClickListener() {          
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-
-				dialog.show();
-				exceptionState = NO_EXCEPTION;
+			if(dbException != null){
+				activity.showErrorDialog(dbException.prettyPrint());
 			}
-			activity.hideProgressSpinner();
+			activity.hideProgressBar();
 			activity.enabledView();
 		}
 	}

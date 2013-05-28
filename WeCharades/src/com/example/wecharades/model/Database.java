@@ -130,6 +130,8 @@ public class Database extends Observable implements IDatabase {
 					}
 					if(obj.isEmpty()){
 						createGameInBackground(player1, player2);
+					} else{
+						sendError(new DatabaseException(1000,""));
 					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
@@ -833,6 +835,7 @@ public class Database extends Observable implements IDatabase {
 	}
 	@Override
 	public void removePushNotification(Context context){
+		Player p = getCurrentPlayer();
 		PushService.unsubscribe(context, getCurrentPlayer().getName());
 	}
 

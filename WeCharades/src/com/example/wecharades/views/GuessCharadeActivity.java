@@ -1,10 +1,10 @@
 package com.example.wecharades.views;
-/** TODO: 
+/** TODO:
  * REGISTER SCORE POINTS IF GUESSED RIGHT
  * DO NOT DOWNLOAD EVERYTIME. OVERRIDE THE ONRESUME and ONPAUSE?
- * 
+ *
  */
-
+ 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,9 +18,10 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
+import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
-
+ 
 public class GuessCharadeActivity extends GenericActivity  {
 
 	private TextView possibleLetters;
@@ -35,7 +36,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new GuessCharadePresenter(this));
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this, (Turn) getIntent().getExtras().getSerializable("Turn")));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
@@ -45,14 +46,20 @@ public class GuessCharadeActivity extends GenericActivity  {
 		possibleLetters.setVisibility(4);
 		timerView = (TextView) findViewById(R.id.timerView);
 		timerView.setVisibility(4);
-		turn = (Turn) getIntent().getExtras().getSerializable("Turn");
-		
 		presenter = (GuessCharadePresenter) super.getPresenter();
-		presenter.setTurn(turn);
-		presenter.initializeTimer(timerView);
-		presenter.downloadVideo(GuessCharadeActivity.this, videoView);
-		
 	}
+	
+	/**
+	 * Initializes the presenter
+	 */
+	@Override
+	public void onStart() {
+		presenter.initialize();
+	}
+	
+	/**
+	 * Resumes the view
+	 */
 	@Override
 	protected void onResume(){
 		if(presenter.downloadState == GuessCharadePresenter.DOWNLOAD_FINISHED && gameState == NO_GAME){
@@ -60,6 +67,25 @@ public class GuessCharadeActivity extends GenericActivity  {
 		}
 		super.onResume();
 	}
+	
+	/**
+	 * Shows the time left
+	 * @param time
+	 */
+	public void setTime(String time) {
+		timerView.setVisibility(0);
+		timerView.setText(time);
+	}
+	
+	/**
+	 * Shows the possible letters
+	 * @param letters
+	 */
+	public void setPossibleLetters(String letters){
+		possibleLetters.setVisibility(0);
+		possibleLetters.setText(letters);
+	}
+	
 	/**
 	 * TODO: Should register the score and so on if the user has guessed the right words.
 	 * @param view
@@ -178,9 +204,8 @@ public class GuessCharadeActivity extends GenericActivity  {
 		mAlert.show();
 	}
 	@Override
-	protected ProgressBar getProgressSpinner() {
+	protected LoadProgressBar getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 }
-

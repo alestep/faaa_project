@@ -48,6 +48,8 @@ public class DatabaseException extends Exception{
 			break;
 			case 205: message = "E-mail not found";
 			break;
+			case 1000: message = "Failed to create game";
+			break;
 			case 1001: message = "Failed to fetch game data";
 			break;
 			case 1002: message = "Failed to get ParseObject";
@@ -81,7 +83,6 @@ public class DatabaseException extends Exception{
 			default : message = "Unknown error";
 			break;
 		}
-
 		return message;
 	}
 
