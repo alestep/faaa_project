@@ -440,7 +440,7 @@ public class DataController extends Observable implements Observer{
 				if(inv.getInviter().equals(getCurrentPlayer())){
 					sentInvitations.add(inv);
 				} else{
-					
+					receivedInvitations.add(inv);
 				}
 			}
 		}
