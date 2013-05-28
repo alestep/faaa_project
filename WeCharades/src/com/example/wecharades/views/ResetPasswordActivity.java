@@ -48,15 +48,9 @@ public class ResetPasswordActivity extends GenericActivity {
 		presenter.resetPassword(emailInput.getText().toString(), myView, resetProgress);
 	}
 
-
-	@Override
-	public TextView getTextArea() {
-		return errorMsg;
-	}
-
 	public void showSuccessMessage(String message) {
 //		errorMsg.setTextColor(Color.parseColor("#458B00"));
-//		errorMsg.setText(message);
+//		errorMsg.setText(message); //TODO
 	}
 
 	@Override

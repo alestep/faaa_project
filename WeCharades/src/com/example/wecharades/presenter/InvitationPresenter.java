@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 

@@ -63,7 +63,6 @@ public class LoginPresenter extends Presenter{
 		private final static int CAUGHT_EXCEPTION = 1;
 
 		public Login(){
-
 		}
 		@Override
 		protected void onPreExecute(){
@@ -82,7 +81,8 @@ public class LoginPresenter extends Presenter{
 				activity.finish();//We do not need the login-activity any more
 			} catch (DatabaseException e) {
 				dbException = e;
-				exceptionState = CAUGHT_EXCEPTION;
+				activity.showErrorDialog(e.prettyPrint());
+				//TODO exceptionState = CAUGHT_EXCEPTION;
 			}
 			finally{
 				if(loginSucceeded){

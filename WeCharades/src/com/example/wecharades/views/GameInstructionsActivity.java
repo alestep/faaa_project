@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.SimplePresenter;
@@ -22,12 +21,6 @@ public class GameInstructionsActivity extends GenericActivity {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
 		this.presenter = (SimplePresenter) super.getPresenter();
 		
-	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
