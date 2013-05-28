@@ -1,7 +1,11 @@
 package com.example.wecharades.views.test;
 
+import junit.framework.Assert;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.TextView;
 
+import com.example.wecharades.R;
+import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
@@ -82,6 +86,33 @@ public class LoginActivityTest extends
 		solo.clickOnButton("OK");
 		
 	}
+	/**
+	 * Test ID
+	 */
+	public void testGuessCharadeVideo(){
+		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+		solo.enterText(0, "adam");
+		solo.enterText(1, "adam92");
+		solo.clickOnButton("Login");
+		solo.clickOnButton("OK");
+		solo.waitForActivity(StartActivity.class);
+		solo.assertCurrentActivity("StartScreen", StartActivity.class);
+		Assert.assertTrue(solo.searchText("Antz"));
+		solo.clickOnText("Antz");
+		solo.waitForActivity(GameDashboardActivity.class);
+		solo.assertCurrentActivity("", GameDashboardActivity.class);
+		solo.clickOnButton("Guess Charade");
+		solo.waitForDialogToOpen(3000);
+		solo.waitForDialogToClose(15000);
+		solo.enterText(0, "hello, is it me you're looking for?");
+		solo.clickOnButton(0);
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("Retry");
+		solo.waitForDialogToClose(5000);
+		
+		
+	}
+	
 	@Override
 	public void tearDown() throws Exception{
 		solo.finishOpenedActivities();

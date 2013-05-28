@@ -833,6 +833,7 @@ public class Database extends Observable implements IDatabase {
 	}
 	@Override
 	public void removePushNotification(Context context){
+		
 		PushService.unsubscribe(context, getCurrentPlayer().getName());
 	}
 

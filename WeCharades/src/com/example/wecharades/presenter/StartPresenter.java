@@ -8,12 +8,15 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
+import android.util.Log;
+
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
 
@@ -39,7 +42,13 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 	public void createNotificationInstallation() {
 		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
-		ParseInstallation.getCurrentInstallation().saveInBackground();
+		try {
+			ParseInstallation.getCurrentInstallation().save();
+			System.out.println("Push Saved");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			Log.e("ParseException push notifications", "Pushthings");
+		}
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 		
 	}
