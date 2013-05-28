@@ -9,12 +9,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
+import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -53,14 +55,25 @@ public class StartPresenter extends Presenter implements Observer{
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 	}
 
+	/**
+	 * Initiates the view
+	 */
 	public void initiate(){
-		String currentPlayer = dc.getCurrentPlayer().getName();
-		activity.setAccountName(currentPlayer);
-		PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
-		System.out.println("Subscribed to notifications");
-		//dc.subscribetoNotification(activity.getApplicationContext());
+		if(activity.getIntent().getBooleanExtra("finish", false)){
+			activity.startActivity(new Intent(activity, LoginActivity.class));
+			activity.finish();
+		} else {
+			String currentPlayer = dc.getCurrentPlayer().getName();
+			activity.setAccountName(currentPlayer);
+			PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
+			System.out.println("Subscribed to notifications");
+			//dc.subscribetoNotification(activity.getApplicationContext());
+		}
 	}
 
+	/**
+	 * Updates the view
+	 */
 	public void update(){
 		updateList(dc.getGames());
 		dc.getInvitations();
@@ -98,7 +111,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * 
 	 */
 	public boolean checkLogin() {
-		if(dc.getCurrentPlayer() == null){
+		if(dc.getCurrentPlayer() == null) {
 			goToLoginActivity();
 			return false;
 		}
