@@ -19,7 +19,7 @@ public class DatabaseConverter {
 					dc.getPlayerById(game.getString(Database.GAME_PLAYER_2)),
 					dc.getPlayerById(game.getString(Database.GAME_PLAYER_CURRENT)),
 					game.getInt(Database.GAME_TURN), 
-					game.getBoolean(Database.GAME_FINISH), 
+					game.getBoolean(Database.GAME_FINISH),
 					game.getUpdatedAt());
 		} else{
 			return null;
@@ -51,7 +51,11 @@ public class DatabaseConverter {
 			return new Player(
 					player.getObjectId(), 
 					player.getString(Database.PLAYER_USERNAME_NATURAL), 
-					player.getInt(Database.PLAYER_GLOBALSCORE));
+					player.getInt(Database.PLAYER_GLOBALSCORE),
+					player.getInt(Database.PLAYER_GAMES_PLAYED),
+					player.getInt(Database.PLAYER_GAMES_WON),
+					player.getInt(Database.PLAYER_GAMES_LOST),
+					player.getInt(Database.PLAYER_GAMES_DRAW));
 		} else{
 			return null;
 		}

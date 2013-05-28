@@ -135,9 +135,9 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 */
 	public boolean aheadOf(Game game){
 		return game != null && //Check for null
-			(	this.isFinished 
-				|| this.getTurnNumber() > game.getTurnNumber()
-				|| this.playerTurnValue() > game.getTurnNumber()
+			(	this.isFinished
+				|| (this.getTurnNumber() > game.getTurnNumber())
+				|| (this.getTurnNumber() == game.getTurnNumber() && this.playerTurnValue() > game.playerTurnValue())
 			);
 	}
 	/**

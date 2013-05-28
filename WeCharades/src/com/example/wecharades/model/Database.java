@@ -128,7 +128,7 @@ public class Database extends Observable implements IDatabase {
 							actualList.add(o);
 						}
 					}
-					if(obj.isEmpty()){
+					if(actualList.isEmpty()){
 						createGameInBackground(player1, player2);
 					} else{
 						sendError(new DatabaseException(1000,""));
@@ -665,7 +665,7 @@ public class Database extends Observable implements IDatabase {
 	 * @see com.example.wecharades.model.IDatabase#getInvitations(com.example.wecharades.model.Player)
 	 */
 	@Override
-	public void getInvitations(Player player) throws DatabaseException {
+	public void getInvitations(Player player) {
 		//Invitations
 		ParseQuery others = new ParseQuery(INVITE);
 		others.whereContains(INVITE_INVITEE, player.getParseId());

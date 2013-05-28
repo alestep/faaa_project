@@ -4,7 +4,7 @@ package com.example.wecharades.views;
  * DO NOT DOWNLOAD EVERYTIME. OVERRIDE THE ONRESUME and ONPAUSE?
  *
  */
- 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,16 +13,16 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.LoadProgressBar;
+import com.example.wecharades.model.IProgress;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
- 
+
 public class GuessCharadeActivity extends GenericActivity  {
+
 
 	private TextView possibleLetters;
 	private EditText answerWord;
@@ -36,10 +36,10 @@ public class GuessCharadeActivity extends GenericActivity  {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new GuessCharadePresenter(this, (Turn) getIntent().getExtras().getSerializable("Turn")));
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this,this.turn = (Turn) getIntent().getExtras().getSerializable("Turn")));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
+
 		answerWord = (EditText) findViewById(R.id.editAnswerCharade);
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
 		possibleLetters = (TextView) findViewById(R.id.possibleLetters);
@@ -48,15 +48,17 @@ public class GuessCharadeActivity extends GenericActivity  {
 		timerView.setVisibility(4);
 		presenter = (GuessCharadePresenter) super.getPresenter();
 	}
-	
+
 	/**
 	 * Initializes the presenter
 	 */
 	@Override
 	public void onStart() {
+		super.onStart();
 		presenter.initialize();
+		super.onStart();
 	}
-	
+
 	/**
 	 * Resumes the view
 	 */
@@ -66,8 +68,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 			presenter.playVideo();
 		}
 		super.onResume();
+	}	
+	public VideoView getVideoView(){
+		return videoView;
 	}
-	
+
 	/**
 	 * Shows the time left
 	 * @param time
@@ -76,7 +81,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		timerView.setVisibility(0);
 		timerView.setText(time);
 	}
-	
+
 	/**
 	 * Shows the possible letters
 	 * @param letters
@@ -85,7 +90,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		possibleLetters.setVisibility(0);
 		possibleLetters.setText(letters);
 	}
-	
+
 	/**
 	 * TODO: Should register the score and so on if the user has guessed the right words.
 	 * @param view
@@ -100,7 +105,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			turn.setAnsPlayerScore(5);
 			turn.setState(Turn.FINISH);
 			presenter.updateModel();
-			
+
 			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
 			mDialog.setTitle("Charade");
 			mDialog
@@ -130,7 +135,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 			});
 			AlertDialog alertDialog = mDialog.create();
 			alertDialog.show();
-		}			
+		}                      
 	}
 
 	@Override
@@ -187,11 +192,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
 				turn.setState(Turn.FINISH);
-				presenter.updateModel();
 				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
 				intent.putExtra("Game",presenter.getGame());
 				startActivity(intent);
 				dialog.cancel();
+				presenter.updateModel();
 				finish();
 			}
 		})
@@ -204,8 +209,9 @@ public class GuessCharadeActivity extends GenericActivity  {
 		mAlert.show();
 	}
 	@Override
-	protected LoadProgressBar getProgressBar() {
+	protected IProgress getProgressBar() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

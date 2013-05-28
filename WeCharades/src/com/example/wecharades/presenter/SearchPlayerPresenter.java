@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
+import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.SearchPlayerActivity;
 import com.parse.ParseException;
 import com.parse.ParsePush;
@@ -38,12 +41,22 @@ public class SearchPlayerPresenter extends Presenter {
 			TextView text = (TextView) activity.findViewById(R.id.empty_list_item);
 			text.setText("No results found!");
 			view.setEmptyView(text);
-			
 			SortedSet<String> list = dc.getAllOtherPlayerNames().subSet(searchString, searchString + Character.MAX_VALUE);
-			TreeSet<String> sentInvitations = dc.getSentInvitationsAsUsernames();
+			
+			//Create a list of player who the player cannot send an invitation to:
+			TreeSet<String> alreadySent 	= new TreeSet<String>();
+			TreeSet<String> alreadyPlaying 	= new TreeSet<String>();
+			for(Invitation inv : dc.getSentInvitations()){
+				alreadySent.add(inv.getInvitee().getName());
+			}
+			for(Game g : dc.getGames()){
+				alreadyPlaying.add(g.getOpponent(dc.getCurrentPlayer()).getName());
+			}
+			
+			
 			ArrayList<String> resultList = new ArrayList<String>(list);
 			if (!list.isEmpty())
-				view.setAdapter(new SearchPlayerAdapter(activity, resultList, sentInvitations));
+				view.setAdapter(new SearchPlayerAdapter(activity, resultList, alreadySent, alreadyPlaying));
 		} catch (DatabaseException e) {
 			activity.showErrorDialog(e.prettyPrint());
 		}

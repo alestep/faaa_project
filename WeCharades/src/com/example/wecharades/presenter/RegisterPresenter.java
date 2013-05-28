@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -35,7 +34,7 @@ public class RegisterPresenter extends Presenter {
 	 * @param inputPassword
 	 * @param inputRepeatPassword
 	 */
-	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword, ProgressBar registerProgress) {
+	public void registerUser(String inputNickname, String inputEmail, String inputPassword, String inputRepeatPassword) {
 		this.inputNickname = inputNickname;
 		this.inputEmail = inputEmail;
 		this.inputPassword = inputPassword;
