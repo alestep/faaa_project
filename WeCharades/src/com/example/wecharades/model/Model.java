@@ -249,17 +249,13 @@ public class Model implements Serializable{
 
 	//Players ---------------------------------------------------------------
 
-	public boolean playerIsCached(Player player){
-		return storedPlayers.containsKey(player.getParseId());
-	}
-
 	/**
 	 * Puts a player in stored players 
 	 * @param player - the player to be stored
 	 * @return if the player was added or not
 	 */
 	public void putPlayer(Player player){
-		if(playerIsCached(player))
+		if(storedPlayers.containsKey(player.getParseId()))
 			storedPlayerNames.put(player.getName(), player.getParseId());
 		//The data for a player should always be updated
 		storedPlayers.put(player.getParseId(),player);

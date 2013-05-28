@@ -606,26 +606,24 @@ public class Database extends Observable implements IDatabase {
 		query.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> queryList, ParseException e){
 				if(e == null){
-					if(db != null){
-						try{
-							if(queryList.isEmpty()){
-								db.putRandom(player);
-							} else if(queryList.contains(ParseObject.createWithoutData(PLAYER, player.getParseId()))){
-								setChanged();
-								notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
-							} else{
-								Collections.shuffle(queryList);
-								try {
-									Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
-									db.createGame(player, p2);
-									db.removeRandom(p2);
-								} catch (DatabaseException e1) {
-									sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
-								}
+					try{
+						if(queryList.isEmpty()){
+							db.putRandom(player);
+						} else if(queryList.contains(ParseObject.createWithoutData(PLAYER, player.getParseId()))){
+							setChanged();
+							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
+						} else{
+							Collections.shuffle(queryList);
+							try {
+								Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
+								db.createGame(player, p2);
+								db.removeRandom(p2);
+							} catch (DatabaseException e1) {
+								sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
 							}
-						} catch(ParseException e2){
-							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
+					} catch(ParseException e2){
+						sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
