@@ -33,7 +33,7 @@ public class Model implements Serializable{
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
 	//A variable that can be changed in order to purge the model - this is done manually now!
-	private static boolean			PURGE = true;
+	private static boolean			PURGE = false;
 	//A variable which is called when a user logs out 
 	// - the model exists a moment so we may finish any queries first
 	private static boolean 			RECREATE = false;
