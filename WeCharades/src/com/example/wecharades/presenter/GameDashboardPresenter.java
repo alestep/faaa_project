@@ -2,6 +2,7 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.TreeMap;
 
 import android.content.Intent;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.example.wecharades.model.Game;
+import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
@@ -44,20 +46,8 @@ public class GameDashboardPresenter extends Presenter {
 	 * Total score per player at a specific game
 	 */
 	private void updateScore() { //TODO: use dc.getGameScore()
-		int currentPLayersScore	= 0;
-		int opponentsScore		= 0;
-		for(Turn turn : turnList) {
-			//TODO we could add a method "getPlayerScore(Player player)" in turn to get rid of this
-			if( turn.getAnsPlayer().equals(dc.getCurrentPlayer()) ) {
-				currentPLayersScore += turn.getAnsPlayerScore();
-				opponentsScore		+= turn.getRecPlayerScore();
-			}  else {
-				currentPLayersScore += turn.getRecPlayerScore();
-				opponentsScore		+= turn.getAnsPlayerScore();
-			}
-
-		}
-		activity.updateScore(currentPLayersScore, opponentsScore);
+		TreeMap<Player, Integer> gM = dc.getGameScore(game);
+		activity.updateScore(gM.get(dc.getCurrentPlayer()), gM.get(game.getOpponent(dc.getCurrentPlayer())));
 	}
 
 	/**
