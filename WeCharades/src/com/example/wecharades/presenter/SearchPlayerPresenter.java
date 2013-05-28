@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DatabaseException;
@@ -16,27 +20,52 @@ import com.example.wecharades.views.SearchPlayerActivity;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class SearchPlayerPresenter extends Presenter {
 
 	private SearchPlayerActivity activity;
 
-
-	/**
-	 * 
-	 * @param activity
-	 */
 	public SearchPlayerPresenter(SearchPlayerActivity activity) {
 		super(activity);
 		this.activity = (SearchPlayerActivity) activity;
 	}
-
+	
+	/**
+	 * Sets listener on Search box 
+	 * @param searchBox
+	 */
+	public void setListeners(EditText searchBox) {
+		searchBox.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					activity.onClickSearch(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Update screen
+	 * @param s
+	 */
 	public void update(String s){
 		activity.showProgressBar();
 		performSearch(s);
 		activity.hideProgressBar();
 		
 	}
-
+	
+	/**
+	 * Search for a player
+	 * @param searchString
+	 */
 	private void performSearch(String searchString) {
 		try {
 
@@ -65,7 +94,11 @@ public class SearchPlayerPresenter extends Presenter {
 			activity.showErrorDialog(e.prettyPrint());
 		}
 	}
-
+	
+	/**
+	 * Send invitation to player and update database
+	 * @param invitee
+	 */
 	public void invite(String invitee) {
 		try {
 			dc.sendInvitation(dc.getPlayer(invitee));
@@ -75,7 +108,11 @@ public class SearchPlayerPresenter extends Presenter {
 		}
 
 	}
-
+	
+	/**
+	 * Send notification about invitation
+	 * @param invitee
+	 */
 	private void sendNotificationtoOtherPlayer(String invitee) {
 		ParsePush push = new ParsePush();
 		System.out.println(invitee);
@@ -89,5 +126,4 @@ public class SearchPlayerPresenter extends Presenter {
 		}
 		System.out.println("4");
 	}
-
 }

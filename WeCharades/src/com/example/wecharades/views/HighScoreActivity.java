@@ -44,7 +44,7 @@ public class HighScoreActivity extends GenericActivity {
 		globalRanking.setText("Your global ranking position is " + globalRankingPosition + " out of " + totalNumberOfUsers);
 	}
 	
-	public void onClickRefresh(){
+	public void onClickRefresh(View view){
 		presenter.updateHighScores(myTable);
 	}
 
@@ -53,7 +53,7 @@ public class HighScoreActivity extends GenericActivity {
 		return refresh;
 	}
 	
-	public void onClickHome(View v){
+	public void onClickHome(View view){
 		startActivity(new Intent(this, StartActivity.class));
 		finish();
 	}

@@ -28,6 +28,7 @@ public class InvitationPresenter extends Presenter implements Observer{
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
+		setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
 	}
 	
 	/**
@@ -70,6 +71,18 @@ public class InvitationPresenter extends Presenter implements Observer{
 		if(obj != null && obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.INVITATIONS){
+
+//				List<Invitation> invList = (List<Invitation>) dcm.getData();
+//				LinkedList<Invitation> sentList = new LinkedList<Invitation>();
+//				LinkedList<Invitation> receivedList = new LinkedList<Invitation>();
+//				for(Invitation inv : invList){
+//					if(inv.getInviter().equals(dc.getCurrentPlayer())){
+//						sentList.add(inv);
+//					} else{
+//						receivedList.add(inv);
+//					}
+//				}
+				activity.hideProgressBar();
 				setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
 			}
 		}

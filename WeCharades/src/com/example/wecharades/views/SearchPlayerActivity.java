@@ -28,9 +28,6 @@ public class SearchPlayerActivity extends GenericActivity {
 	private SearchPlayerPresenter presenter;
 	private RefreshProgressBar refresh;
 	
-	/**
-	 * 
-	 */ //TODO extend generic acitivity and presenter
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
@@ -49,21 +46,11 @@ public class SearchPlayerActivity extends GenericActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
-		searchBox.setOnEditorActionListener(new OnEditorActionListener() {
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-					onClickSearch(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+		presenter.setListeners(searchBox);
 	}
 	
 	/**
-	 * 
+	 * Perform a search
 	 * @param view
 	 */
 	public void onClickSearch(View view){
@@ -72,12 +59,29 @@ public class SearchPlayerActivity extends GenericActivity {
 		
 	}
 	
+	/**
+	 * Send invitation to player
+	 * @param invitee
+	 */
 	public void invite(String invitee){
 		presenter.invite(invitee);
 	}
 	
+	/**
+	 * Go back to Home screen
+	 * @param v
+	 */
 	public void onClickHome(View v){
 		startActivity(new Intent(this, StartActivity.class));
+		finish();
+	}
+	
+	/**
+	 * Refresh screen
+	 * @param v
+	 */
+	public void onClickRefresh(View v){
+		presenter.update(searchBox.getText().toString());
 	}
 
 	@Override

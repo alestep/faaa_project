@@ -233,7 +233,7 @@ public class DataController extends Observable implements Observer{
 	 * @param p2 - player 2
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	public void createGame(Player p1, Player p2) throws DatabaseException{
+	public void createGame(Player p1, Player p2){
 		db.createGame(p1, p2);
 	}
 

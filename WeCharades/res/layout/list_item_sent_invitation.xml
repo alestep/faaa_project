@@ -14,15 +14,4 @@
         android:ellipsize="marquee"
         android:gravity="left|center_vertical"
         android:textAppearance="@style/text_large" />
-
-    <ImageButton
-        android:id="@+id/remove"
-        style="@style/button_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/button_custom_reject"
-        android:src="@drawable/navigation_cancel" />
-
 </RelativeLayout>

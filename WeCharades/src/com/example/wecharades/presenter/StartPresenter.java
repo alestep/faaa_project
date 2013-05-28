@@ -32,7 +32,6 @@ public class StartPresenter extends Presenter implements Observer{
 	// Adapter for ListView Contents and the actual listview
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
-	private boolean isUpdating = false;
 
 	public StartPresenter(StartActivity activity) {
 		super(activity);
@@ -53,12 +52,9 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	public void update(){
-		if(!isUpdating){
-			isUpdating = true;
-			updateList(dc.getGames());
-			dc.getInvitations();
-			activity.showProgressBar();
-		}
+		updateList(dc.getGames());
+		dc.getInvitations();
+		activity.showProgressBar();
 	}
 
 
@@ -72,7 +68,7 @@ public class StartPresenter extends Presenter implements Observer{
 
 		createListView(listMap);
 	}
-	
+
 	/**
 	 * Private method which is called after an updated list of invitations is received.
 	 */
@@ -137,10 +133,6 @@ public class StartPresenter extends Presenter implements Observer{
 		dc.logOutPlayer(activity);
 		goToLoginActivity();
 	}
-	
-	public void resetDownloadStatus(){
-		isUpdating = false;
-	}
 
 	/**
 	 * Called whenever a message is received from the DataController
@@ -168,7 +160,6 @@ public class StartPresenter extends Presenter implements Observer{
 			if(recent == 2){
 				activity.hideProgressBar();
 				recent = 0;
-				isUpdating = false;
 			}
 		}
 	}
