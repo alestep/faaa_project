@@ -20,7 +20,7 @@ public class InvitationActivity extends GenericActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState, new InvitationPresenter(this));
-        setContentView(R.layout.list_screen);
+        setContentView(R.layout.invitation_screen);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
         
         //Get references to instances
