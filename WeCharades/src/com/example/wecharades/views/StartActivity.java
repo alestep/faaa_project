@@ -10,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -62,7 +60,7 @@ public class StartActivity extends GenericActivity {
 		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
 		gameListView.addHeaderView(header);
 
-		refresh = (RefreshProgressBar) findViewById(R.id.refresh);
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
 

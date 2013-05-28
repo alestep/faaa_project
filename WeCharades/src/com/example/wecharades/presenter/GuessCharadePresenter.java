@@ -26,7 +26,6 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.model.DatabaseException;
@@ -53,7 +52,6 @@ public class GuessCharadePresenter extends Presenter {
 		super(activity);
 		this.turn = turn;
 		this.activity = activity;
-
 	}
 	
 	public void initialize() {
@@ -206,7 +204,7 @@ public class GuessCharadePresenter extends Presenter {
 		 @Override
 		 protected void onPreExecute(){
 			 downloadState = NO_DOWNLOAD;
-			 mDialog = new ProgressDialog(mContext);
+			 mDialog = new ProgressDialog(mContext); //TODO move out from here?
 			 mDialog.setTitle("Downloading Charade");
 			 mDialog.setMessage("Please Wait");
 			 mDialog.setCancelable(false);

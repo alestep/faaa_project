@@ -7,12 +7,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
-public class RefreshProgressBar extends ImageButton implements IProgress {
+public class RefreshProgressBar implements IProgress {
 	private Animation rotation;
+	ImageButton button;
 	private Context context;
 	
-	public RefreshProgressBar(Context context) {
-		super(context);
+	public RefreshProgressBar(Context context, ImageButton button) {
+		this.button = button;
 		this.context = context;
 	}
 	
@@ -24,12 +25,11 @@ public class RefreshProgressBar extends ImageButton implements IProgress {
 	@Override
 	public void show() {
 		setAnimation();
-		startAnimation(rotation);
-		
+		button.startAnimation(rotation);
 	}
 	
 	@Override
 	public void hide() {
-		clearAnimation();
+		button.clearAnimation();
 	}
 }
