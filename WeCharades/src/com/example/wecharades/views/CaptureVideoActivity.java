@@ -43,7 +43,7 @@ public class CaptureVideoActivity extends Activity {
 		if(resultCode == RESULT_OK){
 			if(requestCode == REQUEST_VIDEO_CAPTURED){
 				uriVideo = data.getData();
-				Intent intentShowVideo = new Intent(CaptureVideoActivity.this, VideoUploadActivity.class);
+				Intent intentShowVideo = new Intent(this, VideoUploadActivity.class);
 				intentShowVideo.putExtra(Database.TURN, turn);
 				startActivity(intentShowVideo);
 				finishActivity(REQUEST_VIDEO_CAPTURED);
@@ -52,7 +52,7 @@ public class CaptureVideoActivity extends Activity {
 		}
 		else if(resultCode == RESULT_CANCELED){
 			uriVideo = null;
-			Toast.makeText(CaptureVideoActivity.this,"Canceled!",Toast.LENGTH_LONG).show();
+			Toast.makeText(this,"Canceled!",Toast.LENGTH_LONG).show();
 			finish();
 		}
 	}

@@ -55,18 +55,13 @@ public class GuessCharadePresenter extends Presenter {
 	}
 	
 	public void initialize() {
+		this.videoView = activity.getVideoView();
 		initializeTimer();
 		downloadVideo(activity, videoView);
 	}
 
 	public void updateModel(){
-		try {
 			dc.updateTurn(turn);
-		} catch (DatabaseException e) {
-			Log.e("GuessCharadePresenter", e.getMessage());
-			e.printStackTrace();
-			activity.showErrorDialog(e.prettyPrint());
-		}
 	}
 
 	/**
@@ -87,7 +82,7 @@ public class GuessCharadePresenter extends Presenter {
 			 }
 
 			 public void onFinish() {
-				 activity.gameState = GuessCharadeActivity.GAME_FINISHED;
+				 activity.gameState = GuessCharadeActivity.GAME_FINISHED;//TODO We can check on turn state instead...
 				 videoView.stopPlayback();
 				 turn.setRecPlayerScore(0);
 				 turn.setAnsPlayerScore(0);

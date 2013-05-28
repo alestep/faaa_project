@@ -371,7 +371,7 @@ public class DataController extends Observable implements Observer{
 		return m.getTurns(game);
 	}
 
-	public void updateTurn(Turn turn) throws DatabaseException{
+	public void updateTurn(Turn turn) {
 		m.putTurn(turn);
 		db.updateTurn(turn);
 		Game game = m.getGame(turn.getGameId());
@@ -405,6 +405,7 @@ public class DataController extends Observable implements Observer{
 			db.incrementPlayerStats(p2, p2GS, p2W, draw, p2L);
 		}
 		db.updateGame(game);
+		m.putGame(game);
 	}
 
 
