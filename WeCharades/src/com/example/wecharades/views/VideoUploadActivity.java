@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
@@ -67,12 +66,6 @@ public class VideoUploadActivity extends GenericActivity{
 		int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 		cursor.moveToFirst();
 		return cursor.getString(column_index);
-	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

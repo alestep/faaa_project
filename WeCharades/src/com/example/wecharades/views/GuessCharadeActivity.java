@@ -108,11 +108,6 @@ public class GuessCharadeActivity extends GenericActivity  {
 	}
 
 	@Override
-	public TextView getTextArea() {
-		return possibleLetters;
-	}
-
-	@Override
 	public void showErrorDialog(String str){
 		possibleLetters.setVisibility(0);
 		super.showErrorDialog(str);

@@ -1,4 +1,4 @@
-package com.example.wecharades.views;
+package com.example.wecharades.model;
 
 public interface IMessage {
 	

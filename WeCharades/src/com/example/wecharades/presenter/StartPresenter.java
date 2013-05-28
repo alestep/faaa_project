@@ -8,8 +8,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
-import android.widget.ListView;
-
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
@@ -147,6 +145,7 @@ public class StartPresenter extends Presenter implements Observer{
 				setInvitationStatus((List<Invitation>) dcm.getData());
 			}
 		}
+		//Send message to superclass as well
 		super.update(obs, obj);
 	}
 

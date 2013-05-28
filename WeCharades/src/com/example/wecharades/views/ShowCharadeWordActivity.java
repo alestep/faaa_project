@@ -33,12 +33,6 @@ public class ShowCharadeWordActivity extends GenericActivity {
 		startActivity(intent);
 		finish();
 	}
-	
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	protected ProgressBar getProgressSpinner() {

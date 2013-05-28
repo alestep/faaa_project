@@ -36,12 +36,6 @@ public class GameDashboardActivity extends GenericActivity {
 		super.onStart();
 		presenter.createDashboard(myTable);
 	}
-
-	@Override
-	public TextView getTextArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
 		yourScore.setText(Integer.toString(currentPlayersScore));
