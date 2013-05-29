@@ -52,7 +52,7 @@ public class GuessCharadeActivity extends GenericActivity  {
          */
         @Override
         public void onStart() {
-                presenter.initialize();
+                presenter.initialize(videoView);
                 super.onStart();
         }
        
