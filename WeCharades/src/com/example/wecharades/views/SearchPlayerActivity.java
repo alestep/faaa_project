@@ -10,9 +10,9 @@ import com.example.wecharades.R;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**
- * 
- * @author Alexander
- *
+ * View which displays a search functionality and makes it possible to search
+ * for a player by entering his or her username
+ * @author weCharade
  */
 public class SearchPlayerActivity extends GenericActivity {
 	
@@ -23,7 +23,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
 
-		
+		//Set the title bar
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.search_player_screen);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_home); 
@@ -58,13 +58,17 @@ public class SearchPlayerActivity extends GenericActivity {
 	}
 	
 	/**
-	 * Go back to Home screen
+	 * Go back to StartActivity
 	 * @param v
 	 */
 	public void onClickHome(View v){
 		presenter.goToStartActivity();
 	}
-
+	
+	/*
+	 * Activity is considered not to be in need of displaying an IProgress-instance.
+	 * This method will therefore never be called, and it is OK to return null.
+	 */
 	@Override
 	protected RefreshProgressBar getProgressBar() {
 		return null;

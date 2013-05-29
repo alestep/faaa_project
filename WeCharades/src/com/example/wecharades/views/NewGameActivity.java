@@ -8,6 +8,11 @@ import android.view.Window;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.NewGamePresenter;
 
+/**
+ * View which displays two alternative ways to create a new game; invite random player or go on further
+ * to a search player screen.
+ * @author weCharade
+ */
 public class NewGameActivity extends GenericActivity {
 	
 	private NewGamePresenter presenter;
@@ -15,6 +20,8 @@ public class NewGameActivity extends GenericActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new NewGamePresenter(this));
+		
+		//Set the title bar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.new_game);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_home);
@@ -41,11 +48,6 @@ public class NewGameActivity extends GenericActivity {
 		Intent intent = new Intent (getApplicationContext(), SearchPlayerActivity.class);
 		startActivity(intent);
 	}
-
-	@Override
-	protected IProgress getProgressBar() {
-		return null;
-	}
 	
 	/**
 	 * Go back to Home screen
@@ -53,5 +55,14 @@ public class NewGameActivity extends GenericActivity {
 	 */
 	public void onClickHome(View v){
 		presenter.goToStartActivity();
+	}
+	
+	/*
+	 * Activity is not in need of IProgress-instance since nothing is fetched from database
+	 * This method will therefore never be called, and it is OK to return null.
+	 */
+	@Override
+	protected IProgress getProgressBar() {
+		return null;
 	}
 }

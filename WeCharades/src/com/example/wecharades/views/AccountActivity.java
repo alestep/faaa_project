@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.AccountPresenter;
 
+/**
+ * View which displays account information
+ * @author weCharade
+ */
 public class AccountActivity extends GenericActivity {
 
 	private AccountPresenter presenter;
@@ -24,9 +28,12 @@ public class AccountActivity extends GenericActivity {
 		setContentView(R.layout.account_screen);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 
-		//Get references to instances. To create an instance of RefreshProgressBar an ImageButton, 
-		//visualizing a refresh-icon, has to be a parameter.
+		//Get references to instances.
 		presenter = (AccountPresenter) super.getPresenter();
+		
+		/*
+		 * This class uses a RefreshProgressBar to visualize that the screen is refreshed
+		 */
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 
@@ -39,7 +46,7 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Called when Game Instructions button is clicked
+	 * Go to GameInstructionsActivity
 	 * @param view
 	 */
 	public void onClickGameInstructions(View view) {
@@ -48,7 +55,7 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Called when Logout button is clicked
+	 * To to LoginActivity
 	 * @param view
 	 */
 	public void onClickLogout(View view) {
@@ -56,7 +63,7 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Updates the screen
+	 * Refresh the screen
 	 * @param view
 	 */
 	public void onClickRefresh(View view){
@@ -64,12 +71,11 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Go to Home screen
+	 * Go to StartActivity
 	 * @param view
 	 */
 	public void onClickHome(View view){
-		startActivity(new Intent(this, StartActivity.class));
-		finish();
+		presenter.goToStartActivity();
 	}
 
 

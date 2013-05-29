@@ -9,20 +9,32 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.presenter.InvitationPresenter;
 
+/**
+ * View which displays a user's invitations, both received and sent
+ * @author weCharade
+ */
 public class InvitationActivity extends GenericActivity {
+	
 	private InvitationPresenter presenter;
 	private RefreshProgressBar refresh;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		super.onCreate(savedInstanceState, new InvitationPresenter(this));
+		
+		//Set the title bar
         setContentView(R.layout.invitation_screen);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
         
         //Get references to instances
 		presenter = (InvitationPresenter) getPresenter();
+		
+		/*
+		 * This class uses a RefreshProgressBar to visualize that data is fetched in the background
+		 */
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));	}
 	
 	@Override
@@ -39,14 +51,9 @@ public class InvitationActivity extends GenericActivity {
 	public void setInvitation(Invitation invitation, boolean response) {
 		presenter.setInvitation(invitation, response);
 	}
-
-	@Override
-	protected RefreshProgressBar getProgressBar() {
-		return refresh;
-	}
 	
 	/**
-	 * Go back to Home screen
+	 * Go to StartActivity
 	 * @param v
 	 */
 	public void onClickHome(View v){
@@ -54,10 +61,15 @@ public class InvitationActivity extends GenericActivity {
 	}
 	
 	/**
-	 * Updates the screen
+	 * Refresh the screen
 	 * @param v
 	 */
 	public void onClickRefresh(View v){
 		presenter.update();
+	}
+	
+	@Override
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }

@@ -20,21 +20,21 @@
         android:gravity="center" >
 
         <ImageButton
-            android:id="@+id/yesButton"
+            android:id="@+id/satisfied"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/button_custom_accept"
-            android:onClick="onClickYes"
+            android:onClick="onClickSatisfied"
             android:src="@drawable/navigation_upload" />
 
         <ImageButton
-            android:id="@+id/NoButton"
+            android:id="@+id/notSatisfied"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/button_custom_reject"
-            android:onClick="onClickNo"
+            android:onClick="onClickNotSatisfied"
             android:src="@drawable/undo" />
     </LinearLayout>
 

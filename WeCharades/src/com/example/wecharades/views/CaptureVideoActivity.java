@@ -13,8 +13,11 @@ import android.widget.Toast;
 
 import com.example.wecharades.model.Database;
 import com.example.wecharades.model.Turn;
+
 /**
- * @author Adam Lewestam
+ * View which displays video capturing
+ * @author weCharade
+ *
  */
 public class CaptureVideoActivity extends Activity {
 

@@ -9,7 +9,10 @@ import android.widget.ProgressBar;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.RegisterPresenter;
 
-
+/**
+ * View which displays the registration screen
+ * @author weCharade
+ */
 public class RegisterActivity extends GenericActivity {
 	
 	private EditText inputNickname;
@@ -24,17 +27,22 @@ public class RegisterActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new RegisterPresenter(this));
 		
+		//Set the title bar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.register);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_back); 
 		
 		// Get references to instances
-		presenter 			= 	(RegisterPresenter) super.getPresenter();
-		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
-		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
-		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
-		inputRepeatPassword =	(EditText) 		findViewById(R.id.registerRepeatPassword);
-		registerProgress 	=	new LoadProgressBar(this, (ProgressBar)	findViewById(R.id.progress));
+		presenter = (RegisterPresenter) super.getPresenter();
+		inputNickname = (EditText) findViewById(R.id.registerName);
+		inputEmail = (EditText) findViewById(R.id.registerEmail);
+		inputPassword =	(EditText) findViewById(R.id.registerPassword);
+		inputRepeatPassword = (EditText) findViewById(R.id.registerRepeatPassword);
+		
+		/*
+		 * This class uses a LoadProgressBar to visualize that data is fetched in the background
+		 */
+		registerProgress = new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
 	}
 	
 	@Override
@@ -44,7 +52,7 @@ public class RegisterActivity extends GenericActivity {
 	}
 
 	/**
-	 * Registers a new user - if success go to the StartScreen, if fail show error messages
+	 * Registers a new user - if success go to the StartScreen, else an error message shown
 	 * @param view
 	 */
 	public void onClickRegister(View view) {

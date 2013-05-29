@@ -10,27 +10,32 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.LoginPresenter;
 
-
+/**
+ * View which displays the login screen
+ * @author weCharade
+ */
 public class LoginActivity extends GenericActivity {
-	EditText inputUsername;
-	EditText inputPassword;
-	TextView loginErrorMsg;
-	LoadProgressBar loginProgress;
-	View myView;
-	LoginPresenter presenter;
+	
+	private EditText inputUsername;
+	private EditText inputPassword;
+	private LoadProgressBar loginProgress;
+	private LoginPresenter presenter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new LoginPresenter(this));
 		setContentView(R.layout.login);
 
-		// Importing all assets like buttons, text fields
-		inputUsername		= (EditText) findViewById(R.id.login_username);
-		inputPassword		= (EditText) findViewById(R.id.login_password);
-		loginProgress		= new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
-
-		//initializing the presenter
+		//Get references to instances
+		inputUsername = (EditText) findViewById(R.id.login_username);
+		inputPassword = (EditText) findViewById(R.id.login_password);
 		presenter = (LoginPresenter) super.getPresenter();
+		
+		/*
+		 * This class uses a LoadProgressBar to visualize that data is fetched in the background
+		 */
+		loginProgress = new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
+
 	}
 
 	@Override
@@ -40,16 +45,16 @@ public class LoginActivity extends GenericActivity {
 	}
 
 	/**
-	 * On click login button - if success go to StartActivity, on fail show error messages
-	 * TODO: maybe not a good method, create smaller method with more specific tasks
+	 * On click login button - if success go to StartActivity, else an error message is shown
 	 * @param view - the view
 	 */
 	public void onClickLogin(View view) {
+		//Retrieve input texts from username and password fields
 		presenter.login(inputUsername.getText().toString().toLowerCase(), inputPassword.getText().toString());
-
 	}
+	
 	/**
-	 * Link to the screen to get a new password
+	 * Go to the screen to get a new password
 	 * @param view
 	 */
 	public void onClickForgotPassword(View view) {
@@ -58,7 +63,7 @@ public class LoginActivity extends GenericActivity {
 	}
 
 	/**
-	 * Link to register screen
+	 * Go to register screen
 	 * @param view
 	 */
 	public void onClickRegister(View view) {

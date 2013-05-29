@@ -20,7 +20,11 @@ import android.widget.Toast;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.Presenter;
 
-public abstract class GenericActivity extends Activity{
+/**
+ * Abstract class which holds implementations of, for the activities, generic methods
+ * @author weCharade
+ */
+public abstract class GenericActivity extends Activity {
 	
 	//Presenter object, declared protected and therefore enabling access to extending classes
 	protected Presenter presenter;
