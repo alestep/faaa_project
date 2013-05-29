@@ -189,6 +189,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		.setCancelable(true)
 		.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
+				presenter.timer.cancel();
 				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
 				turn.setState(Turn.FINISH);
