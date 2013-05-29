@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_light_red"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="5dp" >
 
         <VideoView

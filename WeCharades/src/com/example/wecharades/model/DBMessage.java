@@ -18,41 +18,45 @@ public class DBMessage implements IMessage{
 	, GAMELIST			= 30
 	, INVITATIONS		= 40;
 
-int message;
-Object data;
+	int message;
+	Object data;
 
-public DBMessage(int message, Object data){
-	switch(message){
-	case(ERROR)		: if(data.getClass().equals(DatabaseException.class)){this.message = message; break;}
-	case(MESSAGE)	: if(data.getClass().equals(String.class)){this.message = message; break;}
-	case(GAMELIST)	: if(data instanceof Map
-							&& ( 
-									(!((Map) data).isEmpty() 
-											&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
+	public DBMessage(int message, Object data){
+		if(data != null){
+			switch(message){
+			case(ERROR)		: if(data.getClass().equals(DatabaseException.class)){this.message = message; break;}
+			case(MESSAGE)	: if(data.getClass().equals(String.class)){this.message = message; break;}
+			case(GAMELIST)	: if(data instanceof Map
+					&& ( 
+							(!((Map) data).isEmpty() 
+									&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
 									|| ((Map) data).isEmpty()
-								)
-						)
-						{this.message = message; break;}
-	case(INVITATIONS): 	if(data instanceof List
-							&& (	
-									(!((List) data).isEmpty()
-										&& ((List) data).iterator().next().getClass().equals(Invitation.class) 
+							)
+					)
+			{this.message = message; break;}
+			case(INVITATIONS): 	if(data instanceof List
+					&& (	
+							(!((List) data).isEmpty()
+									&& ((List) data).iterator().next().getClass().equals(Invitation.class) 
 									)
 									|| ((List) data).isEmpty()
-								)
-						)
-						{this.message = message; break;}
-	default 		: this.message = UNDEFINED; break;
+							)
+					)
+			{this.message = message; break;}
+			default 		: this.message = UNDEFINED; break;
+			}
+		} else{
+			this.message = UNDEFINED;
+		}
+		this.data = data;
 	}
-	this.data = data;
-}
 
-public int getMessage() {
-	return message;
-}
+	public int getMessage() {
+		return message;
+	}
 
-public Object getData() {
-	return data;
-}
-	
+	public Object getData() {
+		return data;
+	}
+
 }

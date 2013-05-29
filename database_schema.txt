@@ -1,18 +1,19 @@
-Players(_id, name, globalScore)
+Installations(_objectId, appName, appVersion, badge, channels, deviceToken, deviceType, installationId, parseVersion, timeZone, createdAt, updatedAt, ACL)
 
-CurrentGames(_gameId, _player)
-  player -> Players.id
+User(_objectId, password, authData, emailVerified, email,  gamesDraw, gamesList, gamesPlayed, gamesWon, naturalUsername, createdAt, updatedAt, ACL)
 
-Turns(_gameId, _turn, score, state, videoLink)
-  gameId -> CurrentGames.gameId
+RandomQueue(_objectId, player, createdAt, updatedAt, ACL)
+	player -> User.objectId
 
-GameData(_gameId, turn, currentPlayer)
-  (gameId, currentPlayer) -> CurrentGames.(gameId, player)
-  (gameId, turn) -> Turns(gameId, turn)
+Game(_objectId, currentPlayer, finished, player1, player2, turn, createdAt, updatedAt, ACL)
+	currentPlayer -> User.objectId
+	player1 -> User.objectId
+	player2 -> User.objectId
 
-RandomQueue(_placeInLine, player)
-  player -> Players.id
+Turn(_objectId, ansPlayer, ansPlayerScore, game, recPlayer, recPlayerScore, state, turn, videoLink, word, createdAt, updatedAt, ACL)
+	ansPlayer -> User.objectId
+	recPlayer -> User.objectId
+	game -> Game.objectId
+	word -> wordList.word
 
-Invitations(player1, player2)
-  player1 -> Players.id
-  player2 -> Players.id
+WordList(_obejctId, word, createdAt, updatedAt, ACL)
