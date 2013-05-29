@@ -45,10 +45,10 @@ public class DBMessage implements IMessage{
 			{this.message = message; break;}
 			default 		: this.message = UNDEFINED; break;
 			}
-			this.data = data;
 		} else{
 			this.message = UNDEFINED;
 		}
+		this.data = data;
 	}
 
 	public int getMessage() {
