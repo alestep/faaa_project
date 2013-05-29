@@ -58,10 +58,11 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void initialize() {
-		this.videoView = activity.getVideoView();
 		initializeTimer();
 		downloadVideo(activity, videoView);
 	}
+
+	
 
 	public void updateModel(){
 		dc.updateTurn(turn);
@@ -82,7 +83,6 @@ public class GuessCharadePresenter extends Presenter {
 				else{
 					activity.setTime(String.valueOf(millisUntilFinished / 1000));
 				}
-
 //								 if (millisUntilFinished>10000)
 //									 if (millisUntilFinished%1000 == 0)
 //										 activity.setTime(String.valueOf(millisUntilFinished / 1000));
@@ -207,15 +207,15 @@ public class GuessCharadePresenter extends Presenter {
 			}
 		}
 
-		@Override
-		protected void onPreExecute(){
-			downloadState = NO_DOWNLOAD;
-			mDialog = new ProgressDialog(mContext); //TODO move out from here?
-			mDialog.setTitle("Downloading Charade");
-			mDialog.setMessage("Please Wait");
-			mDialog.setCancelable(false);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+		 @Override
+		 protected void onPreExecute(){
+			 downloadState = NO_DOWNLOAD;
+			 mDialog = new ProgressDialog(mContext);
+			 mDialog.setTitle("Downloading Charade");
+			 mDialog.setMessage("Please Wait");
+			 mDialog.setCancelable(false);
+			 mDialog.setCanceledOnTouchOutside(false);
+			 mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -244,7 +244,6 @@ public class GuessCharadePresenter extends Presenter {
 			});
 			mDialog.show();
 		}
-
 
 		@Override
 		protected Boolean doInBackground(Void... params) {

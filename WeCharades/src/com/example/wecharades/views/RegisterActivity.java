@@ -2,6 +2,7 @@ package com.example.wecharades.views;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,29 +15,24 @@ import com.example.wecharades.presenter.RegisterPresenter;
 
 public class RegisterActivity extends GenericActivity {
 	
-	Button btnRegister;
-	Button btnLinkToLogin;
-	EditText inputNickname;
-	EditText inputEmail;
-	EditText inputPassword;
-	EditText inputRepeatPassword;
-	TextView registerErrorMsg;
-	LoadProgressBar registerProgress;
-	RegisterPresenter presenter;
+	private EditText inputNickname;
+	private EditText inputEmail;
+	private EditText inputPassword;
+	private EditText inputRepeatPassword;
+	private LoadProgressBar registerProgress;
+	private RegisterPresenter presenter;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new RegisterPresenter(this));
-		setContentView(R.layout.register);
 		
-		// Set the presenter
-		presenter = (RegisterPresenter) super.getPresenter();
-
-		//Getting the view associated with this Activity
-		//myView = getWindow().getDecorView().findViewById(android.R.id.content);
-
-		// Importing all assets like buttons, text fields
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.register);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_back); 
+		
+		// Get references to instances
+		presenter 			= 	(RegisterPresenter) super.getPresenter();
 		inputNickname 		=	(EditText) 		findViewById(R.id.registerName);
 		inputEmail 			=	(EditText) 		findViewById(R.id.registerEmail);
 		inputPassword 		=	(EditText) 		findViewById(R.id.registerPassword);
@@ -61,10 +57,17 @@ public class RegisterActivity extends GenericActivity {
 				inputPassword.getText().toString(),
 				inputRepeatPassword.getText().toString());	
 	}
+	
+	/**
+	 * Go back to Login screen
+	 * @param v
+	 */
+	public void onClickBack(View v){
+		presenter.goToLoginActivity();
+	}
 
 	@Override
 	protected LoadProgressBar getProgressBar() {
-		// TODO Auto-generated method stub
-		return null;
+		return registerProgress;
 	}
 }

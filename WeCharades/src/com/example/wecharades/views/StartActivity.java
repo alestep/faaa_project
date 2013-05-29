@@ -45,37 +45,33 @@ public class StartActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
-		// Sets the presenter
-		presenter = (StartPresenter) super.getPresenter();
-
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.list_screen);
+		setContentView(R.layout.start_screen);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
 
-		// Get a reference to views
-		gameListView = (ListView) findViewById(R.id.list);
-
-
-		// Inflate Start screen header in the ListView
-		View header = LayoutInflater.from(this).inflate(R.layout.start_screen_header, gameListView, false);
-		gameListView.addHeaderView(header);
-
+		// Get references to instances
+		presenter = (StartPresenter) super.getPresenter();
+		gameListView = (ListView) findViewById(R.id.gameList);
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
 
 		//Check if the user is logged in
 		presenter.checkLogin();
+		presenter.createNotificationInstallation();
 	}
 
+	@Override
 	public void onStart(){
-		super.onStart();
 		presenter.initiate();
 		presenter.update();
+		super.onStart();
 	}
 	
+	@Override
 	public void onPause(){
 		super.onPause();
+		presenter.setNotUpdating();
 	}
 
 	/**
@@ -138,7 +134,7 @@ public class StartActivity extends GenericActivity {
 		gameListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-				Game game = (Game) adapter.getItem(position-1);
+				Game game = (Game) adapter.getItem(position);
 				Intent intent = new Intent(activity, GameDashboardActivity.class);
 				intent.putExtra("Game", game);
 				startActivity(intent);

@@ -9,12 +9,17 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.TreeMap;
 
+import android.content.Intent;
+import android.util.Log;
+
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
+import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
 
@@ -33,6 +38,8 @@ public class StartPresenter extends Presenter implements Observer{
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
 
+	private boolean isUpdating = false;
+
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
@@ -40,23 +47,43 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 	public void createNotificationInstallation() {
 		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
-		ParseInstallation.getCurrentInstallation().saveInBackground();
+		try {
+			ParseInstallation.getCurrentInstallation().save();
+			System.out.println("Push Saved");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			Log.e("ParseException push notifications", "Pushthings");
+		}
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 	}
 
+	/**
+	 * Initiates the view
+	 */
 	public void initiate(){
-		String currentPlayer = dc.getCurrentPlayer().getName();
-		activity.setAccountName(currentPlayer);
-		PushService.subscribe(activity.getApplicationContext(), currentPlayer, StartActivity.class);
-		//dc.subscribetoNotification(activity.getApplicationContext());
+		if(activity.getIntent().getBooleanExtra("finish", false)){
+			activity.startActivity(new Intent(activity, LoginActivity.class));
+			activity.finish();
+		} else {
+			activity.setAccountName(dc.getCurrentPlayer().getName());
+		}
 	}
 
+	/**
+	 * Updates the view
+	 */
 	public void update(){
-		updateList(dc.getGames());
-		dc.getInvitations();
-		activity.showProgressBar();
+		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
+			updateList(dc.getGames());
+			dc.getInvitations();
+			activity.showProgressBar();
+			isUpdating = true;
+		}
 	}
-
+	
+	public void setNotUpdating(){
+		isUpdating = false;
+	}
 
 	/**
 	 * Private Method - Called when a new updated game list is received from the database.
@@ -88,12 +115,13 @@ public class StartPresenter extends Presenter implements Observer{
 	 * 
 	 */
 	public boolean checkLogin() {
-		if(dc.getCurrentPlayer() == null){
+		if(dc.getCurrentPlayer() == null) {
 			goToLoginActivity();
 			return false;
 		}
-		else{	
-			createNotificationInstallation();//TODO detta skapas VARJE gång - vill vi verkligen det?
+		else{			
+			PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
+			System.out.println("Subscribed to notifications");
 			return true;
 		}
 	}
@@ -160,6 +188,7 @@ public class StartPresenter extends Presenter implements Observer{
 			if(recent == 2){
 				activity.hideProgressBar();
 				recent = 0;
+				isUpdating = false;
 			}
 		}
 	}

@@ -6,12 +6,12 @@ import java.util.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
 
 import com.example.wecharades.model.DCMessage;
 import com.example.wecharades.model.DataController;
 import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
+import com.example.wecharades.views.StartActivity;
 
 public abstract class Presenter implements Observer{
 
@@ -29,16 +29,6 @@ public abstract class Presenter implements Observer{
 	}
 
 	/**
-	 * A method to show a toast
-	 * @param context
-	 * @param msg
-	 */
-	protected void showToast(Context context, String msg) {
-		Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
-		toast.show();
-	}
-
-	/**
 	 * Go to the login screen
 	 */
 	public void goToLoginActivity() {
@@ -46,6 +36,16 @@ public abstract class Presenter implements Observer{
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view, effectively restarting the app
+		activity.finish();
+	}
+	
+	/**
+	 * Go to the home screen
+	 */
+	public void goToStartActivity(){
+		Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(i);
 		activity.finish();
 	}
 
@@ -72,7 +72,7 @@ public abstract class Presenter implements Observer{
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if the user has internet connection
 	 * @return true if the user has internet connection, false otherwise

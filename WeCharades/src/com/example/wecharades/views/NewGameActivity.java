@@ -13,15 +13,14 @@ public class NewGameActivity extends GenericActivity {
 	
 	private NewGamePresenter presenter;
 	
-	//TODO Implement a presenter and extend generic activity if possible
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new NewGamePresenter(this));
-
-		
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.new_game);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_other); 
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_home);
+        
+        //Get reference to instance
 		presenter = (NewGamePresenter) super.getPresenter();
 	}
 	
@@ -31,6 +30,8 @@ public class NewGameActivity extends GenericActivity {
 	 */
 	public void onClickRandom(View view) {
 		presenter.randomInvitation();
+		startActivity(new Intent(this, StartActivity.class));
+		finish();
 	}
 	
 	/**
@@ -44,11 +45,14 @@ public class NewGameActivity extends GenericActivity {
 
 	@Override
 	protected IProgress getProgressBar() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	/**
+	 * Go back to Home screen
+	 * @param v
+	 */
 	public void onClickHome(View v){
-		startActivity(new Intent(this, StartActivity.class));
+		presenter.goToStartActivity();
 	}
 }

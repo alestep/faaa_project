@@ -30,10 +30,9 @@ public class ResetPresenter extends Presenter {
 	public ResetPresenter(ResetPasswordActivity activity) {
 		super(activity);
 		this.activity = activity;
-		//TODO parentView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
 	}
 
-	public void resetPassword(String email, View myView) {
+	public void resetPassword(String email) {
 		this.email = email;
 		ResetPasswordTask reset = new ResetPasswordTask();
 		reset.execute();
@@ -81,23 +80,7 @@ public class ResetPresenter extends Presenter {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
-				final Dialog dialog = new Dialog(activity);
-				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				dialog.setContentView(R.layout.dialog_error);
-				dialog.setCanceledOnTouchOutside(false);
-				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
-
-				TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
-				errorText.setText(dbException.prettyPrint());
-
-				Button ok = (Button) dialog.findViewById(R.id.ok);
-				ok.setOnClickListener(new OnClickListener() {          
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-
-				dialog.show();
+				activity.showErrorDialog(dbException.prettyPrint());
 			}
 			else{
 				activity.showToast("Email has been sent");

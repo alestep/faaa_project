@@ -68,22 +68,8 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 				final TextView invitee = (TextView) v.findViewById(R.id.invitee);
 				if (invitee != null)
 					invitee.setText(invitation.getInvitee().getName());
-				
-				final ImageButton remove = (ImageButton) v.findViewById(R.id.remove);
-
-				remove.setOnClickListener(new OnClickListener(){ 
-					@Override
-					public void onClick(View v){
-						//Uppdatera invite-list direkt!
-					}
-				});
-				
 			}
 		}
-
-
-
-
 		return v;
 	}
 

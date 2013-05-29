@@ -26,10 +26,12 @@ public class RefreshProgressBar implements IProgress {
 	public void show() {
 		setAnimation();
 		button.startAnimation(rotation);
+		button.setClickable(false);
 	}
 	
 	@Override
 	public void hide() {
+		button.setClickable(true);
 		button.clearAnimation();
 	}
 }

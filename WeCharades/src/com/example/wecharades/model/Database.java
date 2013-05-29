@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
@@ -559,7 +560,7 @@ public class Database extends Observable implements IDatabase {
 					obj.increment(PLAYER_GAMES_LOST, lost);
 					obj.increment(PLAYER_GAMES_WON, won);
 					obj.increment(PLAYER_GAMES_PLAYED);
-					obj.increment(PLAYER_GLOBALSCORE, player.getGlobalScore());
+					obj.increment(PLAYER_GLOBALSCORE, scoreInc);
 					obj.saveInBackground();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
@@ -605,26 +606,38 @@ public class Database extends Observable implements IDatabase {
 		query.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> queryList, ParseException e){
 				if(e == null){
-					if(db != null){
-						try{
-							if(queryList.isEmpty()){
-								db.putRandom(player);
-							} else if(queryList.contains(ParseObject.createWithoutData(PLAYER, player.getParseId()))){
+					try{
+						if(queryList.isEmpty()){
+							db.putRandom(player);
+							setChanged();
+							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Put in queue"));
+						} else {
+							ParseObject thisPlayer = null;
+							for(ParseObject obj : queryList){
+								String objid = obj.getString(RANDOMQUEUE_PLAYER);
+								String pid = player.getParseId();
+								if(obj.getString(RANDOMQUEUE_PLAYER).equals(player.getParseId())){
+									thisPlayer = obj;
+								}
+							}
+							if(thisPlayer != null){
 								setChanged();
 								notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
-							} else{
-								Collections.shuffle(queryList);
+							} else {
+								Collections.shuffle(queryList);//This is hardly necessary...
 								try {
 									Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
 									db.createGame(player, p2);
 									db.removeRandom(p2);
+									setChanged();
+									notifyObservers(new DBMessage(DBMessage.MESSAGE, "Game created against " + p2.getName()));
 								} catch (DatabaseException e1) {
 									sendError(new DatabaseException(e1.getCode(), e1.getMessage()));
 								}
 							}
-						} catch(ParseException e2){
-							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
+					} catch(ParseException e2){
+						sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
@@ -836,7 +849,13 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public void removePushNotification(Context context){
 		Player p = getCurrentPlayer();
-		PushService.unsubscribe(context, getCurrentPlayer().getName());
+		Set<String> setOfAllSubscriptions = PushService.getSubscriptions(context);
+		for(String s: setOfAllSubscriptions){
+			if(s.equals(p.getName())){
+				PushService.unsubscribe(context, p.getName());
+				System.out.println("Unsubcribed from push notifications");
+			}
+		}		
 	}
 
 	@Override
