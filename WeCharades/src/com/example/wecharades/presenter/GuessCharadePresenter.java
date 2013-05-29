@@ -55,10 +55,6 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void initialize(VideoView videoView) {
-<<<<<<< HEAD
-=======
-		this.videoView = videoView;
->>>>>>> lastHope
 		initializeTimer();
 		this.videoView = videoView;
 		downloadVideo(activity, videoView);
