@@ -36,7 +36,10 @@ public class Database extends Observable implements IDatabase {
 
 	//TODO change how dbexceptions are sent
 
-	//This is used to avoid problems with using plain strings when calling the database.
+	/*
+	 * These variables is used to avoid problems with using plain strings when calling the database.
+	 * 	Misspellings are not fun...
+	 */
 	public static final String
 	WORDLIST				= "WordList",
 	WORDLIST_WORD			= "word",
@@ -70,14 +73,25 @@ public class Database extends Observable implements IDatabase {
 	INVITE_INVITER 			= "inviter",
 	INVITE_INVITEE 			= "invitee";
 
-	private static IDatabase singleton;
+	//The database instace - singleton pattern again.
+	private static Database singleton;
 	private DatabaseConverter dbc;
 
+	/**
+	 * Construct a database with a connection to parse.
+	 * @param context - The context of the application
+	 */
 	private Database(Context context){
+		//Initialize parse, connected to the current application context
 		Parse.initialize(context.getApplicationContext(), "p34ynPRwEsGIJ29jmkGbcp0ywqx9fgfpzOTjwqRF", "RZpVAX3oaJcZqTmTwLvowHotdDKjwsi6kXb4HJ0R");
 	}
 
-	public static IDatabase getDatabaseInstance(Context context){
+	/**
+	 * Returns the instace of the database
+	 * @param context - the application context
+	 * @return A Database
+	 */
+	public static Database getDatabaseInstance(Context context){
 		if(singleton == null)
 			singleton = new Database(context);
 		return singleton;
@@ -89,9 +103,14 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void setConverter(DataController dc){
+		//TODO This should be moved in a later stage
 		dbc = new DatabaseConverter(dc);
 	}
 
+	/**
+	 * Method to send an error to any observers.
+	 * @param e - a DatabaseException
+	 */
 	private void sendError(DatabaseException e){
 		setChanged();
 		notifyObservers(new DBMessage(DBMessage.ERROR, e));
@@ -108,17 +127,23 @@ public class Database extends Observable implements IDatabase {
 		checkExistingGame(player1, player2);
 	}
 	/**
-	 * A query to check if a game between two players already exist
+	 * A query to check if a game between two players already exist.
 	 */
 	private void checkExistingGame(final Player player1, final Player player2){
+		/*
+		 * Constructs and initiates a query where any of the players take part. 
+		 * 	TODO - This method can be improved by a more effective query
+		 */
 		ArrayList<String> idList = new ArrayList<String>();
-		idList.add(player1.getParseId()); idList.add(player2.getParseId());
+		idList.add(player1.getParseId()); 
+		idList.add(player2.getParseId());
 		ParseQuery mainQuery = new ParseQuery(GAME);
 		mainQuery.whereContainedIn(GAME_PLAYER_1, idList);
 		mainQuery.findInBackground(new FindCallback(){
+			@Override
 			public void done(List<ParseObject> obj, ParseException e){
 				if(e == null){
-					//If a game doesn't exist, we can continue
+					//Add any existing game
 					List<ParseObject> actualList = new LinkedList<ParseObject>();
 					for(ParseObject o : obj){
 						if( (o.getString(GAME_PLAYER_1).equals(player1.getParseId())
@@ -130,6 +155,7 @@ public class Database extends Observable implements IDatabase {
 							actualList.add(o);
 						}
 					}
+					//If there were no existing games, we can create one 
 					if(actualList.isEmpty()){
 						createGameInBackground(player1, player2);
 					} else{
@@ -146,19 +172,24 @@ public class Database extends Observable implements IDatabase {
 	 */
 	private void createGameInBackground(Player player1, Player player2){
 		try{
+			//Gets a stack of all games 
 			Stack<String> wordList = getWords();
 			LinkedList<ParseObject> parseList = new LinkedList<ParseObject>();
 
+			//Create the game
 			ParseObject newGame = new ParseObject(GAME);
 			newGame.put(GAME_PLAYER_1, player1.getParseId());
 			newGame.put(GAME_PLAYER_2, player2.getParseId());
 			newGame.put(GAME_PLAYER_CURRENT, player1.getParseId());
 			newGame.put(GAME_TURN, 1);
 			newGame.put(GAME_FINISH, false);
+
 			parseList.add(newGame);
-			//Adds all the six turns
+
+			//Creates and adds all the six turns
 			String recP, ansP;
 			for(int i=1; i <= 6 ; i++){
+				//All turns devicible with 2 will have player 2 as recording player
 				if(i%2 == 0){
 					recP = player2.getParseId();
 					ansP = player1.getParseId();
@@ -166,16 +197,18 @@ public class Database extends Observable implements IDatabase {
 					recP = player1.getParseId();
 					ansP = player2.getParseId();
 				}
+				//Create and add six turns
 				parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
 			}
+			//Save all parts of the game - Game and Turns
 			ParseObject.saveAll(parseList);
 		} catch(ParseException e){
 			sendError(new DatabaseException(e.getCode(), e.getMessage()));
 		}
 	}
 	/**
-	 * Randomly get 6 unique word from the database 
-	 * @return an ArrayList with 6 words 
+	 * Get words from the database with random order 
+	 * @return a Stack with words
 	 * @throws ParseException
 	 */
 	private Stack<String> getWords() throws ParseException{
@@ -185,12 +218,14 @@ public class Database extends Observable implements IDatabase {
 		for(ParseObject word : dblist){
 			wordList.add(word.getString(WORDLIST_WORD));
 		}
+		//Random order of stack
 		Collections.shuffle(wordList);
 		return wordList;
 	}
 
 	/**
 	 * Method to delete a game in background
+	 * @param game - the Game to remove
 	 */
 	public void removeGame(Game game){
 		ParseQuery query = new ParseQuery(GAME);
@@ -209,8 +244,9 @@ public class Database extends Observable implements IDatabase {
 			}
 		});
 	}
-	/*
+	/**
 	 * Helper method to removeTurns - called when the game has been fetched from the db.
+	 * @param game - a ParseObject of this game
 	 */
 	private void removeTurns(ParseObject game) throws ParseException{
 		ParseQuery turnQuery = new ParseQuery(TURN);
@@ -221,8 +257,13 @@ public class Database extends Observable implements IDatabase {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#removeTurnsOfGame(Game game)
+	 */
+	@Override
 	public void removeTurnsOfGame(Game game){
 		try{
+			//use the already implemented method
 			removeTurns(ParseObject.createWithoutData(GAME, game.getGameId()));
 		} catch(ParseException e){
 			sendError(new DatabaseException(e.getCode(), e.getMessage()));
@@ -244,19 +285,6 @@ public class Database extends Observable implements IDatabase {
 			throw new DatabaseException(e.getCode(), e.getMessage());
 		}
 		return game;
-	}
-
-	private ParseObject getGameParseObject(String gameId) throws DatabaseException {
-		ParseObject object = null;
-		ParseQuery query = new ParseQuery("Game");
-		try {
-			object = query.get(gameId);
-		} catch(ParseException e){
-			Log.d("Database", e.getMessage());
-			throw new DatabaseException(e.getCode(), e.getMessage());
-		}
-
-		return object;
 	}
 
 	/* (non-Javadoc)
@@ -288,11 +316,12 @@ public class Database extends Observable implements IDatabase {
 			}
 		});
 	}
-	/*
+	/**
 	 * Helper method to fetch games. Games and turns are fetched in background.
+	 * @param a List of ParseObjects, containing game data
 	 */
 	private void getTurnsInBackgrund(final List<ParseObject> gameList){
-		if(gameList.isEmpty()){
+		if(gameList == null || gameList.isEmpty()){
 			//If there are no games, we should still update screen to remove old games!
 			setChanged();
 			notifyObservers(new DBMessage(DBMessage.GAMELIST, new TreeMap<Game, ArrayList<Turn>>()));
@@ -307,17 +336,21 @@ public class Database extends Observable implements IDatabase {
 					if(e == null){
 						if(!resultList.isEmpty()){
 							try{
+								//Create a double set of treemaps, to ease execution
 								TreeMap<Game, ArrayList<Turn>> map = new TreeMap<Game, ArrayList<Turn>>();
 								TreeMap<String, Game> idList = new TreeMap<String, Game>();
 								Game game;
 								for(ParseObject obj : gameList){
-									game = dbc.parseGame(obj);
+									game = dbc.parseGame(obj); //TODO this should be changed later
 									map.put(game, new ArrayList<Turn>());
 									idList.put(game.getGameId(), game);
 								}
-								//Then, we must parse the ParseObjects to turns and add them to the correct list
+								/*
+								 * Then, we must parse the ParseObjects to turns and add them to the correct list
+								 * 	We can do this in a "oneliner", but it becomes somewhat hard to read...
+								 */
 								for(ParseObject obj : resultList){
-									Turn turn = dbc.parseTurn(obj); //TODO This should also be fixed.
+									Turn turn = dbc.parseTurn(obj); //TODO This should also be changed later.
 									Game g = idList.get(turn.getGameId());
 									ArrayList<Turn> tl = map.get(g);
 									tl.add(turn);
@@ -392,7 +425,7 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public Turn getTurn(Game game, int turnNumber) throws DatabaseException{
 		ParseQuery query = new ParseQuery(TURN);
-		query.whereEqualTo(TURN_GAME, getGameParseObject(game.getGameId()));
+		query.whereEqualTo(TURN_GAME, ParseObject.createWithoutData(GAME, game.getGameId()));
 		query.whereEqualTo(TURN_TURN, turnNumber);
 		ParseObject turn = null;
 		try {
@@ -410,8 +443,7 @@ public class Database extends Observable implements IDatabase {
 	@Override
 	public ArrayList<Turn> getTurns(Game game) throws DatabaseException{
 		ParseQuery query = new ParseQuery(TURN);
-		//We have to do this, as the turn is linked to a parse object
-		query.whereEqualTo(TURN_GAME, getGameParseObject(game.getGameId()));
+		query.whereEqualTo(TURN_GAME, ParseObject.createWithoutData(GAME, game.getGameId()));
 		query.addAscendingOrder(TURN_TURN);
 
 		List<ParseObject> dbList = null;
@@ -436,12 +468,6 @@ public class Database extends Observable implements IDatabase {
 		final Turn turn = theTurn;
 		ParseQuery query = new ParseQuery(TURN);
 		query.whereEqualTo(TURN_GAME, ParseObject.createWithoutData(GAME, turn.getGameId()));
-		/*try { //TODO background activity
-			query.whereEqualTo(TURN_GAME, getGameParseObject(turn.getGameId()));
-		} catch (DatabaseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
 		query.whereEqualTo(TURN_TURN, turn.getTurnNumber());
 		query.getFirstInBackground(new GetCallback() {
 			public void done(ParseObject dbTurn, ParseException e){
@@ -457,8 +483,13 @@ public class Database extends Observable implements IDatabase {
 			}
 		});
 	}
+
+	/* (non-Javadoc)
+	 * @see com.example.wecharades.model.IDatabase#updateTurns(List<Turn>)
+	 */
 	@Override
 	public void updateTurns(final List<Turn> turnList) {
+		//First, add all turns as ParseObjects
 		LinkedList<ParseQuery> ql = new LinkedList<ParseQuery>(); 
 		for(Turn turn : turnList){
 			ParseQuery q = new ParseQuery(TURN);
@@ -467,9 +498,11 @@ public class Database extends Observable implements IDatabase {
 			ql.add(q);
 		}
 		ParseQuery main = ParseQuery.or(ql);
+		//Find all turns at once
 		main.findInBackground(new FindCallback(){
 			public void done(List<ParseObject> result, ParseException e){
 				if(e == null){
+					//Double for-each to compare all objects 
 					for(ParseObject dbTurn : result){
 						for(Turn turn : turnList){
 							if(turn.getGameId().equals(dbTurn.getString(TURN_GAME)) 
@@ -478,15 +511,18 @@ public class Database extends Observable implements IDatabase {
 								dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 								dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 								dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
-							}
-							if(!result.isEmpty()){
-								try{
-									ParseObject.saveAll(result);
-								} catch(ParseException e2){
-									sendError(new DatabaseException(e.getCode(), e.getMessage()));
-								}
+								break; //Increase performance
 							}
 						}
+					}
+					if(!result.isEmpty()){
+						try{
+							ParseObject.saveAll(result);
+						} catch(ParseException e2){
+							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
+						}
+					} else{
+						sendError(new DatabaseException(0, "")); //TODO
 					}
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
@@ -839,7 +875,7 @@ public class Database extends Observable implements IDatabase {
 	public void logOut(){
 		ParseUser.logOut();
 	}
-	
+
 	@Override
 	public void removePushNotification(Context context){
 		Player p = getCurrentPlayer();
