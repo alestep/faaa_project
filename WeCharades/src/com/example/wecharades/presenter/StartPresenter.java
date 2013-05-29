@@ -119,8 +119,7 @@ public class StartPresenter extends Presenter implements Observer{
 			goToLoginActivity();
 			return false;
 		}
-		else{	
-			createNotificationInstallation();		
+		else{			
 			PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
 			System.out.println("Subscribed to notifications");
 			return true;
