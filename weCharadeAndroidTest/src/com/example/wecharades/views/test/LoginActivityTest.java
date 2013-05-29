@@ -58,7 +58,7 @@ public class LoginActivityTest extends
 		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
 	}
 	/**
-	 * Variation 3 - Case 2
+	 * Variation 3 - Case 2:
 	 */
 	public void testValidUsernameAndPasswordCaseTwo(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);

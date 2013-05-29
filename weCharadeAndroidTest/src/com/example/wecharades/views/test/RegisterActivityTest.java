@@ -26,14 +26,14 @@ public class RegisterActivityTest extends
 	/**
 	 * Variation 1
 	 */
-//	public void testEmptyFields(){
-//		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
-//		solo.clickOnButton("Register");
-//		solo.waitForDialogToOpen(5000);
-//		solo.clickOnButton("OK");
-//		solo.waitForDialogToClose(5000);
-//		
-//	}
+	public void testEmptyFields(){
+		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
+		solo.clickOnButton("Register");
+		solo.waitForDialogToOpen(5000);
+		solo.clickOnButton("OK");
+		solo.waitForDialogToClose(5000);
+		
+	}
 	/**
 	 * Variation 2
 	 */
@@ -85,12 +85,12 @@ public class RegisterActivityTest extends
 		solo.waitForDialogToClose(3000);
 	}
 	/**
-	 * Variation 6 - All 4 Cases. Depending on the user database in parse or internet connection.
+	 * Variation 6 - All 4 different cases are depending on if there is a user already registered in the database or if there exists an internetconnection.
 	 */
 	public void testCorrectInputs(){
 		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
 		solo.enterText(0, "validUsername");
-		solo.enterText(1, "valid@email.se");
+		solo.enterText(1, "valid@email.com");
 		solo.enterText(2,"validPassword");
 		solo.enterText(3,"validPassword");
 		solo.clickOnButton("Register");
