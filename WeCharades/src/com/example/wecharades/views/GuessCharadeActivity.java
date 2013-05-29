@@ -168,10 +168,6 @@ public class GuessCharadeActivity extends GenericActivity  {
 			}
 			return true;
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
 			showDialog();
 			return true;
