@@ -90,118 +90,85 @@ public class GuessCharadeActivity extends GenericActivity  {
          * @param view
          */
         public void onClickGuess(View view){
-                if(presenter.checkRightWord(answerWord)){
-                        videoView.stopPlayback();
-                        presenter.timer.cancel();
-                        gameState = GAME_FINISHED;
-                        //Update relevant information
-                        turn.setRecPlayerScore(3);
-                        turn.setAnsPlayerScore(5);
-                        turn.setState(Turn.FINISH);
-                        presenter.updateModel();
-                       
-                        AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
-                        mDialog.setTitle("Charade");
-                        mDialog
-                        .setMessage("You Guessed Right!")
-                        .setCancelable(false)
-                        .setPositiveButton("Continue",new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
- 
-                                        Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
-                                        intent.putExtra("Game",presenter.getGame());
-                                        startActivity(intent);
-                                        finish();
-                                }
-                        });
-                        AlertDialog alertDialog = mDialog.create();
-                        alertDialog.show();
-                }
-                else{
-                        AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
-                        mDialog.setTitle("Charade");
-                        mDialog
-                        .setMessage("You Guessed Wrong! Hurry up!")
-                        .setNegativeButton("Retry",new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                }
-                        });
-                        AlertDialog alertDialog = mDialog.create();
-                        alertDialog.show();
-                }                      
+        	presenter.evaluateGuess(answerWord.getText().toString());                  
         }
  
-        @Override
-        public void showErrorDialog(String str){
-                possibleLetters.setVisibility(0);
-                super.showErrorDialog(str);
-        }
-        /**
-         * Shows up an finishAlertDialog and stops the video.
-         */
-        public void finishDialog() {
-                videoView.stopPlayback();
-                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-                builder.setTitle("Game Over")
-                .setMessage("The right charade is: " + presenter.currentWord.toLowerCase() + ".")
-                .setCancelable(false)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-                                intent.putExtra("Game",presenter.getGame());
-                                startActivity(intent);
-                                finish();
-                        }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-        }
+//        @Override
+//        public void showNegativeDialog(String str){
+//                possibleLetters.setVisibility(0);
+//                super.showNegativeDialog(str);
+//        }
+        
+//        /**
+//         * Shows up an finishAlertDialog and stops the video.
+//         */
+//        public void finishDialog() {
+//                videoView.stopPlayback();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
+//                builder.setTitle("Game Over")
+//                .setMessage("The right charade is: " + presenter.currentWord.toLowerCase() + ".")
+//                .setCancelable(false)
+//                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+//                                intent.putExtra("Game",presenter.getGame());
+//                                startActivity(intent);
+//                                finish();
+//                        }
+//                });
+//                AlertDialog alert = builder.create();
+//                alert.show();
+//                
+//              Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+//              intent.putExtra("Game",presenter.getGame());
+//              startActivity(intent);
+//              finish();
+//        }
  
         @Override
         public boolean onKeyDown(int keyCode, KeyEvent event) {
                 if ((keyCode == KeyEvent.KEYCODE_BACK)) {
                         if(presenter.downloadState != presenter.NO_DOWNLOAD)
-                                showDialog();
+                                presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
                         else{
                                 finish();
                         }
                         return true;
                 }
                 if ((keyCode == KeyEvent.KEYCODE_MENU)) {
-                        showDialog();
+                        presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
                         return true;
                 }
                 return false;
         }
-        /**
-         * Shows up an Dialog for pressing the back and settings button.
-         */
-        private void showDialog(){
-                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-                builder.setMessage("If you exit you'll lose this turn!").setTitle("Warning!")
-                .setCancelable(true)
-                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                                turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-                                turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-                                turn.setState(Turn.FINISH);
-                                presenter.updateModel();
-                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-                                intent.putExtra("Game",presenter.getGame());
-                                startActivity(intent);
-                                dialog.cancel();
-                                finish();
-                        }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                        }
-                });
-                AlertDialog mAlert = builder.create();
-                mAlert.show();
-        }
+//        /**
+//         * Shows up an Dialog for pressing the back and settings button.
+//         */
+//        private void showNegativeDialog(){
+//                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
+//                builder.setMessage("If you exit you'll lose this turn!").setTitle("Warning!")
+//                .setCancelable(true)
+//                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                                turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
+//                                turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
+//                                turn.setState(Turn.FINISH);
+//                                presenter.updateModel();
+//                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
+//                                intent.putExtra("Game",presenter.getGame());
+//                                startActivity(intent);
+//                                dialog.cancel();
+//                                finish();
+//                        }
+//                })
+//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//                                dialog.cancel();
+//                        }
+//                });
+//                AlertDialog mAlert = builder.create();
+//                mAlert.show();
+//        }
 
 		@Override
 		protected IProgress getProgressBar() {

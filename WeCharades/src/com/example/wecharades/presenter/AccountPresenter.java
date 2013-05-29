@@ -51,7 +51,7 @@ public class AccountPresenter extends Presenter {
 					globalRanking = i + 1;
 			}
 		} catch(DatabaseException e) {
-			activity.showErrorDialog(e.prettyPrint());
+			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}
 		return globalRanking;
 	}

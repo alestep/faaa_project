@@ -247,17 +247,7 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onCancelled(Boolean result) {
 			if(dialog.isShowing()){
 				dialog.dismiss();
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Uploading Charade")
-				.setMessage("Upload failed, try again!")
-				.setCancelable(false)
-				.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				AlertDialog alert = builder.create();
-				alert.show();
+				activity.showNegativeDialog("Error", "Upload failed", "Try again");
 			}
 		}
 

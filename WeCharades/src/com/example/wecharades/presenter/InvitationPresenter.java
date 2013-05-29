@@ -59,7 +59,7 @@ public class InvitationPresenter extends Presenter implements Observer{
 			else	
 				dc.rejectInvitation(invitation);
 		}catch (DatabaseException e) {
-			activity.showErrorDialog(e.prettyPrint());
+			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}
 	}
 	

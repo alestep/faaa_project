@@ -39,7 +39,7 @@ public abstract class GenericActivity extends Activity{
 	 * @return The progressbar of the view.
 	 */
 	protected abstract IProgress getProgressBar();
-	
+
 
 	/**
 	 * Called to show progress spinning when waiting for the server
@@ -47,8 +47,8 @@ public abstract class GenericActivity extends Activity{
 	public void showProgressBar() {
 		if(getProgressBar() != null) {
 			getProgressBar().show();
-			
-			
+
+
 		}
 	}
 
@@ -60,7 +60,7 @@ public abstract class GenericActivity extends Activity{
 			getProgressBar().hide();
 		}
 	}
-	
+
 	//TODO move this to gen.act.?
 	/**
 	 * To get all clickable objects in a list from a view
@@ -68,7 +68,7 @@ public abstract class GenericActivity extends Activity{
 	 * @return an ArrayList with all Views within the parameter view
 	 */
 	private ArrayList<View> getAllChildren(View view) {
-		
+
 		if (!(view instanceof ViewGroup)) {
 			ArrayList<View> viewArrayList = new ArrayList<View>();
 			viewArrayList.add(view);
@@ -111,13 +111,13 @@ public abstract class GenericActivity extends Activity{
 			child.setEnabled(false);
 		}
 	}
-	
+
 	/**
 	 * Show a toast to the user.
 	 * @param msg
 	 */
 	public void showToast(String msg) {
-		
+
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_success, (ViewGroup) findViewById(R.id.toast_layout_root));
 
@@ -134,18 +134,24 @@ public abstract class GenericActivity extends Activity{
 	 * Show a message to the user. This is most often error states.
 	 * @param error
 	 */
-	public void showErrorDialog(String error) {
+	public void showNegativeDialog(String negativeTitle, String negativeText, String buttonText) {
 		final Dialog dialog = new Dialog(this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.dialog_error);
+		dialog.setContentView(R.layout.dialog_negative);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
-		
-		TextView errorText = (TextView) dialog.findViewById(R.id.errorText);
-		errorText.setText(error);
 
-		Button ok = (Button) dialog.findViewById(R.id.ok);
-		ok.setOnClickListener(new OnClickListener() {          
+		TextView title = (TextView) dialog.findViewById(R.id.negativeTitle);
+		title.setText(negativeTitle);
+		
+		TextView text = (TextView) dialog.findViewById(R.id.negativeText);
+		text.setText(negativeText);
+
+		Button button = (Button) dialog.findViewById(R.id.dismiss);
+		button.setText(buttonText);
+		button.setOnClickListener(new OnClickListener() {          
+			
+			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
 			}
@@ -153,6 +159,80 @@ public abstract class GenericActivity extends Activity{
 
 		dialog.show();
 	}
+	
+	/**
+	 * Show a message to the user. This is most often error states.
+	 * @param error
+	 */
+	public void showNegativeDialog(String negativeTitle, String negativeText, String buttonText1, String buttonText2) {
+		final Dialog dialog = new Dialog(this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_negative_two);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+
+		TextView title = (TextView) dialog.findViewById(R.id.negativeTitle);
+		title.setText(negativeTitle);
+		
+		TextView text = (TextView) dialog.findViewById(R.id.negativeText);
+		text.setText(negativeText);
+
+		Button button1 = (Button) dialog.findViewById(R.id.dismiss);
+		button1.setText(buttonText1);
+		
+		Button button2 = (Button) dialog.findViewById(R.id.back);
+		button2.setText(buttonText2);
+		
+		button1.setOnClickListener(new OnClickListener() {          
+			
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		
+		button2.setOnClickListener(new OnClickListener() {          
+			
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		dialog.show();
+	}
+
+	/**
+	 * Show a progress dialog to the user. 
+	 * @param error
+	 */
+	public void showPositiveDialog(String positiveTitle, String positiveText, String buttonText) {
+		final Dialog dialog = new Dialog(this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_positive);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+
+		TextView title = (TextView) dialog.findViewById(R.id.positiveTitle);
+		title.setText(positiveTitle);
+
+		TextView text = (TextView) dialog.findViewById(R.id.positiveText);
+		text.setText(positiveText);
+
+		Button button = (Button) dialog.findViewById(R.id.dismiss);
+		button.setText(buttonText);
+		
+		button.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+
+			}
+		});
+		dialog.show();
+	}
+
 
 
 	@Override
