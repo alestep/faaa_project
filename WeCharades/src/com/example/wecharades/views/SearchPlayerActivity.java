@@ -7,7 +7,6 @@ import android.view.Window;
 import android.widget.EditText;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SearchPlayerPresenter;
 
 /**

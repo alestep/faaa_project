@@ -2,7 +2,6 @@ package com.example.wecharades.presenter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -115,7 +114,6 @@ public class StartPresenter extends Presenter implements Observer{
 			goToLoginActivity();
 			return false;
 		}
-
 		else{	
 			createNotificationInstallation();
 			return true;

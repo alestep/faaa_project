@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.IProgress;
 import com.example.wecharades.presenter.Presenter;
 
 public abstract class GenericActivity extends Activity{

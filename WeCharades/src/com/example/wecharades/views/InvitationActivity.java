@@ -1,6 +1,5 @@
 package com.example.wecharades.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -8,7 +7,6 @@ import android.widget.ImageButton;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.InvitationPresenter;
 
 public class InvitationActivity extends GenericActivity {

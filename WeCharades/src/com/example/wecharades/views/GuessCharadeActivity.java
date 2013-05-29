@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.IProgress;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
 
@@ -168,7 +167,6 @@ public class GuessCharadeActivity extends GenericActivity  {
 			}
 			return true;
 		}
-
 		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
 			showDialog();
 			return true;

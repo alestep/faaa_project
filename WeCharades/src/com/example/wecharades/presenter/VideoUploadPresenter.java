@@ -34,7 +34,6 @@ import android.widget.VideoView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Database;
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.CaptureVideoActivity;
 import com.example.wecharades.views.StartActivity;
@@ -141,7 +140,7 @@ public class VideoUploadPresenter extends Presenter {
 		activity.finish();	
 	}
 	private void updateModel(){
-		dc.updateTurn(turn);
+		dc.updateGame(turn);
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();

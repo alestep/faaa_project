@@ -22,8 +22,8 @@ public class DCMessage implements IMessage{
 	public DCMessage(int message, Object data){
 		if(data != null){
 			switch(message){
-			case(10)	: if(data instanceof String) 	{this.message = MESSAGE; break;}
-			case(20)	: if(data instanceof String)	{this.message = ERROR; break;}
+			case(10)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE; break;}
+			case(20)	: if(data.getClass().equals(String.class))	{this.message = ERROR; break;}
 			case(30)	: if(data instanceof List 
 					&& (
 							!((List) data).isEmpty() 

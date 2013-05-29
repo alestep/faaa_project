@@ -15,24 +15,19 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import android.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.text.format.Time;
 import android.util.Log;
-import android.view.SoundEffectConstants;
 import android.widget.EditText;
 import android.widget.VideoView;
 
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GuessCharadeActivity;
@@ -65,7 +60,7 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void updateModel(){
-		dc.updateTurn(turn);
+		dc.updateGame(turn);
 	}
 
 	/**
@@ -83,46 +78,46 @@ public class GuessCharadePresenter extends Presenter {
 				else{
 					activity.setTime(String.valueOf(millisUntilFinished / 1000));
 				}
-//								 if (millisUntilFinished>10000)
-//									 if (millisUntilFinished%1000 == 0)
-//										 activity.setTime(String.valueOf(millisUntilFinished / 1000));
-//									 else
-//										 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+				//								 if (millisUntilFinished>10000)
+				//									 if (millisUntilFinished%1000 == 0)
+				//										 activity.setTime(String.valueOf(millisUntilFinished / 1000));
+				//									 else
+				//										 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
 			}
 
-			 public void onFinish() {
-				 activity.gameState = GuessCharadeActivity.GAME_FINISHED;
-				 videoView.stopPlayback();
-				 turn.setRecPlayerScore(0);
-				 turn.setAnsPlayerScore(0);
-				 turn.setState(Turn.FINISH);
-				 updateModel();
-				 activity.finishDialog();
-			 }
-		 };
-	 }
-	 /**
-	  * Stops the timer
-	  */
-	 public void stopTimer(){
-		 timer.cancel();
-	 }
-	 /**
-	  * Call this method to initiate video download from server.
-	  * @param context
-	  * @param videoView
-	  */
-	 public void downloadVideo(Context context, VideoView videoView){
-		 this.videoView = videoView;
-		 download = new DownloadVideo(context, SAVE_PATH);
-		 download.execute();
-	 }
-	 /**
-	  * Sets video specifications and initiates the video.
-	  */
-	 public void playVideo() {
-		 try {
-			 videoView.setOnPreparedListener(new OnPreparedListener() {
+			public void onFinish() {
+				activity.gameState = GuessCharadeActivity.GAME_FINISHED;
+				videoView.stopPlayback();
+				turn.setRecPlayerScore(0);
+				turn.setAnsPlayerScore(0);
+				turn.setState(Turn.FINISH);
+				updateModel();
+				activity.finishDialog();
+			}
+		};
+	}
+	/**
+	 * Stops the timer
+	 */
+	public void stopTimer(){
+		timer.cancel();
+	}
+	/**
+	 * Call this method to initiate video download from server.
+	 * @param context
+	 * @param videoView
+	 */
+	public void downloadVideo(Context context, VideoView videoView){
+		this.videoView = videoView;
+		download = new DownloadVideo(context, SAVE_PATH);
+		download.execute();
+	}
+	/**
+	 * Sets video specifications and initiates the video.
+	 */
+	public void playVideo() {
+		try {
+			videoView.setOnPreparedListener(new OnPreparedListener() {
 
 				@Override
 				public void onPrepared(MediaPlayer mp) {
@@ -199,29 +194,21 @@ public class GuessCharadePresenter extends Presenter {
 		private ProgressDialog mDialog;
 		Context mContext;
 		private String SAVE_PATH;
-		private File file;
 
 		public DownloadVideo(Context context,String path) {
 			mContext=context;
 			SAVE_PATH = path;
 		}
 
-		private void setReadable(File file){
-			if (file.exists()) {
-				System.out.println("in SetReadAble");
-				file.setReadable(true,false);
-			}
-		}
-
-		 @Override
-		 protected void onPreExecute(){
-			 downloadState = NO_DOWNLOAD;
-			 mDialog = new ProgressDialog(mContext);
-			 mDialog.setTitle("Downloading Charade");
-			 mDialog.setMessage("Please Wait");
-			 mDialog.setCancelable(false);
-			 mDialog.setCanceledOnTouchOutside(false);
-			 mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+		@Override
+		protected void onPreExecute(){
+			downloadState = NO_DOWNLOAD;
+			mDialog = new ProgressDialog(mContext);
+			mDialog.setTitle("Downloading Charade");
+			mDialog.setMessage("Please Wait");
+			mDialog.setCancelable(false);
+			mDialog.setCanceledOnTouchOutside(false);
+			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -251,53 +238,53 @@ public class GuessCharadePresenter extends Presenter {
 			mDialog.show();
 		}
 
-		 @Override
-		 protected Boolean doInBackground(Void... params) {
-			 boolean result = false;
-			 FTPClient con = null;
-			 try{
-				 con = new FTPClient();
-				 con.connect("ftp.mklcompetencia.se", 21);
-				 if (con.login("mklcompetencia.se", "ypkq4w")){
-					 con.enterLocalPassiveMode(); // important!
-					 System.out.println(turn.getVideoLink());
-					 con.setFileType(FTP.BINARY_FILE_TYPE);
-					 OutputStream out = new FileOutputStream(new File(SAVE_PATH));
-					 result = con.retrieveFile(turn.getVideoLink(), out);
-					 out.close();
-					 if (result) {
-						 Log.v("download result", "succeeded");
-					 }                                              
-					 con.logout();
-					 con.disconnect();
-				 }
-			 }
-			 catch (SocketException e){
-				 Log.v("download result Socket", e.getMessage());
-				 cancel(true);
-			 }
-			 catch (UnknownHostException e){
-				 Log.v("download result Unknown", e.getMessage());
-				 cancel(true);
-			 }
-			 catch (FTPConnectionClosedException e){
-				 Log.v("download result FTP CONNECTIONCLOSED", e.getMessage());
-				 cancel(true);
-			 }
-			 catch (CopyStreamException e){
-				 Log.v("download result COPYSTREAM", e.getMessage());
-				 cancel(true);
-			 }
-			 catch (IOException e){
-				 Log.v("download result IOE", e.getMessage());
-				 cancel(true);
-			 }
-			 catch (Exception e){
-				 Log.v("download result just exception","failed " + e.getMessage());
-				 cancel(true);
-			 }
-			 return null;  
-		 }
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			boolean result = false;
+			FTPClient con = null;
+			try{
+				con = new FTPClient();
+				con.connect("ftp.mklcompetencia.se", 21);
+				if (con.login("mklcompetencia.se", "ypkq4w")){
+					con.enterLocalPassiveMode(); // important!
+					System.out.println(turn.getVideoLink());
+					con.setFileType(FTP.BINARY_FILE_TYPE);
+					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
+					result = con.retrieveFile(turn.getVideoLink(), out);
+					out.close();
+					if (result) {
+						Log.v("download result", "succeeded");
+					}                                              
+					con.logout();
+					con.disconnect();
+				}
+			}
+			catch (SocketException e){
+				Log.v("download result Socket", e.getMessage());
+				cancel(true);
+			}
+			catch (UnknownHostException e){
+				Log.v("download result Unknown", e.getMessage());
+				cancel(true);
+			}
+			catch (FTPConnectionClosedException e){
+				Log.v("download result FTP CONNECTIONCLOSED", e.getMessage());
+				cancel(true);
+			}
+			catch (CopyStreamException e){
+				Log.v("download result COPYSTREAM", e.getMessage());
+				cancel(true);
+			}
+			catch (IOException e){
+				Log.v("download result IOE", e.getMessage());
+				cancel(true);
+			}
+			catch (Exception e){
+				Log.v("download result just exception","failed " + e.getMessage());
+				cancel(true);
+			}
+			return null;  
+		}
 
 		@Override
 		protected void onPostExecute(Boolean result){
@@ -305,7 +292,6 @@ public class GuessCharadePresenter extends Presenter {
 				mDialog.setMessage("Download Success!");
 				mDialog.dismiss();
 				activity.setPossibleLetters(shuffleWord().toUpperCase());
-				setReadable(file);
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
 				playVideo();
@@ -323,9 +309,9 @@ public class GuessCharadePresenter extends Presenter {
 				.setPositiveButton("Retry later", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-//						Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
-//						intent.putExtra(Database.TURN, turn);
-//						activity.startActivity(intent);
+						//                                              Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
+						//                                              intent.putExtra(Database.TURN, turn);
+						//                                              activity.startActivity(intent);
 						activity.finish();
 
 					}
