@@ -54,7 +54,8 @@ public class GuessCharadePresenter extends Presenter {
 		this.activity = activity;
 	}
 
-	public void initialize() {
+	public void initialize(VideoView videoView) {
+		this.videoView = videoView;
 		initializeTimer();
 		downloadVideo(activity, videoView);
 	}
@@ -249,13 +250,11 @@ public class GuessCharadePresenter extends Presenter {
 					 con.enterLocalPassiveMode(); // important!
 					 System.out.println(turn.getVideoLink());
 					 con.setFileType(FTP.BINARY_FILE_TYPE);
-					 File file = new File(SAVE_PATH);
-					 OutputStream out = new FileOutputStream(file);
+					 OutputStream out = new FileOutputStream(new File(SAVE_PATH));
 					 result = con.retrieveFile(turn.getVideoLink(), out);
 					 out.close();
 					 if (result) {
 						 Log.v("download result", "succeeded");
-						 setReadable(file);
 					 }                                              
 					 con.logout();
 					 con.disconnect();
