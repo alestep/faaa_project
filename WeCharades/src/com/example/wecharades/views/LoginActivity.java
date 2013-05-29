@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.LoginPresenter;
 
 

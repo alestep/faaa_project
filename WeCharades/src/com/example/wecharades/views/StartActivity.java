@@ -17,7 +17,6 @@ import android.widget.ListView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.presenter.StartPresenter;
 

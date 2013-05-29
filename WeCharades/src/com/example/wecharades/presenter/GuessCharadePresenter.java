@@ -70,7 +70,7 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void updateModel(){
-		dc.updateTurn(turn);
+		dc.updateGame(turn);
 	}
 
 	/**

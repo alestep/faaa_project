@@ -1,6 +1,7 @@
 package com.example.wecharades.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,34 +23,42 @@ import android.util.Log;
  *
  */
 public class Model implements Serializable{
-	
+
 	private static final long serialVersionUID = -8167671678222883965L;
+	//The name of our model save file
 	private static final String 	SAVE_FILE = "model.save";
+	//Stored variables to use in other classes - should maybe be in another class.
 	public static final int 		
 	FINISHEDGAMES_SAVETIME 			= 168
 	, FINISHEDGAMES_NUMBERSAVED 	= 10
 	, INVITATIONS_SAVETIME 			= 72;
 
+	/*
+	 * A variable that can be changed in order to purge the model - this is done manually when needed!
+	 * 	When this is set to true, the model will be forced to be recreated. This is done to purge the
+	 * 	Model and retrieve a mirror of the database information, while preserving login status 
+	 * 	(and avoid having to reinstall and log in and out again). This MIGHT be implemented as a feature later. 
+	 * 
+	 * DO NOT FORGET TO RESET THIS AFTERWARDS!
+	 */
+	private static boolean			PURGE = false;
+
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
-	//A variable that can be changed in order to purge the model - this is done manually now!
-	private static boolean			PURGE = false;
 	//A variable which is called when a user logs out 
 	// - the model exists a moment so we may finish any queries first
 	private static boolean 			RECREATE = false;
 
-	//Two maps for games for increased speed
+	//Two maps for games for increased speed and ease of use
 	private TreeMap<Game, ArrayList<Turn>> gameList = new TreeMap<Game, ArrayList<Turn>>();
 	private TreeMap<String, Game> gameIdList = new TreeMap<String, Game>();
 
-	//Two maps for player names and id:s. The second one is used for increased speed
+	//Two maps for player names and id:s. The second one is used for increased speed and ease of use
 	private TreeMap<String, Player> storedPlayers = new TreeMap<String, Player>();
 	private TreeMap<String, String> storedPlayerNames = new TreeMap<String, String>();
 	private Player currentPlayer = null;
 
-	/*
-	 * Invitations are stored locally, in order to check that two invites aren't sent to one person (weak check).
-	 */
+	// Invitations are stored locally in two lists
 	private LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
 	private LinkedList<Invitation> receiveInvitations = new LinkedList<Invitation>();
 
@@ -57,7 +66,7 @@ public class Model implements Serializable{
 	private static Model singleModel;
 
 	private Model(Context context){
-		//Creating a file
+		//Creating a file to save to
 		saveModel(context);
 	}
 
@@ -67,6 +76,7 @@ public class Model implements Serializable{
 	 */
 	public static Model getModelInstance(Context context){
 		if(PURGE){
+			//If the PURGE variable is set to true (done manually), the model will be recreated
 			eraseModel(context);
 			singleModel = null;
 			PURGE = false;
@@ -76,7 +86,7 @@ public class Model implements Serializable{
 			singleModel = loadModel(context);
 		}
 		if(singleModel == null || RECREATE){
-			//If there were no previous models present, create new
+			//If there were no previous models present, create a new one
 			singleModel = new Model(context);
 			RECREATE = false;
 		}
@@ -85,8 +95,7 @@ public class Model implements Serializable{
 
 	/**
 	 * A method to save the current model to memory.
-	 * 	This should be done on every onDestroy
-	 * @param context
+	 * @param context - used to retrieve a save location
 	 */
 	public void saveModel(Context context){
 		if(!SAVED){
@@ -102,6 +111,11 @@ public class Model implements Serializable{
 		}
 	}
 
+	/**
+	 * Method to load a model form memory
+	 * @param context
+	 * @return
+	 */
 	private static Model loadModel(Context context){
 		Model singleModel = null;
 		try {
@@ -110,14 +124,20 @@ public class Model implements Serializable{
 			if (obj != null && obj.getClass().equals(Model.class)){
 				singleModel = (Model) obj;
 			}
-		} catch (IOException e){
+		} catch (FileNotFoundException e1){
+			Log.d("IO - Model load", "No file found");
+		} catch (IOException e2){
 			Log.d("IO - Model load", "IOException");
-		} catch (ClassNotFoundException e2){
+		} catch (ClassNotFoundException e3){
 			Log.d("IO - Model load", "ClassNotFound");
 		}
 		return singleModel;
 	}
 
+	/**
+	 * Called to erase the current model from memory and disk.
+	 * @param context
+	 */
 	private static void eraseModel(Context context){
 		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
 		if(modelFile.delete()){
@@ -147,13 +167,11 @@ public class Model implements Serializable{
 		//This is actually kind of fast, although it might look a bit weird.
 		ArrayList<Turn> tempTurns;
 		if(gameList.containsKey(game) && gameList.get(game) != null){
-			Log.d("Model: putGame()", "Game in List");
 			tempTurns = gameList.get(game);
 			gameList.remove(game);
 			gameList.put(game,tempTurns);
 			gameIdList.put(game.getGameId(), game);
 		} else{
-			Log.d("Model: putGame()", "game not in list, add game");
 			gameList.put(game, null);
 			gameIdList.put(game.getGameId(), game);
 		}
@@ -205,6 +223,7 @@ public class Model implements Serializable{
 				listOfTurns = new ArrayList<Turn>();
 				gameList.put(game, listOfTurns);
 			} else if(listOfTurns.contains(turn)){
+				//If the turn contains the turn, we must delete it first
 				listOfTurns.remove(turn);
 			}
 			listOfTurns.add(turn);
@@ -214,11 +233,11 @@ public class Model implements Serializable{
 
 	/**
 	 * Updates a list of turns at once - the existing list will be overwritten.
-	 * @param game - 
 	 * @param turnList
 	 * @throws NoSuchElementException if no game is found
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
+		//Do not simply replace the list, as this might cause problems with the amount of turns etc.
 		for(Turn turn : turnList){
 			putTurn(turn);
 		}
@@ -240,6 +259,7 @@ public class Model implements Serializable{
 	 */
 	public Turn getCurrentTurn(Game game) {
 		for(Turn t : getTurns(game)){
+			//Find the turn with CurrentTurnNumber
 			if(t.getTurnNumber() == game.getTurnNumber()){
 				return t;
 			}
@@ -252,12 +272,10 @@ public class Model implements Serializable{
 	/**
 	 * Puts a player in stored players 
 	 * @param player - the player to be stored
-	 * @return if the player was added or not
 	 */
 	public void putPlayer(Player player){
-		if(storedPlayers.containsKey(player.getParseId()))
-			storedPlayerNames.put(player.getName(), player.getParseId());
 		//The data for a player should always be updated
+		storedPlayerNames.put(player.getName(), player.getParseId());
 		storedPlayers.put(player.getParseId(),player);
 		SAVED = false;
 	}
@@ -277,7 +295,7 @@ public class Model implements Serializable{
 	/**
 	 * Used to get a player representation from a username
 	 * @param username - the player username
-	 * @return a Player
+	 * @return a Player, or null if no player was found
 	 */
 	public Player getPlayer(String username){
 		Player retPlayer = null;
@@ -297,11 +315,12 @@ public class Model implements Serializable{
 	}
 
 	/**
-	 * Designates a player as the current player. If the player does not exist,  
+	 * Designates a player as the current player. If the player does not exist in cache,  
 	 *  it gets added.
 	 */
 	public void setCurrentPlayer(Player player){
 		currentPlayer = player;
+		putPlayer(player);
 		SAVED = false;
 	}
 
@@ -324,34 +343,45 @@ public class Model implements Serializable{
 	//Received invitations are not needed here, as they should allways be fetched from the database.
 
 	/**
-	 * Set all sent invitations from this player
+	 * Set all sent invitations from this player. This replaces the local version of this game.
 	 * @param invitations - The invitations to add
 	 */
 	public void setSentInvitations(LinkedList<Invitation> invitations){
-		sentInvitations = invitations;
+		if(invitations != null){
+			sentInvitations = invitations;
+		} else{
+			sentInvitations.clear();
+		}
 		SAVED = false;
 	}
-	
-	/**
-	 * Retrieve a list of Invitations sent from this device.
-	 */
-	public List<Invitation> getSentInvitations(){
-		return sentInvitations;
-	}
-	
+
 	/**
 	 * Set all received invitations to this player
 	 * @param invitations - The invitations to add
 	 */
 	public void setReceivedInvitations(LinkedList<Invitation> invitations){
-		receiveInvitations = invitations;
+		if(invitations != null){
+			receiveInvitations = invitations;
+		} else{
+			receiveInvitations.clear();
+		}
+		SAVED = false;
 	}
-	
+
+	/**
+	 * Retrieve a list of Invitations sent from this device.
+	 * @return A List containing invitations.
+	 */
+	public List<Invitation> getSentInvitations(){
+		return sentInvitations;
+	}
+
 	/**
 	 * Retrieve a list of Invitations the current player has received
+	 * @return A List containing invitations.
 	 */
 	public List<Invitation> getReceivedInvitations(){
 		return receiveInvitations;
 	}
-	
+
 }

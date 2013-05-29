@@ -52,14 +52,11 @@ public class InvitationPresenter extends Presenter implements Observer{
 	 * @param response
 	 */
 	public void setInvitation(Invitation invitation, boolean response) {
-		try {
-			if (response)
-				dc.acceptInvitation(invitation);
-			else	
-				dc.rejectInvitation(invitation);
-		}catch (DatabaseException e) {
-			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
-		}
+
+		if (response)
+			dc.acceptInvitation(invitation);
+		else	
+			dc.rejectInvitation(invitation);
 	}
 	
 	/**
@@ -69,17 +66,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 		if(obj != null && obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.INVITATIONS){
-
-//				List<Invitation> invList = (List<Invitation>) dcm.getData();
-//				LinkedList<Invitation> sentList = new LinkedList<Invitation>();
-//				LinkedList<Invitation> receivedList = new LinkedList<Invitation>();
-//				for(Invitation inv : invList){
-//					if(inv.getInviter().equals(dc.getCurrentPlayer())){
-//						sentList.add(inv);
-//					} else{
-//						receivedList.add(inv);
-//					}
-//				}
 				activity.hideProgressBar();
 				setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
 			}

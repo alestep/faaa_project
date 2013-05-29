@@ -140,7 +140,7 @@ public class VideoUploadPresenter extends Presenter {
 		activity.finish();	
 	}
 	private void updateModel(){
-		dc.updateTurn(turn);
+		dc.updateGame(turn);
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();

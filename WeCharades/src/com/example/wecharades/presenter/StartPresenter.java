@@ -74,8 +74,9 @@ public class StartPresenter extends Presenter implements Observer{
 	 */
 	public void update(){
 		dc.addObserver(this);
+		updateList(dc.getGames());
 		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
-			updateList(dc.getGames());
+			dc.fetchGames();
 			dc.getInvitations();
 			activity.showProgressBar();
 			isUpdating = true;

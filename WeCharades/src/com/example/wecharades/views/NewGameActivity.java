@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.Window;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.IProgress;
 import com.example.wecharades.presenter.NewGamePresenter;
 
 public class NewGameActivity extends GenericActivity {

@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.presenter.RegisterPresenter;
 
 
