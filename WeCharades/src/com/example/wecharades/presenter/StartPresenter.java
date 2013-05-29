@@ -64,15 +64,17 @@ public class StartPresenter extends Presenter implements Observer{
 		if(activity.getIntent().getBooleanExtra("finish", false)){
 			activity.startActivity(new Intent(activity, LoginActivity.class));
 			activity.finish();
-		} else {
-			activity.setAccountName(dc.getCurrentPlayer().getName());
 		}
+		activity.setAccountName(dc.getCurrentPlayer().getName());
+		PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
+		System.out.println("Subscribed to notifications");
 	}
 
 	/**
 	 * Updates the view
 	 */
 	public void update(){
+		dc.addObserver(this);
 		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
 			updateList(dc.getGames());
 			dc.getInvitations();
@@ -100,13 +102,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Private method which is called after an updated list of invitations is received.
 	 */
 	private void setInvitationStatus(List<Invitation> invites){
-		LinkedList<Invitation> recInv = new LinkedList<Invitation>();
-		for(Invitation inv : invites){
-			if(inv.getInvitee().equals(dc.getCurrentPlayer())){
-				recInv.add(inv);
-			}
-		}
-		activity.setInvitations(recInv.size());
+		activity.setInvitations(dc.getReceivedInvitations().size());
 	}
 
 	/**
@@ -120,9 +116,7 @@ public class StartPresenter extends Presenter implements Observer{
 			return false;
 		}
 		else{	
-			createNotificationInstallation();		
-			PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
-			System.out.println("Subscribed to notifications");
+			createNotificationInstallation();
 			return true;
 		}
 	}
