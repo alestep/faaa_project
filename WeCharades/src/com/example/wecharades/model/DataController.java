@@ -514,7 +514,7 @@ public class DataController extends Observable implements Observer{
 	 * @throws DatabaseException
 	 */
 	public void acceptInvitation(Invitation invitation) throws DatabaseException{
-		createGame(invitation.getInviter(), invitation.getInvitee());
+		createGame(invitation.getInvitee(), invitation.getInviter());
 		db.removeInvitation(invitation);
 	}
 
@@ -589,9 +589,4 @@ public class DataController extends Observable implements Observer{
 
 		}
 	}
-
-	//	public void subscribetoNotification(Context context) {
-	//		db.subscribetoNotification(context);
-	//	}
-
 }
