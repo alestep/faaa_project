@@ -1,4 +1,4 @@
-package com.example.wecharades.model;
+package com.example.wecharades.views;
 
 import android.content.Context;
 import android.view.animation.Animation;

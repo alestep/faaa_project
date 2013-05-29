@@ -1,4 +1,4 @@
-package com.example.wecharades.model;
+package com.example.wecharades.views;
 
 public interface IProgress {
 	
