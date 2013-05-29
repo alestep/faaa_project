@@ -287,12 +287,18 @@ public class DataController extends Observable implements Observer{
 	}
 
 	/**
-	 * Gets a list of current games form the database.
+	 * Gets a list of current cached games 
 	 */
 	public ArrayList<Game> getGames(){
+		return m.getGames();
+	}
+	
+	/**
+	 * Fetches games from the database (updates model on reply)
+	 */
+	public void fetchGames(){
 		//Fetches the db-list of current games
 		db.fetchGames(getCurrentPlayer());
-		return m.getGames();
 	}
 
 	/**

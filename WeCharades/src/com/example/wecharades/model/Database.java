@@ -559,7 +559,7 @@ public class Database extends Observable implements IDatabase {
 	}
 
 	/**
-	 * 
+	 * Get a player 
 	 * @param parseId
 	 * @return
 	 * @throws DatabaseException
@@ -580,7 +580,6 @@ public class Database extends Observable implements IDatabase {
 	public ArrayList<Player> getPlayers() throws DatabaseException {
 		ArrayList<Player> players = new ArrayList<Player>();
 		ParseQuery query = ParseUser.getQuery();
-
 		try {
 			List<ParseObject> dbResult = query.find();
 			for(ParseObject player : dbResult) {
@@ -601,6 +600,7 @@ public class Database extends Observable implements IDatabase {
 		query.getInBackground(player.getParseId(), new GetCallback(){
 			public void done(ParseObject obj, ParseException e){
 				if(e == null){
+					//Increment the player score accordingly
 					obj.increment(PLAYER_GAMES_DRAW, draw);
 					obj.increment(PLAYER_GAMES_LOST, lost);
 					obj.increment(PLAYER_GAMES_WON, won);
@@ -629,6 +629,7 @@ public class Database extends Observable implements IDatabase {
 	 */
 	@Override
 	public void putIntoRandomQueue(final Player player){
+		//Inner class must have a reference to database
 		final Database db = this;
 
 		ParseQuery query = new ParseQuery(RANDOMQUEUE);
@@ -636,15 +637,19 @@ public class Database extends Observable implements IDatabase {
 			public void done(List<ParseObject> queryList, ParseException e){
 				if(e == null){
 					try{
+						//If the list is empty, we can put player into it
 						if(queryList.isEmpty()){
 							db.putRandom(player);
 							setChanged();
 							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Put in queue"));
 						} else {
+							/*
+							 * Check if the current player is in the queue 
+							 * 	A player should not be able to create a game against itself
+							 * 	TODO - The need for this test can be removed by better query construction
+							 */
 							ParseObject thisPlayer = null;
 							for(ParseObject obj : queryList){
-								String objid = obj.getString(RANDOMQUEUE_PLAYER);
-								String pid = player.getParseId();
 								if(obj.getString(RANDOMQUEUE_PLAYER).equals(player.getParseId())){
 									thisPlayer = obj;
 								}
@@ -653,8 +658,9 @@ public class Database extends Observable implements IDatabase {
 								setChanged();
 								notifyObservers(new DBMessage(DBMessage.MESSAGE, "Already in queue"));
 							} else {
-								Collections.shuffle(queryList);//This is hardly necessary...
+								Collections.shuffle(queryList);
 								try {
+									//Create a game with the first player in the shuffled queue
 									Player p2 = getPlayerById(queryList.get(0).getString(RANDOMQUEUE_PLAYER));
 									db.createGame(player, p2);
 									db.removeRandom(p2);
