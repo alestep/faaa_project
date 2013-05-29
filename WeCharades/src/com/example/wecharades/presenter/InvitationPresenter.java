@@ -1,6 +1,5 @@
 package com.example.wecharades.presenter;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;

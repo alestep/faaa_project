@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.wecharades.model.DatabaseException;
-import com.example.wecharades.model.LoadProgressBar;
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
 

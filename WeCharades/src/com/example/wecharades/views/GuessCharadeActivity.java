@@ -5,9 +5,6 @@ package com.example.wecharades.views;
  *
  */
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -93,42 +90,10 @@ public class GuessCharadeActivity extends GenericActivity  {
 		presenter.evaluateGuess(answerWord.getText().toString());                  
 	}
 
-	//        @Override
-	//        public void showNegativeDialog(String str){
-	//                possibleLetters.setVisibility(0);
-	//                super.showNegativeDialog(str);
-	//        }
-
-	//        /**
-	//         * Shows up an finishAlertDialog and stops the video.
-	//         */
-	//        public void finishDialog() {
-	//                videoView.stopPlayback();
-	//                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-	//                builder.setTitle("Game Over")
-	//                .setMessage("The right charade is: " + presenter.currentWord.toLowerCase() + ".")
-	//                .setCancelable(false)
-	//                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-	//                        public void onClick(DialogInterface dialog, int id) {
-	//                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-	//                                intent.putExtra("Game",presenter.getGame());
-	//                                startActivity(intent);
-	//                                finish();
-	//                        }
-	//                });
-	//                AlertDialog alert = builder.create();
-	//                alert.show();
-	//                
-	//              Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-	//              intent.putExtra("Game",presenter.getGame());
-	//              startActivity(intent);
-	//              finish();
-	//        }
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			if(presenter.downloadState != presenter.NO_DOWNLOAD)
+			if(presenter.downloadState != GuessCharadePresenter.NO_DOWNLOAD)
 				presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
 			else{
 				finish();
@@ -141,34 +106,6 @@ public class GuessCharadeActivity extends GenericActivity  {
 		}
 		return false;
 	}
-	//        /**
-	//         * Shows up an Dialog for pressing the back and settings button.
-	//         */
-	//        private void showNegativeDialog(){
-	//                AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-	//                builder.setMessage("If you exit you'll lose this turn!").setTitle("Warning!")
-	//                .setCancelable(true)
-	//                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-	//                        public void onClick(DialogInterface dialog, int id) {
-	//                                turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-	//                                turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-	//                                turn.setState(Turn.FINISH);
-	//                                presenter.updateModel();
-	//                                Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-	//                                intent.putExtra("Game",presenter.getGame());
-	//                                startActivity(intent);
-	//                                dialog.cancel();
-	//                                finish();
-	//                        }
-	//                })
-	//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	//                        public void onClick(DialogInterface dialog, int id) {
-	//                                dialog.cancel();
-	//                        }
-	//                });
-	//                AlertDialog mAlert = builder.create();
-	//                mAlert.show();
-	//        }
 
 	@Override
 	protected IProgress getProgressBar() {

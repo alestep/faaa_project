@@ -50,9 +50,13 @@ public class Player implements Serializable, Comparable<Player> {
 	 * @param drawGames
 	 */
 	public Player(String parseId, String username, int globalScore, int playedGames, int wonGames, int lostGames, int drawGames){
-		this.parseId = parseId;
-		this.username = username;
-		this.globalScore = globalScore;
+		this.parseId	= parseId;
+		this.username	= username;
+		this.globalScore= globalScore;
+		this.playedGames= playedGames;
+		this.wonGames	= wonGames;
+		this.lostGames	= lostGames;
+		this.drawGames	= drawGames;
 	}
 
 	/**

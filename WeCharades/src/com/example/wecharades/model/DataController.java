@@ -6,7 +6,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Currency;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -269,12 +268,14 @@ public class DataController extends Observable implements Observer{
 				m.putTurns(dbGame.getValue());
 				if(dbGame.getKey().isFinished() 
 						&& dbGame.getKey().getPlayer2().equals(getCurrentPlayer())){
+					//If the current player is p2 receives 
 					updatePlayerStats(getCurrentPlayer(), dbGame.getKey());
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
 			} else if(localGame.aheadOf(dbGame.getKey())){
-				//This is also done in updateTurn, but for safety even here. Also updates ALL turns.
+				//Updating the database is done in updateTurn as well, although we cannot
+				// rely solely on that method, as it might cause sync problems.
 				db.updateGame(localGame);
 				db.updateTurns(m.getTurns(localGame));
 			} else if(dbGame.getKey().aheadOf(localGame)){
@@ -287,11 +288,19 @@ public class DataController extends Observable implements Observer{
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
-			} else{//This is done to ensure that there are no errors in the current game
-				if ( //If there is a missmatch between current player and turn number/state.
-						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
+			} 
+			/*
+			 * This is done to ensure that there are no errors in the current game
+			 * 	If there is a missmatch between current player and turn number/state, the local games are considered
+			 * 	as corrupted, and will be replaced by the database-games.
+			 *  This test should not be done on finished games, as it then deletes this game from local storage.	
+			 */	
+			else{
+				if (
+						((localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 						||
-						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO)
+						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO))
+						&& (!localGame.isFinished())
 						){
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
@@ -303,34 +312,43 @@ public class DataController extends Observable implements Observer{
 	}
 	/**
 	 * This part removes any games that are "to old".
+	 * @param dbGames - the list of games received form the database.
 	 */
 	private void removeOldGames(ArrayList<Game> dbGames){
 		ArrayList<Game> finishedGames = new ArrayList<Game>();
 		for(Game locGame : m.getGames()){
 			if(locGame.isFinished()){
+				//Add all finished games to a list
 				finishedGames.add(locGame);
 			} else if(!dbGames.contains(locGame)){
-				//remove the local game if it is not found on the server
+				//remove the local game if it is not found on the server 
+				// games can then be deleted from the database and updated on each device
 				m.removeGame(locGame);
+				// Also remves the turns associated with this game.
 				db.removeTurnsOfGame(locGame);
 			}
 		}
+		/*
+		 * We only want to display the 10 first games (defined in static variable in method)
+		 * 	Any older games are removed. We also delete games that have been finished for more then 1 week 
+		 */
 		if(finishedGames.size() > 0){
-			//Sort the games using a custom time-comparator
+			//Sort the games using a custom comparator, based on time.
+			//	The newest games are preferred in the final list, which is why we sort the list
 			Collections.sort(finishedGames, new Comparator<Game>(){
 				@Override
 				public int compare(Game g1, Game g2) {
 					return (int) (g1.getLastPlayed().getTime() - g2.getLastPlayed().getTime()); 
 				}
 			});
-			//Removes games that are to old - also with a number restriction.
-			//The newest games are preferred (which is why we sort the list)
 			long timeDiff;
 			int numberSaved = 0;
 			for(Game game : finishedGames){
+				//All games that are older then the 10th game is removed.
 				if(numberSaved > Model.FINISHEDGAMES_NUMBERSAVED){
 					m.removeGame(game);
 				} else{
+					//Compare the timestamps: if its older then 168h (1 week), we delete i
 					timeDiff =  ((new Date()).getTime() - game.getLastPlayed().getTime()) 
 							/ (1000L * 3600L);
 					if(timeDiff > 168){
@@ -396,6 +414,7 @@ public class DataController extends Observable implements Observer{
 		case Turn.FINISH : 	game.incrementTurn(); //Also sets game to finished!
 		break;
 		}
+		game.setLastPlayed(new Date());
 		if(game.isFinished()){ //Update player stats
 			updatePlayerStats(getCurrentPlayer(), game);
 		}

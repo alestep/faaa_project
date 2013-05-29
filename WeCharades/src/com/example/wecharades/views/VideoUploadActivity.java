@@ -74,7 +74,6 @@ public class VideoUploadActivity extends GenericActivity{
 
 	@Override
 	protected IProgress getProgressBar() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
