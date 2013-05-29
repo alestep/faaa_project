@@ -24,6 +24,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.text.format.Time;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.VideoView;
@@ -60,8 +61,6 @@ public class GuessCharadePresenter extends Presenter {
 		downloadVideo(activity, videoView);
 	}
 
-	
-
 	public void updateModel(){
 			dc.updateTurn(turn);
 	}
@@ -95,6 +94,12 @@ public class GuessCharadePresenter extends Presenter {
 				 activity.finishDialog();
 			 }
 		 };
+	 }
+	 /**
+	  * Stops the timer
+	  */
+	 public void stopTimer(){
+		 timer.cancel();
 	 }
 	 /**
 	  * Call this method to initiate video download from server.
