@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Currency;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,8 +72,11 @@ public class DataController extends Observable implements Observer{
 		if(obj != null && obj.getClass().equals(DBMessage.class)){
 			DBMessage dbm = (DBMessage) obj;
 			if(dbm.getMessage() == DBMessage.ERROR){
+				DatabaseException e = (DatabaseException) dbm.getData();
+				Log.d("DatabaseError", "Code: " + e.getCode() + "   Message: " + e.getMessage());
+				e.printStackTrace();
 				setChanged();
-				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
+				notifyObservers(new DCMessage(DCMessage.ERROR, e.prettyPrint()));
 			} else if(dbm.getMessage() == DBMessage.MESSAGE){
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.MESSAGE, (String) dbm.getData())); 
@@ -248,6 +252,12 @@ public class DataController extends Observable implements Observer{
 		return m.getGames();
 	}
 
+	/**
+	 * This method compares the local cashed games against the fetched games from the database.
+	 * 	The game which is ahead is updated in both positions.  
+	 * @param dbGames
+	 * @return
+	 */
 	private ArrayList<Game> parseGameList(TreeMap<Game, ArrayList<Turn>> dbGames){
 		Game localGame;
 		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
@@ -259,6 +269,7 @@ public class DataController extends Observable implements Observer{
 				m.putTurns(dbGame.getValue());
 				if(dbGame.getKey().isFinished() 
 						&& dbGame.getKey().getPlayer2().equals(getCurrentPlayer())){
+					updatePlayerStats(getCurrentPlayer(), dbGame.getKey());
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
@@ -270,11 +281,13 @@ public class DataController extends Observable implements Observer{
 				//Update local - Also check for finish an delete db from db.
 				m.putGame(dbGame.getKey());
 				m.putTurns(dbGame.getValue());
-				if(dbGame.getKey().isFinished()){
+				if(dbGame.getKey().isFinished() 
+						&& dbGame.getKey().getPlayer2().equals(getCurrentPlayer())){
+					updatePlayerStats(getCurrentPlayer(), dbGame.getKey());
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
-			} else{
+			} else{//This is done to ensure that there are no errors in the current game
 				if ( //If there is a missmatch between current player and turn number/state.
 						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 						||
@@ -288,7 +301,7 @@ public class DataController extends Observable implements Observer{
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 		return m.getGames();
 	}
-	/*
+	/**
 	 * This part removes any games that are "to old".
 	 */
 	private void removeOldGames(ArrayList<Game> dbGames){
@@ -299,6 +312,7 @@ public class DataController extends Observable implements Observer{
 			} else if(!dbGames.contains(locGame)){
 				//remove the local game if it is not found on the server
 				m.removeGame(locGame);
+				db.removeTurnsOfGame(locGame);
 			}
 		}
 		if(finishedGames.size() > 0){
@@ -347,7 +361,6 @@ public class DataController extends Observable implements Observer{
 			Player p2 = game.getPlayer2();
 			int p1s = 0;
 			int p2s = 0;
-			Turn currentTurn;
 			for(Turn turn : turnList){
 				p1s += turn.getPlayerScore(p1);
 				p2s += turn.getPlayerScore(p2);
@@ -384,28 +397,34 @@ public class DataController extends Observable implements Observer{
 		break;
 		}
 		if(game.isFinished()){ //Update player stats
-			TreeMap<Player, Integer> scoreMap = getGameScore(game);
-			Player p1 = turn.getRecPlayer(); //This assignment is random, but it doesn't matter
-			Player p2 = turn.getAnsPlayer(); 
-			int p1GS = scoreMap.get(p1);
-			int p2GS = scoreMap.get(p2);
-			int p1W = 0;
-			int p2W = 0;
-			int p1L = 0;
-			int p2L = 0;
-			int draw = 0;
-			if(p1GS > p2GS){
-				p1W++;
-			} else if(p2GS > p1GS){
-				p2W++;
-			} else{
-				draw++;
-			}
-			db.incrementPlayerStats(p1, p1GS, p1W, draw, p1L);
-			db.incrementPlayerStats(p2, p2GS, p2W, draw, p2L);
+			updatePlayerStats(getCurrentPlayer(), game);
 		}
 		db.updateGame(game);
 		m.putGame(game);
+	}
+	
+	/**
+	 * Updates a players scores in the database - this has do be done by the logged in player!
+	 * @param p - The player to update
+	 * @param g - The game to update score from
+	 */
+	private void updatePlayerStats(Player p, Game g){
+		TreeMap<Player, Integer> scoreMap = getGameScore(g);
+		Player p1 = p;
+		Player p2 = g.getOpponent(p);
+		int p1GS = scoreMap.get(p1);
+		int p2GS = scoreMap.get(p2);
+		int p1W = 0;
+		int p1L = 0;
+		int draw = 0;
+		if(p1GS > p2GS){
+			p1W++;
+		} else if(p2GS > p1GS){
+			p1L++;
+		} else{
+			draw++;
+		}
+		db.incrementPlayerStats(p1, p1GS, p1W, draw, p1L);
 	}
 
 
