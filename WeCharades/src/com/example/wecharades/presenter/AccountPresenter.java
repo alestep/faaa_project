@@ -10,15 +10,24 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.AccountActivity;
 import com.example.wecharades.views.GameInstructionsActivity;
+import com.example.wecharades.views.StartActivity;
 
 public class AccountPresenter extends Presenter {
 
 	private AccountActivity activity;
+	
+	/**
+	 * Constructor of the AccountPresenter
+	 * @param activity Reference to the AccountActivity-instance
+	 */
 	public AccountPresenter(AccountActivity activity) {
 		super(activity);
 		this.activity = activity;
 	}
-
+	
+	/**
+	 * 
+	 */
 	public void update() {
 		activity.showProgressBar();
 		Player currentPlayer = dc.getCurrentPlayer();
@@ -69,6 +78,10 @@ public class AccountPresenter extends Presenter {
 	 */
 	public void logOut() {
 		dc.logOutPlayer(activity);
-		goToLoginActivity();
+		Intent intent = new Intent(activity, StartActivity.class);
+		intent.putExtra("finish", true);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.startActivity(intent);
+		activity.finish();
 	}
 }
