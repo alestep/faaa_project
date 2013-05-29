@@ -15,24 +15,19 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import android.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.text.format.Time;
 import android.util.Log;
-import android.view.SoundEffectConstants;
 import android.widget.EditText;
 import android.widget.VideoView;
 
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GuessCharadeActivity;

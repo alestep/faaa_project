@@ -3,10 +3,8 @@ package com.example.wecharades.views;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.LoadProgressBar;
