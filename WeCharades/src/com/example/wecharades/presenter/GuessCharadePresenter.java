@@ -55,6 +55,10 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void initialize(VideoView videoView) {
+<<<<<<< HEAD
+=======
+		this.videoView = videoView;
+>>>>>>> lastHope
 		initializeTimer();
 		this.videoView = videoView;
 		downloadVideo(activity, videoView);
@@ -238,6 +242,7 @@ public class GuessCharadePresenter extends Presenter {
 			mDialog.show();
 		}
 
+<<<<<<< HEAD
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			boolean result = false;
@@ -287,6 +292,55 @@ public class GuessCharadePresenter extends Presenter {
 			}
 			return null;  
 		}
+=======
+		 @Override
+		 protected Boolean doInBackground(Void... params) {
+			 boolean result = false;
+			 FTPClient con = null;
+			 try{
+				 con = new FTPClient();
+				 con.connect("ftp.mklcompetencia.se", 21);
+				 if (con.login("mklcompetencia.se", "ypkq4w")){
+					 con.enterLocalPassiveMode(); // important!
+					 System.out.println(turn.getVideoLink());
+					 con.setFileType(FTP.BINARY_FILE_TYPE);
+					 OutputStream out = new FileOutputStream(new File(SAVE_PATH));
+					 result = con.retrieveFile(turn.getVideoLink(), out);
+					 out.close();
+					 if (result) {
+						 Log.v("download result", "succeeded");
+					 }                                              
+					 con.logout();
+					 con.disconnect();
+				 }
+			 }
+			 catch (SocketException e){
+				 Log.v("download result Socket", e.getMessage());
+				 cancel(true);
+			 }
+			 catch (UnknownHostException e){
+				 Log.v("download result Unknown", e.getMessage());
+				 cancel(true);
+			 }
+			 catch (FTPConnectionClosedException e){
+				 Log.v("download result FTP CONNECTIONCLOSED", e.getMessage());
+				 cancel(true);
+			 }
+			 catch (CopyStreamException e){
+				 Log.v("download result COPYSTREAM", e.getMessage());
+				 cancel(true);
+			 }
+			 catch (IOException e){
+				 Log.v("download result IOE", e.getMessage());
+				 cancel(true);
+			 }
+			 catch (Exception e){
+				 Log.v("download result just exception","failed " + e.getMessage());
+				 cancel(true);
+			 }
+			 return null;  
+		 }
+>>>>>>> lastHope
 
 		@Override
 		protected void onPostExecute(Boolean result){
