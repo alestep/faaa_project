@@ -220,6 +220,14 @@ public class Database extends Observable implements IDatabase {
 		}
 	}
 
+	public void removeTurnsOfGame(Game game){
+		try{
+			removeTurns(ParseObject.createWithoutData(GAME, game.getGameId()));
+		} catch(ParseException e){
+			sendError(new DatabaseException(e.getCode(), e.getMessage()));
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#getGame(java.lang.String)
 	 */

@@ -71,8 +71,10 @@ public class DataController extends Observable implements Observer{
 		if(obj != null && obj.getClass().equals(DBMessage.class)){
 			DBMessage dbm = (DBMessage) obj;
 			if(dbm.getMessage() == DBMessage.ERROR){
+				DatabaseException e = (DatabaseException) dbm.getData();
+				Log.d("DatabaseError", "Code: " + e.getCode() + "   Message: " + e.getMessage());
 				setChanged();
-				notifyObservers(new DCMessage(DCMessage.ERROR, ((DatabaseException) dbm.getData()).prettyPrint()));
+				notifyObservers(new DCMessage(DCMessage.ERROR, e.prettyPrint()));
 			} else if(dbm.getMessage() == DBMessage.MESSAGE){
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.MESSAGE, (String) dbm.getData())); 
@@ -248,6 +250,12 @@ public class DataController extends Observable implements Observer{
 		return m.getGames();
 	}
 
+	/**
+	 * This method compares the local cashed games against the fetched games from the database.
+	 * 	The game which is ahead is updated in both positions.  
+	 * @param dbGames
+	 * @return
+	 */
 	private ArrayList<Game> parseGameList(TreeMap<Game, ArrayList<Turn>> dbGames){
 		Game localGame;
 		for(Map.Entry<Game, ArrayList<Turn>> dbGame : dbGames.entrySet()){
@@ -274,7 +282,7 @@ public class DataController extends Observable implements Observer{
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
-			} else{
+			} else{//This is done to ensure that there are no errors in the current game
 				if ( //If there is a missmatch between current player and turn number/state.
 						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 						||
@@ -288,7 +296,7 @@ public class DataController extends Observable implements Observer{
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 		return m.getGames();
 	}
-	/*
+	/**
 	 * This part removes any games that are "to old".
 	 */
 	private void removeOldGames(ArrayList<Game> dbGames){
@@ -299,6 +307,7 @@ public class DataController extends Observable implements Observer{
 			} else if(!dbGames.contains(locGame)){
 				//remove the local game if it is not found on the server
 				m.removeGame(locGame);
+				db.removeTurnsOfGame(locGame);
 			}
 		}
 		if(finishedGames.size() > 0){
@@ -347,7 +356,6 @@ public class DataController extends Observable implements Observer{
 			Player p2 = game.getPlayer2();
 			int p1s = 0;
 			int p2s = 0;
-			Turn currentTurn;
 			for(Turn turn : turnList){
 				p1s += turn.getPlayerScore(p1);
 				p2s += turn.getPlayerScore(p2);
