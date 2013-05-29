@@ -71,7 +71,7 @@ public class DataController extends Observable implements Observer{
 		}
 		return dc;
 	}
-	
+
 	/**
 	 * Call this method to save the state of the model.
 	 * @param context - the current context.
@@ -163,7 +163,7 @@ public class DataController extends Observable implements Observer{
 	}
 
 	//TODO Should errors be sent to listening classes insead of thrown? We can use boolean-returns if necessary.
-	
+
 	/**
 	 * Register a player
 	 * @param inputNickname - The player
@@ -229,7 +229,9 @@ public class DataController extends Observable implements Observer{
 	 * @throws DatabaseException
 	 */
 	public ArrayList<Player> getAllPlayerObjects() throws DatabaseException {
+		//Get all players from the database
 		ArrayList<Player> players = db.getPlayers();
+		//Save all players locally (Will hopefully save some requests)
 		m.putPlayers(players);
 		return players;
 	}
@@ -240,6 +242,7 @@ public class DataController extends Observable implements Observer{
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public TreeSet<String> getAllPlayerNames() throws DatabaseException {
+		//Gets all players as player objects and retrieves a list of usernames from these
 		ArrayList<Player> players = getAllPlayerObjects();
 		TreeSet<String> nameList = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		for(Player p : players){
@@ -249,8 +252,8 @@ public class DataController extends Observable implements Observer{
 	}
 
 	/**
-	 * Returns a list with all player names. This list will also be cached locally.
-	 * @return an ArrayList containing 
+	 * Returns a list with all player names, except the current user. All players will be cached locally
+	 * @return an ArrayList containing names
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
 	public TreeSet<String> getAllOtherPlayerNames() throws DatabaseException {
@@ -259,20 +262,17 @@ public class DataController extends Observable implements Observer{
 		return nameList;
 	}
 
-	/**
-	 * 
-	 * @return an ArrayList with Players
-	 */
-	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
-		return db.getTopTenPlayers();
-	}
-
 	//Games -----------------------------------------------------------
+
+	/**
+	 * Puts the current user in the random queue. The player is only allowed to
+	 * 	have one place in this queue at a time.
+	 */
 	public void putInRandomQueue(){
 		db.putIntoRandomQueue(getCurrentPlayer());
 	}
 	/**
-	 * Create a game. The local storage will not be updated
+	 * Create a game. The local storage will not be updated, but fetched during next update.
 	 * @param p1 - player 1
 	 * @param p2 - player 2
 	 * @throws DatabaseException - if the connection to the database fails
@@ -282,9 +282,7 @@ public class DataController extends Observable implements Observer{
 	}
 
 	/**
-	 * Gets a list of current games. This should only be called from the StartPresenter,
-	 * 	as it updates the game-list from the database. If a game has changed, its current turn will be updated.
-	 * @throws DatabaseException - if the connection to the database fails
+	 * Gets a list of current games form the database.
 	 */
 	public ArrayList<Game> getGames(){
 		//Fetches the db-list of current games
@@ -339,9 +337,9 @@ public class DataController extends Observable implements Observer{
 			else{
 				if (
 						((localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
-						||
-						(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO))
-						&& (!localGame.isFinished())
+								||
+								(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO))
+								&& (!localGame.isFinished())
 						){
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
@@ -401,7 +399,7 @@ public class DataController extends Observable implements Observer{
 			}
 		}
 	}
-	/*
+	/**
 	 * Removes video on the FTP server from the finished games.
 	 */
 	private void removeVideofromServer(Game game) {
@@ -409,11 +407,18 @@ public class DataController extends Observable implements Observer{
 		remove.execute();
 	}
 
+	/**
+	 * Retrieves the gamescore for a game, divided by player.
+	 * @param game - the game to fetch
+	 * @return A TreeMap with players linked to scores. Use get(Player) to get the score.
+	 */
 	public TreeMap<Player, Integer> getGameScore(Game game){
 		TreeMap<Player, Integer> returnMap = new TreeMap<Player, Integer>();
 		ArrayList<Turn> turnList = null;
 		if(game != null){
 			turnList = getTurns(game);
+		} else{
+			return returnMap;
 		}
 		if(turnList != null){
 			Player p1 = game.getPlayer1();
@@ -427,6 +432,7 @@ public class DataController extends Observable implements Observer{
 			returnMap.put(p1, p1s);
 			returnMap.put(p2, p2s);
 		} else{
+			//If there are no turns
 			returnMap.put(game.getPlayer1(), 0);
 			returnMap.put(game.getPlayer2(), 0);
 		}
@@ -435,18 +441,25 @@ public class DataController extends Observable implements Observer{
 
 	//Turn -----------------------------------------------------------
 	/**
-	 * Get all turns for a game. These are all collected from the stored instance - updated at startscreen.
+	 * Get all turns cached turns of a game. These are updated from the database whenever getGames() is called.
 	 * @param game - The game who's turns to fetch
 	 * @return An ArrayList of turns
 	 */
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-
-	public void updateTurn(Turn turn) {
+	
+	/**
+	 * Update the game to the database and model. This method will update both games and turns.
+	 * @param turn - the current turn of the game.
+	 */
+	public void updateGame(Turn turn) {
+		//Save turn to database and model.
 		m.putTurn(turn);
 		db.updateTurn(turn);
+		//Fetch the local version of the game
 		Game game = m.getGame(turn.getGameId());
+		//Set player and turn number depending on the state of the turn.
 		switch(turn.getState()){
 		case Turn.INIT : 	game.setCurrentPlayer(turn.getRecPlayer());
 		break;
@@ -456,22 +469,29 @@ public class DataController extends Observable implements Observer{
 		break;
 		}
 		game.setLastPlayed(new Date());
-		if(game.isFinished()){ //Update player stats
+		if(game.isFinished()){
+			/*
+			 * Update player stats. Due to write restrictions of Parse, 
+			 * 	this method has to be called by the current, logged in, player. 
+			 */
 			updatePlayerStats(getCurrentPlayer(), game);
 		}
+		//Update the local and db game instace. 
 		db.updateGame(game);
 		m.putGame(game);
 	}
-	
+
 	/**
-	 * Updates a players scores in the database - this has do be done by the logged in player!
-	 * @param p - The player to update
+	 * Calculates and updates a players global statistics 
+	 * 	- this has do be done by the logged in player!
+	 * @param p - The player to update. This player has to be logged in.
 	 * @param g - The game to update score from
 	 */
 	private void updatePlayerStats(Player p, Game g){
 		TreeMap<Player, Integer> scoreMap = getGameScore(g);
 		Player p1 = p;
 		Player p2 = g.getOpponent(p);
+		//Get scores of the current games
 		int p1GS = scoreMap.get(p1);
 		int p2GS = scoreMap.get(p2);
 		int p1W = 0;
@@ -484,6 +504,7 @@ public class DataController extends Observable implements Observer{
 		} else{
 			draw++;
 		}
+		//Update db with stats
 		db.incrementPlayerStats(p1, p1GS, p1W, draw, p1L);
 	}
 
@@ -497,11 +518,12 @@ public class DataController extends Observable implements Observer{
 		db.getInvitations(getCurrentPlayer());
 	}
 	/**
-	 * A method to parse received database invitations.
+	 * A private method to parse received database invitations.
 	 * @param dbInv - received invitations from database.
 	 * @return A List of current invitations. The list will be of size 0 if no elements are found.
 	 */
 	private List<Invitation> parseDbInvitations(List<Invitation> dbInv){
+		//The date is used for comparison later
 		Date currentTime = new Date();
 		long timeDifference;
 		LinkedList<Invitation> oldInvitations = new LinkedList<Invitation>();
@@ -569,7 +591,7 @@ public class DataController extends Observable implements Observer{
 	public List<Invitation> getReceivedInvitations(){
 		return m.getReceivedInvitations();
 	}
-	
+
 
 	/**
 	 * Send an invitation to another player

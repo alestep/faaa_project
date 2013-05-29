@@ -586,30 +586,6 @@ public class Database extends Observable implements IDatabase {
 		});
 	}
 
-	/**
-	 * Generates a list with the 10 players with best global score
-	 * @return a list with top 10 players based on their global score
-	 * @throws DatabaseException
-	 */
-	public ArrayList<Player> getTopTenPlayers() throws DatabaseException {
-		ArrayList<Player> players = new ArrayList<Player>();
-		ParseQuery query = ParseUser.getQuery();
-		query.addDescendingOrder("globalScore");
-		query.setLimit(10);
-
-		try {
-			List<ParseObject> dbResult = query.find();
-			for(ParseObject player : dbResult) {
-				players.add(dbc.parsePlayer(player));
-			}
-		} catch (ParseException e) {
-			Log.d("Database", e.getMessage());
-			throw new DatabaseException(1008,"Failed to fetch players");
-		}
-		return players;
-
-	}
-
 	//Invitations -----------------------------------------------------------------------------------------
 
 	/* (non-Javadoc)
