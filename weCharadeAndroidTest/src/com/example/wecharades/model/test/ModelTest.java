@@ -174,16 +174,12 @@ public class ModelTest extends AndroidTestCase {
 		
 	}
 
+	//Test of get and setReceivedInvitations
 	public void testSetSentInvitations() {
-		
 		LinkedList<Invitation> iList = new LinkedList<Invitation>();
 		iList.add(invitation);
 		m.setSentInvitations(iList);
-		//TODO: FIX THIS SHIT.
+		assertTrue(m.getSentInvitations().equals(iList));
 	}
-	
-	public void testSetReceivedInvitations() {
-	}
-
 
 }
