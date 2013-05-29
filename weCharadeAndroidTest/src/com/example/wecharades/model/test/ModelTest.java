@@ -181,5 +181,4 @@ public class ModelTest extends AndroidTestCase {
 		m.setSentInvitations(iList);
 		assertTrue(m.getSentInvitations().equals(iList));
 	}
-
 }
