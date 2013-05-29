@@ -523,12 +523,16 @@ public class DataController extends Observable implements Observer{
 	 * @return A List of current invitations. The list will be of size 0 if no elements are found.
 	 */
 	private List<Invitation> parseDbInvitations(List<Invitation> dbInv){
-		//The date is used for comparison later
+		//The date and timedifference is used for comparison later
 		Date currentTime = new Date();
 		long timeDifference;
+		//These will be removed later
 		LinkedList<Invitation> oldInvitations = new LinkedList<Invitation>();
+		//A list of ALL current invitations
 		LinkedList<Invitation> currentInvitations = new LinkedList<Invitation>();
+		//A list of all sent invitations
 		LinkedList<Invitation> sentInvitations = new LinkedList<Invitation>();
+		//A list of all sent invitations
 		LinkedList<Invitation> receivedInvitations = new LinkedList<Invitation>();		
 		for(Invitation inv : dbInv){
 			timeDifference = (currentTime.getTime() - inv.getTimeOfInvite().getTime()) / (1000L*3600L);
@@ -537,6 +541,7 @@ public class DataController extends Observable implements Observer{
 					|| inCurrentGames(inv)){
 				oldInvitations.add(inv);
 			} else if(!currentInvitations.contains(inv)){
+				//We only allow one instace of an invitation to appear in the list
 				currentInvitations.add(inv);
 				if(inv.getInviter().equals(getCurrentPlayer())){
 					sentInvitations.add(inv);
@@ -545,6 +550,7 @@ public class DataController extends Observable implements Observer{
 				}
 			}
 		}
+		//Remove old invitations from the database
 		db.removeInvitations(oldInvitations);
 		m.setSentInvitations(sentInvitations);
 		m.setReceivedInvitations(receivedInvitations);
@@ -554,8 +560,9 @@ public class DataController extends Observable implements Observer{
 	 * Helper method to check if Invitation is in current games
 	 */
 	private boolean inCurrentGames(Invitation inv){
-		for(Game g : m.getGames()){ //Check if the invitation is in current games
-			if(	
+		for(Game g : m.getGames()){ //Check if the invitation is in current (not finished) games
+			//If the game isn't finished AND that the combination of inviter/invitee doesn't exist in any games. 
+			if(		!g.isFinished() &&
 					(inv.getInviter().equals(g.getPlayer1()) 
 							&& inv.getInvitee().equals(g.getPlayer2()))
 							||
@@ -573,6 +580,7 @@ public class DataController extends Observable implements Observer{
 	 * @return An ArrayList containing Invitations
 	 */
 	public List<Invitation> getSentInvitations(){
+		//The cache is updated on each getInvitations() call
 		return m.getSentInvitations();
 	}
 
@@ -588,6 +596,11 @@ public class DataController extends Observable implements Observer{
 		}
 		return usernames;
 	}
+	
+	/**
+	 * Get all received invitations for the current player
+	 * @return A List with invitations
+	 */
 	public List<Invitation> getReceivedInvitations(){
 		return m.getReceivedInvitations();
 	}
@@ -595,7 +608,7 @@ public class DataController extends Observable implements Observer{
 
 	/**
 	 * Send an invitation to another player
-	 * @param invitation
+	 * @param invitation - the invitation to send
 	 */
 	public void sendInvitation(Invitation invitation){
 		db.sendInvitation(invitation);
@@ -606,39 +619,46 @@ public class DataController extends Observable implements Observer{
 	 * @param player The player-representation of the player
 	 */
 	public void sendInvitation(Player player){
+		//Create an invitation instance and send it to the database.
 		sendInvitation(new Invitation(getCurrentPlayer(), player));
 	}
 
 	/**
 	 * Called in order to accept an invitation and automatically create a game.
 	 * @param invitation - The invitation to accept
-	 * @throws DatabaseException
 	 */
-	public void acceptInvitation(Invitation invitation) throws DatabaseException{
+	public void acceptInvitation(Invitation invitation){
 		createGame(invitation.getInvitee(), invitation.getInviter());
 		db.removeInvitation(invitation);
 	}
 
 	/**
 	 * Called to reject an invitation, which is then deleted form the database
-	 * @param invitaiton - The invitation to reject
+	 * @param invitation - The invitation to reject
 	 * @throws DatabaseException
 	 */
-	public void rejectInvitation(Invitation invitaiton) throws DatabaseException{
-		db.removeInvitation(invitaiton);
+	public void rejectInvitation(Invitation invitation){
+		db.removeInvitation(invitation);
 	}
 
+	/**
+	 * A private class to remove videos in an AsyncTask from the ftp.
+	 * 	Call whenever a video can be considered as consumed to save storage space.
+	 */
 	private class RemoveVideoFromServer extends AsyncTask <Void, Long, Boolean> {
-
 		String gameId;
-
+		
 		public RemoveVideoFromServer(String game) {
-			this.gameId = gameId;
+			/*
+			 * TODO ADAM - CHECK THIS!!! WAS PREVIOUSLY this.gameId = gameIs (was never set)
+			 * 	Was this intentional? Changed this now, but it is untested
+			 */
+			this.gameId = game;
 		}
 
 		@Override
 		protected void onPreExecute(){
-
+			//We do not have to check anything
 		}
 
 		@Override
@@ -646,9 +666,10 @@ public class DataController extends Observable implements Observer{
 			boolean result = false;
 			FTPClient con = null;
 			try{
+				//Try and create a connection to the FPT client and delete the file.
 				con = new FTPClient();
 				con.connect("ftp.mklcompetencia.se", 21);
-				if (con.login("mklcompetencia.se", "ypkq4w")){
+				if (con.login("mklcompetencia.se", "ypkq4w")){ //PlainText is nice...
 					con.enterLocalPassiveMode();
 					result = con.deleteFile(gameId);
 					if (result) {
@@ -658,6 +679,7 @@ public class DataController extends Observable implements Observer{
 					con.disconnect();
 				}
 			}
+			//Catch exceptions
 			catch (SocketException e){
 				Log.v("download result Socket", e.getMessage());
 				cancel(true);
@@ -687,7 +709,7 @@ public class DataController extends Observable implements Observer{
 
 		@Override
 		protected void onPostExecute(Boolean result){
-
+			//Nothing here as well
 		}
 	}
 }
