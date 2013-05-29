@@ -38,6 +38,12 @@ public interface IDatabase{
 	public abstract void removeGame(Game game);
 	
 	/**
+	 * Removes all turns associated with a local version of the game from the database.
+	 * @param game - the game whos turns to delete
+	 */
+	public abstract void removeTurnsOfGame(Game game);
+	
+	/**
 	 * A method to get a single game
 	 * @param gameId
 	 * @return The game with gameId

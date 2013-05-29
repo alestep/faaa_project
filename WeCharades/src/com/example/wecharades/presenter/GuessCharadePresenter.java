@@ -28,6 +28,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,8 +73,6 @@ public class GuessCharadePresenter extends Presenter {
 		downloadVideo(activity, videoView);
 	}
 
-
-
 	public void updateModel(){
 		dc.updateTurn(turn);
 	}
@@ -112,6 +111,14 @@ public class GuessCharadePresenter extends Presenter {
 			}
 		};
 	}
+	
+	 /**
+	  * Stops the timer
+	  */
+	 public void stopTimer(){
+		 timer.cancel();
+	 }
+	 
 	/**
 	 * Call this method to initiate video download from server.
 	 * @param context
@@ -433,7 +440,7 @@ public class GuessCharadePresenter extends Presenter {
 	public void evaluateGuess(String answerWord) {
 		if(checkRightWord(answerWord)){
 			videoView.stopPlayback();
-			timer.cancel();
+			stopTimer();
 			activity.gameState = 0;
 
 			//Update relevant information
