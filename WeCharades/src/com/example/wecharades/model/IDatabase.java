@@ -27,7 +27,6 @@ public interface IDatabase{
 	 * @param 	player1: The player who created the game
 	 * 			player2: The player who received the game
 	 * @return - The newly created game
-	 * @throws DatabaseException 
 	 */
 	public abstract void createGame(Player player1, Player player2);
 	
@@ -39,12 +38,12 @@ public interface IDatabase{
 	
 	/**
 	 * Removes all turns associated with a local version of the game from the database.
-	 * @param game - the game whos turns to delete
+	 * @param game - the game who's turns to delete
 	 */
 	public abstract void removeTurnsOfGame(Game game);
 	
 	/**
-	 * A method to get a single game
+	 * A method to get a single game - this is not done in background
 	 * @param gameId
 	 * @return The game with gameId
 	 * @throws DatabaseException 
@@ -55,7 +54,6 @@ public interface IDatabase{
 	 * Get a list of game-instances of the logged in player from the Parse server.
 	 * @param The user
 	 * @return an ArrayList with Game instances
-	 * @throws DatabaseException 
 	 */
 	public abstract void fetchGames(Player player);
 
@@ -66,7 +64,7 @@ public interface IDatabase{
 	public abstract void updateGame(Game theGame);
 	
 	/**
-	 * Retrieves a turn from the database
+	 * Retrieves a turn from the database - this is not done in background
 	 * @param gameId - the game to which this turn belongs
 	 * @param turnNumber - the turn number
 	 * @return A Turn class representation of the retrieved data
@@ -106,9 +104,9 @@ public interface IDatabase{
 			throws DatabaseException;
 
 	/**
-	 * 
-	 * @param parseId
-	 * @return
+	 * Get a player by its parseId
+	 * @param parseId - the ID of the player
+	 * @return A Player representation of the player
 	 * @throws DatabaseException
 	 */
 	public abstract Player getPlayerById(String parseId)
@@ -116,26 +114,30 @@ public interface IDatabase{
 
 	/**
 	 * Get a list of player-instances containing all players 
-	 * @param searchString 
-	 * @return List containing all players
+	 * @return List containing all players in DB.
 	 * @throws DatabaseException
 	 */
 	public abstract ArrayList<Player> getPlayers() throws DatabaseException;
 	
 	/**
 	 * A method to increment the global statistics of players.
-	 * @param player
+	 * @param player - the player
+	 * @param scoreInc - the amount the score should be incremented
+	 * @param won - the amount of won turns to increment
+	 * @param draw - the amount of turns draw to increment
+	 * @param lost - - the amount of lost turns to increment
 	 */
 	public abstract void incrementPlayerStats(Player player, int scoreInc, int won, int draw, int lost);
 
 	/**
 	 * Puts the playerId into the the random queue
+	 * @param player - The player
 	 */
 	public abstract void putIntoRandomQueue(Player player);
 
 	/**
 	 * Send an invitation to another player
-	 * @param inv
+	 * @param inv - the invitation to send
 	 */
 	public abstract void sendInvitation(Invitation inv);
 
@@ -144,7 +146,6 @@ public interface IDatabase{
 	 * 
 	 * @param player - the Player
 	 * @return an ArrayList with playerId:s
-	 * @throws DatabaseException 
 	 */
 	public abstract void getInvitations(Player player);
 
@@ -152,14 +153,12 @@ public interface IDatabase{
 	 * Removes an invitation from the database
 	 * 
 	 * @param inv - an invitation to delete
-	 * @throws DatabaseException
 	 */
 	public abstract void removeInvitation(Invitation inv);
 
 	/**
 	 * Removes the entire collection of Invites from the database
 	 * @param inv - a collection of invitations
-	 * @throws DatabaseException
 	 */
 	public abstract void removeInvitations(Collection<Invitation> inv);
 
@@ -169,7 +168,7 @@ public interface IDatabase{
 	 * @param inputEmail - Email address
 	 * @param inputPassword - password
 	 * @param inputRepeatPassword - control password
-	 * @throws ParseException - thrown if the database transfer fails
+	 * @throws DatabaseException - thrown if the database transfer fails
 	 */
 	public abstract void registerPlayer(String inputNickname,
 			String inputEmail, String inputPassword, String inputRepeatPassword)
@@ -186,7 +185,7 @@ public interface IDatabase{
 
 	/**
 	 * Returns the current player
-	 * @return A Player
+	 * @return A Player representation of the current player
 	 */
 	public abstract Player getCurrentPlayer();
 
@@ -202,9 +201,17 @@ public interface IDatabase{
 	 */
 	public abstract void logOut();
 
+	/**
+	 * Remove push notifications form the 
+	 * @param context
+	 */
 	void removePushNotification(Context context);
 
-	public void subscribetoNotification(Context context);
+	/**
+	 * Subscribe to notifications from this device - uses the current player username as key.
+	 * @param context - The application context
+	 */
+	public void subscribeToNotification(Context context);
 
 
 }
