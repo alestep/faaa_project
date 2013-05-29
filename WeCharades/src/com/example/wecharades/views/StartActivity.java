@@ -131,7 +131,7 @@ public class StartActivity extends GenericActivity {
 		gameListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long duration) {
-				Game game = (Game) adapter.getItem(position-1);
+				Game game = (Game) adapter.getItem(position);
 				Intent intent = new Intent(activity, GameDashboardActivity.class);
 				intent.putExtra("Game", game);
 				startActivity(intent);
