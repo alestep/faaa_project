@@ -839,6 +839,7 @@ public class Database extends Observable implements IDatabase {
 	public void logOut(){
 		ParseUser.logOut();
 	}
+	
 	@Override
 	public void removePushNotification(Context context){
 		Player p = getCurrentPlayer();
@@ -852,8 +853,10 @@ public class Database extends Observable implements IDatabase {
 	}
 
 	@Override
-	public void subscribetoNotification(Context context) {
+	public void subscribeToNotification(Context context) {
 		//PushService.subscribe(context, getCurrentPlayer().getName(), StartActivity.class);
-
+		/*
+		 *TODO remove this method if it is never used. 
+		 */
 	}
 }

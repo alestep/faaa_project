@@ -35,10 +35,6 @@ import android.util.Log;
  *
  */
 public class DataController extends Observable implements Observer{
-	//TODO Delete later
-	public Game getGame(String gameId){
-		return m.getGame(gameId);
-	}
 
 	//This variable is set when a user logs out. We cannot simply delete these references, as
 	// we might have to wirte stuff to the database.
@@ -279,6 +275,15 @@ public class DataController extends Observable implements Observer{
 	 */
 	public void createGame(Player p1, Player p2){
 		db.createGame(p1, p2);
+	}
+	
+	/**
+	 * Return the local version of the game by its gameId
+	 * @param gameId - the GameId
+	 * @return A Game, or null if it doesn't exist
+	 */
+	public Game getGame(String gameId){
+		return m.getGame(gameId);
 	}
 
 	/**
