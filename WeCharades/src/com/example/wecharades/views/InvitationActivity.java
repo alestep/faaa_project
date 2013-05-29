@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.Invitation;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.InvitationPresenter;
 
 public class InvitationActivity extends GenericActivity {

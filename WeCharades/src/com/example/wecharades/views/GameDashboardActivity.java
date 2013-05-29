@@ -8,7 +8,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.GameDashboardPresenter;
 
 public class GameDashboardActivity extends GenericActivity {

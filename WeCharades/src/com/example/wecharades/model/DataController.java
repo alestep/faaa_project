@@ -19,6 +19,8 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import com.parse.ParseUser;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,26 +40,42 @@ public class DataController extends Observable implements Observer{
 		return m.getGame(gameId);
 	}
 
+	//This variable is set when a user logs out. We cannot simply delete these references, as
+	// we might have to wirte stuff to the database.
 	private static boolean RECREATE = false;
 
 	private static DataController dc;
 	private Model m;
 	private IDatabase db;
 	private DataController(Context context){
+		//Get references to the model and the database - both singletons
 		m = Model.getModelInstance(context);
 		db = Database.getDatabaseInstance(context);
 		db.setConverter(this);
 		db.addObserver(this);
 	}
 
+	/**
+	 * Get a reference to the datacontroller
+	 * @param context - the context
+	 * @return A dataController
+	 */
 	public static DataController getDataController(Context context){
+		/*
+		 * This is a singleton. This is done, as we never want to have several instances of this class
+		 * 	We will recreate the instance of this class whenever a user logs out and in again.
+		 */
 		if(dc == null || RECREATE){
 			dc = new DataController(context);
 			RECREATE = false;
 		}
 		return dc;
 	}
-
+	
+	/**
+	 * Call this method to save the state of the model.
+	 * @param context - the current context.
+	 */
 	public void saveState(Context context){
 		if(m != null)
 			m.saveModel(context);
@@ -65,25 +83,36 @@ public class DataController extends Observable implements Observer{
 
 	/**
 	 * This method is called when the database has finished fetching turn and game data.
+	 * 	This is part of the observer pattern.
 	 */
+	@SuppressWarnings("unchecked") //Se comment bellow
 	@Override
 	public void update(Observable db, Object obj) {
+		/*
+		 * All messages that are sent from the database should contain a DBMessage.
+		 * 	This procedure is in place to reduce the level of type-checking needed here.
+		 */
 		if(obj != null && obj.getClass().equals(DBMessage.class)){
 			DBMessage dbm = (DBMessage) obj;
 			if(dbm.getMessage() == DBMessage.ERROR){
+				//If we get an error from the database, print message and stackTrace in logcat,
+				// and send a modified error on to the user.
 				DatabaseException e = (DatabaseException) dbm.getData();
 				Log.d("DatabaseError", "Code: " + e.getCode() + "   Message: " + e.getMessage());
 				e.printStackTrace();
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.ERROR, e.prettyPrint()));
 			} else if(dbm.getMessage() == DBMessage.MESSAGE){
+				//If we receive a message from the database, we should display this in a different manner to the user.
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.MESSAGE, (String) dbm.getData())); 
 			} else if(dbm.getMessage() == DBMessage.GAMELIST){
+				//If we receive a gameList from the database, we should compare this and send it forth to the user.
 				ArrayList<Game> gameList = parseGameList((TreeMap<Game, ArrayList<Turn>>) dbm.getData());
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.DATABASE_GAMES, gameList));
 			} else if(dbm.getMessage() == DBMessage.INVITATIONS){
+				//When we get an updated list of invitations, we parse this and send it forth.
 				List<Invitation> invList = parseDbInvitations((List<Invitation>) dbm.getData());
 				setChanged();
 				notifyObservers(new DCMessage(DCMessage.INVITATIONS, invList));
@@ -113,17 +142,28 @@ public class DataController extends Observable implements Observer{
 		db.removePushNotification(context);
 		m.logOutCurrentPlayer(context);
 		db.logOut();
+		//Recreates DataController on next log in or app restart.
 		RECREATE = true;
 	}
 
 	/**
 	 * returns the current user
-	 * @return
+	 * @return the Player that is the current user.
 	 */
 	public Player getCurrentPlayer(){
-		return db.getCurrentPlayer();
+		//Return the current user stats from the model, but first checks if the user is logged in.
+		if(ParseUser.getCurrentUser() != null){
+			if(m.getCurrentPlayer() == null){
+				m.setCurrentPlayer(db.getCurrentPlayer());
+			}
+			return m.getCurrentPlayer();
+		} else{
+			return null;
+		}
 	}
 
+	//TODO Should errors be sent to listening classes insead of thrown? We can use boolean-returns if necessary.
+	
 	/**
 	 * Register a player
 	 * @param inputNickname - The player
@@ -136,8 +176,7 @@ public class DataController extends Observable implements Observer{
 			String inputNickname, 
 			String inputEmail, 
 			String inputPassword, 
-			String inputRepeatPassword
-			) throws DatabaseException{
+			String inputRepeatPassword) throws DatabaseException{
 		db.registerPlayer(inputNickname, inputEmail, inputPassword,inputRepeatPassword);
 	}
 
@@ -153,7 +192,7 @@ public class DataController extends Observable implements Observer{
 	//Players -----------------------------------------------------------
 
 	/**
-	 * Get a user by its ParseId
+	 * Get a user by its ParseId - fetched locally if possible
 	 * @param parseId - the players ParseId
 	 * @return A player
 	 * @throws DatabaseException - if the connection to the database fails
@@ -161,12 +200,13 @@ public class DataController extends Observable implements Observer{
 	protected Player getPlayerById(String parseId) throws DatabaseException {
 		Player p = m.getPlayerById(parseId);
 		if(p == null){
+			//If the player is not present in the model, we must call the database.
 			p = db.getPlayerById(parseId);
 			m.putPlayer(p);
 		}
 		return p;
 	}
-
+	//As both the parseId and the username are unique for each player, both of these methods can be nice to have.
 	/**
 	 * Get a user by its username
 	 * @param username - the players username
@@ -183,8 +223,9 @@ public class DataController extends Observable implements Observer{
 	}
 
 	/**
-	 * Returns a list of all players as objects
-	 * @return An ArrayList with players
+	 * Returns a list of all players as objects from the database. 
+	 * 	The local list of players is updated as well.
+	 * @return An ArrayList with Players
 	 * @throws DatabaseException
 	 */
 	public ArrayList<Player> getAllPlayerObjects() throws DatabaseException {
@@ -194,7 +235,7 @@ public class DataController extends Observable implements Observer{
 	}
 
 	/**
-	 * Returns a list with all player names. This list will also be cached locally.
+	 * Returns a list with all player names. The players will also be cached locally.
 	 * @return an ArrayList containing 
 	 * @throws DatabaseException - if the connection to the database fails
 	 */

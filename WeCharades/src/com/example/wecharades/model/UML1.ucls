@@ -55,8 +55,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="7" language="java" name="com.example.wecharades.model.LoadProgressBar" project="Main" 
-    file="/Main/src/com/example/wecharades/model/LoadProgressBar.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="com.example.wecharades.views.LoadProgressBar" project="Main" 
+    file="/Main/src/com/example/wecharades/views/LoadProgressBar.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="220" x="1536" y="3169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -64,8 +64,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <interface id="8" language="java" name="com.example.wecharades.model.IProgress" project="Main" 
-    file="/Main/src/com/example/wecharades/model/IProgress.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="8" language="java" name="com.example.wecharades.views.IProgress" project="Main" 
+    file="/Main/src/com/example/wecharades/views/IProgress.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="99" width="146" x="1356" y="3794"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -73,8 +73,8 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="com.example.wecharades.model.RefreshProgressBar" project="Main" 
-    file="/Main/src/com/example/wecharades/model/RefreshProgressBar.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="com.example.wecharades.views.RefreshProgressBar" project="Main" 
+    file="/Main/src/com/example/wecharades/views/RefreshProgressBar.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="189" width="233" x="983" y="3169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

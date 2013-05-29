@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.RefreshProgressBar;
 import com.example.wecharades.presenter.AccountPresenter;
 
 public class AccountActivity extends GenericActivity {
