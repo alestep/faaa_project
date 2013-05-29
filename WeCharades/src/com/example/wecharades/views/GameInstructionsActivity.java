@@ -29,7 +29,6 @@ public class GameInstructionsActivity extends GenericActivity {
 	}
 	
 	public void onClickHome(View v){
-		startActivity(new Intent(this, StartActivity.class));
-		finish();
+		presenter.goToStartActivity();
 	}
 }

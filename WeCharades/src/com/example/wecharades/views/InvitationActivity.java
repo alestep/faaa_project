@@ -52,8 +52,7 @@ public class InvitationActivity extends GenericActivity {
 	 * @param v
 	 */
 	public void onClickHome(View v){
-		startActivity(new Intent(this, StartActivity.class));
-		finish();
+		presenter.goToStartActivity();
 	}
 	
 	/**

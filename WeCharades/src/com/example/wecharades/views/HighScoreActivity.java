@@ -54,8 +54,7 @@ public class HighScoreActivity extends GenericActivity {
 	}
 	
 	public void onClickHome(View view){
-		startActivity(new Intent(this, StartActivity.class));
-		finish();
+		presenter.goToStartActivity();
 	}
 
 }

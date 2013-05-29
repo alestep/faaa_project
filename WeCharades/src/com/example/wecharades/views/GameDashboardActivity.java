@@ -38,6 +38,7 @@ public class GameDashboardActivity extends GenericActivity {
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 	
+	@Override
 	public void onStart(){
 		super.onStart();
 		presenter.createDashboard(myTable);
@@ -48,6 +49,10 @@ public class GameDashboardActivity extends GenericActivity {
 		opponentsScore.setText(Integer.toString(otherPlayerScore));
 	}
 	
+	/**
+	 * Set title of the Game dashboard
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title.setText(title);
 	}
@@ -57,12 +62,19 @@ public class GameDashboardActivity extends GenericActivity {
 		return refresh;
 	}
 	
+	/**
+	 * Refresh the view
+	 * @param v
+	 */
 	public void onClickRefresh(View v) {
 		presenter.createDashboard(myTable);
 	}
 	
+	/**
+	 * Go to Start Activity
+	 * @param v
+	 */
 	public void onClickHome(View v){
-		startActivity(new Intent(this, StartActivity.class));
-		finish();
+		presenter.goToStartActivity();
 	}
 }

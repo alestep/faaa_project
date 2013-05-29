@@ -60,15 +60,17 @@ public class StartActivity extends GenericActivity {
 		presenter.checkLogin();
 	}
 
-
-	public void onStart(){	
+	@Override
+	public void onStart(){
 		presenter.initiate();
 		presenter.update();
 		super.onStart();
 	}
 	
+	@Override
 	public void onPause(){
 		super.onPause();
+		presenter.setNotUpdating();
 	}
 
 	/**

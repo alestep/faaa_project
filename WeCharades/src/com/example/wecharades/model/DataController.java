@@ -257,7 +257,8 @@ public class DataController extends Observable implements Observer{
 			if(localGame == null){
 				m.putGame(dbGame.getKey());
 				m.putTurns(dbGame.getValue());
-				if(dbGame.getKey().isFinished()){
+				if(dbGame.getKey().isFinished() 
+						&& dbGame.getKey().getPlayer2().equals(getCurrentPlayer())){
 					db.removeGame(dbGame.getKey());
 					removeVideofromServer(dbGame.getKey());
 				}
@@ -347,10 +348,9 @@ public class DataController extends Observable implements Observer{
 			int p1s = 0;
 			int p2s = 0;
 			Turn currentTurn;
-			for(int i=0; i < game.getTurnNumber(); i++){
-				currentTurn = turnList.get(i);
-				p1s += currentTurn.getPlayerScore(p1);
-				p2s += currentTurn.getPlayerScore(p2);
+			for(Turn turn : turnList){
+				p1s += turn.getPlayerScore(p1);
+				p2s += turn.getPlayerScore(p2);
 			}
 			returnMap.put(p1, p1s);
 			returnMap.put(p2, p2s);
@@ -440,7 +440,7 @@ public class DataController extends Observable implements Observer{
 				if(inv.getInviter().equals(getCurrentPlayer())){
 					sentInvitations.add(inv);
 				} else{
-					
+					receivedInvitations.add(inv);
 				}
 			}
 		}
