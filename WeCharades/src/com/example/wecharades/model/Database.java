@@ -23,6 +23,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.PushService;
+import com.parse.SaveCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
@@ -569,7 +570,15 @@ public class Database extends Observable implements IDatabase {
 					obj.increment(PLAYER_GAMES_WON, won);
 					obj.increment(PLAYER_GAMES_PLAYED);
 					obj.increment(PLAYER_GLOBALSCORE, scoreInc);
-					obj.saveInBackground();
+					obj.saveInBackground(new SaveCallback() {
+						public void done(ParseException e) {
+							if(e == null){
+								Log.d("Database", "Player updated");
+							} else{
+								sendError(new DatabaseException(e.getCode(), e.getMessage()));
+							}
+						}
+					});
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
