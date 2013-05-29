@@ -34,7 +34,7 @@ public class GuessCharadeActivity extends GenericActivity  {
  
         @Override
         public void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState, new GuessCharadePresenter(this, (Turn) getIntent().getExtras().getSerializable("Turn")));
+                super.onCreate(savedInstanceState, new GuessCharadePresenter(this, this.turn = (Turn) getIntent().getExtras().getSerializable("Turn")));
                 setContentView(R.layout.guessvideo);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                
@@ -52,7 +52,7 @@ public class GuessCharadeActivity extends GenericActivity  {
          */
         @Override
         public void onStart() {
-                presenter.initialize();
+                presenter.initialize(videoView);
                 super.onStart();
         }
        
