@@ -14,8 +14,6 @@ public class TestConstants {
 	public static Model m;
 	public static TreeMap<Game, ArrayList<Turn>> gameList;
 	public static ArrayList<Turn> turns;
-	public static Game g1,g2;
-	public static Player recPlayer, ansPlayer;
 	public static Turn t1,t2,t3,t4,t5,t6;
 	public static Invitation invitation;
 	public static final int	GLOBAL_SCORE_REC= 5,
@@ -40,7 +38,15 @@ public class TestConstants {
 			CHARADEWORD_4	= "Coffee",
 			CHARADEWORD_5	= "Phone",
 			CHARADEWORD_6	= "Car",									
-			VIDEOLINK		= "";
+			VIDEOLINK		= "",
+			REC_PLAYER_NAME	= "recName",
+			ANS_PLAYER_NAME	= "ansName",
+			REC_PLAYER_ID	= "recId",
+			ANS_PLAYER_ID	= "ansId";
 	public static final boolean	NOT_FINISHED		= false;
+	public static Player recPlayer = new Player(REC_PLAYER_ID, REC_PLAYER_NAME, GLOBAL_SCORE_REC, PLAYED_GAMES, WON_GAMES, LOST_GAMES, DRAW_GAMES);
+	public static Player ansPlayer = new Player(ANS_PLAYER_ID, ANS_PLAYER_NAME, GLOBAL_SCORE_ANS, PLAYED_GAMES, WON_GAMES, LOST_GAMES, DRAW_GAMES);
+
+
 
 }
