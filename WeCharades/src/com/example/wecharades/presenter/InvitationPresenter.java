@@ -52,14 +52,10 @@ public class InvitationPresenter extends Presenter implements Observer{
 	 * @param response
 	 */
 	public void setInvitation(Invitation invitation, boolean response) {
-		try {
-			if (response)
-				dc.acceptInvitation(invitation);
-			else	
-				dc.rejectInvitation(invitation);
-		}catch (DatabaseException e) {
-			activity.showErrorDialog(e.prettyPrint());
-		}
+		if (response)
+			dc.acceptInvitation(invitation);
+		else	
+			dc.rejectInvitation(invitation);
 	}
 	
 	/**
