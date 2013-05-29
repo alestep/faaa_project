@@ -14,12 +14,12 @@ import com.jayway.android.robotium.solo.Solo;
  * @author Adam
  *
  */
-public class AccountHighScoreActivityTest extends
+public class AccountActivityTest extends
                 ActivityInstrumentationTestCase2<StartActivity> {
  
         private Solo solo;
        
-        public AccountHighScoreActivityTest() {
+        public AccountActivityTest() {
                 super(StartActivity.class);
                
         }
