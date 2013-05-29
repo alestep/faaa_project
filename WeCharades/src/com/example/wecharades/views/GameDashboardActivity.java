@@ -33,6 +33,8 @@ public class GameDashboardActivity extends GenericActivity {
 		yourScore = (TextView) findViewById(R.id.yourScore);
 		opponentsScore = (TextView) findViewById(R.id.opponentScore);
 		myTable = (TableLayout) findViewById(R.id.table);
+		
+		//To create an instance of RefreshProgressBar an ImageButton, visualizing a refresh-icon, has to be a parameter.
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 	
@@ -42,6 +44,11 @@ public class GameDashboardActivity extends GenericActivity {
 		presenter.createDashboard(myTable);
 	}
 	
+	/**
+	 * Updates both players' scores
+	 * @param currentPlayersScore
+	 * @param otherPlayerScore
+	 */
 	public void updateScore(int currentPlayersScore, int otherPlayerScore) {
 		yourScore.setText(Integer.toString(currentPlayersScore));
 		opponentsScore.setText(Integer.toString(otherPlayerScore));
@@ -54,14 +61,9 @@ public class GameDashboardActivity extends GenericActivity {
 	public void setTitle(String title) {
 		this.title.setText(title);
 	}
-
-	@Override
-	protected RefreshProgressBar getProgressBar() {
-		return refresh;
-	}
 	
 	/**
-	 * Refresh the view
+	 * Refresh the the dashboard
 	 * @param v
 	 */
 	public void onClickRefresh(View v) {
@@ -74,5 +76,11 @@ public class GameDashboardActivity extends GenericActivity {
 	 */
 	public void onClickHome(View v){
 		presenter.goToStartActivity();
+		finish();
+	}
+	
+	@Override
+	protected RefreshProgressBar getProgressBar() {
+		return refresh;
 	}
 }

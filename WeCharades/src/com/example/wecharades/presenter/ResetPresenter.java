@@ -72,7 +72,7 @@ public class ResetPresenter extends Presenter {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(exceptionState == CAUGHT_EXCEPTION){
-				activity.showErrorDialog(dbException.prettyPrint());
+				activity.showNegativeDialog("Error", dbException.prettyPrint(), "OK");
 			}
 			else{
 				activity.showToast("Email has been sent");

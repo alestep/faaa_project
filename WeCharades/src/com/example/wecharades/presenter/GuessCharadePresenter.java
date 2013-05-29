@@ -1,6 +1,7 @@
 package com.example.wecharades.presenter;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,22 +16,30 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.EditText;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.wecharades.R;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
+import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
+import com.example.wecharades.views.StartActivity;
 
 public class GuessCharadePresenter extends Presenter {
 
@@ -43,6 +52,7 @@ public class GuessCharadePresenter extends Presenter {
 	private Turn turn;
 	public String currentWord;
 	public CountDownTimer timer;
+
 	public static final int NO_DOWNLOAD = 0;
 	public static final int DOWNLOAD_FINISHED = 1;
 	public int downloadState = NO_DOWNLOAD;
@@ -54,8 +64,8 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	public void initialize(VideoView videoView) {
-		this.videoView = videoView;
 		initializeTimer();
+		this.videoView = videoView;
 		downloadVideo(activity, videoView);
 	}
 
@@ -72,17 +82,13 @@ public class GuessCharadePresenter extends Presenter {
 		timer = new CountDownTimer(30000, 100) {
 
 			public void onTick(long millisUntilFinished) {
-				if(millisUntilFinished < 10000){
-					activity.setTime((String.valueOf(millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100))); 
-				}
-				else{
+				activity.setTime(String.valueOf(millisUntilFinished / 1000));
+				if (millisUntilFinished>10000){
 					activity.setTime(String.valueOf(millisUntilFinished / 1000));
 				}
-				//								 if (millisUntilFinished>10000)
-				//									 if (millisUntilFinished%1000 == 0)
-				//										 activity.setTime(String.valueOf(millisUntilFinished / 1000));
-				//									 else
-				//										 activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+				else{
+					activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
+				}	 
 			}
 
 			public void onFinish() {
@@ -92,16 +98,24 @@ public class GuessCharadePresenter extends Presenter {
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
 				updateModel();
-				activity.finishDialog();
+
+				videoView.stopPlayback();
+				activity.showNegativeDialog("Game over", "The right word is " + currentWord.toLowerCase(), "OK");
+				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+				intent.putExtra("Game", getGame());
+				activity.startActivity(intent);
+				activity.finish();
 			}
 		};
 	}
+
 	/**
 	 * Stops the timer
 	 */
 	public void stopTimer(){
 		timer.cancel();
 	}
+
 	/**
 	 * Call this method to initiate video download from server.
 	 * @param context
@@ -121,7 +135,7 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onPrepared(MediaPlayer mp) {
-					mp.setLooping(true);          
+					mp.setLooping(true);
 				}
 			});
 			videoView.setVideoPath(SAVE_PATH);
@@ -130,6 +144,7 @@ public class GuessCharadePresenter extends Presenter {
 			Log.e("Video", "error: " + e.getMessage(), e);
 		}
 	}
+
 	/**
 	 * Adds a random number of random letters to a String object.
 	 * @param turn
@@ -176,8 +191,8 @@ public class GuessCharadePresenter extends Presenter {
 	 * @param answerWord
 	 * @return True if answerWord matches currentWord.
 	 */
-	public boolean checkRightWord(EditText answerWord){
-		return answerWord.getText().toString().equalsIgnoreCase(currentWord);
+	public boolean checkRightWord(String answerWord){
+		return answerWord.equalsIgnoreCase(currentWord);
 	}
 
 	public Game getGame(){
@@ -191,9 +206,11 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	private class DownloadVideo extends AsyncTask<Void, Long, Boolean> {
 
-		private ProgressDialog mDialog;
+
+		private Dialog dialog;
 		Context mContext;
 		private String SAVE_PATH;
+		private File file;
 
 		public DownloadVideo(Context context,String path) {
 			mContext=context;
@@ -203,39 +220,30 @@ public class GuessCharadePresenter extends Presenter {
 		@Override
 		protected void onPreExecute(){
 			downloadState = NO_DOWNLOAD;
-			mDialog = new ProgressDialog(mContext);
-			mDialog.setTitle("Downloading Charade");
-			mDialog.setMessage("Please Wait");
-			mDialog.setCancelable(false);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+			dialog = new Dialog(mContext);
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.setContentView(R.layout.dialog_progress);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+			TextView title = (TextView) dialog.findViewById(R.id.progressTitle);
+			title.setText("Downloading charade");
+
+			TextView text = (TextView) dialog.findViewById(R.id.progressText);
+			text.setText("Please wait");
+
+			Button button = (Button) dialog.findViewById(R.id.ok);
+			button.setText("Cancel");
+
+			button.setOnClickListener(new OnClickListener() {          
 
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
+				public void onClick(View v) {
 					dialog.dismiss();
-					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-					builder.setTitle("Downloading Charade")
-					.setMessage("Download canceled!")
-					.setCancelable(false)
-					.setPositiveButton("Go back and download later", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-							activity.finish();
-
-						}
-					})
-					.setNegativeButton("Download now", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-							new DownloadVideo(mContext,SAVE_PATH).execute();
-						}
-					});
-					AlertDialog alert = builder.create();
-					alert.show();
-
+					cancel(true);
 				}
 			});
-			mDialog.show();
+			dialog.show();
 		}
 
 		@Override
@@ -249,7 +257,8 @@ public class GuessCharadePresenter extends Presenter {
 					con.enterLocalPassiveMode(); // important!
 					System.out.println(turn.getVideoLink());
 					con.setFileType(FTP.BINARY_FILE_TYPE);
-					OutputStream out = new FileOutputStream(new File(SAVE_PATH));
+					File file = new File(SAVE_PATH);
+					OutputStream out = new FileOutputStream(file);
 					result = con.retrieveFile(turn.getVideoLink(), out);
 					out.close();
 					if (result) {
@@ -286,11 +295,12 @@ public class GuessCharadePresenter extends Presenter {
 			return null;  
 		}
 
+
 		@Override
 		protected void onPostExecute(Boolean result){
-			if(mDialog.isShowing()){
-				mDialog.setMessage("Download Success!");
-				mDialog.dismiss();
+			if(dialog.isShowing()){
+				dialog.dismiss();
+				//file.setReadable(true, false);
 				activity.setPossibleLetters(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
@@ -300,32 +310,129 @@ public class GuessCharadePresenter extends Presenter {
 
 		@Override
 		protected void onCancelled(Boolean result){
-			if(mDialog.isShowing()){
-				mDialog.dismiss();
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("Downloading Charade")
-				.setMessage("Download failed, try again!")
-				.setCancelable(false)
-				.setPositiveButton("Retry later", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						//                                              Intent intent = new Intent(activity.getApplicationContext(),GameDashboardActivity.class);
-						//                                              intent.putExtra(Database.TURN, turn);
-						//                                              activity.startActivity(intent);
-						activity.finish();
+			if(dialog.isShowing()){
+				final Dialog dialog = new Dialog(activity);
+				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				dialog.setContentView(R.layout.dialog_negative);
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
 
-					}
-				})
-				.setNegativeButton("Retry now", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						new DownloadVideo(mContext,SAVE_PATH).execute();
+				TextView title = (TextView) dialog.findViewById(R.id.negativeTitle);
+				title.setText("Downloading charade");
 
+				TextView text = (TextView) dialog.findViewById(R.id.negativeText);
+				text.setText("Download failed, try again!");
+
+				Button button = (Button) dialog.findViewById(R.id.dismiss);
+				button.setText("Retry later");
+
+				button.setOnClickListener(new OnClickListener() {          
+
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+						if(!dialog.isShowing())
+							activity.finish();
 					}
 				});
-				AlertDialog alert = builder.create();
-				alert.show();
 			}
 		}
 	}
+
+	public void showNegativeDialog(String negativeTitle, String negativeText, String buttonText1, String buttonText2) {
+		final Dialog dialog = new Dialog(activity);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_negative_two);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+
+		TextView title = (TextView) dialog.findViewById(R.id.negativeTitle);
+		title.setText(negativeTitle);
+
+		TextView text = (TextView) dialog.findViewById(R.id.negativeText);
+		text.setText(negativeText);
+
+		Button button1 = (Button) dialog.findViewById(R.id.dismiss);
+		button1.setText(buttonText1);
+
+		Button button2 = (Button) dialog.findViewById(R.id.back);
+		button2.setText(buttonText2);
+
+		button1.setOnClickListener(new OnClickListener() {          
+
+			@Override
+			public void onClick(View v) {
+				if(!dialog.isShowing()) {
+					dialog.dismiss();
+					turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
+					turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
+					turn.setState(Turn.FINISH);
+					updateModel();
+					Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+					intent.putExtra("Game", getGame());
+					activity.startActivity(intent);
+					activity.finish();
+				}
+			}
+		});
+
+		button2.setOnClickListener(new OnClickListener() {          
+
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+
+		dialog.show();
+
+	}
+
+	public void evaluateGuess(String answerWord) {
+		if(checkRightWord(answerWord)){
+			videoView.stopPlayback();
+			stopTimer();
+			activity.gameState = GuessCharadeActivity.NO_GAME;
+
+			//Update relevant information
+			turn.setRecPlayerScore(3);
+			turn.setAnsPlayerScore(5);
+			turn.setState(Turn.FINISH);
+			updateModel();
+
+			final Dialog dialog = new Dialog(activity);
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.setContentView(R.layout.dialog_positive);
+			dialog.setCanceledOnTouchOutside(false);
+			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));        
+
+			TextView title = (TextView) dialog.findViewById(R.id.positiveTitle);
+			title.setText("Charade");
+
+			TextView text = (TextView) dialog.findViewById(R.id.positiveText);
+			text.setText("You guessed right");
+
+			Button button = (Button) dialog.findViewById(R.id.dismiss);
+			button.setText("Continue");
+
+			button.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					stopTimer();
+					Intent intent = new Intent(activity, GameDashboardActivity.class);
+					intent.putExtra("Game", getGame());
+					activity.startActivity(intent);
+					activity.finish();
+				}
+			});
+			dialog.show();
+		}
+		else{	
+			activity.showNegativeDialog("Charade", "You guesssed wrong, hurry up!", "Retry");
+		}    
+
+	}
 }
+

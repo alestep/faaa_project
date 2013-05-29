@@ -11,6 +11,7 @@ import com.example.wecharades.R;
 import com.example.wecharades.presenter.AccountPresenter;
 
 public class AccountActivity extends GenericActivity {
+
 	private AccountPresenter presenter;
 	private RefreshProgressBar refresh;
 
@@ -18,11 +19,13 @@ public class AccountActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new AccountPresenter(this));
 
+		//Set the title bar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.account_screen);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 
-		//Get references to instances
+		//Get references to instances. To create an instance of RefreshProgressBar an ImageButton, 
+		//visualizing a refresh-icon, has to be a parameter.
 		presenter = (AccountPresenter) super.getPresenter();
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
@@ -30,6 +33,8 @@ public class AccountActivity extends GenericActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		//Update the background information
 		presenter.update();
 	}
 
@@ -38,7 +43,8 @@ public class AccountActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickGameInstructions(View view) {
-		presenter.gameInstructions();
+		startActivity(new Intent(this, GameInstructionsActivity.class));
+		finish();
 	}
 
 	/**
@@ -62,10 +68,7 @@ public class AccountActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickHome(View view){
-		Intent intent = new Intent(this, StartActivity.class);
-		intent.putExtra("finish", true);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
+		startActivity(new Intent(this, StartActivity.class));
 		finish();
 	}
 
@@ -92,7 +95,6 @@ public class AccountActivity extends GenericActivity {
 		TextView drawGames = (TextView) findViewById(R.id.drawGames);
 
 		username.setText(newUsername);
-		//TODO fix global ranking by calculating position
 		ranking.setText(Integer.toString(globalRanking) + " ("+ globalScore +" points)");
 		playedGames.setText(Integer.toString(numberOfFinishedGames));
 		wonGames.setText(Integer.toString(numberOfWonGames));

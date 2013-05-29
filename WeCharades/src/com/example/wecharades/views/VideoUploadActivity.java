@@ -58,7 +58,11 @@ public class VideoUploadActivity extends GenericActivity{
 		presenter.reRecord(path);
 	}
 	
-	//TODO: fix a new method that's not using managedQuery(); @adam
+	/**
+	 * 
+	 * @param contentUri
+	 * @return
+	 */
 	private String getPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -69,7 +73,6 @@ public class VideoUploadActivity extends GenericActivity{
 
 	@Override
 	protected IProgress getProgressBar() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

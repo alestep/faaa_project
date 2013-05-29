@@ -66,7 +66,7 @@ public abstract class Presenter implements Observer{
 				&& obj.getClass().equals(DCMessage.class)){
 			DCMessage dcm = (DCMessage) obj;
 			if(dcm.getMessage() == DCMessage.ERROR){
-				activity.showErrorDialog((String) dcm.getData());
+				activity.showNegativeDialog("Error", (String) dcm.getData(), "OK");
 			} else if(dcm.getMessage() == DCMessage.MESSAGE){
 				activity.showToast((String) dcm.getData());
 			}

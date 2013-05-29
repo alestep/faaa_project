@@ -23,7 +23,7 @@ import android.util.Log;
  *
  */
 public class Model implements Serializable{
-	
+
 	private static final long serialVersionUID = -8167671678222883965L;
 	//The name of our model save file
 	private static final String 	SAVE_FILE = "model.save";
@@ -42,7 +42,7 @@ public class Model implements Serializable{
 	 * DO NOT FORGET TO RESET THIS AFTERWARDS!
 	 */
 	private static boolean			PURGE = false;
-	
+
 	//A variable to check if model is already saved.
 	private boolean					SAVED = false;
 	//A variable which is called when a user logs out 
@@ -110,7 +110,7 @@ public class Model implements Serializable{
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to load a model form memory
 	 * @param context
@@ -347,7 +347,11 @@ public class Model implements Serializable{
 	 * @param invitations - The invitations to add
 	 */
 	public void setSentInvitations(LinkedList<Invitation> invitations){
-		sentInvitations = invitations;
+		if(invitations != null){
+			sentInvitations = invitations;
+		} else{
+			sentInvitations.clear();
+		}
 		SAVED = false;
 	}
 
@@ -356,21 +360,28 @@ public class Model implements Serializable{
 	 * @param invitations - The invitations to add
 	 */
 	public void setReceivedInvitations(LinkedList<Invitation> invitations){
-		receiveInvitations = invitations;
+		if(invitations != null){
+			receiveInvitations = invitations;
+		} else{
+			receiveInvitations.clear();
+		}
+		SAVED = false;
 	}
-	
+
 	/**
 	 * Retrieve a list of Invitations sent from this device.
+	 * @return A List containing invitations.
 	 */
 	public List<Invitation> getSentInvitations(){
 		return sentInvitations;
 	}
-	
+
 	/**
 	 * Retrieve a list of Invitations the current player has received
+	 * @return A List containing invitations.
 	 */
 	public List<Invitation> getReceivedInvitations(){
 		return receiveInvitations;
 	}
-	
+
 }
