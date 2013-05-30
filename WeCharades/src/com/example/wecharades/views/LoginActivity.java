@@ -33,7 +33,7 @@ public class LoginActivity extends GenericActivity {
 		/*
 		 * This class uses a LoadProgressBar to visualize that data is fetched in the background
 		 */
-		loginProgress = new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
+		loginProgress = new LoadProgressBar((ProgressBar) findViewById(R.id.progress));
 
 	}
 

@@ -16,6 +16,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -35,12 +36,12 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 import com.example.wecharades.views.StartActivity;
 
+@SuppressLint("DefaultLocale")
 public class GuessCharadePresenter extends Presenter {
 
 	private GuessCharadeActivity activity;
@@ -359,10 +360,10 @@ public class GuessCharadePresenter extends Presenter {
 				//Rec player get 2p if answerplayer exits turn
 				turn.setRecPlayerScore(2);
 				//Ans player get 0p if exit
-				turn.setAnsPlayerScore(0);//TODO: 
+				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
 				dc.updateGame(turn);
-				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+				Intent intent = new Intent(activity, StartActivity.class);
 				intent.putExtra("Game", dc.getGame(turn.getGameId()));
 				activity.startActivity(intent);
 				activity.finish();

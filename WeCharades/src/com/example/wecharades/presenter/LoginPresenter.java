@@ -20,7 +20,6 @@ public class LoginPresenter extends Presenter{
 	private LoginActivity activity;
 	private String username;
 	private String password;
-	private DatabaseException dbException;
 
 	public LoginPresenter(LoginActivity activity) {
 		super(activity);
@@ -50,7 +49,6 @@ public class LoginPresenter extends Presenter{
 
 	private class Login extends AsyncTask<Void, Long, Boolean>{
 
-		private int exceptionState = 0;
 		private DatabaseException dbException = null;
 
 		public Login(){

@@ -29,8 +29,7 @@ import com.parse.PushService;
  */
 public class StartPresenter extends Presenter implements Observer{
 
-	private StartActivity activity;
-	//private LinkedHashMap<String, ArrayList<Game>> listMap; 
+	private StartActivity activity; 
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 
 	// Adapter for ListView Contents and the actual listview
@@ -50,8 +49,7 @@ public class StartPresenter extends Presenter implements Observer{
 			ParseInstallation.getCurrentInstallation().save();
 			System.out.println("Push Saved");
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			Log.e("ParseException push notifications", "Pushthings");
+			Log.e("ParseException push notifications", "Failed to create push installation");
 		}
 		ParseAnalytics.trackAppOpened(activity.getIntent());
 	}
@@ -165,6 +163,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * @param obj - The object included in the message
 	 */
 	private int recent = 0;
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable obs, Object obj) {
 		if(obj.getClass().equals(DCMessage.class)

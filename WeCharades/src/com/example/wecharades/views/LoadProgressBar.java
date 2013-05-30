@@ -1,6 +1,5 @@
 package com.example.wecharades.views;
 
-import android.content.Context;
 import android.widget.ProgressBar;
 
 /**
@@ -10,15 +9,12 @@ import android.widget.ProgressBar;
 public class LoadProgressBar implements IProgress {
 
 	private ProgressBar progressBar;
-	private Context context;
 	
 	/**
 	 * Create an instance by setting the activity's context and receiving an instance of Progressbar
-	 * @param context
 	 * @param progressBar
 	 */
-	public LoadProgressBar(Context context, ProgressBar progressBar) {
-		this.context = context;
+	public LoadProgressBar(ProgressBar progressBar) {
 		this.progressBar = progressBar;
 	}
 
