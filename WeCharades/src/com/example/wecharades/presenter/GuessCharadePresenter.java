@@ -335,6 +335,9 @@ public class GuessCharadePresenter extends Presenter {
 					}
 				});
 			}
+			else {
+				activity.finish();
+			}
 		}
 	}
 
@@ -362,6 +365,7 @@ public class GuessCharadePresenter extends Presenter {
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
+				stopTimer();
 				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
 				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
 				turn.setState(Turn.FINISH);
