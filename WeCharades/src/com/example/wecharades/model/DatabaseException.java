@@ -1,5 +1,12 @@
 package com.example.wecharades.model;
 
+/**
+ * This class is our custom exception for database errors.
+ * 	Most error codes from parse has been translated into meaningful messages,
+ * 	which may be presented to the end user.
+ * @author Anton
+ *
+ */
 public class DatabaseException extends Exception{
 
 	/**

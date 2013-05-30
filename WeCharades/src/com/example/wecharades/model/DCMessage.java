@@ -9,6 +9,10 @@ import java.util.List;
  *
  */
 public class DCMessage implements IMessage{
+	
+	/*
+	 * Standard message types are declared here
+	 */
 	public static final int 
 	UNDEFINED				=  0
 	, MESSAGE 				= 10
@@ -19,7 +23,9 @@ public class DCMessage implements IMessage{
 	int message;
 	Object data;
 
+	@SuppressWarnings("rawtypes")
 	public DCMessage(int message, Object data){
+		//We make some type controls to increase the validity of provided data.
 		if(data != null){
 			switch(message){
 			case(10)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE; break;}
@@ -47,11 +53,21 @@ public class DCMessage implements IMessage{
 		}
 		this.data = data;
 	}
-
+	
+	/**
+	 * Get the message code
+	 * @return an messege expressed as an int
+	 */
+	@Override
 	public int getMessage() {
 		return message;
 	}
 
+	/**
+	 * The attached data
+	 * 	@return an Object with data
+	 */
+	@Override
 	public Object getData() {
 		return data;
 	}

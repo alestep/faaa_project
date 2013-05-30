@@ -18,7 +18,8 @@ import android.content.Context;
 import android.util.Log;
 
 /**
- * This class stores all the data available in the game.
+ * This class stores all the data available in the game locally.
+ * 	This class exist to reduce the number or request to parse.com
  * @author Anton Dahlström
  *
  */
@@ -39,7 +40,7 @@ public class Model implements Serializable{
 	 * 	Model and retrieve a mirror of the database information, while preserving login status 
 	 * 	(and avoid having to reinstall and log in and out again). This MIGHT be implemented as a feature later. 
 	 * 
-	 * DO NOT FORGET TO RESET THIS AFTERWARDS!
+	 * 	-- DO NOT FORGET TO RESET THIS AFTERWARDS! --
 	 */
 	private static boolean			PURGE = false;
 

@@ -27,6 +27,7 @@ import com.parse.SaveCallback;
 
 /**
  * This class is intended as the interface against the server and database of this game.
+ * 	This current class connects with parse.com through their provided API.
  *  
  * @author Anton Dahlström
  *
