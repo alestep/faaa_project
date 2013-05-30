@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import org.apache.commons.net.ftp.FTP;
@@ -45,9 +46,7 @@ public class GuessCharadePresenter extends Presenter {
 	private GuessCharadeActivity activity;
 	private DownloadVideo download;
 	private VideoView videoView;
-	//private final String SAVE_PATHTWO = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
 	private final String SAVE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
-	//	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	private Turn turn;
 	public String currentWord;
 	public CountDownTimer timer;
@@ -66,10 +65,6 @@ public class GuessCharadePresenter extends Presenter {
 		initializeTimer();
 		this.videoView = videoView;
 		downloadVideo(activity, videoView);
-	}
-
-	public void updateModel(){
-		dc.updateGame(turn);
 	}
 
 	/**
@@ -96,12 +91,12 @@ public class GuessCharadePresenter extends Presenter {
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
-				updateModel();
+				dc.updateGame(turn);
 
 				videoView.stopPlayback();
-				activity.showNegativeDialog("Game over", "The right word is " + currentWord.toLowerCase(), "OK");
-				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game", getGame());
+				activity.showNegativeDialog("Game over", "The right word is " + currentWord.toLowerCase(Locale.US), "OK");
+				Intent intent = new Intent(activity, StartActivity.class);
+				intent.putExtra("Game", dc.getGame(turn.getGameId()));
 				activity.startActivity(intent);
 				activity.finish();
 			}
@@ -150,7 +145,7 @@ public class GuessCharadePresenter extends Presenter {
 	 * @return the shuffled string
 	 */
 	private String shuffleWord(){
-		currentWord = turn.getWord(); //TODO: Replace
+		currentWord = turn.getWord();
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		alphabet = shuffle(alphabet);
 		alphabet = alphabet.substring(alphabet.length() - randomNumber(7,4));
@@ -194,10 +189,6 @@ public class GuessCharadePresenter extends Presenter {
 		return answerWord.equalsIgnoreCase(currentWord);
 	}
 
-	public Game getGame(){
-		return dc.getGame(turn.getGameId());
-	}//TODO: Oklar metod?
-
 	/**
 	 *
 	 * @author Adam
@@ -209,7 +200,6 @@ public class GuessCharadePresenter extends Presenter {
 		private Dialog dialog;
 		Context mContext;
 		private String SAVE_PATH;
-		private File file;
 
 		public DownloadVideo(Context context,String path) {
 			mContext=context;
@@ -300,7 +290,7 @@ public class GuessCharadePresenter extends Presenter {
 			if(dialog.isShowing()){
 				dialog.dismiss();
 				//file.setReadable(true, false);
-				activity.setPossibleLetters(shuffleWord().toUpperCase());
+				activity.setPossibleLetters(shuffleWord().toUpperCase(Locale.US));
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
 				playVideo();
@@ -366,12 +356,14 @@ public class GuessCharadePresenter extends Presenter {
 			public void onClick(View v) {
 				dialog.dismiss();
 				stopTimer();
-				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
+				//Rec player get 2p if answerplayer exits turn
+				turn.setRecPlayerScore(2);
+				//Ans player get 0p if exit
+				turn.setAnsPlayerScore(0);//TODO: 
 				turn.setState(Turn.FINISH);
-				updateModel();
+				dc.updateGame(turn);
 				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game", getGame());
+				intent.putExtra("Game", dc.getGame(turn.getGameId()));
 				activity.startActivity(intent);
 				activity.finish();
 			}
@@ -399,7 +391,7 @@ public class GuessCharadePresenter extends Presenter {
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
 			turn.setState(Turn.FINISH);
-			updateModel();
+			dc.updateGame(turn);
 
 			final Dialog dialog = new Dialog(activity);
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -423,7 +415,7 @@ public class GuessCharadePresenter extends Presenter {
 					dialog.dismiss();
 					stopTimer();
 					Intent intent = new Intent(activity, GameDashboardActivity.class);
-					intent.putExtra("Game", getGame());
+					intent.putExtra("Game", dc.getGame(turn.getGameId()));
 					activity.startActivity(intent);
 					activity.finish();
 				}
