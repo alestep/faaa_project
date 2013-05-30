@@ -46,8 +46,8 @@ public class GuessCharadePresenter extends Presenter {
 	private GuessCharadeActivity activity;
 	private DownloadVideo download;
 	private VideoView videoView;
-	private final String SAVE_PATH = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
-	//	private File SAVE_PATHTWO = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+	//private final String SAVE_PATHTWO = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
+	private final String SAVE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	//	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	private Turn turn;
 	public String currentWord;
@@ -362,17 +362,15 @@ public class GuessCharadePresenter extends Presenter {
 
 			@Override
 			public void onClick(View v) {
-				if(!dialog.isShowing()) {
-					dialog.dismiss();
-					turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-					turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-					turn.setState(Turn.FINISH);
-					updateModel();
-					Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
-					intent.putExtra("Game", getGame());
-					activity.startActivity(intent);
-					activity.finish();
-				}
+				dialog.dismiss();
+				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
+				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
+				turn.setState(Turn.FINISH);
+				updateModel();
+				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+				intent.putExtra("Game", getGame());
+				activity.startActivity(intent);
+				activity.finish();
 			}
 		});
 

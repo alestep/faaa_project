@@ -26,13 +26,16 @@ public class CaptureVideoActivity extends Activity {
 	private Intent intentCamera;
 	private Turn turn;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.turn = (Turn) getIntent().getSerializableExtra(Database.TURN);
 		dispatchTakeVideoIntent();
 	}
+	
+	/**
+	 * 
+	 */
 	private void dispatchTakeVideoIntent(){
 			intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
 			intentCamera.putExtra(android.provider.MediaStore.EXTRA_DURATION_LIMIT, 8);
@@ -59,7 +62,13 @@ public class CaptureVideoActivity extends Activity {
 			finish();
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param context
+	 * @param action
+	 * @return
+	 */
 	public static boolean isIntentAvailable(Context context, String action) {
 		final PackageManager packageManager = context.getPackageManager();
 		final Intent intent = new Intent(action);
