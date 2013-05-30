@@ -18,7 +18,7 @@ public class AccountActivity extends GenericActivity {
 
 	private AccountPresenter presenter;
 	private RefreshProgressBar refresh;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new AccountPresenter(this));

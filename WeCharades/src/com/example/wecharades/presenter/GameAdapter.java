@@ -16,7 +16,7 @@ import com.example.wecharades.model.Player;
 import com.example.wecharades.views.StartActivity;
 
 /**
- * Presenter-help-class which manages the filling of ListView-items on the start view.
+ * Presenter-help-class intended to manage the filling of ListView-items on the start view.
  * @author weCharade
  */
 public class GameAdapter extends ArrayAdapter<Game> {

@@ -20,7 +20,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	private SearchPlayerPresenter presenter;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new SearchPlayerPresenter(this));
 
 		//Set the title bar
@@ -32,9 +32,9 @@ public class SearchPlayerActivity extends GenericActivity {
         presenter = (SearchPlayerPresenter) super.getPresenter();
 		searchBox = (EditText) findViewById(R.id.search_window);
 	}
-	
+
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		presenter.setListeners(searchBox);
 	}
@@ -44,7 +44,7 @@ public class SearchPlayerActivity extends GenericActivity {
 	 * @param view
 	 */
 	public void onClickSearch(View view){
-		presenter.update(searchBox.getText().toString());
+		presenter.performSearch(searchBox.getText().toString());
 		searchBox.setText("");
 		
 	}

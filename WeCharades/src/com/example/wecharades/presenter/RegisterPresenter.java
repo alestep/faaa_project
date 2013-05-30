@@ -106,6 +106,8 @@ public class RegisterPresenter extends Presenter {
 					//Go to StartActivity
 					Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
 					activity.startActivity(i);
+					
+					//Don't need this activity anymore
 					activity.finish();
 				}
 			}
@@ -115,6 +117,7 @@ public class RegisterPresenter extends Presenter {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(dbException != null){
+				//Error was received during registration process
 				activity.showNegativeDialog("Error", dbException.prettyPrint(), "OK");
 			}
 			activity.hideProgressBar();

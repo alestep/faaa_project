@@ -23,31 +23,42 @@ import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 /**
- * 
- * @author Alexander
- *
+ * Presenter-class intended to provide StartActivity with relevant information
+ * and manage communication with DataController and other Model-instances.
+ * Class implements the Observer interface and observes changes in the DataController-class
+ * @author weCharade
  */
 public class StartPresenter extends Presenter implements Observer{
 
-	private StartActivity activity; 
+	private StartActivity activity;
+
+	//Headers in the sectioned ListView
 	private final static String [] headers = {"Your turn", "Opponent's turn", "Finished games"};
 
-	// Adapter for ListView Contents and the actual listview
+	// Adapter for ListView Contents and the actual ListView
 	private SeparatedListAdapter adapter;
+	
+	//Map which keeps track of games, its player and the players' scores.
 	private Map<Game, Map<Player, Integer>> score;
-
 	private boolean isUpdating = false;
 
+	/**
+	 * Create an instance of StartPresenter
+	 * @param activity
+	 */
 	public StartPresenter(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
 		dc.addObserver(this);
 	}
+
+	/**
+	 * Register (or install) user's device in parse.com's push notification system
+	 */
 	public void createNotificationInstallation() {
 		PushService.setDefaultPushCallback(activity.getApplicationContext(), StartActivity.class);
 		try {
 			ParseInstallation.getCurrentInstallation().save();
-			System.out.println("Push Saved");
 		} catch (ParseException e) {
 			Log.e("ParseException push notifications", "Failed to create push installation");
 		}
@@ -58,29 +69,48 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Initiates the view
 	 */
 	public void initiate(){
+		/*
+		 * If intent has has BooleanExtra it will be direct the user to login screen. Why this is done is more 
+		 * specifically described AccountPresenter-class @see com.example.wecharades.AccountPresenter#logOut().
+		 * We don't need to use flag FLAG_ACTIVITY_CLEAR_TOP because LoginActivity was finished after it
+		 * was used first time.
+		 */
 		if(activity.getIntent().getBooleanExtra("finish", false)){
+			dc.logOutPlayer(activity);
 			activity.startActivity(new Intent(activity, LoginActivity.class));
 			activity.finish();
+			
+		} else {
+			
+			activity.setAccountName(dc.getCurrentPlayer().getName());
+			
+			//Update PushService
+			PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
+			
 		}
-		activity.setAccountName(dc.getCurrentPlayer().getName());
-		PushService.subscribe(activity.getApplicationContext(), dc.getCurrentPlayer().getName(), StartActivity.class);
-		System.out.println("Subscribed to notifications");
 	}
 
 	/**
 	 * Updates the view
 	 */
 	public void update(){
+		
+		//Add DataController observer
 		dc.addObserver(this);
 		updateList(dc.getGames());
-		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
+		
+		//To avoid spamming of the update-button. This is reset when activity pauses.
+		if(!isUpdating){ 
 			dc.fetchGames();
 			dc.getInvitations();
 			activity.showProgressBar();
 			isUpdating = true;
 		}
 	}
-	
+
+	/**
+	 * Change state of the isUpdating-variable
+	 */
 	public void setNotUpdating(){
 		isUpdating = false;
 	}
@@ -90,6 +120,8 @@ public class StartPresenter extends Presenter implements Observer{
 	 */
 	private void updateList(ArrayList<Game> gameList){
 		LinkedHashMap<String, ArrayList<Game>> listMap = new LinkedHashMap<String, ArrayList<Game>>();
+		
+		//Create a new score TreeMap and trash the old one
 		score = new TreeMap<Game, Map<Player, Integer>>();
 		parseList(listMap, gameList);
 
@@ -100,6 +132,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * Private method which is called after an updated list of invitations is received.
 	 */
 	private void setInvitationStatus(List<Invitation> invites){
+		//Calls the setInvitations-method in StartActivity and passes information about how many invitation has been received
 		activity.setInvitations(dc.getReceivedInvitations().size());
 	}
 
@@ -110,6 +143,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 */
 	public boolean checkLogin() {
 		if(dc.getCurrentPlayer() == null) {
+			//Direct the user to Login screen
 			goToLoginActivity();
 			return false;
 		}
@@ -120,27 +154,50 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	/**
-	 * 
+	 * Convert a ArrayList of games into a Map where the games are separated
+	 * @param listMap	LinkedHashMap where sections and connected game lists are stored
+	 * @param gameList	All games the user is involved in
 	 */
 	private void parseList(LinkedHashMap<String, ArrayList<Game>> listMap, ArrayList<Game> gameList) {
+		
+		//Add all headers and connect them to a ArrayList<Game>
 		for (String s : headers) {
 			listMap.put(s, new ArrayList<Game>());
 		}
+		
+		//Separate the game list into a Map depending on the state of the game
 		for (Game g : gameList) {
+			
+			//Retrieve Map of scores for a specific game and put into score-Map
 			score.put(g, dc.getGameScore(g));
 			if (g.isFinished())
 				listMap.get("Finished games").add(g);
+			
+			//Games in which it is current user's turn
 			else if (g.getCurrentPlayer().equals(dc.getCurrentPlayer()) && !g.isFinished())
 				listMap.get("Your turn").add(g);
+			
+			//Games in which it is opponent's turn
 			else
 				listMap.get("Opponent's turn").add(g);
 		}
 	}
 
+	/**
+	 * Create the ListView and set the Adapter for the displaying of the items
+	 * @param listMap
+	 */
 	public void createListView(LinkedHashMap<String, ArrayList<Game>> listMap){
 		adapter = new SeparatedListAdapter(activity);
+		
+		//Iterate over the headers and add sections if they contain a non-empty list
 		for (String s : headers) {
 			if(!listMap.get(s).isEmpty()) {
+				
+				/*
+				 * Add new section by providing the section header and an instance of GameAdapter with appropriate
+				 * parameters
+				 */
 				adapter.addSection(s, new GameAdapter(activity, listMap.get(s), dc.getCurrentPlayer(), score));		
 			}
 		}
@@ -148,17 +205,9 @@ public class StartPresenter extends Presenter implements Observer{
 	}
 
 	/**
-	 * Log out the current user
-	 */
-	public void logOut() {
-		dc.logOutPlayer(activity);
-		goToLoginActivity();
-	}
-
-	/**
 	 * Called whenever a message is received from the DataController
-	 * 	This method will override the default, but will pass on the message
-	 * 	to super when appropriate
+	 * This method will override the default, but will pass on the message
+	 * to super when appropriate
 	 * @param obs - The observer
 	 * @param obj - The object included in the message
 	 */
@@ -166,9 +215,17 @@ public class StartPresenter extends Presenter implements Observer{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable obs, Object obj) {
+		//Check if obj is of the right class
 		if(obj.getClass().equals(DCMessage.class)
 				&& obj != null){
+			
+			//Cast obj to a DCMessage
 			DCMessage dcm = (DCMessage) obj;
+			
+			/*
+			 * The update-method listens for both DATABASE_GAMES and INVITATIONS messages. In order not finish
+			 * update to early, the updating process is finished when messages of both types has arrived
+			 */
 			if (dcm.getMessage() == DCMessage.DATABASE_GAMES){
 				recent++;
 				updateList((ArrayList<Game>) dcm.getData());
@@ -187,6 +244,4 @@ public class StartPresenter extends Presenter implements Observer{
 			}
 		}
 	}
-
-
 }

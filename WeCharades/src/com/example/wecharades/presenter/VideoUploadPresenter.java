@@ -1,7 +1,5 @@
 package com.example.wecharades.presenter;
-/**
- * TODO: CREATE DIRECTORIES AND SHIT ON FTP.
- */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,6 +37,11 @@ import com.example.wecharades.views.VideoUploadActivity;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 
+/**
+ * Presenter-class intended to manage video uploading and provide information to
+ * VideoUploadAcitity
+ * @author weCharade
+ */
 public class VideoUploadPresenter extends Presenter {
 
 	private VideoUploadActivity activity;
@@ -46,9 +49,15 @@ public class VideoUploadPresenter extends Presenter {
 	private Turn turn;
 	private String serverPath;
 
+	/**
+	 * Create instance of VideoUploadPresenter
+	 * @param activity
+	 */
 	public VideoUploadPresenter(VideoUploadActivity activity) {
 		super(activity);
 		this.activity = activity;
+		
+		//Needs a reference to the current Turn-object in order to update its information
 		this.turn = (Turn) activity.getIntent().getSerializableExtra(Database.TURN);
 	}
 
@@ -58,43 +67,18 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
-//		final Context c = context;
-//		final String p = path;
+		
+		//Sets where in the FTP-server the video should be uploaded
 		setServerStorageLocation();
+		
+		//Initiate the uploading
 		upload = new UploadVideo(context, path);
 		upload.execute();
-		//Check if the user has internet connection
-//		if(isNetworkConnected()) { //TODO KOlla lite på detta sen
-//			setServerStorageLocation();
-//			upload = new UploadVideo(context, path);
-//			upload.execute();
-//		} else {
-//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//			builder.setTitle("Error!")
-//			.setMessage("You've got no internet connection!")
-//			.setCancelable(false)
-//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					//Try again...
-//					uploadVideo(c,p);
-//				}
-//			})
-//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					//Go to homecreen
-//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
-//					activity.startActivity(intent);
-//					activity.finish();	
-//					dialog.cancel();
-//				}
-//			});
-//			AlertDialog alert = builder.create();
-//			alert.show();
-//		}
+		
 	}
 
 	/**
-	 * Initiate and start the video.
+	 * Initiate and start showing the video.
 	 * @param videoView
 	 */
 	public void playVideo(VideoView videoView,String path) {		
@@ -137,36 +121,58 @@ public class VideoUploadPresenter extends Presenter {
 		activity.startActivity(intent);
 		activity.finish();	
 	}
+	
+	/**
+	 * Update the model with new information stored in turn
+	 */
 	private void updateModel(){
 		dc.updateGame(turn);
 	}
+	
+	/**
+	 * Send a notification to opponent
+	 */
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
-		Log.d("",dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
+		
+		//Set the channel to the current game and send message to opponent
 		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		try {
 			push.send();
 		} catch (ParseException e) {
+			//Failure to send results in that the push notification will be sent in a background thread
 			push.sendInBackground();
 		}
 	}
-
+	
+	/**
+	 * Private inner class managing the uploading process
+	 * @author weCharade
+	 */
 	private class UploadVideo extends AsyncTask<Void, Long, Boolean>{
-
+		
 		private Dialog dialog;
 		Context mContext;
 		private String SAVE_PATH;
 
+		/**
+		 * Create an instance of UploadVideo
+		 * @param context
+		 * @param path
+		 */
 		public UploadVideo(Context context, String path){
 			mContext = context;
 			SAVE_PATH = path;
+			
+			//Create Dialog instance
 			dialog = new Dialog(mContext);
 		}
 
 		@Override
 		protected void onPreExecute(){
 			
+			//Show progress dialog indicating video is being uploaded
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.setContentView(R.layout.dialog_progress);
@@ -182,16 +188,15 @@ public class VideoUploadPresenter extends Presenter {
 			dialog.show();
 			Button cancelButton = (Button) dialog.findViewById(R.id.ok);
 			cancelButton.setOnClickListener(new OnClickListener(){
-
+				
 				@Override
 				public void onClick(View v) {
+					
+					//Go to onCancelled-method
 					cancel(true);
 					
 				}
-				
 			});
-			
-
 		}
 
 		@Override
@@ -199,9 +204,11 @@ public class VideoUploadPresenter extends Presenter {
 			FTPClient ftp = null;
 
 			try{
+				//Connect to FTP-server
 				ftp = new FTPClient();
 				ftp.connect("ftp.mklcompetencia.se", 21);
-
+				
+				//Login and create save path
 				if (ftp.login("mklcompetencia.se", "ypkq4w")){
 					ftp.enterLocalPassiveMode();
 					ftp.setFileType(FTP.BINARY_FILE_TYPE);									
@@ -243,6 +250,7 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onCancelled(Boolean result) {
+			//If error occurs; stop showing progress dialog and instead show an error dialog
 			if(dialog.isShowing()){
 				dialog.dismiss();
 				activity.showNegativeDialog("Error", "Upload failed", "Try again");
@@ -251,11 +259,18 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onPostExecute(Boolean result){
+			//Uploaded was successful and user is directed to StartActivity
 			if(dialog.isShowing()){
 				dialog.dismiss();
+				
+				//Path to video on stored on server is connected to the turn
 				turn.setVideoLink(serverPath);
+				
+				//State is set to VIDEO, which indicates that video has been uploaded
 				turn.setState(Turn.VIDEO);
 				updateModel();
+				
+				//Send notification to opponent
 				pushNotficationtoOtherPlayer();
 				goToStartActivity();
 			}

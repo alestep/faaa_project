@@ -63,7 +63,6 @@ public class LoginPresenter extends Presenter{
 	/**
 	 * Private inner class managing login process
 	 * @author weCharade
-	 *
 	 */
 	private class Login extends AsyncTask<Void, Long, Boolean>{
 

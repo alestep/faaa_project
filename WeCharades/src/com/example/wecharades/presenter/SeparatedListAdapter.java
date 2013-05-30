@@ -12,24 +12,45 @@ import android.widget.BaseAdapter;
 
 import com.example.wecharades.R;
 
+/**
+ * Presenter-help-class intended to manage the creation of a sectioned ListView
+ * @author weCharade
+ */
 public class SeparatedListAdapter extends BaseAdapter {
 	public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();
 	public final ArrayAdapter<String> headers;
 	public final static int TYPE_SECTION_HEADER = 0;
 
+	/**
+	 * Create an instance of SeparatedListAdapter
+	 * @param context
+	 */
 	public SeparatedListAdapter(Context context) {
-		headers = new ArrayAdapter<String>(context, R.layout.list_section, R.id.list_header_title);
+		//Headers are displayed by using a regular ArrayAdapter 
+		this.headers = new ArrayAdapter<String>(context, R.layout.list_section, R.id.list_header_title);
 	}
 
+	/**
+	 * Add header for a section and link it to an adapter
+	 * @param section
+	 * @param adapter
+	 */
 	public void addSection(String section, Adapter adapter) {
+		//Every header are added in order to be displayed
 		this.headers.add(section);
+
+		/*
+		 * Each header are linked to a adapter in a LinkedHashMap, thus each key holds the adapter used
+		 * to display the list elements in the specific header
+		 */
 		this.sections.put(section, adapter);
 	}
 
-	public Object getItem(int position)
-	{
-		for (Object section : this.sections.keySet())
-		{
+	@Override
+	public Object getItem(int position) {
+		
+		for (Object section : this.sections.keySet()){
+			
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
@@ -43,8 +64,8 @@ public class SeparatedListAdapter extends BaseAdapter {
 		return null;
 	}
 
-	public int getCount()
-	{
+	@Override
+	public int getCount() {
 		// total together all sections, plus one for each section header
 		int total = 0;
 		for (Adapter adapter : this.sections.values())
@@ -53,8 +74,7 @@ public class SeparatedListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public int getViewTypeCount()
-	{
+	public int getViewTypeCount() {
 		// assume that headers count as one, then total all sections
 		int total = 1;
 		for (Adapter adapter : this.sections.values())
@@ -63,11 +83,9 @@ public class SeparatedListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public int getItemViewType(int position)
-	{
+	public int getItemViewType(int position) {
 		int type = 1;
-		for (Object section : this.sections.keySet())
-		{
+		for (Object section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
@@ -82,23 +100,20 @@ public class SeparatedListAdapter extends BaseAdapter {
 		return -1;
 	}
 
-	public boolean areAllItemsSelectable()
-	{
+	public boolean areAllItemsSelectable() {
 		return false;
 	}
 
 	@Override
-	public boolean isEnabled(int position)
-	{
+	public boolean isEnabled(int position) {
 		return (getItemViewType(position) != TYPE_SECTION_HEADER);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
-	{
+	public View getView(int position, View convertView, ViewGroup parent) {
 		int sectionnum = 0;
-		for (Object section : this.sections.keySet())
-		{
+		for (Object section : this.sections.keySet()) {
+			
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
@@ -114,8 +129,7 @@ public class SeparatedListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public long getItemId(int position)
-	{
+	public long getItemId(int position) {
 		return position;
 	}
 
