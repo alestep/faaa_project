@@ -5,16 +5,17 @@ import java.util.Date;
 
 
 /**
- * This class represents a game.
- * 
- * @author Anton Dahlström
+ * This class represents a local version of a game.
+ * 	The class contains standard getters and setters, 
+ * 	and also some methods for comparing two games with eachother 
  *
  */
-public class Game implements Serializable, Comparable<Game> { //TODO make this class truly Serializable later
+public class Game implements Serializable, Comparable<Game> {
 	/**
 	 * auto-generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -3649758045030316767L;
+	
 	private String 	gameId;
 	private Player 	player1;
 	private Player 	player2;
@@ -42,18 +43,35 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		this.lastPlayed = lastPlayed;
 	}
 
+	/**
+	 * Get the games Id - same as its ParseId
+	 * @return a String with this games id
+	 */
 	public String getGameId() {
 		return gameId;
 	}
 
+	/**
+	 * Get Player 1 of this game
+	 * @return a Player representation
+	 */
 	public Player getPlayer1() {
 		return player1;
 	}
 
+	/**
+	 * Get Player 2 of this game
+	 * @return a Player representation
+	 */
 	public Player getPlayer2() {
 		return player2;
 	}
 
+	/**
+	 * Get the opponent to a supplied player
+	 * @param otherPlayer - The Player to find the opponent to
+	 * @return A Player which is the opponent of the provided Player, or null if the provided player is not part of the game
+	 */
 	public Player getOpponent(Player otherPlayer){
 		if(otherPlayer.equals(player1) || otherPlayer.equals(player2)){
 			return (otherPlayer.equals(getPlayer1())) ? getPlayer2() : getPlayer1();
@@ -61,22 +79,42 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		else return null;
 	}
 
+	/**
+	 * Get the current player of this game
+	 * @return the Player which is the current player of this game
+	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
-
+	
+	/**
+	 * Get the turn number of this game
+	 * @return an Integer representation of the turn number 
+	 */
 	public int getTurnNumber() {
 		return turnNumber;
 	}
 
+	/**
+	 * Check if this game is finished or not
+	 * @return if this game is finished 
+	 */
 	public boolean isFinished() {
 		return isFinished;
 	}
 
+	/**
+	 * Get the last time someone played this game.
+	 * @return a Date representation of the time
+	 */
 	public Date getLastPlayed() {
 		return (Date) lastPlayed.clone();
 	}
-
+	
+	/**
+	 * Set the current player of this game. The Player must take part in this game 
+	 * @param currentPlayer - a Player in this game
+	 */
 	public void setCurrentPlayer(Player currentPlayer) {
 		//Check if the player is part of this turn
 		if(currentPlayer.equals(player1) || currentPlayer.equals(player2))
@@ -85,6 +123,7 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 
 	/**
 	 * Increments the turn number.
+	 * 	Will also set the the game to finished when the last turn has been finished
 	 */
 	public void incrementTurn() {
 		if(turnNumber == 6){ 
@@ -92,10 +131,6 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		} else{
 			turnNumber ++;
 		}
-	}
-
-	public void setFinished(){
-		isFinished = true;
 	}
 
 	public void setLastPlayed(Date lastPlayed) {
@@ -110,22 +145,18 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	public int hashCode(){
 		return getGameId().hashCode();
 	}
-
+	
+	/**
+	 * Check if a game and another object can be considered to be equal.
+	 * 	This method checks the game id
+	 * @param obj - an object to compare
+	 * @return If the object and game is equal
+	 */
 	@Override
 	public boolean equals(Object obj){
 		return obj != null
 				&& obj.getClass().equals(Game.class)
-				&& this.equals((Game) obj);
-	}
-
-	/**
-	 * Two games are considered equal if they have the same id 
-	 * 	
-	 * @param otherGame - the game to compare
-	 * @return if the games are equal
-	 */
-	public boolean equals(Game otherGame){
-		return this.getGameId().equals(otherGame.getGameId());
+				&& this.getGameId().equals(((Game) obj).getGameId());
 	}
 
 	/**
@@ -134,21 +165,27 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 	 * @return - if the game has changed - will return false on null input
 	 */
 	public boolean aheadOf(Game game){
-		return game != null && //Check for null
+		return this.equals(game) && //Check that its the same game
 			(	this.isFinished
 				|| (this.getTurnNumber() > game.getTurnNumber())
 				|| (this.getTurnNumber() == game.getTurnNumber() && this.playerTurnValue() > game.playerTurnValue())
 			);
 	}
+	
 	/**
 	 * This method will give a turn value for this player.
-	 * 	There are two levels - high and low. This will be calculated from
-	 * 	the current turn number and player
+	 * 	There are two levels - ahead and behind. 
+	 * 	This will be calculated from the current turn number and currentPlayer
+	 * 	@return an integer representation of how far ahead a game is
 	 */
 	private int playerTurnValue(){
-		int 	AHEAD = Integer.MAX_VALUE,
-				BEHIND = Integer.MIN_VALUE;
+		int 	AHEAD = 1,
+				BEHIND = 0;
 		Player aheadPlayer = null;
+		/*
+		 * Because of the construction of the game, we can assert which turn state
+		 * 	the game is in by comparing the current player and turn number.
+		 */
 		if(turnNumber == 1 || turnNumber == 4 || turnNumber == 5){
 			aheadPlayer = player2;
 		} else{
@@ -157,6 +194,10 @@ public class Game implements Serializable, Comparable<Game> { //TODO make this c
 		return (currentPlayer.equals(aheadPlayer) ? AHEAD : BEHIND);
 	}
 
+	/**
+	 * Compares two games with each other
+	 * 	Compares the gameId
+	 */
 	@Override
 	public int compareTo(Game otherGame) {
 		return this.getGameId().compareTo(otherGame.getGameId());

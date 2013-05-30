@@ -21,10 +21,25 @@ public class Turn implements Serializable, Comparable<Turn> {
 	private Player ansPlayer;
 	private int ansPlayerScore;
 	
+	/*
+	 * Turn states, used for comparison
+	 */
 	public static final int INIT   = 0,	
 							VIDEO  = 1,
 							FINISH = 2;
 
+	/**
+	 * Create a turn
+	 * @param gameId
+	 * @param turnNumber
+	 * @param state
+	 * @param word
+	 * @param videoLink
+	 * @param recPlayer
+	 * @param recPlayerScore
+	 * @param ansPlayer
+	 * @param ansPlayerScore
+	 */
 	public Turn(String gameId, int turnNumber, int state, String word,
 			String videoLink, Player recPlayer, int recPlayerScore,
 			Player ansPlayer, int ansPlayerScore) {
@@ -39,62 +54,114 @@ public class Turn implements Serializable, Comparable<Turn> {
 		this.ansPlayerScore = ansPlayerScore;
 	}
 
+	/**
+	 * Sets the state of this turn
+	 * @param state
+	 */
 	public void setState(int state) {
 		this.state = state;
 	}
 
+	/**
+	 * Set the direct-download-link to the video
+	 * @param videoLink
+	 */
 	public void setVideoLink(String videoLink) {
 		this.videoLink = videoLink;
 	}
 
+	/**
+	 * Set the recording players score
+	 * @param recPlayerScore
+	 */
 	public void setRecPlayerScore(int recPlayerScore) {
 		this.recPlayerScore = recPlayerScore;
 	}
 
+	/**
+	 * Set the answering players score
+	 * @param recPlayerScore
+	 */
 	public void setAnsPlayerScore(int ansPlayerScore) {
 		this.ansPlayerScore = ansPlayerScore;
 	}
 
+	/**
+	 * Get the GameId this turn is connected to
+	 * @return
+	 */
 	public String getGameId() {
 		return gameId;
 	}
 
+	/**
+	 * Get the turn number of this turn
+	 * @return The turn number (1-6)
+	 */
 	public int getTurnNumber() {
 		return turnNumber;
 	}
 
+	/**
+	 * Get the state of this turn
+	 * @return Get the state of this turn
+	 */
 	public int getState() {
 		return state;
 	}
 
+	/**
+	 * Get the word associated with this turn
+	 * @return A String
+	 */
 	public String getWord() {
 		return word;
 	}
 
+	/**
+	 * Get the video link of this turn, if it exist
+	 * @return a direct link to the video
+	 */
 	public String getVideoLink() {
 		return videoLink;
 	}
 
+	/**
+	 * Get the recording player
+	 * @return A Player
+	 */
 	public Player getRecPlayer() {
 		return recPlayer;
 	}
 
+	/**
+	 * Get the Recording player's score
+	 * @return an Integer
+	 */
 	public int getRecPlayerScore() {
 		return recPlayerScore;
 	}
 
+	/**
+	 * Get the answering player
+	 * @return A Player
+	 */
 	public Player getAnsPlayer() {
 		return ansPlayer;
 	}
 
+	/**
+	 * Get the Answer player's score
+	 * @return an Integer
+	 */
 	public int getAnsPlayerScore() {
 		return ansPlayerScore;
 	}
 	
 	/**
 	 * Returns this players score for this turn.
-	 * @param player - The player whos score to fetch
-	 * @return - an integer score value, or -1 if the player is not part of this turn.
+	 * @param player - The player who's score to fetch
+	 * @return - an integer score value, or 0 if the player is not part of this turn.
 	 */
 	public int getPlayerScore(Player player){
 		if(player.equals(getAnsPlayer()))
@@ -102,7 +169,7 @@ public class Turn implements Serializable, Comparable<Turn> {
 		else if(player.equals(getRecPlayer()))
 			return getRecPlayerScore();
 		else
-			return -1;
+			return 0;
 	}
 	
 	/**
@@ -114,20 +181,16 @@ public class Turn implements Serializable, Comparable<Turn> {
 	public boolean equals(Object obj){
 		return  obj != null
 				&& obj.getClass().equals(Turn.class)
-				&& this.equals((Turn) obj);
-	}
-	/**
-	 * Checks if equals
-	 * @param anotherTurn - a turn to check
-	 * @return - if the Turn equals this turn
-	 */
-	public boolean equals(Turn anotherTurn){
-		return anotherTurn.getGameId().equals(this.getGameId())
-		&& anotherTurn.getTurnNumber() == (this.getTurnNumber());
+				&& ((Turn) obj).getGameId().equals(this.getGameId())
+				&& ((Turn) obj).getTurnNumber() == (this.getTurnNumber());
 	}
 
+	/**
+	 * Compares two turn with each other. Comparison is done on gameId and turn Number
+	 */
 	@Override
 	public int compareTo(Turn anotherTurn) {
-		return this.getTurnNumber() - anotherTurn.getTurnNumber();
+		int compareGame = this.getGameId().compareTo(anotherTurn.getGameId());
+		return (compareGame == 0) ? this.getTurnNumber() - anotherTurn.getTurnNumber() : compareGame;
 	}
 }

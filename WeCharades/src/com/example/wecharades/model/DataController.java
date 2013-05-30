@@ -19,11 +19,11 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import com.parse.ParseUser;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.parse.ParseUser;
 
 
 /**

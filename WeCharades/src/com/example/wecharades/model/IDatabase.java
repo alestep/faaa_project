@@ -7,12 +7,27 @@ import java.util.Observer;
 
 import android.content.Context;
 
-import com.parse.ParseException;
-
+/**
+ * An interface for any database connected to this application.
+ * 	A database-class should AT LEAST implement these methods.
+ *
+ */
 public interface IDatabase{
 	
+	/*
+	 * We use an observer pattern
+	 */
+	
+	/**
+	 * Add observer of this database
+	 * @param observer
+	 */
 	public void addObserver(Observer observer);
 	
+	/**
+	 * Remove an observer of this database
+	 * @param observer
+	 */
 	public void deleteObserver(Observer observer);
 
 	/**
@@ -20,7 +35,8 @@ public interface IDatabase{
 	 * @param dc - the Datacontroller
 	 */
 	public abstract void setConverter(DataController dc);
-
+	//TODO This may me moved at a later stage
+	
 	/**
 	 * Creates a new game on the server. The game will not be added if a game between two players already exist.
 	 * 

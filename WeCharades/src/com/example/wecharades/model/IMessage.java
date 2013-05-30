@@ -1,5 +1,9 @@
 package com.example.wecharades.model;
 
+/**
+ * Declares that an implementing class is a message, containing an integer 
+ * 	message and data linked to that message.
+ */
 public interface IMessage {
 	
 	/**
@@ -10,7 +14,7 @@ public interface IMessage {
 	
 	/**
 	 * Get the accompanying data. Can be typecasted according to the message.
-	 * @return Object
+	 * @return Object - the data object of the message
 	 */
 	public Object getData();
 }

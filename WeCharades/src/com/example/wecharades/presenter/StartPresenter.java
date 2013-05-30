@@ -165,6 +165,7 @@ public class StartPresenter extends Presenter implements Observer{
 	 * @param obj - The object included in the message
 	 */
 	private int recent = 0;
+	@Override
 	public void update(Observable obs, Object obj) {
 		if(obj.getClass().equals(DCMessage.class)
 				&& obj != null){

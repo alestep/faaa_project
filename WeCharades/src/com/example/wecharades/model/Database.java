@@ -228,6 +228,7 @@ public class Database extends Observable implements IDatabase {
 	 * Method to delete a game in background
 	 * @param game - the Game to remove
 	 */
+	@Override
 	public void removeGame(Game game){
 		ParseQuery query = new ParseQuery(GAME);
 		query.getInBackground(game.getGameId(), new GetCallback(){
@@ -596,6 +597,7 @@ public class Database extends Observable implements IDatabase {
 	/* (non-Javadoc)
 	 * @see com.example.wecharades.model.IDatabase#incrementPlayerStats(Player player)
 	 */
+	@Override
 	public void incrementPlayerStats(final Player player, final int scoreInc, final int won, final int draw, final int lost){
 		ParseQuery query = ParseUser.getQuery();
 		query.getInBackground(player.getParseId(), new GetCallback(){

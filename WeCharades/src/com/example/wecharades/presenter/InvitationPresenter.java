@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.wecharades.R;
 import com.example.wecharades.model.DCMessage;
-import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.views.InvitationActivity;
 
@@ -60,20 +59,6 @@ public class InvitationPresenter extends Presenter implements Observer{
 	}
 	
 	/**
-	 * Called whenever an update is received from a class this presenter subscribes to.
-	 */
-	public void update(Observable obs, Object obj){
-		if(obj != null && obj.getClass().equals(DCMessage.class)){
-			DCMessage dcm = (DCMessage) obj;
-			if(dcm.getMessage() == DCMessage.INVITATIONS){
-				activity.hideProgressBar();
-				setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
-			}
-		}
-		super.update(obs, obj);
-	}
-	
-	/**
 	 * Sets the adapter and fills the list
 	 * @param receivedList
 	 * @param sentList
@@ -90,5 +75,20 @@ public class InvitationPresenter extends Presenter implements Observer{
 			adapter.addSection("Sent invitations", new InvitationAdapter(activity, sentList, dc.getCurrentPlayer()));
 		view.setAdapter(adapter);
 		activity.hideProgressBar();
-	}		
+	}
+	
+	/**
+	 * Called whenever an update is received from a class this presenter subscribes to.
+	 */
+	@Override
+	public void update(Observable obs, Object obj){
+		if(obj != null && obj.getClass().equals(DCMessage.class)){
+			DCMessage dcm = (DCMessage) obj;
+			if(dcm.getMessage() == DCMessage.INVITATIONS){
+				activity.hideProgressBar();
+				setAdapter(dc.getReceivedInvitations(), dc.getSentInvitations());
+			}
+		}
+		super.update(obs, obj);
+	}
 }
