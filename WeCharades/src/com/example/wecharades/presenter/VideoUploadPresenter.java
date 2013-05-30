@@ -13,10 +13,8 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -144,6 +142,7 @@ public class VideoUploadPresenter extends Presenter {
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
+		Log.d("",dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		try {
@@ -258,9 +257,7 @@ public class VideoUploadPresenter extends Presenter {
 				turn.setState(Turn.VIDEO);
 				updateModel();
 				pushNotficationtoOtherPlayer();
-				Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
-				activity.startActivity(intent);
-				activity.finish();
+				goToStartActivity();
 			}
 		}
 	}

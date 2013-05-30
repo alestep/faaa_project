@@ -15,28 +15,6 @@ public class Player implements Serializable, Comparable<Player> {
 	private static final long serialVersionUID = 2165036941490853727L;
 	private String parseId, username;
 	private int globalScore, playedGames, wonGames, lostGames, drawGames;
-
-	/**
-	 * Creates a player with a parseId and a username
-	 * @param parseId
-	 * @param username
-	 */
-	public Player(String parseId, String username){
-		this.parseId = parseId;
-		this.username= username; 
-	}
-
-	/**
-	 * Creates a player with a parseId, username and global score
-	 * @param parseId
-	 * @param username
-	 * @param globalScore
-	 */
-	public Player(String parseId, String username, int globalScore){
-		this.parseId = parseId;
-		this.username = username;
-		this.globalScore = globalScore;
-	}
 	
 	/**
 	 * Creates a player with a parseId, username, global score, number of played games, number of won games,
@@ -60,15 +38,15 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	/**
-	 * Get the player id
-	 * @return parseId
+	 * Get this players ParseId
+	 * @return parseId as a String
 	 */
 	public String getParseId() {
 		return parseId;
 	}
 
 	/**
-	 * Get username in the form which it was entered when registration
+	 * Get username in the form which it was entered during registration
 	 * @return username
 	 */
 	public String getName() {
@@ -116,58 +94,20 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 
 	/**
-	 * Set the global score
-	 * @param the integer which the current global score should be increased with
-	 */
-	public void setGlobalScore(int globalScore){
-		this.globalScore += globalScore;  
-	}
-
-	/**
-	 * Add one more finished game
-	 */
-	public void incrementFinishedGames() {
-		this.playedGames++;
-	}
-
-	/**
-	 * Add one more won game
-	 */
-	public void incrementWonGames() {
-		this.wonGames++;
-	}
-
-	/**
-	 * Add one more lost game
-	 */
-	public void  incrementLostGames() {
-		this.lostGames++;
-	}
-
-	/**
-	 * Add one more draw game
-	 */
-	public void incrementDrawGames() {
-		this.drawGames++;
-	}
-	
-	/**
-	 * Check if to Player objects are the same
+	 * Check if two objects are the same
 	 * @param otherPlayer
-	 * @return
+	 * @return boolean value
 	 */
-	public boolean equals(Player otherPlayer){
-		return otherPlayer != null 
-				&& this.getParseId().equals(otherPlayer.getParseId());
-	}
-	
 	@Override
 	public boolean equals(Object obj){
-		return(obj != null && obj.getClass().equals(Player.class) && this.equals((Player) obj));
+		return(obj != null 
+				&& obj.getClass().equals(Player.class)
+				&& this.getParseId().equals(((Player) obj).getParseId()));
 	}
 	
 	/**
-	 * Get the hashcode
+	 * Get the hashcode for this player
+	 * @return the objects hashcode
 	 */
 	@Override
 	public int hashCode(){
@@ -175,13 +115,18 @@ public class Player implements Serializable, Comparable<Player> {
 	}
 	
 	/**
-	 * Player object to string
+	 * Get a string representation of this player
+	 * @return the player username
 	 */
 	@Override
 	public String toString(){
 		return getName();
 	}
-
+	
+	/**
+	 * Compare a player to another
+	 * @return boolean
+	 */
 	@Override
 	public int compareTo(Player another) {
 		if(another != null){

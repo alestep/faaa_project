@@ -35,7 +35,7 @@ public class ResetPasswordActivity extends GenericActivity {
 		/*
 		 * This class uses a LoadProgressBar to visualize that data is fetched in the background
 		 */
-		resetProgress = new LoadProgressBar(this, (ProgressBar) findViewById(R.id.progress));
+		resetProgress = new LoadProgressBar((ProgressBar) findViewById(R.id.progress));
 	}
 
 	@Override

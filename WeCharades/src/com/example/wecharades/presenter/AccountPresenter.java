@@ -66,11 +66,10 @@ public class AccountPresenter extends Presenter {
 				}
 			});
 			
+
 			//Search for the user in the ordered list
-			for(int i = 0; i < allPlayers.size(); i++) {
-				if(allPlayers.get(i).equals(dc.getCurrentPlayer()))
-					globalRanking = i + 1;
-			}
+			globalRanking = allPlayers.indexOf(dc.getCurrentPlayer()) +1;
+
 		} catch(DatabaseException e) {
 			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}

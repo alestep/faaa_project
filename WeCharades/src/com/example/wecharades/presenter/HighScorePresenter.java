@@ -39,6 +39,7 @@ public class HighScorePresenter extends Presenter {
 		
 		//Indicate something being fetched in the background
 		activity.showProgressBar();
+		int globalRanking = 0;
 		
 		try{
 			//Retrieve list of all players and order them by global score
@@ -51,12 +52,10 @@ public class HighScorePresenter extends Presenter {
 				}
 			});
 				
-			int globalRanking = 0;
-			for(int i = 0; i < allPlayers.size(); i++) {
-				if(allPlayers.get(i).equals(dc.getCurrentPlayer()))
-					globalRanking = i + 1;
-			}
-
+			//Search for the user in the ordered list
+			globalRanking = allPlayers.indexOf(dc.getCurrentPlayer()) +1;
+			
+			//Display all player's ranking in list if total number of players are less than 10, else display top 10.
 			updateHighScoreList(new ArrayList<Player>(allPlayers.subList(0, allPlayers.size() < 9 ? allPlayers.size() : 9)), getAllTextViews(table));
 			activity.updateGlobalRanking(globalRanking, allPlayers.size());
 			
@@ -67,6 +66,11 @@ public class HighScorePresenter extends Presenter {
 
 	}
 
+	/** 
+	 * Update the scoreList
+	 * @param playerList	List of players to display
+	 * @param tvList		List of TextViews where highscore should be displayed
+	 */
 	private void updateHighScoreList(ArrayList<Player> playerList, ArrayList<TextView> tvList) {
 		int i = 0;
 
@@ -86,7 +90,11 @@ public class HighScorePresenter extends Presenter {
 		}
 	}
 
-
+	/**
+	 * Retrieve a list of all TextViews in a table
+	 * @param table	TableLayout where TextViews are stored
+	 * @return	ArrayList containing all TextViews
+	 */
 	private ArrayList<TextView> getAllTextViews(TableLayout table) {
 		ArrayList<TextView> tvList = new ArrayList<TextView>();
 		for(int i = 0; i < table.getChildCount(); i++) {

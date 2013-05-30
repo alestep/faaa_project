@@ -22,7 +22,7 @@ import com.example.wecharades.presenter.GuessCharadePresenter;
  * @author weCharade
  */
 public class GuessCharadeActivity extends GenericActivity  { 
-	
+
 	private TextView possibleLetters;
 	private EditText answerWord;
 	private VideoView videoView;
@@ -39,7 +39,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 		super.onCreate(savedInstanceState, new GuessCharadePresenter(this));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
+
 		//Get references to instances
 		answerWord = (EditText) findViewById(R.id.editAnswerCharade);
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
@@ -64,7 +64,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 */
 	@Override
 	protected void onResume(){
-		
+
 		//Resumes the video streaming if download is finished and the turn is not ongoing TODO: Kolla om detta är rätt?
 		if(presenter.downloadState == GuessCharadePresenter.DOWNLOAD_FINISHED && gameState == GAME_NOT_FINISHED){
 			presenter.playVideo();
@@ -123,7 +123,7 @@ public class GuessCharadeActivity extends GenericActivity  {
 	public void onClickGuess(View view){
 		presenter.evaluateGuess(answerWord.getText().toString());                  
 	}
-	
+
 	/*
 	 * Activity is considered not to be in need of displaying an IProgress-instance.
 	 * This method will therefore never be called, and it is OK to return null.

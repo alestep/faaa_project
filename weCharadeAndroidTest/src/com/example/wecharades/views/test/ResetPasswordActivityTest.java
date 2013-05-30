@@ -1,10 +1,10 @@
 package com.example.wecharades.views.test;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
 import com.jayway.android.robotium.solo.Solo;
-
-import android.test.ActivityInstrumentationTestCase2;
 
 public class ResetPasswordActivityTest extends
 ActivityInstrumentationTestCase2<ResetPasswordActivity> {

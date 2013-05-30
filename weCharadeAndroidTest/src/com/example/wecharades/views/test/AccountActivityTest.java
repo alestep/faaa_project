@@ -2,10 +2,8 @@ package com.example.wecharades.views.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.wecharades.R;
 import com.example.wecharades.views.AccountActivity;
 import com.example.wecharades.views.GameInstructionsActivity;
-import com.example.wecharades.views.HighScoreActivity;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
@@ -28,14 +26,6 @@ public class AccountActivityTest extends
                 super.setUp();
                 solo = new Solo(getInstrumentation(), getActivity());
         }
-//        public void testHighScoreScreen(){
-//                solo.assertCurrentActivity("initially startAcivity", StartActivity.class);
-//                login();
-//                solo.clickOnImageButton(R.id.global_score);
-//                solo.waitForActivity(HighScoreActivity.class);
-//                solo.waitForActivity(HighScoreActivity.class);
-//                solo.goBack();
-//        }
        
         public void testAccountScreen(){
                 solo.assertCurrentActivity("initially startAcivity", StartActivity.class);

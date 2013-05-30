@@ -20,12 +20,11 @@ import android.util.Log;
 /**
  * This class stores all the data available in the game locally.
  * 	This class exist to reduce the number or request to parse.com
- * @author Anton Dahlström
  *
  */
 public class Model implements Serializable{
 
-	private static final long serialVersionUID = -8167671678222883965L;
+	private static final long serialVersionUID = -8167671678222883966L;
 	//The name of our model save file
 	private static final String 	SAVE_FILE = "model.save";
 	//Stored variables to use in other classes - should maybe be in another class.
@@ -259,10 +258,15 @@ public class Model implements Serializable{
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game) {
-		for(Turn t : getTurns(game)){
-			//Find the turn with CurrentTurnNumber
-			if(t.getTurnNumber() == game.getTurnNumber()){
-				return t;
+		if(game != null){
+			ArrayList<Turn> turns = getTurns(game);
+			if(turns != null){
+				for(Turn t : turns){
+					//Find the turn with CurrentTurnNumber
+					if(t.getTurnNumber() == game.getTurnNumber()){
+						return t;
+					}
+				}
 			}
 		}
 		return null;

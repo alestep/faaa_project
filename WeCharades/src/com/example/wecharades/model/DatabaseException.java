@@ -35,59 +35,59 @@ public class DatabaseException extends Exception{
 	private String setPrettyPrint(String message) {
 		//TODO Swtich case check code
 		switch (code) {
-			case 1: message = "Internal server error";
+			case 1: message 	= "Internal server error";
 			break;
-			case 100: message = "Please check your internet connection";
+			case 100: message 	= "Please check your internet connection";
 			break;
-			case 101: message = "Invalid username or password";
+			case 101: message 	= "Invalid username or password";
 			break;
-			case 125: message = "Invalid e-mail address";
+			case 125: message 	= "Invalid e-mail address";
 			break;
-			case 200: message = "Username missing";
+			case 200: message 	= "Username missing";
 			break;
-			case 201: message = "Password missing";
+			case 201: message 	= "Password missing";
 			break;
-			case 202: message = "Username already in use";
+			case 202: message 	= "Username already in use";
 			break;
-			case 203: message = "E-mail already in use";
+			case 203: message 	= "E-mail already in use";
 			break;
-			case 204: message = "E-mail missing";
+			case 204: message 	= "E-mail missing";
 			break;
-			case 205: message = "E-mail not found";
+			case 205: message 	= "E-mail not found";
 			break;
-			case 1000: message = "Failed to create game";
+			case 1000: message 	= "Failed to create game";
 			break;
-			case 1001: message = "Failed to fetch game data";
+			case 1001: message 	= "Failed to fetch game data";
 			break;
-			case 1002: message = "Failed to get ParseObject";
+			case 1002: message 	= "Failed to get ParseObject";
 			break;
-			case 1003: message = "Failed to fetch games";
+			case 1003: message 	= "Failed to fetch games";
 			break;
-			case 1004: message = "Failed to get turn";
+			case 1004: message 	= "Failed to get turn";
 			break;
-			case 1005: message = "Failed to get turns";
+			case 1005: message 	= "Failed to get turns";
 			break;
-			case 1006: message = "Failed to fetch user";
+			case 1006: message 	= "Failed to fetch user";
 			break;
-			case 1007: message = "Failed to fetch user";
+			case 1007: message 	= "Failed to fetch user";
 			break;
-			case 1008: message = "Failed to fetch players";
+			case 1008: message 	= "Failed to fetch players";
 			break;
-			case 1009: message = "Failed to get invitations";
+			case 1009: message 	= "Failed to get invitations";
 			break;
-			case 1010: message = "Error removing player from queue";
+			case 1010: message 	= "Error removing player from queue";
 			break;
-			case 2001: message = "Invalid nickname." +
+			case 2001: message 	= "Invalid nickname." +
 					"\n - It should be between 2 and 16 characters." +
 					"\n - It should only contain A-Z, a-z, 0-9 and underline";
 			break;
-			case 2002: message = "Invalid e-mail.";
+			case 2002: message 	= "Invalid e-mail.";
 			break;
-			case 2003: message ="Weak password. It should contain at least 6 characters ";
+			case 2003: message 	= "Weak password. It should contain at least 6 characters ";
 			break;
-			case 2004: message ="Unrepeated password";
+			case 2004: message 	= "Unrepeated password";
 			break;
-			default : message = "Unknown error";
+			default : message	= "Unknown error";
 			break;
 		}
 		return message;

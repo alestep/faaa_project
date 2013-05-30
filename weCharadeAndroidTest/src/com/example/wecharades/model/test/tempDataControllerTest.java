@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
 import android.content.Context;
 import android.test.AndroidTestCase;
-
 
 import com.example.wecharades.TestConstants;
 import com.example.wecharades.model.DBMessage;
@@ -95,8 +95,8 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testCreateGame_1()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Player p1 = new Player("", "");
-		Player p2 = new Player("", "");
+		Player p1 = new Player("", "", 0, 0, 0, 0, 0);
+		Player p2 = new Player("", "", 0, 0, 0, 0, 0);
 
 		fixture.createGame(p1, p2);
 
@@ -494,7 +494,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testGetGameScore_2()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Game game = new Game("", new Player("", ""), new Player("", ""), new Player("", ""), 1, true, new Date());
+		Game game = new Game("", new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), 1, true, new Date());
 
 		TreeMap<Player, Integer> result = fixture.getGameScore(game);
 
@@ -520,7 +520,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testGetGameScore_3()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Game game = new Game("", new Player("", ""), new Player("", ""), new Player("", ""), 1, true, new Date());
+		Game game = new Game("", new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), 1, true, new Date());
 
 		TreeMap<Player, Integer> result = fixture.getGameScore(game);
 
@@ -546,7 +546,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testGetGameScore_4()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Game game = new Game("", new Player("", ""), new Player("", ""), new Player("", ""), 1, true, new Date());
+		Game game = new Game("", new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), 1, true, new Date());
 
 		TreeMap<Player, Integer> result = fixture.getGameScore(game);
 
@@ -825,7 +825,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testGetTurns_1()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Game game = new Game("", new Player("", ""), new Player("", ""), new Player("", ""), 1, true, new Date());
+		Game game = new Game("", new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0), 1, true, new Date());
 
 		ArrayList<Turn> result = fixture.getTurns(game);
 
@@ -1010,7 +1010,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testRejectInvitation_1()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Invitation invitaiton = new Invitation(new Player("", ""), new Player("", ""));
+		Invitation invitaiton = new Invitation(new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0));
 
 		fixture.rejectInvitation(invitaiton);
 
@@ -1131,7 +1131,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testSendInvitation_1()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Invitation invitation = new Invitation(new Player("", ""), new Player("", ""));
+		Invitation invitation = new Invitation(new Player("", "", 0, 0, 0, 0, 0), new Player("", "", 0, 0, 0, 0, 0));
 
 		fixture.sendInvitation(invitation);
 
@@ -1155,7 +1155,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testSendInvitation_2()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Player player = new Player("", "");
+		Player player = new Player("", "", 0, 0, 0, 0, 0);
 
 		fixture.sendInvitation(player);
 
@@ -1354,7 +1354,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_1()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 0, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 0, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 
@@ -1378,7 +1378,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_2()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 1, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 1, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 
@@ -1402,7 +1402,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_3()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 2, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 2, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 
@@ -1426,7 +1426,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_4()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 0, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 0, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 
@@ -1450,7 +1450,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_5()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 1, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 1, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 
@@ -1474,7 +1474,7 @@ public class tempDataControllerTest extends AndroidTestCase {
 	public void testUpdateGame_6()
 		throws Exception {
 		DataController fixture = DataController.getDataController(new CaptureVideoActivity());
-		Turn turn = new Turn("", 1, 2, "", "", new Player("", ""), 1, new Player("", ""), 1);
+		Turn turn = new Turn("", 1, 2, "", "", new Player("", "", 0, 0, 0, 0, 0), 1, new Player("", "", 0, 0, 0, 0, 0), 1);
 
 		fixture.updateGame(turn);
 

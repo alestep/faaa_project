@@ -82,8 +82,10 @@ public class SearchPlayerPresenter extends Presenter {
 				alreadySent.add(inv.getInvitee().getName());
 			}
 			for(Game g : dc.getGames()){
-				if(!g.isFinished())
-				alreadyPlaying.add(g.getOpponent(dc.getCurrentPlayer()).getName());
+				//We should only disallow non-finished games
+				if(!g.isFinished()){
+					alreadyPlaying.add(g.getOpponent(dc.getCurrentPlayer()).getName());
+				}
 			}
 			
 			

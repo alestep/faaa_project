@@ -56,7 +56,7 @@ public class GameAdapter extends ArrayAdapter<Game> {
 			final TextView title = (TextView) v.findViewById(R.id.opponent);
 			final TextView subtitle = (TextView) v.findViewById(R.id.score);
 			
-			//Make check which of the players in the game who is the user in order to know which name to display
+			//Check which of the players in the game who is the user in order to know which name to display
 			Player opponent = game.getPlayer1().equals(user) ? game.getPlayer2() : game.getPlayer1();
 			
 			if (title != null)

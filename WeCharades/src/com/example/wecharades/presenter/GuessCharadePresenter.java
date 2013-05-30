@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import org.apache.commons.net.ftp.FTP;
@@ -15,6 +16,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.io.CopyStreamException;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +36,11 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.wecharades.R;
-import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 import com.example.wecharades.views.StartActivity;
+
 
 /**
  * Presenter-class intended to manage the download of video and gathering of information
@@ -46,6 +48,7 @@ import com.example.wecharades.views.StartActivity;
  * @author weCharade
  *
  */
+@SuppressLint("DefaultLocale")
 public class GuessCharadePresenter extends Presenter {
 
 	private GuessCharadeActivity activity;
@@ -87,13 +90,6 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	/**
-	 * Updates the database with updates Turn-information
-	 */
-	public void updateModel(){
-		dc.updateGame(turn);
-	}
-
-	/**
 	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
@@ -122,11 +118,12 @@ public class GuessCharadePresenter extends Presenter {
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
-				updateModel();
+				dc.updateGame(turn);
 				
 				//Go to StartActivity
 				Intent intent = new Intent(activity, StartActivity.class);
-				intent.putExtra("Game", getGame());
+				intent.putExtra("Game", dc.getGame(turn.getGameId()));
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				activity.startActivity(intent);
 				activity.finish();
 			}
@@ -232,16 +229,6 @@ public class GuessCharadePresenter extends Presenter {
 	public boolean checkRightWord(String answerWord){
 		
 		return answerWord.equalsIgnoreCase(currentWord);
-		
-	}
-
-	/**
-	 * Get the current Game-object
-	 * @return the Game which the current Turn belongs to
-	 */
-	public Game getGame(){
-		
-		return dc.getGame(turn.getGameId());
 		
 	}
 
@@ -390,6 +377,10 @@ public class GuessCharadePresenter extends Presenter {
 					}
 				});
 			}
+			else {
+				activity.finish();
+			}
+
 		}
 	}
 
@@ -425,16 +416,17 @@ public class GuessCharadePresenter extends Presenter {
 			public void onClick(View v) {
 				dialog.dismiss();
 				stopTimer();
-				
+
 				//Player who records receives 2 points and player who exits receives 0 points
 				turn.setRecPlayerScore(2);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
-				updateModel();
+				dc.updateGame(turn);
 				
 				//Go back to StartActivity
 				Intent intent = new Intent(activity, StartActivity.class);
-				intent.putExtra("Game", getGame());
+				intent.putExtra("Game", dc.getGame(turn.getGameId()));
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				activity.startActivity(intent);
 				activity.finish();
 			}
@@ -464,7 +456,7 @@ public class GuessCharadePresenter extends Presenter {
 			turn.setRecPlayerScore(3);
 			turn.setAnsPlayerScore(5);
 			turn.setState(Turn.FINISH);
-			updateModel();
+			dc.updateGame(turn);
 
 			//Create dialog
 			final Dialog dialog = new Dialog(activity);
@@ -489,7 +481,8 @@ public class GuessCharadePresenter extends Presenter {
 					dialog.dismiss();
 					stopTimer();
 					Intent intent = new Intent(activity, GameDashboardActivity.class);
-					intent.putExtra("Game", getGame());
+					intent.putExtra("Game", dc.getGame(turn.getGameId()));
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					activity.startActivity(intent);
 					activity.finish();
 				}

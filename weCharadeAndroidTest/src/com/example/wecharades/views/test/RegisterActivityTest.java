@@ -1,10 +1,10 @@
 package com.example.wecharades.views.test;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
-
-import android.test.ActivityInstrumentationTestCase2;
 /**
  * Test class to test the RegisterActivity. Test ID: T01 in the Acceptance testing.
  * @author Adam

@@ -258,7 +258,6 @@ public class ModelTest extends AndroidTestCase {
 			throws Exception {
 		//not added to the model
 		assertNull(m.getCurrentTurn(TestConstants.g1));
-
 	}
 
 	/**

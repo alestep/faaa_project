@@ -17,7 +17,6 @@ import com.example.wecharades.presenter.SimplePresenter;
 public class ShowCharadeWordActivity extends GenericActivity {
 	
 	private Turn turn;
-	private SimplePresenter presenter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
