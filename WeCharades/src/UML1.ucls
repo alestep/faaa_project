@@ -254,16 +254,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="com.example.wecharades.presenter.SimpleArrayAdapter" project="Main" 
-    file="/Main/src/com/example/wecharades/presenter/SimpleArrayAdapter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="278" x="81" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
-    </display>  
-  </class>  
-  <class id="30" language="java" name="com.example.wecharades.presenter.ResetPresenter.ResetPasswordTask" project="Main" 
+  <class id="29" language="java" name="com.example.wecharades.presenter.ResetPresenter.ResetPasswordTask" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/ResetPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="189" width="181" x="1356" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -272,7 +263,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="31" language="java" name="com.example.wecharades.presenter.VideoUploadPresenter.UploadVideo" project="Main" 
+  <class id="30" language="java" name="com.example.wecharades.presenter.VideoUploadPresenter.UploadVideo" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/VideoUploadPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="207" width="181" x="5100" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -281,7 +272,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="com.example.wecharades.presenter.RegisterPresenter.RegisterTask" project="Main" 
+  <class id="31" language="java" name="com.example.wecharades.presenter.RegisterPresenter.RegisterTask" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/RegisterPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="135" width="181" x="1836" y="3794"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -290,7 +281,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="33" language="java" name="com.example.wecharades.presenter.HighScorePresenter" project="Main" 
+  <class id="32" language="java" name="com.example.wecharades.presenter.HighScorePresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/HighScorePresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="135" width="350" x="477" y="1647"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -299,7 +290,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="34" language="java" name="com.example.wecharades.presenter.ResetPresenter" project="Main" 
+  <class id="33" language="java" name="com.example.wecharades.presenter.ResetPresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/ResetPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="135" width="223" x="1552" y="1647"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -308,7 +299,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="35" language="java" name="com.example.wecharades.presenter.LoginPresenter.Login" project="Main" 
+  <class id="34" language="java" name="com.example.wecharades.presenter.LoginPresenter.Login" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/LoginPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="181" x="2057" y="3794"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -317,7 +308,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="36" language="java" name="com.example.wecharades.presenter.SearchPlayerPresenter" project="Main" 
+  <class id="35" language="java" name="com.example.wecharades.presenter.SearchPlayerPresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/SearchPlayerPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="171" width="247" x="3589" y="3169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -326,7 +317,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="37" language="java" name="com.example.wecharades.presenter.LoginPresenter" project="Main" 
+  <class id="36" language="java" name="com.example.wecharades.presenter.LoginPresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/LoginPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="169" x="2399" y="3169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -335,7 +326,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="38" language="java" name="com.example.wecharades.presenter.RegisterPresenter" project="Main" 
+  <class id="37" language="java" name="com.example.wecharades.presenter.RegisterPresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/RegisterPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="189" width="238" x="1796" y="3169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -344,7 +335,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="39" language="java" name="com.example.wecharades.presenter.GuessCharadePresenter" project="Main" 
+  <class id="38" language="java" name="com.example.wecharades.presenter.GuessCharadePresenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/GuessCharadePresenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="405" width="287" x="3876" y="1647"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -353,7 +344,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="40" language="java" name="com.example.wecharades.presenter.SearchPlayerAdapter" project="Main" 
+  <class id="39" language="java" name="com.example.wecharades.presenter.SearchPlayerAdapter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/SearchPlayerAdapter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="171" width="488" x="3327" y="1647"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -362,7 +353,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="41" language="java" name="com.example.wecharades.presenter.Presenter" project="Main" 
+  <class id="40" language="java" name="com.example.wecharades.presenter.Presenter" project="Main" 
     file="/Main/src/com/example/wecharades/presenter/Presenter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="171" width="180" x="2542" y="1436"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -371,7 +362,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="42" language="java" name="com.example.wecharades.views.StartActivity" project="Main" 
+  <class id="41" language="java" name="com.example.wecharades.views.StartActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/StartActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="441" width="230" x="43" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -380,7 +371,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="43" language="java" name="com.example.wecharades.views.ResetPasswordActivity" project="Main" 
+  <class id="42" language="java" name="com.example.wecharades.views.ResetPasswordActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/ResetPasswordActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="189" width="198" x="1577" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -389,7 +380,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="44" language="java" name="com.example.wecharades.views.GuessCharadeActivity" project="Main" 
+  <class id="43" language="java" name="com.example.wecharades.views.GuessCharadeActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/GuessCharadeActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="405" width="195" x="3660" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -398,7 +389,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="45" language="java" name="com.example.wecharades.views.GenericActivity" project="Main" 
+  <class id="44" language="java" name="com.example.wecharades.views.GenericActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/GenericActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="279" width="212" x="2399" y="1647"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -407,7 +398,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="46" language="java" name="com.example.wecharades.views.InvitationActivity" project="Main" 
+  <class id="45" language="java" name="com.example.wecharades.views.InvitationActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/InvitationActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="189" width="213" x="808" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -416,7 +407,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="47" language="java" name="com.example.wecharades.views.SearchPlayerActivity" project="Main" 
+  <class id="46" language="java" name="com.example.wecharades.views.SearchPlayerActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/SearchPlayerActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="207" width="213" x="3386" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -425,7 +416,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="48" language="java" name="com.example.wecharades.views.CaptureVideoActivity" project="Main" 
+  <class id="47" language="java" name="com.example.wecharades.views.CaptureVideoActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/CaptureVideoActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="207" width="221" x="3916" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -434,7 +425,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="49" language="java" name="com.example.wecharades.views.ShowCharadeWordActivity" project="Main" 
+  <class id="48" language="java" name="com.example.wecharades.views.ShowCharadeWordActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/ShowCharadeWordActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="135" width="176" x="2679" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -443,7 +434,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="50" language="java" name="com.example.wecharades.views.GameInstructionsActivity" project="Main" 
+  <class id="49" language="java" name="com.example.wecharades.views.GameInstructionsActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/GameInstructionsActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="135" width="166" x="2916" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -452,7 +443,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="51" language="java" name="com.example.wecharades.views.HighScoreActivity" project="Main" 
+  <class id="50" language="java" name="com.example.wecharades.views.HighScoreActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/HighScoreActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="225" width="213" x="555" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -461,7 +452,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="52" language="java" name="com.example.wecharades.views.LoginActivity" project="Main" 
+  <class id="51" language="java" name="com.example.wecharades.views.LoginActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/LoginActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="261" width="198" x="2399" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -470,7 +461,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="53" language="java" name="com.example.wecharades.views.AccountActivity" project="Main" 
+  <class id="52" language="java" name="com.example.wecharades.views.AccountActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/AccountActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="225" width="285" x="2074" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -479,7 +470,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="54" language="java" name="com.example.wecharades.views.VideoUploadActivity" project="Main" 
+  <class id="53" language="java" name="com.example.wecharades.views.VideoUploadActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/VideoUploadActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="261" width="159" x="4901" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -488,7 +479,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="55" language="java" name="com.example.wecharades.views.GameDashboardActivity" project="Main" 
+  <class id="54" language="java" name="com.example.wecharades.views.GameDashboardActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/GameDashboardActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="279" width="213" x="1061" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -497,7 +488,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="56" language="java" name="com.example.wecharades.views.NewGameActivity" project="Main" 
+  <class id="55" language="java" name="com.example.wecharades.views.NewGameActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/NewGameActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="171" width="182" x="3122" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -506,7 +497,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="57" language="java" name="com.example.wecharades.views.RegisterActivity" project="Main" 
+  <class id="56" language="java" name="com.example.wecharades.views.RegisterActivity" project="Main" 
     file="/Main/src/com/example/wecharades/views/RegisterActivity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="243" width="198" x="1836" y="2426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -515,797 +506,758 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
+  <generalization id="57">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
   <association id="58">    
-    <end type="SOURCE" refId="49" navigable="false">      
-      <attribute id="59" name="presenter"/>      
-      <multiplicity id="60" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="61">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="62" name="invitee"/>      
-      <multiplicity id="63" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="64">    
-    <end type="SOURCE" refId="33"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <association id="65">    
-    <end type="SOURCE" refId="43" navigable="false">      
-      <attribute id="66" name="resetProgress"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="68">    
-    <end type="SOURCE" refId="33" navigable="false">      
-      <attribute id="69" name="activity"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="51" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="72" name="player2"/>      
-      <multiplicity id="73" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="74">    
-    <bendpoint x="6061" y="1436"/>    
-    <bendpoint x="6061" y="1647"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="75" name="singleton"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="77">    
-    <end type="SOURCE" refId="53" navigable="false">      
-      <attribute id="78" name="refresh"/>      
-      <multiplicity id="79" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="80">    
-    <bendpoint x="2648" y="2426"/>    
-    <bendpoint x="2648" y="1647"/>    
-    <end type="SOURCE" refId="37"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <association id="81">    
-    <end type="SOURCE" refId="46" navigable="false">      
-      <attribute id="82" name="presenter"/>      
-      <multiplicity id="83" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="84">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="85" name="adapter"/>      
-      <multiplicity id="86" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="26" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="87">    
-    <end type="SOURCE" refId="40" navigable="false">      
-      <attribute id="88" name="activity"/>      
-      <multiplicity id="89" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="47" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="90">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="91" name="sentInvitations"/>      
-      <multiplicity id="92" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="93">    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="94" name="activity"/>      
-      <multiplicity id="95" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="57" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="96">    
-    <end type="SOURCE" refId="44"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="97">    
-    <bendpoint x="5351" y="3169"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="98" name="currentPlayer"/>      
-      <multiplicity id="99" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="100">    
-    <end type="SOURCE" refId="37"/>    
-    <end type="TARGET" refId="35"/>  
-  </nesting>  
-  <association id="101">    
-    <end type="SOURCE" refId="41" navigable="false">      
-      <attribute id="102" name="dc"/>      
-      <multiplicity id="103" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="104">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="105" name="ansPlayer"/>      
-      <multiplicity id="106" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="107">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="108" name="currentPlayer"/>      
-      <multiplicity id="109" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="110">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
-  <association id="111">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="112" name="m"/>      
-      <multiplicity id="113" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="114">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <generalization id="115">    
-    <end type="SOURCE" refId="56"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="116">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="117" name="activity"/>      
-      <multiplicity id="118" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="55" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="119">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="120" name="inviter"/>      
-      <multiplicity id="121" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="122">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="123" name="presenter"/>      
-      <multiplicity id="124" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="125">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="126" name="dbc"/>      
-      <multiplicity id="127" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="128">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="129" name="activity"/>      
-      <multiplicity id="130" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="53" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="131">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="3"/>  
-  </nesting>  
-  <association id="132">    
-    <end type="SOURCE" refId="37" navigable="false">      
-      <attribute id="133" name="activity"/>      
-      <multiplicity id="134" minimum="0" maximum="1"/>    
+      <attribute id="59" name="activity"/>      
+      <multiplicity id="60" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="52" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="135">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="136" name="singleModel"/>      
-      <multiplicity id="137" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="138">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="139" name="games"/>      
-      <multiplicity id="140" minimum="0" maximum="2147483647"/>    
+  <association id="61">    
+    <bendpoint x="2885" y="2426"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="62" name="game"/>      
+      <multiplicity id="63" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="141">    
-    <end type="SOURCE" refId="56" navigable="false">      
-      <attribute id="142" name="presenter"/>      
-      <multiplicity id="143" minimum="0" maximum="1"/>    
+  <realization id="64">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <association id="65">    
+    <end type="SOURCE" refId="41" navigable="false">      
+      <attribute id="66" name="presenter"/>      
+      <multiplicity id="67" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="28" navigable="true"/>    
+    <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="144">    
-    <end type="SOURCE" refId="51" navigable="false">      
-      <attribute id="145" name="refresh"/>      
-      <multiplicity id="146" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="147">    
-    <bendpoint x="5107" y="3169"/>    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="148" name="currentPlayer"/>      
-      <multiplicity id="149" minimum="0" maximum="1"/>    
+  <association id="68">    
+    <bendpoint x="5330" y="3169"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="69" name="storedPlayers"/>      
+      <multiplicity id="70" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="150">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="151" name="activity"/>      
-      <multiplicity id="152" minimum="0" maximum="1"/>    
+  <generalization id="71">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="72">    
+    <end type="SOURCE" refId="56" navigable="false">      
+      <attribute id="73" name="presenter"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="42" navigable="true"/>    
+    <end type="TARGET" refId="37" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="153">    
-    <end type="SOURCE" refId="39"/>    
-    <end type="TARGET" refId="41"/>  
+  <association id="75">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="76" name="player1"/>      
+      <multiplicity id="77" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="78">    
+    <end type="SOURCE" refId="56"/>    
+    <end type="TARGET" refId="44"/>  
   </generalization>  
-  <association id="154">    
+  <association id="79">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="80" name="activity"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="54" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="83" name="activity"/>      
+      <multiplicity id="84" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="155" name="dc"/>      
-      <multiplicity id="156" minimum="0" maximum="1"/>    
+      <attribute id="86" name="dc"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="157">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="41"/>  
+  <generalization id="88">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="40"/>  
   </generalization>  
-  <association id="158">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="159" name="gameIdList"/>      
-      <multiplicity id="160" minimum="0" maximum="2147483647"/>    
+  <association id="89">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="90" name="presenter"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="92">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="93">    
+    <end type="SOURCE" refId="49" navigable="false">      
+      <attribute id="94" name="presenter"/>      
+      <multiplicity id="95" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="97" name="games"/>      
+      <multiplicity id="98" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="161">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
-  <association id="162">    
-    <bendpoint x="5330" y="3169"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="163" name="storedPlayers"/>      
-      <multiplicity id="164" minimum="0" maximum="2147483647"/>    
+  <association id="99">    
+    <end type="SOURCE" refId="45" navigable="false">      
+      <attribute id="100" name="presenter"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="103" name="presenter"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="106" name="m"/>      
+      <multiplicity id="107" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="108">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <association id="109">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="110" name="activity"/>      
+      <multiplicity id="111" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="112">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="113" name="inviter"/>      
+      <multiplicity id="114" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="165">    
-    <bendpoint x="5649" y="2426"/>    
-    <bendpoint x="5649" y="3169"/>    
+  <association id="115">    
+    <end type="SOURCE" refId="51" navigable="false">      
+      <attribute id="116" name="presenter"/>      
+      <multiplicity id="117" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="118">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="119" name="invitee"/>      
+      <multiplicity id="120" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="121">    
+    <end type="SOURCE" refId="49"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="122">    
+    <end type="SOURCE" refId="48" navigable="false">      
+      <attribute id="123" name="turn"/>      
+      <multiplicity id="124" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="125">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <generalization id="126">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <generalization id="127">    
+    <bendpoint x="1805" y="2426"/>    
+    <bendpoint x="1805" y="1647"/>    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <association id="128">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="129" name="recPlayer"/>      
+      <multiplicity id="130" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="131">    
+    <bendpoint x="5311" y="2426"/>    
     <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="166" name="player"/>      
-      <multiplicity id="167" minimum="0" maximum="1"/>    
+      <attribute id="132" name="invitations"/>      
+      <multiplicity id="133" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="168">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="169" name="refresh"/>      
-      <multiplicity id="170" minimum="0" maximum="1"/>    
+  <association id="134">    
+    <bendpoint x="1325" y="2426"/>    
+    <bendpoint x="1325" y="3169"/>    
+    <bendpoint x="1325" y="3794"/>    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="135" name="dbException"/>      
+      <multiplicity id="136" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="137">    
+    <end type="SOURCE" refId="55" navigable="false">      
+      <attribute id="138" name="presenter"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="141" name="dbc"/>      
+      <multiplicity id="142" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="144" name="activity"/>      
+      <multiplicity id="145" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="146">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="30"/>  
+  </nesting>  
+  <association id="147">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="148" name="refresh"/>      
+      <multiplicity id="149" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="171">    
-    <end type="SOURCE" refId="57" navigable="false">      
-      <attribute id="172" name="registerProgress"/>      
-      <multiplicity id="173" minimum="0" maximum="1"/>    
+  <association id="150">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="151" name="presenter"/>      
+      <multiplicity id="152" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="174">    
+  <association id="153">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="154" name="adapter"/>      
+      <multiplicity id="155" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="156">    
+    <bendpoint x="5351" y="3169"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="157" name="currentPlayer"/>      
+      <multiplicity id="158" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="159">    
+    <bendpoint x="3629" y="2426"/>    
+    <bendpoint x="3845" y="1647"/>    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <nesting id="160">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="22"/>  
+  </nesting>  
+  <association id="161">    
     <end type="SOURCE" refId="52" navigable="false">      
-      <attribute id="175" name="loginProgress"/>      
+      <attribute id="162" name="presenter"/>      
+      <multiplicity id="163" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="164">    
+    <end type="SOURCE" refId="46" navigable="false">      
+      <attribute id="165" name="presenter"/>      
+      <multiplicity id="166" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="167">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="168" name="currentPlayer"/>      
+      <multiplicity id="169" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="170">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="171" name="dbException"/>      
+      <multiplicity id="172" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="173">    
+    <end type="SOURCE" refId="55"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="174">    
+    <end type="SOURCE" refId="56" navigable="false">      
+      <attribute id="175" name="registerProgress"/>      
       <multiplicity id="176" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="177">    
-    <end type="SOURCE" refId="52" navigable="false">      
-      <attribute id="178" name="presenter"/>      
+    <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="178" name="refresh"/>      
       <multiplicity id="179" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="37" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="180">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="181" name="db"/>      
-      <multiplicity id="182" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="183">    
-    <bendpoint x="3355" y="2426"/>    
-    <bendpoint x="3296" y="1647"/>    
-    <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <association id="184">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="185" name="activity"/>      
-      <multiplicity id="186" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="54" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="187">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <association id="188">    
-    <bendpoint x="4388" y="2426"/>    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="189" name="turn"/>      
-      <multiplicity id="190" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="191">    
-    <end type="SOURCE" refId="47"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="192">    
-    <end type="SOURCE" refId="55" navigable="false">      
-      <attribute id="193" name="presenter"/>      
-      <multiplicity id="194" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="195">    
-    <bendpoint x="1805" y="2426"/>    
-    <bendpoint x="1805" y="1647"/>    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <generalization id="196">    
-    <end type="SOURCE" refId="51"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <generalization id="197">    
-    <end type="SOURCE" refId="43"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="198">    
-    <bendpoint x="2885" y="2426"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="199" name="game"/>      
-      <multiplicity id="200" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="201">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="31"/>  
-  </nesting>  
-  <association id="202">    
-    <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="203" name="dbException"/>      
-      <multiplicity id="204" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="205">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="32"/>  
-  </nesting>  
-  <generalization id="206">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <nesting id="207">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="30"/>  
-  </nesting>  
-  <association id="208">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="209" name="activity"/>      
-      <multiplicity id="210" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="46" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="211">    
-    <end type="SOURCE" refId="47" navigable="false">      
-      <attribute id="212" name="presenter"/>      
-      <multiplicity id="213" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="214">    
-    <bendpoint x="3334" y="2426"/>    
-    <bendpoint x="3275" y="1647"/>    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="41"/>  
-  </generalization>  
-  <association id="215">    
-    <end type="SOURCE" refId="45" navigable="false">      
-      <attribute id="216" name="presenter"/>      
-      <multiplicity id="217" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="41" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="218">    
-    <end type="SOURCE" refId="41" navigable="false">      
-      <attribute id="219" name="activity"/>      
-      <multiplicity id="220" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="45" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="221">    
-    <bendpoint x="1325" y="2426"/>    
-    <bendpoint x="1325" y="3169"/>    
-    <bendpoint x="1325" y="3794"/>    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="222" name="dbException"/>      
-      <multiplicity id="223" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="224">    
-    <bendpoint x="3885" y="2426"/>    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="225" name="turn"/>      
-      <multiplicity id="226" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="227">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="228" name="activity"/>      
-      <multiplicity id="229" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="43" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="230">    
-    <end type="SOURCE" refId="49"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <nesting id="231">    
-    <end type="SOURCE" refId="39"/>    
-    <end type="TARGET" refId="22"/>  
-  </nesting>  
-  <association id="232">    
-    <end type="SOURCE" refId="55" navigable="false">      
-      <attribute id="233" name="refresh"/>      
-      <multiplicity id="234" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="235">    
-    <end type="SOURCE" refId="44" navigable="false">      
-      <attribute id="236" name="presenter"/>      
-      <multiplicity id="237" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="39" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="238">    
-    <end type="SOURCE" refId="51" navigable="false">      
-      <attribute id="239" name="presenter"/>      
-      <multiplicity id="240" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="33" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="241">    
-    <end type="SOURCE" refId="43" navigable="false">      
-      <attribute id="242" name="presenter"/>      
-      <multiplicity id="243" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="34" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="244">    
-    <end type="SOURCE" refId="48" navigable="false">      
-      <attribute id="245" name="turn"/>      
-      <multiplicity id="246" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="247">    
-    <end type="SOURCE" refId="44" navigable="false">      
-      <attribute id="248" name="turn"/>      
-      <multiplicity id="249" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="250">    
-    <bendpoint x="3629" y="2426"/>    
-    <bendpoint x="3845" y="1647"/>    
-    <end type="SOURCE" refId="36"/>    
-    <end type="TARGET" refId="41"/>  
+  <generalization id="180">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="40"/>  
   </generalization>  
-  <association id="251">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="252" name="download"/>      
-      <multiplicity id="253" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="254">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="255" name="player1"/>      
-      <multiplicity id="256" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="257">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="41"/>  
+  <generalization id="181">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="44"/>  
   </generalization>  
-  <generalization id="258">    
-    <end type="SOURCE" refId="57"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="259">    
-    <bendpoint x="2627" y="2426"/>    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="260" name="turnList"/>      
-      <multiplicity id="261" minimum="0" maximum="2147483647"/>    
+  <association id="182">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="183" name="db"/>      
+      <multiplicity id="184" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="262">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="263" name="recPlayer"/>      
-      <multiplicity id="264" minimum="0" maximum="1"/>    
+  <nesting id="185">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="186">    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="187" name="activity"/>      
+      <multiplicity id="188" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="56" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="265">    
+  <association id="189">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="266" name="receiveInvitations"/>      
-      <multiplicity id="267" minimum="0" maximum="2147483647"/>    
+      <attribute id="190" name="singleModel"/>      
+      <multiplicity id="191" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="192">    
+    <bendpoint x="2648" y="2426"/>    
+    <bendpoint x="2648" y="1647"/>    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <association id="193">    
+    <end type="SOURCE" refId="32" navigable="false">      
+      <attribute id="194" name="activity"/>      
+      <multiplicity id="195" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="50" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="196">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="197" name="dc"/>      
+      <multiplicity id="198" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="199">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="200" name="activity"/>      
+      <multiplicity id="201" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="202">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="203" name="sentInvitations"/>      
+      <multiplicity id="204" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="268">    
+  <generalization id="205">    
+    <bendpoint x="1304" y="2426"/>    
+    <bendpoint x="1490" y="1647"/>    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <generalization id="206">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <generalization id="207">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="208">    
+    <end type="SOURCE" refId="52" navigable="false">      
+      <attribute id="209" name="refresh"/>      
+      <multiplicity id="210" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="211">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <association id="212">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="213" name="activity"/>      
+      <multiplicity id="214" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="215">    
     <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="216" name="presenter"/>      
+      <multiplicity id="217" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="218">    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="219">    
+    <end type="SOURCE" refId="51" navigable="false">      
+      <attribute id="220" name="loginProgress"/>      
+      <multiplicity id="221" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="222">    
+    <end type="SOURCE" refId="52"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="223">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="224" name="gameIdList"/>      
+      <multiplicity id="225" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="226">    
+    <bendpoint x="6040" y="1436"/>    
+    <bendpoint x="6040" y="1647"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <generalization id="227">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="228">    
+    <bendpoint x="1805" y="3794"/>    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="229" name="dbException"/>      
+      <multiplicity id="230" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="231">    
+    <end type="SOURCE" refId="51"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="232">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="233" name="activity"/>      
+      <multiplicity id="234" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="235">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="34"/>  
+  </nesting>  
+  <association id="236">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="237" name="download"/>      
+      <multiplicity id="238" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="239">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="240" name="upload"/>      
+      <multiplicity id="241" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="242">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="243" name="activity"/>      
+      <multiplicity id="244" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="245">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="44"/>  
+  </generalization>  
+  <association id="246">    
+    <end type="SOURCE" refId="45" navigable="false">      
+      <attribute id="247" name="refresh"/>      
+      <multiplicity id="248" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="249">    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="250" name="activity"/>      
+      <multiplicity id="251" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="42" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="252">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="253" name="receiveInvitations"/>      
+      <multiplicity id="254" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="255">    
+    <end type="SOURCE" refId="41" navigable="false">      
+      <attribute id="256" name="refresh"/>      
+      <multiplicity id="257" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="258">    
+    <bendpoint x="3334" y="2426"/>    
+    <bendpoint x="3275" y="1647"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="40"/>  
+  </generalization>  
+  <association id="259">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="260" name="player2"/>      
+      <multiplicity id="261" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="262">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="263" name="activity"/>      
+      <multiplicity id="264" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="265">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="266" name="ansPlayer"/>      
+      <multiplicity id="267" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="268">    
+    <end type="SOURCE" refId="42" navigable="false">      
       <attribute id="269" name="presenter"/>      
       <multiplicity id="270" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
+    <end type="TARGET" refId="33" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="271">    
-    <end type="SOURCE" refId="54" navigable="false">      
+    <end type="SOURCE" refId="53" navigable="false">      
       <attribute id="272" name="presenter"/>      
       <multiplicity id="273" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="25" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="274">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="275" name="activity"/>      
-      <multiplicity id="276" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="46" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="277">    
-    <bendpoint x="6040" y="1436"/>    
-    <bendpoint x="6040" y="1647"/>    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <generalization id="278">    
-    <bendpoint x="1304" y="2426"/>    
-    <bendpoint x="1490" y="1647"/>    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="41"/>  
+  <generalization id="274">    
+    <bendpoint x="3355" y="2426"/>    
+    <bendpoint x="3296" y="1647"/>    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="40"/>  
   </generalization>  
-  <association id="279">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="280" name="upload"/>      
-      <multiplicity id="281" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="282">    
-    <end type="SOURCE" refId="53"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <generalization id="283">    
-    <end type="SOURCE" refId="50"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="284">    
-    <bendpoint x="2268" y="3794"/>    
-    <end type="SOURCE" refId="37" navigable="false">      
-      <attribute id="285" name="dbException"/>      
-      <multiplicity id="286" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="287">    
-    <end type="SOURCE" refId="57" navigable="false">      
-      <attribute id="288" name="presenter"/>      
-      <multiplicity id="289" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="38" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="290">    
-    <bendpoint x="1805" y="3794"/>    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="291" name="dbException"/>      
-      <multiplicity id="292" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="293">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
-  <association id="294">    
-    <end type="SOURCE" refId="49" navigable="false">      
-      <attribute id="295" name="turn"/>      
-      <multiplicity id="296" minimum="0" maximum="1"/>    
+  <association id="275">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="276" name="turn"/>      
+      <multiplicity id="277" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="297">    
-    <end type="SOURCE" refId="21"/>    
-    <end type="TARGET" refId="41"/>  
+  <association id="278">    
+    <bendpoint x="5649" y="2426"/>    
+    <bendpoint x="5649" y="3169"/>    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="279" name="player"/>      
+      <multiplicity id="280" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="281">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="44"/>  
   </generalization>  
-  <association id="298">    
+  <association id="282">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="283" name="activity"/>      
+      <multiplicity id="284" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="53" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="285">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="31"/>  
+  </nesting>  
+  <association id="286">    
     <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="299" name="adapter"/>      
-      <multiplicity id="300" minimum="0" maximum="1"/>    
+      <attribute id="287" name="adapter"/>      
+      <multiplicity id="288" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="26" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="301">    
-    <bendpoint x="5311" y="2426"/>    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="302" name="invitations"/>      
-      <multiplicity id="303" minimum="0" maximum="2147483647"/>    
+  <nesting id="289">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="29"/>  
+  </nesting>  
+  <association id="290">    
+    <bendpoint x="2627" y="2426"/>    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="291" name="turnList"/>      
+      <multiplicity id="292" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="304">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="305" name="activity"/>      
-      <multiplicity id="306" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="44" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="307">    
-    <end type="SOURCE" refId="52"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <generalization id="308">    
-    <end type="SOURCE" refId="54"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <generalization id="309">    
-    <end type="SOURCE" refId="46"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="310">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="311" name="activity"/>      
-      <multiplicity id="312" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="47" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="313">    
-    <end type="SOURCE" refId="7"/>    
+  <realization id="293">    
+    <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
-  <association id="314">    
-    <end type="SOURCE" refId="53" navigable="false">      
-      <attribute id="315" name="presenter"/>      
-      <multiplicity id="316" minimum="0" maximum="1"/>    
+  <association id="294">    
+    <bendpoint x="5107" y="3169"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="295" name="currentPlayer"/>      
+      <multiplicity id="296" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="317">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="318" name="dc"/>      
-      <multiplicity id="319" minimum="0" maximum="1"/>    
+  <association id="297">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="298" name="resetProgress"/>      
+      <multiplicity id="299" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="300">    
+    <bendpoint x="4388" y="2426"/>    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="301" name="turn"/>      
+      <multiplicity id="302" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="303">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="304" name="dc"/>      
+      <multiplicity id="305" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="320">    
-    <end type="SOURCE" refId="55"/>    
-    <end type="TARGET" refId="45"/>  
-  </generalization>  
-  <association id="321">    
-    <end type="SOURCE" refId="46" navigable="false">      
-      <attribute id="322" name="refresh"/>      
-      <multiplicity id="323" minimum="0" maximum="1"/>    
+  <association id="306">    
+    <bendpoint x="3885" y="2426"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="307" name="turn"/>      
+      <multiplicity id="308" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="309">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true"/>    
