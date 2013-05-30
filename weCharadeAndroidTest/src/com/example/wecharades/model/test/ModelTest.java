@@ -1,19 +1,18 @@
 package com.example.wecharades.model.test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.TreeMap;
+import java.util.NoSuchElementException;
 
 import android.test.AndroidTestCase;
 
+import com.example.wecharades.TestConstants;
 import com.example.wecharades.model.Game;
 import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Model;
-import com.example.wecharades.model.Player;
 import com.example.wecharades.model.Turn;
 /**
- * Testing the Turn class.
+ * Testing the Model class.
  * This class doesn't test getters and setters if they only return primitive data types or strings.
  * It doesn't test very simple methods since is doesn't enhances the quality of the testing.
  * It doesn't test methods which are directly or indirectly tested in other test classes.
@@ -21,162 +20,296 @@ import com.example.wecharades.model.Turn;
  */
 public class ModelTest extends AndroidTestCase {
 	private Model m;
-	private TreeMap<Game, ArrayList<Turn>> gameList;
-	private ArrayList<Turn> turns;
-	private Game g1,g2;
-	private Player recPlayer, ansPlayer;
-	private Turn t1,t2,t3,t4,t5,t6;
-	private Invitation invitation;
-	private final int	GLOBAL_SCORE_REC= 5,
-			GLOBAL_SCORE_ANS= 0,
-			PLAYED_GAMES	= 0,
-			WON_GAMES		= 0,
-			LOST_GAMES		= 0,
-			DRAW_GAMES		= 0,
-			TURN_NUMBER_1	= 1,
-			TURN_NUMBER_2	= 2,
-			TURN_NUMBER_3	= 3,
-			TURN_NUMBER_4	= 4,
-			TURN_NUMBER_5	= 5,
-			TURN_NUMBER_6	= 6,
-			STATE			= 0;
-	private final String
-			GAME_ID1		= "gameID1",
-			GAME_ID2		= "gameID2",
-			CHARADEWORD_1	= "horse",
-			CHARADEWORD_2	= "monkey",
-			CHARADEWORD_3	= "pistol",
-			CHARADEWORD_4	= "Coffee",
-			CHARADEWORD_5	= "Phone",
-			CHARADEWORD_6	= "Car",									
-			VIDEOLINK		= "";
-	private final boolean	NOT_FINISHED		= false;
 	protected void setUp() throws Exception {
 		super.setUp();
-
-		//Initiate some useful stuff
-		m			= Model.getModelInstance(getContext());
-		gameList	= new TreeMap<Game, ArrayList<Turn>>();
-		turns		= new ArrayList<Turn>();
-		recPlayer	= new Player("id1", "username1", GLOBAL_SCORE_REC, PLAYED_GAMES, WON_GAMES, LOST_GAMES, DRAW_GAMES);
-		ansPlayer	= new Player("id2", "username2", GLOBAL_SCORE_ANS, PLAYED_GAMES, WON_GAMES, LOST_GAMES, DRAW_GAMES);
-		invitation	= new Invitation(recPlayer, ansPlayer);
-		g1			= new Game(GAME_ID1, recPlayer, ansPlayer, ansPlayer, TURN_NUMBER_1, NOT_FINISHED, new Date());
-		g2			= new Game(GAME_ID2, recPlayer, ansPlayer, ansPlayer, TURN_NUMBER_1, NOT_FINISHED, new Date());
-		t1			= new Turn(GAME_ID1, TURN_NUMBER_1, STATE, CHARADEWORD_1,VIDEOLINK, recPlayer, GLOBAL_SCORE_REC, ansPlayer, GLOBAL_SCORE_ANS);
-		t2			= new Turn(GAME_ID1, TURN_NUMBER_2, STATE, CHARADEWORD_2,VIDEOLINK, ansPlayer, GLOBAL_SCORE_ANS, recPlayer, GLOBAL_SCORE_REC);
-		t3			= new Turn(GAME_ID1, TURN_NUMBER_3, STATE, CHARADEWORD_3,VIDEOLINK, recPlayer, GLOBAL_SCORE_REC, ansPlayer, GLOBAL_SCORE_ANS);
-		t4			= new Turn(GAME_ID1, TURN_NUMBER_4, STATE, CHARADEWORD_4,VIDEOLINK, ansPlayer, GLOBAL_SCORE_ANS, recPlayer, GLOBAL_SCORE_REC);
-		t5			= new Turn(GAME_ID1, TURN_NUMBER_5, STATE, CHARADEWORD_5,VIDEOLINK, recPlayer, GLOBAL_SCORE_REC, ansPlayer, GLOBAL_SCORE_ANS);
-		t6			= new Turn(GAME_ID1, TURN_NUMBER_6, STATE, CHARADEWORD_6,VIDEOLINK, ansPlayer, GLOBAL_SCORE_ANS, recPlayer, GLOBAL_SCORE_REC);
+		//Initiate the model
+		m = Model.getModelInstance(getContext());
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	public void testPutGameList() {
+	/**
+	 * Run the void putGameList(ArrayList<Game>) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutGameList_1()
+			throws Exception {
 		//update model
 		ArrayList<Game> games = new ArrayList<Game>();
-		games.add(g1);
-		games.add(g2);
+		games.add(TestConstants.g1);
+		games.add(TestConstants.g2);
 		m.putGameList(games);
 
-		assertTrue(m.getGames().contains(g1) && m.getGames().contains(g2));
+		assertTrue(m.getGames().contains(TestConstants.g1) && m.getGames().contains(TestConstants.g2));
 
 		//remove from model
-		m.removeGame(g1);
-		m.removeGame(g2);
+		m.removeGame(TestConstants.g1);
+		m.removeGame(TestConstants.g2);
 	}
 
-	public void testPutGame() {
-		m.putGame(g1);
-		assertTrue(m.getGame(GAME_ID1).equals(g1));
-		m.removeGame(g1);
+
+	/**
+	 * Run the void putGame(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutGame_1()
+			throws Exception {
+		m.putGame(TestConstants.g1);
+		assertTrue(m.getGame(TestConstants.GAME_ID1).equals(TestConstants.g1));
+		m.removeGame(TestConstants.g1);
 	}
 
-	public void testGetGames() {
-		//update model
+	/**
+	 * Run the ArrayList<Game> getGames() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetGames_1()
+			throws Exception {		//update model
 		ArrayList<Game> games = new ArrayList<Game>();
-		games.add(g1);
-		games.add(g2);
+		games.add(TestConstants.g1);
+		games.add(TestConstants.g2);
 		m.putGameList(games);
-		assertTrue(m.getGames().contains(g1) && m.getGames().contains(g2));
+		assertTrue(m.getGames().contains(TestConstants.g1) && m.getGames().contains(TestConstants.g2));
 
 		//remove from model
-		m.removeGame(g1);
-		m.removeGame(g2);
+		m.removeGame(TestConstants.g1);
+		m.removeGame(TestConstants.g2);
 	}
 
-	public void testGetGame() {
-		m.putGame(g1);
-		assertTrue(m.getGame(GAME_ID1).equals(g1));
-		m.removeGame(g1);
+	/**
+	 * Run the Game getGame(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetGame_1()
+			throws Exception {
+		m.putGame(TestConstants.g1);
+		assertTrue(m.getGame(TestConstants.GAME_ID1).equals(TestConstants.g1));
+		m.removeGame(TestConstants.g1);
 	}
 
-	public void testRemoveGame() {
-		m.putGame(g1);
-		m.removeGame(g1);
-		assertNull(m.getGame(GAME_ID1));
+	/**
+	 * Run the Game getGame(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetGame_2()
+			throws Exception {
+		assertNull(m.getGame("THIS_ID_DOESNT_EXIST"));
 	}
 
-	public void testPutTurns() {
-		
-		assertNull(m.getTurns(g1));
+	/**
+	 * Run the void removeGame(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testRemoveGame_1()
+			throws Exception {
+		m.putGame(TestConstants.g1);
+		assertNotNull(m.getGame(TestConstants.GAME_ID1));
+		m.removeGame(TestConstants.g1);
+		assertNull(m.getGame(TestConstants.GAME_ID1));
+	}
+
+	/**
+	 * Run the void putTurns(ArrayList<Turn>) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutTurns_1()
+			throws Exception {
+
+		assertNull(m.getTurns(TestConstants.g1));
 		//Update
-		turns.add(t1);
-		turns.add(t2);
-		turns.add(t3);
-		turns.add(t4);
-		turns.add(t5);
-		turns.add(t6);
-		
-		m.putGame(g1);
+		ArrayList<Turn> turns = new ArrayList<Turn>();
+		turns.add(TestConstants.t1);
+		turns.add(TestConstants.t2);
+		turns.add(TestConstants.t3);
+		turns.add(TestConstants.t4);
+		turns.add(TestConstants.t5);
+		turns.add(TestConstants.t6);
+
+		m.putGame(TestConstants.g1);
 		m.putTurns(turns);
 		for(int i = 0; i < turns.size(); i++) {
-			assertTrue(turns.remove(0).equals(m.getTurns(g1).remove(0)));
+			assertTrue(turns.remove(0).equals(m.getTurns(TestConstants.g1).remove(0)));
 		}
-		m.removeGame(g1);
+		m.removeGame(TestConstants.g1);
 	}
 
-	public void testGetTurns() {
-		assertNull(m.getTurns(g1));
+
+	/**
+	 * Run the void putTurn(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutTurn_1()
+			throws Exception {
+		assertNull(m.getGame(TestConstants.GAME_ID1));			// Checking that game isn't in model
+		m.putGame(TestConstants.g1);								// Adding to model
+		m.putTurn(TestConstants.t1);								// Updating the turn to the corresponding game g1
+		assertTrue(m.getTurns(TestConstants.g1).contains(TestConstants.t1));	// Check that it contains the recently put turn
+		m.removeGame(TestConstants.g1);							// Remove from the model
+	}
+
+
+	/**
+	 * Run the void putTurn(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutTurn_2()
+			throws Exception {
+		String invalidID = "not valid";
+		Turn t = new Turn(invalidID ,1,1,"","",TestConstants.recPlayer,0, TestConstants.ansPlayer, 0);
+		assertNull(m.getGame(invalidID));	// Checking that game isn't in model
+		try {
+			m.putTurn(TestConstants.t1);
+			assertTrue(false); //should never run
+		} catch (NoSuchElementException e) {
+			assertTrue(true); //returns true
+		}
+	}
+
+	/**
+	 * Run the ArrayList<Turn> getTurns(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetTurns_1()
+			throws Exception {
+		assertNull(m.getTurns(TestConstants.g1));
 		//Update
-		turns.add(t1);
-		turns.add(t2);
-		turns.add(t3);
-		turns.add(t4);
-		turns.add(t5);
-		turns.add(t6);
-		
-		m.putGame(g1);
+		ArrayList<Turn> turns = new ArrayList<Turn>();
+		turns.add(TestConstants.t1);
+		turns.add(TestConstants.t2);
+		turns.add(TestConstants.t3);
+		turns.add(TestConstants.t4);
+		turns.add(TestConstants.t5);
+		turns.add(TestConstants.t6);
+
+		m.putGame(TestConstants.g1);
 		m.putTurns(turns);
 		for(int i = 0; i < turns.size(); i++) {
-			assertTrue(turns.remove(0).equals(m.getTurns(g1).remove(0)));
+			assertTrue(turns.remove(0).equals(m.getTurns(TestConstants.g1).remove(0)));
 		}
-		m.removeGame(g1);
+		m.removeGame(TestConstants.g1);
 	}
 
-	public void testGetCurrentTurn() {
-		assertNull(m.getTurns(g1));
+	/**
+	 * Run the Turn getCurrentTurn(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetCurrentTurn_1()
+			throws Exception {
+		assertNull(m.getTurns(TestConstants.g1));
 		//Update
-		turns.add(t1);
-		turns.add(t2);
-		turns.add(t3);
-		turns.add(t4);
-		turns.add(t5);
-		turns.add(t6);
-		
-		m.putGame(g1);
+		ArrayList<Turn> turns = new ArrayList<Turn>();
+		turns.add(TestConstants.t1);
+		turns.add(TestConstants.t2);
+		turns.add(TestConstants.t3);
+		turns.add(TestConstants.t4);
+		turns.add(TestConstants.t5);
+		turns.add(TestConstants.t6);
+
+		m.putGame(TestConstants.g1);
 		m.putTurns(turns);
 		//The current turn should be t1
-		assertTrue(m.getCurrentTurn(g1).equals(t1) );
-		
+		assertTrue(m.getCurrentTurn(TestConstants.g1).equals(TestConstants.t1) );
+		m.removeGame(TestConstants.g1);
 	}
 
-	//Test of get and setReceivedInvitations
-	public void testSetSentInvitations() {
+	/**
+	 * Run the Turn getCurrentTurn(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetCurrentTurn_2()
+			throws Exception {
+		//not added to the model
+		assertNull(m.getCurrentTurn(TestConstants.g1));
+
+	}
+
+	/**
+	 * Run the Turn getCurrentTurn(Game) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testGetCurrentTurn_3()
+			throws Exception {
+		assertNull(m.getCurrentTurn(null));
+	}
+
+	/**
+	 * Run the void putPlayer(Player) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutPlayer_1()
+			throws Exception {
+		//Cannot be tested since the model is built to never remove players...
+	}
+
+	/**
+	 * Run the void putPlayers(Collection<Player>) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testPutPlayers_1()
+			throws Exception {
+		//Cannot be tested since the model is built to never remove players...
+
+	}
+
+
+	/**
+	 * Run the void setSentInvitations(LinkedList<Invitation>) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 2013-05-29 21:20
+	 */
+	public void testSetSentInvitations_1()
+			throws Exception {
 		LinkedList<Invitation> iList = new LinkedList<Invitation>();
+		Invitation invitation = new Invitation(TestConstants.recPlayer, TestConstants.ansPlayer);
 		iList.add(invitation);
 		m.setSentInvitations(iList);
 		assertTrue(m.getSentInvitations().equals(iList));

@@ -7,7 +7,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/errorTitle"
+        android:id="@+id/negativeTitle"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_width="fill_parent"
@@ -19,7 +19,7 @@
         android:drawableRight="@drawable/error" />
 
     <TextView
-        android:id="@+id/errorText"
+        android:id="@+id/negativeText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -28,7 +28,7 @@
         android:textColor="@color/LightRed"  />
 
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/dismiss"
         style="@style/button_style"
         android:layout_width="120dp"
         android:layout_height="40dp"

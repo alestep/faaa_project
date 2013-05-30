@@ -85,7 +85,7 @@ public class LoginPresenter extends Presenter{
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(dbException != null){
-				activity.showErrorDialog(dbException.prettyPrint());
+				activity.showNegativeDialog("Error", dbException.prettyPrint(), "OK");
 			}
 			activity.hideProgressBar();
 			activity.enabledView();

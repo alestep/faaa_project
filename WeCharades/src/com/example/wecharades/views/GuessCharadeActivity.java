@@ -5,9 +5,6 @@ package com.example.wecharades.views;
  *
  */
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -20,23 +17,33 @@ import com.example.wecharades.R;
 import com.example.wecharades.model.Turn;
 import com.example.wecharades.presenter.GuessCharadePresenter;
 
+/**
+ * View which displays the part of the game where guessing is done
+ * @author weCharade
+ */
 public class GuessCharadeActivity extends GenericActivity  { 
+	
 	private TextView possibleLetters;
 	private EditText answerWord;
 	private VideoView videoView;
 	private GuessCharadePresenter presenter;
 	private TextView timerView;
+	
+	/*
+	 * Constants declared public in order to access them from class GuessCharadePresenter.
+	 * NO_GAME is the initial state and is used to evaluate how to act when the a game is resumed.
+	 */
 	public int gameState = NO_GAME;
 	public static final int NO_GAME = 0;
 	public  static final int GAME_FINISHED = 1;
-	private Turn turn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new GuessCharadePresenter(this, this.turn = (Turn) getIntent().getExtras().getSerializable("Turn")));
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this, (Turn) getIntent().getExtras().getSerializable("Turn")));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+		
+		//Get references to instances
 		answerWord = (EditText) findViewById(R.id.editAnswerCharade);
 		videoView = (VideoView) findViewById(R.id.streamedVideoSurface);
 		possibleLetters = (TextView) findViewById(R.id.possibleLetters);
@@ -60,6 +67,8 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 */
 	@Override
 	protected void onResume(){
+		
+		//Resumes the video streaming if download is finished and the turn is not ongoing TODO: Kolla om detta är rätt?
 		if(presenter.downloadState == GuessCharadePresenter.DOWNLOAD_FINISHED && gameState == NO_GAME){
 			presenter.playVideo();
 		}
@@ -76,10 +85,11 @@ public class GuessCharadeActivity extends GenericActivity  {
 	}
 
 	/**
-	 * Shows the possible letters
+	 * Shows the possible letters which together build the charade word
 	 * @param letters
 	 */
 	public void setPossibleLetters(String letters){
+		//Do not want to display the possible letters yet
 		possibleLetters.setVisibility(0);
 		possibleLetters.setText(letters);
 	}
@@ -89,123 +99,40 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 * @param view
 	 */
 	public void onClickGuess(View view){
-		if(presenter.checkRightWord(answerWord)){
-			videoView.stopPlayback();
-			presenter.stopTimer();
-			gameState = GAME_FINISHED;
-			//Update relevant information
-			turn.setRecPlayerScore(3);
-			turn.setAnsPlayerScore(5);
-			turn.setState(Turn.FINISH);
-			presenter.updateModel();
-
-			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
-			mDialog.setTitle("Charade");
-			mDialog
-			.setMessage("You Guessed Right!")
-			.setCancelable(false)
-			.setPositiveButton("Continue",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-
-					Intent intent = new Intent(GuessCharadeActivity.this, GameDashboardActivity.class);/*TODO:GameDashboard.class*/
-					intent.putExtra("Game",presenter.getGame());
-					startActivity(intent);
-					finish();
-				}
-			});
-			AlertDialog alertDialog = mDialog.create();
-			alertDialog.show();
-		}
-		else{
-			AlertDialog.Builder mDialog = new AlertDialog.Builder(GuessCharadeActivity.this);
-			mDialog.setTitle("Charade");
-			mDialog
-			.setMessage("You Guessed Wrong! Hurry up!")
-			.setNegativeButton("Retry",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					dialog.cancel();
-				}
-			});
-			AlertDialog alertDialog = mDialog.create();
-			alertDialog.show();
-		}                      
-	}
-
-	@Override
-	public void showErrorDialog(String str){
-		possibleLetters.setVisibility(0);
-		super.showErrorDialog(str);
-	}
-	/**
-	 * Shows up an finishAlertDialog and stops the video.
-	 */
-	public void finishDialog() {
-		videoView.stopPlayback();
-		AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-		builder.setTitle("Game Over")
-		.setMessage("The right charade is: " + presenter.currentWord.toLowerCase() + ".")
-		.setCancelable(false)
-		.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game",presenter.getGame());
-				startActivity(intent);
-				finish();
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
+		presenter.evaluateGuess(answerWord.getText().toString());                  
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		//Evaluate a back press.
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			if(presenter.downloadState != presenter.NO_DOWNLOAD)
-				showDialog();
+			
+			//Makes the user aware of that he or she will lose the turn if pushing back-button while video is streaming
+			if(presenter.downloadState != GuessCharadePresenter.NO_DOWNLOAD)
+				presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
+			
+			//If a turn is not active, a back press results in that GuessCharadeAcitivty finishes
 			else{
 				finish();
 			}
 			return true;
 		}
+		
+		//Makes the user aware of that he or she will lose the turn if pushing menu-button while video is streaming
 		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
-			showDialog();
+			presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
 			return true;
 		}
 		return false;
 	}
-	/**
-	 * Shows up an Dialog for pressing the back and settings button.
+	
+	/*
+	 * Activity is considered not to be in need of displaying an IProgress-instance.
+	 * This method will therefore never be called, and it is OK to return null.
 	 */
-	private void showDialog(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(GuessCharadeActivity.this);
-		builder.setMessage("If you exit you'll lose this turn!").setTitle("Warning!")
-		.setCancelable(true)
-		.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				presenter.stopTimer();
-				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
-				turn.setState(Turn.FINISH);
-				presenter.updateModel();
-				Intent intent = new Intent(GuessCharadeActivity.this, StartActivity.class);/*TODO:GameDashboard.class*/
-				intent.putExtra("Game",presenter.getGame());
-				startActivity(intent);
-				dialog.cancel();
-				finish();
-			}
-		})
-		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-			}
-		});
-		AlertDialog mAlert = builder.create();
-		mAlert.show();
-	}
-
 	@Override
 	protected IProgress getProgressBar() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

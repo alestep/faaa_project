@@ -90,7 +90,7 @@ public class SearchPlayerPresenter extends Presenter {
 			if (!list.isEmpty())
 				view.setAdapter(new SearchPlayerAdapter(activity, resultList, alreadySent, alreadyPlaying));
 		} catch (DatabaseException e) {
-			activity.showErrorDialog(e.prettyPrint());
+			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class SearchPlayerPresenter extends Presenter {
 			dc.sendInvitation(dc.getPlayer(invitee));
 			sendNotificationtoOtherPlayer(invitee);
 		} catch (DatabaseException e){
-			activity.showErrorDialog(e.prettyPrint());
+			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}
 
 	}

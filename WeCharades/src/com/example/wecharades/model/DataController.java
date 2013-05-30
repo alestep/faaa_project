@@ -193,7 +193,7 @@ public class DataController extends Observable implements Observer{
 	 * @return A player
 	 * @throws DatabaseException - if the connection to the database fails
 	 */
-	protected Player getPlayerById(String parseId) throws DatabaseException {
+	public Player getPlayerById(String parseId) throws DatabaseException {
 		Player p = m.getPlayerById(parseId);
 		if(p == null){
 			//If the player is not present in the model, we must call the database.

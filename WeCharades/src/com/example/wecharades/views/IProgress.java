@@ -1,5 +1,10 @@
 package com.example.wecharades.views;
 
+/**
+ * Interface intended to simplify visualization of refreshing and background data-fetching
+ * @author weCharade
+ *
+ */
 public interface IProgress {
 	
 	/**

@@ -14,12 +14,12 @@ import com.example.wecharades.presenter.VideoUploadPresenter;
 
 
 /**
- * @author Adam
- * TODO: Fix the  design in the xml file showvideo.xml.
+ * View which displays the screen where a user uploads a video to the server
+ * @author weCharade
  */
 
 public class VideoUploadActivity extends GenericActivity{
-	protected static final String TAG = "";
+	
 	private String path = "";
 	public static String fileName;
 	private VideoView videoView;
@@ -28,8 +28,12 @@ public class VideoUploadActivity extends GenericActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new VideoUploadPresenter(this));
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Forces portrait orientation which is what the camera uses.
-		setContentView(R.layout.showvideo);
+		
+		//TODO: Behšvs denna?
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		setContentView(R.layout.show_video);
+		
+		//Get references to instances
 		presenter = (VideoUploadPresenter) super.getPresenter();
 		videoView = (VideoView) findViewById(R.id.satisfiedVideoView);
 		path = getPathFromURI(CaptureVideoActivity.uriVideo);	
@@ -42,23 +46,27 @@ public class VideoUploadActivity extends GenericActivity{
 	}
 
 	/**
-	 * Handles the Yes button
+	 * Upload video if the user is satisfied with the capture
 	 * @param view
 	 */
-	public void onClickYes(View view) {
+	public void onClickSatisfied(View view) {
 		videoView.stopPlayback();
 		presenter.uploadVideo(VideoUploadActivity.this, path);
 	}
 
 	/**
-	 * Handles the No button
+	 * Re-record video if the user is not satisfied with the capture
 	 * @param w
 	 */
-	public void onClickNo(View view) {
+	public void onClickNotSatisfied(View view) {
 		presenter.reRecord(path);
 	}
 	
-	//TODO: fix a new method that's not using managedQuery(); @adam
+	/**
+	 * 
+	 * @param contentUri
+	 * @return
+	 */
 	private String getPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -67,9 +75,12 @@ public class VideoUploadActivity extends GenericActivity{
 		return cursor.getString(column_index);
 	}
 
+	/*
+	 * Activity is considered not to be in need of displaying an IProgress-instance.
+	 * This method will therefore never be called, and it is OK to return null.
+	 */
 	@Override
 	protected IProgress getProgressBar() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

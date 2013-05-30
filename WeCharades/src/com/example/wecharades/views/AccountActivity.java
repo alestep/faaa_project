@@ -10,7 +10,12 @@ import android.widget.TextView;
 import com.example.wecharades.R;
 import com.example.wecharades.presenter.AccountPresenter;
 
+/**
+ * View which displays account information
+ * @author weCharade
+ */
 public class AccountActivity extends GenericActivity {
+
 	private AccountPresenter presenter;
 	private RefreshProgressBar refresh;
 
@@ -18,31 +23,39 @@ public class AccountActivity extends GenericActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new AccountPresenter(this));
 
+		//Set the title bar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.account_screen);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_refresh_home); 
 
-		//Get references to instances
+		//Get references to instances.
 		presenter = (AccountPresenter) super.getPresenter();
+		
+		/*
+		 * This class uses a RefreshProgressBar to visualize that the screen is refreshed
+		 */
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		//Update the background information
 		presenter.update();
 	}
 
 	/**
-	 * Called when Game Instructions button is clicked
+	 * Go to GameInstructionsActivity
 	 * @param view
 	 */
 	public void onClickGameInstructions(View view) {
-		presenter.gameInstructions();
+		startActivity(new Intent(this, GameInstructionsActivity.class));
+		finish();
 	}
 
 	/**
-	 * Called when Logout button is clicked
+	 * To to LoginActivity
 	 * @param view
 	 */
 	public void onClickLogout(View view) {
@@ -50,7 +63,7 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Updates the screen
+	 * Refresh the screen
 	 * @param view
 	 */
 	public void onClickRefresh(View view){
@@ -58,15 +71,11 @@ public class AccountActivity extends GenericActivity {
 	}
 
 	/**
-	 * Go to Home screen
+	 * Go to StartActivity
 	 * @param view
 	 */
 	public void onClickHome(View view){
-		Intent intent = new Intent(this, StartActivity.class);
-		intent.putExtra("finish", true);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		finish();
+		presenter.goToStartActivity();
 	}
 
 
@@ -92,7 +101,6 @@ public class AccountActivity extends GenericActivity {
 		TextView drawGames = (TextView) findViewById(R.id.drawGames);
 
 		username.setText(newUsername);
-		//TODO fix global ranking by calculating position
 		ranking.setText(Integer.toString(globalRanking) + " ("+ globalScore +" points)");
 		playedGames.setText(Integer.toString(numberOfFinishedGames));
 		wonGames.setText(Integer.toString(numberOfWonGames));

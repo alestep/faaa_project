@@ -22,20 +22,15 @@ import com.example.wecharades.presenter.StartPresenter;
 
 
 /**
- * 
- * @author Alexander
+ * View which displays the start or home screen of the game. The screen gives access to almost all screens
+ * and is the first screen a user comes to when entering the game (if already logged in)
+ * @author weCharade
  *
  */
 public class StartActivity extends GenericActivity {
-	protected static final String TAG = "StartScreen";
-	public final static String ITEM_TITLE = "title";
-	public final static String ITEM_CAPTION = "caption";
 
 	private StartPresenter presenter;
-
-	// ListView Contents
 	private ListView gameListView;
-
 	private ImageButton invitations;
 	private RefreshProgressBar refresh;
 	private Button account;
@@ -43,6 +38,8 @@ public class StartActivity extends GenericActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new StartPresenter(this));
+
+		//Set the title bar
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.start_screen);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar_start);
@@ -50,9 +47,11 @@ public class StartActivity extends GenericActivity {
 		// Get references to instances
 		presenter = (StartPresenter) super.getPresenter();
 		gameListView = (ListView) findViewById(R.id.gameList);
-		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
+		
+		//This class uses a RefreshProgressBar to visualize that data is fetched in the background
+		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 
 		//Check if the user is logged in
 		presenter.checkLogin();
@@ -65,7 +64,7 @@ public class StartActivity extends GenericActivity {
 		presenter.update();
 		super.onStart();
 	}
-	
+
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -73,7 +72,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	/**
-	 * Updates the screen
+	 * Refresh the view
 	 * @param v
 	 */
 	public void onClickRefresh(View v) {
@@ -81,7 +80,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	/**
-	 * Go to Invitation screen
+	 * Go to Invitation screen 
 	 * @param v
 	 */
 	public void onClickInvitations(View v) {
@@ -91,7 +90,7 @@ public class StartActivity extends GenericActivity {
 
 
 	/**
-	 * Go to New Game screen
+	 * Go to New game screen 
 	 * @param view
 	 */
 	public void onClickNewGame(View view) {
@@ -100,7 +99,7 @@ public class StartActivity extends GenericActivity {
 	}
 
 	/**
-	 * Go to High Score screen
+	 * Go to High score screen
 	 * @param view
 	 */
 	public void onClickHighScore(View view) {
@@ -109,18 +108,27 @@ public class StartActivity extends GenericActivity {
 	}
 
 	/**
-	 * Go to Account Activity which provides information and statistics
+	 * Go to Account screen
 	 * @param view
 	 */
 	public void onClickUsername(View view) {
 		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
 		startActivity(intent);
 	}
-
+	
+	/**
+	 * Display the name of the current user
+	 * @param user
+	 */
 	public void setAccountName(String user){
 		account.setText(user);
 	}
-
+	
+	/**
+	 * Set the list of games which is displayed on the screen,
+	 * add onItemClickListeners to every item in the list and handle clicks
+	 * @param adapter
+	 */
 	public void setGameList(final SeparatedListAdapter adapter){
 		//Final-declarations in order to reference from inner class later
 		final Activity activity = this;
@@ -139,7 +147,11 @@ public class StartActivity extends GenericActivity {
 			}
 		});
 	}
-
+	
+	/**
+	 * Display if any new invitations are received
+	 * @param nrInvites
+	 */
 	public void setInvitations(int nrInvites){
 		if(nrInvites>0) {
 			invitations.setImageResource(R.drawable.invitation_new);
@@ -167,7 +179,7 @@ public class StartActivity extends GenericActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
 	@Override
 	protected RefreshProgressBar getProgressBar() {
 		return refresh;

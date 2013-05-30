@@ -49,7 +49,7 @@ public class HighScorePresenter extends Presenter {
 			activity.updateGlobalRanking(globalRanking, allPlayers.size());
 			
 		} catch(DatabaseException e) {
-			activity.showErrorDialog(e.prettyPrint());
+			activity.showNegativeDialog("Error", e.prettyPrint(), "OK");
 		}
 		activity.hideProgressBar();
 
