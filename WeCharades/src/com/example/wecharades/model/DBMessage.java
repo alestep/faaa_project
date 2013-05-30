@@ -29,30 +29,30 @@ public class DBMessage implements IMessage{
 		//We make some type controls to increase the validity of provided data.
 		if(data != null){
 			switch(message){
-			case(ERROR)		: if(data.getClass().equals(DatabaseException.class)){this.message = message; break;}
-			case(MESSAGE)	: if(data.getClass().equals(String.class)){this.message = message; break;}
+			case(ERROR)		: if(data.getClass().equals(DatabaseException.class)){this.message = message;} else{this.message = UNDEFINED;} break;
+			case(MESSAGE)	: if(data.getClass().equals(String.class)){this.message = message;} else{this.message = UNDEFINED;} break;
 			case(GAMELIST)	: 
-				if(data instanceof Map
-						&& ( 
-								(!((Map) data).isEmpty() 
-										&& ((Map) data).keySet().iterator().next().getClass().equals(Game.class))
-										|| ((Map) data).isEmpty()
-								)
-						)
-				{this.message = message; break;}
-
+				if(data instanceof Map){
+					if(!((Map) data).isEmpty()){
+						if(((Map) data).keySet().iterator().next().getClass().equals(Game.class)){
+							this.message = message;
+						}
+					} else{
+						this.message = message;
+					}
+				} else{this.message = UNDEFINED;} break;
 			case(INVITATIONS): 	
-				if(data instanceof List
-						&& (	
-								(!((List) data).isEmpty()
-										&& ((List) data).iterator().next().getClass().equals(Invitation.class) 
-										)
-										|| ((List) data).isEmpty()
-								)
-						)
-				{this.message = message; break;}
+				if(data instanceof List){
+					if(!((List) data).isEmpty()){
+						if(((List) data).iterator().next().getClass().equals(Game.class)){
+							this.message = message;
+						}
+					} else{
+						this.message = message;
+					}
+				} else{this.message = UNDEFINED;} break;
 			
-			default 		: this.message = UNDEFINED; break;
+			default : this.message = UNDEFINED; break;
 			}
 		} else{
 			this.message = UNDEFINED;

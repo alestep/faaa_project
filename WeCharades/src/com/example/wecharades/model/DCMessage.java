@@ -23,21 +23,36 @@ public class DCMessage implements IMessage{
 	int message;
 	Object data;
 
+	/**
+	 * Create a new DCMessage with a message and data.
+	 * 	If provided data is of wrong type, the message will be changed to UNDEFINED.
+	 * @param message
+	 * @param data
+	 */
 	@SuppressWarnings("rawtypes")
 	public DCMessage(int message, Object data){
+		this.data = data;
 		//We make some type controls to increase the validity of provided data.
 		if(data != null){
 			switch(message){
-			case(10)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE; break;}
-			case(20)	: if(data.getClass().equals(String.class))	{this.message = ERROR; break;}
-			case(30)	: if(data instanceof List 
-					&& (
-							!((List) data).isEmpty() 
-							&& ((List) data).get(0).getClass().equals(Game.class)
-							)
-							||	((List) data).isEmpty()
-					)//if
-			{this.message = message; break;}
+			case(10)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE;} else{this.message = UNDEFINED;} break;
+			case(20)	: if(data.getClass().equals(String.class))	{this.message = ERROR;} else{this.message = UNDEFINED;} break;
+			case(30)	: if(data instanceof List){
+				if(!((List) data).isEmpty()){
+					if(((List) data).iterator().next().getClass().equals(Game.class)){
+						this.message = message;
+					}
+				} else{
+					this.message = message;
+				}
+			} else{this.message = message;} break;
+//					&& (
+//							!((List) data).isEmpty() 
+//							&& ((List) data).get(0).getClass().equals(Game.class)
+//							)
+//							||	((List) data).isEmpty()
+//					)//if
+//			{this.message = message;} else{this.message = UNDEFINED;} break;
 			case(40)	: if(data instanceof List 
 					&& (
 							!((List) data).isEmpty() 
@@ -45,13 +60,12 @@ public class DCMessage implements IMessage{
 							)
 							||	((List) data).isEmpty()
 					)//if
-			{this.message = message; break;};
+			{this.message = message;} else{this.message = UNDEFINED;} break;
 			default		: this.message = UNDEFINED; break;
 			}
 		} else{
 			this.message = UNDEFINED;
 		}
-		this.data = data;
 	}
 	
 	/**
