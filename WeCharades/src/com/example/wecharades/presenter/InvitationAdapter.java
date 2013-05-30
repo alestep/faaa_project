@@ -16,12 +16,25 @@ import com.example.wecharades.model.Invitation;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.InvitationActivity;
 
+/**
+ * Presenter-help-class which manages the filling of ListView-items on the Invitation view.
+ * @author weCharade
+ */
 public class InvitationAdapter extends ArrayAdapter<Invitation> {
+	
 	private List<Invitation> invitations;
 	private InvitationActivity activity;
 	private Player player;
-
+	
+	/**
+	 * Create an instance of InvitationAdapter
+	 * @param activity
+	 * @param invitations
+	 * @param player
+	 */
 	public InvitationAdapter(InvitationActivity activity, List<Invitation> invitations, Player player) {
+		
+		//Do not provide any layout resource id to the super-class, hence the zero value.
 		super(activity, 0, invitations);
 		this.invitations = invitations;
 		this.activity = activity;
@@ -36,7 +49,13 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 		
 		final Invitation invitation = invitations.get(position);
 		if (invitation != null) {
+			
+			/*
+			 * Check if current user is inviter or invitee in order to know
+			 * which visual layout to inflate
+			 */
 			if(invitation.getInvitee().equals(player)){
+	
 				v = li.inflate(R.layout.list_item_received_invitation, null);
 				final TextView invitor = (TextView) v.findViewById(R.id.inviter);
 				if (invitor != null)
@@ -48,6 +67,7 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 				accept.setOnClickListener(new OnClickListener(){ 
 					@Override
 					public void onClick(View v){
+						//Disable both buttons and accept invitation by giving true-value
 						accept.setEnabled(false);
 						reject.setEnabled(false);
 						activity.setInvitation(invitation, true);	
@@ -57,6 +77,7 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 				reject.setOnClickListener(new OnClickListener(){ 
 					@Override
 					public void onClick(View v){
+						//Disable both buttons and reject invitation by giving false-value
 						accept.setEnabled(false);
 						reject.setEnabled(false);
 						activity.setInvitation(invitation, false);	
@@ -64,6 +85,7 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
 				});
 				
 			} else {
+				//Display invitations the user has sent
 				v = li.inflate(R.layout.list_item_sent_invitation, null);
 				final TextView invitee = (TextView) v.findViewById(R.id.invitee);
 				if (invitee != null)

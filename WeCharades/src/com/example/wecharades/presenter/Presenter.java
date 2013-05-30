@@ -13,6 +13,11 @@ import com.example.wecharades.views.GenericActivity;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 
+/**
+ * Abstract super class which all presenters implement. The class is intended to handle generic
+ * requests from presenters and reduce duplication of code
+ * @author weCharade
+ */
 public abstract class Presenter implements Observer{
 
 	protected DataController dc;
@@ -20,7 +25,7 @@ public abstract class Presenter implements Observer{
 
 	/**
 	 * Needed in order to use parse commands
-	 * @param context - the context (the activity: use 'this' most often)
+	 * @param context	The context (the activity: use 'this' most often)
 	 */
 	public Presenter(GenericActivity activity) {
 		this.activity = activity;
@@ -29,10 +34,12 @@ public abstract class Presenter implements Observer{
 	}
 
 	/**
-	 * Go to the login screen
+	 * Go to the login screen and finish the current screen
 	 */
 	public void goToLoginActivity() {
 		Intent i = new Intent(activity.getApplicationContext(), LoginActivity.class);
+		
+		//Go back to an earlier StartActivity in the stack of activities
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		activity.startActivity(i);
 		// Close current view, effectively restarting the app
@@ -40,7 +47,7 @@ public abstract class Presenter implements Observer{
 	}
 	
 	/**
-	 * Go to the home screen
+	 * Go to the StartActivity
 	 */
 	public void goToStartActivity(){
 		Intent i = new Intent(activity.getApplicationContext(), StartActivity.class);
