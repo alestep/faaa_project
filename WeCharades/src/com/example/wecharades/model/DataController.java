@@ -567,8 +567,9 @@ public class DataController extends Observable implements Observer{
 		m.setReceivedInvitations(receivedInvitations);
 		return currentInvitations;
 	}
-	/*
-	 * Helper method to check if Invitation is in current games
+	/**
+	 * Helper method to check if Invitation is in current games.
+	 * @param inv - Invitation to check validity of
 	 */
 	private boolean inCurrentGames(Invitation inv){
 		for(Game g : m.getGames()){ //Check if the invitation is in current (not finished) games
