@@ -28,14 +28,6 @@ public class AccountActivityTest extends
                 super.setUp();
                 solo = new Solo(getInstrumentation(), getActivity());
         }
-//        public void testHighScoreScreen(){
-//                solo.assertCurrentActivity("initially startAcivity", StartActivity.class);
-//                login();
-//                solo.clickOnImageButton(R.id.global_score);
-//                solo.waitForActivity(HighScoreActivity.class);
-//                solo.waitForActivity(HighScoreActivity.class);
-//                solo.goBack();
-//        }
        
         public void testAccountScreen(){
                 solo.assertCurrentActivity("initially startAcivity", StartActivity.class);
