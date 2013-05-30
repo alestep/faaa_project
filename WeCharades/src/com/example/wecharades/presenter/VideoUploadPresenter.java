@@ -142,6 +142,7 @@ public class VideoUploadPresenter extends Presenter {
 	}
 	private void pushNotficationtoOtherPlayer(){
 		ParsePush push = new ParsePush();
+		Log.d("",dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setChannel(dc.getGame(turn.getGameId()).getOpponent(dc.getCurrentPlayer()).getName());
 		push.setMessage("Your turn against: " + turn.getRecPlayer().getName());
 		try {
