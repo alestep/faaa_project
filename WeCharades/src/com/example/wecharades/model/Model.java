@@ -258,10 +258,15 @@ public class Model implements Serializable{
 	 * @return a Turn
 	 */
 	public Turn getCurrentTurn(Game game) {
-		for(Turn t : getTurns(game)){
-			//Find the turn with CurrentTurnNumber
-			if(t.getTurnNumber() == game.getTurnNumber()){
-				return t;
+		if(game != null){
+			ArrayList<Turn> turns = getTurns(game);
+			if(turns != null){
+				for(Turn t : turns){
+					//Find the turn with CurrentTurnNumber
+					if(t.getTurnNumber() == game.getTurnNumber()){
+						return t;
+					}
+				}
 			}
 		}
 		return null;

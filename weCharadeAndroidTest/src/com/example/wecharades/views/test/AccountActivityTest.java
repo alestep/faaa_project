@@ -2,10 +2,8 @@ package com.example.wecharades.views.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.wecharades.R;
 import com.example.wecharades.views.AccountActivity;
 import com.example.wecharades.views.GameInstructionsActivity;
-import com.example.wecharades.views.HighScoreActivity;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;

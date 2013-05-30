@@ -1,12 +1,9 @@
 package com.example.wecharades.views.test;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ListView;
 
-import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.NewGameActivity;
 import com.example.wecharades.views.SearchPlayerActivity;
-import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
 /**
  * Test class to test the search player function. Test ID: T04

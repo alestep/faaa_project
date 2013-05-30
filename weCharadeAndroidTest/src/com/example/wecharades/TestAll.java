@@ -1,7 +1,8 @@
 package com.example.wecharades;
 
-import com.example.wecharades.model.test.ModelTest;
 import junit.framework.TestSuite;
+
+import com.example.wecharades.model.test.ModelTest;
 
 public class TestAll {
 	public static void main(String[] args) {

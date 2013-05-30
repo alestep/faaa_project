@@ -29,7 +29,6 @@ public class VideoUploadActivity extends GenericActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, new VideoUploadPresenter(this));
 		
-		//TODO: Behšvs denna?
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.show_video);
 		
