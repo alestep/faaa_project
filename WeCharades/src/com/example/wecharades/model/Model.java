@@ -67,7 +67,9 @@ public class Model implements Serializable{
 
 	private Model(Context context){
 		//Creating a file to save to
-		saveModel(context);
+		if(context != null){
+			saveModel(context);
+		}
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class Model implements Serializable{
 	 * @param context - used to retrieve a save location
 	 */
 	public void saveModel(Context context){
-		if(!SAVED){
+		if(!SAVED && context != null){
 			try {
 				FileOutputStream ops = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
 				ObjectOutputStream oOut = new ObjectOutputStream(ops);
@@ -118,18 +120,20 @@ public class Model implements Serializable{
 	 */
 	private static Model loadModel(Context context){
 		Model singleModel = null;
-		try {
-			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
-			Object obj = oIn.readObject();
-			if (obj != null && obj.getClass().equals(Model.class)){
-				singleModel = (Model) obj;
+		if(context != null){
+			try {
+				ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
+				Object obj = oIn.readObject();
+				if (obj != null && obj.getClass().equals(Model.class)){
+					singleModel = (Model) obj;
+				}
+			} catch (FileNotFoundException e1){
+				Log.d("IO - Model load", "No file found");
+			} catch (IOException e2){
+				Log.d("IO - Model load", "IOException");
+			} catch (ClassNotFoundException e3){
+				Log.d("IO - Model load", "ClassNotFound");
 			}
-		} catch (FileNotFoundException e1){
-			Log.d("IO - Model load", "No file found");
-		} catch (IOException e2){
-			Log.d("IO - Model load", "IOException");
-		} catch (ClassNotFoundException e3){
-			Log.d("IO - Model load", "ClassNotFound");
 		}
 		return singleModel;
 	}
@@ -139,11 +143,13 @@ public class Model implements Serializable{
 	 * @param context
 	 */
 	private static void eraseModel(Context context){
-		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
-		if(modelFile.delete()){
-			Log.d("Model - File:","Removed file");
+		if(context != null){
+			File modelFile = new File(context.getFilesDir(), SAVE_FILE);
+			if(modelFile.delete()){
+				Log.d("Model - File:","Removed file");
+			}
+			RECREATE = true;
 		}
-		RECREATE = true;
 	}
 
 	//Games ---------------------------------------------------------------
