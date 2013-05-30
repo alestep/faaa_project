@@ -1,7 +1,6 @@
 package com.example.wecharades.presenter;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,34 +40,55 @@ import com.example.wecharades.views.GameDashboardActivity;
 import com.example.wecharades.views.GuessCharadeActivity;
 import com.example.wecharades.views.StartActivity;
 
+/**
+ * Presenter-class intended to manage the download of video and gathering of information
+ * to be able for the view to display the charade recorded by the opponent
+ * @author weCharade
+ *
+ */
 public class GuessCharadePresenter extends Presenter {
 
 	private GuessCharadeActivity activity;
 	private DownloadVideo download;
 	private VideoView videoView;
-	//private final String SAVE_PATHTWO = Environment.getExternalStorageDirectory().getPath()+"/PresentVideo.mp4";//TODO: Fix ftp storage
+
+	//Storing path by finding the natural storing position for video files in the phone
 	private final String SAVE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
-	//	private String SAVE_PATHTHREE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).toString() + "/PresentVideo.mp4";
 	private Turn turn;
-	public String currentWord;
-	public CountDownTimer timer;
+	private String currentWord;
+	private CountDownTimer timer;
 
-	public static final int NO_DOWNLOAD = 0;
+	//Constants declared public in order to access them from class GuessCharadeActivity.
+	public static final int DOWNLOAD_NOT_FINISHED = 0;
 	public static final int DOWNLOAD_FINISHED = 1;
-	public int downloadState = NO_DOWNLOAD;
+	public int downloadState = DOWNLOAD_NOT_FINISHED;
 
-	public GuessCharadePresenter(GuessCharadeActivity activity, Turn turn) {
+	/**
+	 * Create an instance of GuessCharadePresenter. Important to get reference to the unique turn and store this.
+	 * @param activity
+	 * @param turn		Needs a reference to a 
+	 */
+	public GuessCharadePresenter(GuessCharadeActivity activity) {
+
 		super(activity);
-		this.turn = turn;
 		this.activity = activity;
+		this.turn = (Turn) this.activity.getIntent().getExtras().getSerializable("Turn");
+
 	}
 
+	/**
+	 * Initializes the presenter and starts the download of charade video
+	 * @param videoView
+	 */
 	public void initialize(VideoView videoView) {
 		initializeTimer();
 		this.videoView = videoView;
 		downloadVideo(activity, videoView);
 	}
 
+	/**
+	 * Updates the database with updates Turn-information
+	 */
 	public void updateModel(){
 		dc.updateGame(turn);
 	}
@@ -77,31 +97,35 @@ public class GuessCharadePresenter extends Presenter {
 	 * Creates a timer to control the gameTime
 	 * @param timerView
 	 */
-
 	public void initializeTimer (){
 		timer = new CountDownTimer(30000, 100) {
 
+			@Override
 			public void onTick(long millisUntilFinished) {
-				activity.setTime(String.valueOf(millisUntilFinished / 1000));
+				
+				//Show decimals only the last 10 seconds
 				if (millisUntilFinished>10000){
 					activity.setTime(String.valueOf(millisUntilFinished / 1000));
 				}
 				else{
 					activity.setTime((millisUntilFinished / 1000 + "." + (millisUntilFinished%1000)/100));
-				}	 
-			}
+				}
 
+			}
+			
+			@Override
 			public void onFinish() {
 				activity.gameState = GuessCharadeActivity.GAME_FINISHED;
 				videoView.stopPlayback();
+				
+				//If timer runs out both players receives a zero score
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
 				updateModel();
-
-				videoView.stopPlayback();
-				activity.showNegativeDialog("Game over", "The right word is " + currentWord.toLowerCase(), "OK");
-				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+				
+				//Go to StartActivity
+				Intent intent = new Intent(activity, StartActivity.class);
 				intent.putExtra("Game", getGame());
 				activity.startActivity(intent);
 				activity.finish();
@@ -110,7 +134,7 @@ public class GuessCharadePresenter extends Presenter {
 	}
 
 	/**
-	 * Stops the timer
+	 * Stop the timer
 	 */
 	public void stopTimer(){
 		timer.cancel();
@@ -126,8 +150,9 @@ public class GuessCharadePresenter extends Presenter {
 		download = new DownloadVideo(context, SAVE_PATH);
 		download.execute();
 	}
+	
 	/**
-	 * Sets video specifications and initiates the video.
+	 * Set video specifications and initiates the video.
 	 */
 	public void playVideo() {
 		try {
@@ -138,8 +163,10 @@ public class GuessCharadePresenter extends Presenter {
 					mp.setLooping(true);
 				}
 			});
+			
 			videoView.setVideoPath(SAVE_PATH);
 			videoView.start();
+			
 		} catch (Exception e) {
 			Log.e("Video", "error: " + e.getMessage(), e);
 		}
@@ -151,75 +178,96 @@ public class GuessCharadePresenter extends Presenter {
 	 * @return the shuffled string
 	 */
 	private String shuffleWord(){
-		currentWord = turn.getWord(); //TODO: Replace
+		currentWord = turn.getWord();
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		alphabet = shuffle(alphabet);
+		
+		//Get a random number of letters from the alphabet
 		alphabet = alphabet.substring(alphabet.length() - randomNumber(7,4));
-		String guessWord = currentWord + alphabet;    
+		String guessWord = currentWord + alphabet;
+		
+		//Shuffle alphabet letters and the right word
 		guessWord = shuffle(guessWord);
 		return guessWord;
 	}
 	/**
 	 * Shuffles a String
-	 * @param input
+	 * @param input The String that will be shuffled
 	 * @return The shuffled string
 	 */
 	private String shuffle(String input){
+		
 		List<Character> characters = new ArrayList<Character>();
 		for(char c:input.toCharArray()){
 			characters.add(c);
 		}
+		
 		StringBuilder output = new StringBuilder(input.length());
 		while(characters.size()!=0){
 			int randPicker = (int)(Math.random()*characters.size());
 			output.append(characters.remove(randPicker));
 		}
+		
 		return output.toString();
+		
 	}
 	/**
-	 * Randoms a number between two limits.
-	 * @param high Upper limit.
-	 * @param low Lower limit.
+	 * Randoms a number between two limits
+	 * @param high 	Upper limit.
+	 * @param low 	Lower limit.
 	 * @return the random number.
 	 */
 	private int randomNumber(int high, int low){
+		
 		Random r = new Random();
 		return (r.nextInt(high-low) + low);
+		
 	}
+	
 	/**
-	 * Checks if the users word matches the current word.
+	 * Checks if the user's word guess matches the current word.
 	 * @param answerWord
-	 * @return True if answerWord matches currentWord.
+	 * @return True if answerWord matches currentWord
 	 */
 	public boolean checkRightWord(String answerWord){
+		
 		return answerWord.equalsIgnoreCase(currentWord);
+		
 	}
 
+	/**
+	 * Get the current Game-object
+	 * @return the Game which the current Turn belongs to
+	 */
 	public Game getGame(){
+		
 		return dc.getGame(turn.getGameId());
-	}//TODO: Oklar metod?
+		
+	}
 
 	/**
-	 *
-	 * @author Adam
-	 *
+	 * Inner help-class intended to manage the download of video which is presented
+	 * to the player who will try to guess the charade
+	 * @author weCharade
 	 */
 	private class DownloadVideo extends AsyncTask<Void, Long, Boolean> {
-
-
+		
 		private Dialog dialog;
-		Context mContext;
+		private Context mContext;
 		private String SAVE_PATH;
-		private File file;
-
-		public DownloadVideo(Context context,String path) {
-			mContext=context;
+		
+		public DownloadVideo(Context context, String path) {
+			
+			mContext = context;
 			SAVE_PATH = path;
+			
 		}
 
 		@Override
 		protected void onPreExecute(){
-			downloadState = NO_DOWNLOAD;
+			downloadState = DOWNLOAD_NOT_FINISHED;
+			
+			//Show a progress Dialog which makes it possible to cancel a download
 			dialog = new Dialog(mContext);
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setContentView(R.layout.dialog_progress);
@@ -239,7 +287,6 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onClick(View v) {
-					dialog.dismiss();
 					cancel(true);
 				}
 			});
@@ -254,8 +301,7 @@ public class GuessCharadePresenter extends Presenter {
 				con = new FTPClient();
 				con.connect("ftp.mklcompetencia.se", 21);
 				if (con.login("mklcompetencia.se", "ypkq4w")){
-					con.enterLocalPassiveMode(); // important!
-					System.out.println(turn.getVideoLink());
+					con.enterLocalPassiveMode();
 					con.setFileType(FTP.BINARY_FILE_TYPE);
 					File file = new File(SAVE_PATH);
 					OutputStream out = new FileOutputStream(file);
@@ -298,19 +344,27 @@ public class GuessCharadePresenter extends Presenter {
 
 		@Override
 		protected void onPostExecute(Boolean result){
+			
+			//Download is finished successfully and the guessing starts
 			if(dialog.isShowing()){
+				
 				dialog.dismiss();
-				//file.setReadable(true, false);
 				activity.setPossibleLetters(shuffleWord().toUpperCase());
 				downloadState = DOWNLOAD_FINISHED;
 				timer.start();
 				playVideo();
+				
 			}
 		}
 
 		@Override
 		protected void onCancelled(Boolean result){
+			
+			//Some error occurred while downloading
 			if(dialog.isShowing()){
+				dialog.dismiss();
+				
+				//Set new dialog
 				final Dialog dialog = new Dialog(activity);
 				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 				dialog.setContentView(R.layout.dialog_negative);
@@ -336,12 +390,16 @@ public class GuessCharadePresenter extends Presenter {
 					}
 				});
 			}
-			else {
-				activity.finish();
-			}
 		}
 	}
 
+	/**
+	 * Show a Dialog when user tries to exit while guessing and timer is on. 
+	 * @param negativeTitle	Title of message
+	 * @param negativeText	Message text
+	 * @param buttonText1	Text on first button
+	 * @param buttonText2	Text on second button
+	 */
 	public void showNegativeDialog(String negativeTitle, String negativeText, String buttonText1, String buttonText2) {
 		final Dialog dialog = new Dialog(activity);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -367,11 +425,15 @@ public class GuessCharadePresenter extends Presenter {
 			public void onClick(View v) {
 				dialog.dismiss();
 				stopTimer();
-				turn.setRecPlayerScore(2);//TODO: what score should rec player get if answerplayer exits?
-				turn.setAnsPlayerScore(0);//TODO: 0 score if exits this turn.
+				
+				//Player who records receives 2 points and player who exits receives 0 points
+				turn.setRecPlayerScore(2);
+				turn.setAnsPlayerScore(0);
 				turn.setState(Turn.FINISH);
 				updateModel();
-				Intent intent = new Intent(activity, StartActivity.class);/*TODO:GameDashboard.class*/
+				
+				//Go back to StartActivity
+				Intent intent = new Intent(activity, StartActivity.class);
 				intent.putExtra("Game", getGame());
 				activity.startActivity(intent);
 				activity.finish();
@@ -382,6 +444,8 @@ public class GuessCharadePresenter extends Presenter {
 
 			@Override
 			public void onClick(View v) {
+				
+				//Continue guessing
 				dialog.dismiss();
 			}
 		});
@@ -394,7 +458,7 @@ public class GuessCharadePresenter extends Presenter {
 		if(checkRightWord(answerWord)){
 			videoView.stopPlayback();
 			stopTimer();
-			activity.gameState = GuessCharadeActivity.NO_GAME;
+			activity.gameState = GuessCharadeActivity.GAME_NOT_FINISHED;
 
 			//Update relevant information
 			turn.setRecPlayerScore(3);
@@ -402,6 +466,7 @@ public class GuessCharadePresenter extends Presenter {
 			turn.setState(Turn.FINISH);
 			updateModel();
 
+			//Create dialog
 			final Dialog dialog = new Dialog(activity);
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setContentView(R.layout.dialog_positive);
@@ -431,7 +496,9 @@ public class GuessCharadePresenter extends Presenter {
 			});
 			dialog.show();
 		}
-		else{	
+		else{
+			
+			//If guessed wrong, go back and continue guessing
 			activity.showNegativeDialog("Charade", "You guesssed wrong, hurry up!", "Retry");
 		}    
 

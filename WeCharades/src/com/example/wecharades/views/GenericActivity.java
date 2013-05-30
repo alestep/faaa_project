@@ -84,10 +84,11 @@ public abstract class GenericActivity extends Activity {
 
 		ArrayList<View> result = new ArrayList<View>();
 		
-		/*	Add all children of the ViewGroup and eventually return the 
-		*	ArryaList containing the views.Childrens of a children in a ViewGroup are
-		*	added to the list by recursively calling the method.
-		*/
+		/*	
+		 * Add all children of the ViewGroup and eventually return the 
+		 * ArryaList containing the views.Childrens of a children in a ViewGroup are
+		 * added to the list by recursively calling the method.
+		 */
 		ViewGroup vg = (ViewGroup) view;
 		for (int i = 0; i < vg.getChildCount(); i++) {
 

@@ -28,18 +28,15 @@ public class GuessCharadeActivity extends GenericActivity  {
 	private VideoView videoView;
 	private GuessCharadePresenter presenter;
 	private TextView timerView;
-	
-	/*
-	 * Constants declared public in order to access them from class GuessCharadePresenter.
-	 * NO_GAME is the initial state and is used to evaluate how to act when the a game is resumed.
-	 */
-	public int gameState = NO_GAME;
-	public static final int NO_GAME = 0;
+
+	//Constants declared public in order to access them from class GuessCharadePresenter.
+	public int gameState = GAME_NOT_FINISHED;
+	public static final int GAME_NOT_FINISHED = 0;
 	public  static final int GAME_FINISHED = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, new GuessCharadePresenter(this, (Turn) getIntent().getExtras().getSerializable("Turn")));
+		super.onCreate(savedInstanceState, new GuessCharadePresenter(this));
 		setContentView(R.layout.guessvideo);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
@@ -69,10 +66,35 @@ public class GuessCharadeActivity extends GenericActivity  {
 	protected void onResume(){
 		
 		//Resumes the video streaming if download is finished and the turn is not ongoing TODO: Kolla om detta är rätt?
-		if(presenter.downloadState == GuessCharadePresenter.DOWNLOAD_FINISHED && gameState == NO_GAME){
+		if(presenter.downloadState == GuessCharadePresenter.DOWNLOAD_FINISHED && gameState == GAME_NOT_FINISHED){
 			presenter.playVideo();
 		}
 		super.onResume();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
+		//Evaluate a back press.
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			
+			//Makes the user aware of that he or she will lose the turn if pushing back-button while video is streaming
+			if(presenter.downloadState != GuessCharadePresenter.DOWNLOAD_NOT_FINISHED)
+				presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
+			
+			//If a turn is not active, a back press results in that GuessCharadeAcitivty finishes
+			else{
+				finish();
+			}
+			return true;
+		}
+		
+		//Makes the user aware of that he or she will lose the turn if pushing menu-button while video is streaming
+		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
+			presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -100,31 +122,6 @@ public class GuessCharadeActivity extends GenericActivity  {
 	 */
 	public void onClickGuess(View view){
 		presenter.evaluateGuess(answerWord.getText().toString());                  
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		
-		//Evaluate a back press.
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			
-			//Makes the user aware of that he or she will lose the turn if pushing back-button while video is streaming
-			if(presenter.downloadState != GuessCharadePresenter.NO_DOWNLOAD)
-				presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
-			
-			//If a turn is not active, a back press results in that GuessCharadeAcitivty finishes
-			else{
-				finish();
-			}
-			return true;
-		}
-		
-		//Makes the user aware of that he or she will lose the turn if pushing menu-button while video is streaming
-		if ((keyCode == KeyEvent.KEYCODE_MENU)) {
-			presenter.showNegativeDialog("Warning", "If you exit you will lose this turn", "Exit", "Return");
-			return true;
-		}
-		return false;
 	}
 	
 	/*

@@ -14,22 +14,34 @@ import com.example.wecharades.model.DatabaseException;
 import com.example.wecharades.model.Player;
 import com.example.wecharades.views.HighScoreActivity;
 
+/**
+ * Presenter-class intended to manage information connected to the HighScoreActivity
+ * @author weCharade
+ */
 public class HighScorePresenter extends Presenter {
 
 	HighScoreActivity activity;
 
+	/**
+	 * Create an instance of HighScorePresenter
+	 * @param activity
+	 */
 	public HighScorePresenter(HighScoreActivity activity) {
 		super(activity);
 		this.activity = activity;
 	}
 
 	/**
-	 * Creates an table with highscores
+	 * Create a table with high scores
 	 * @param table
 	 */
 	public void updateHighScores(TableLayout table){
+		
+		//Indicate something being fetched in the background
 		activity.showProgressBar();
+		
 		try{
+			//Retrieve list of all players and order them by global score
 			ArrayList<Player> allPlayers = dc.getAllPlayerObjects();
 
 			Collections.sort(allPlayers, new Comparator<Player>(){
