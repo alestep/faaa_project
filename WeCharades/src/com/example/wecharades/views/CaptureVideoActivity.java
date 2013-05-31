@@ -1,12 +1,7 @@
 package com.example.wecharades.views;
 
-import java.util.List;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -29,12 +24,13 @@ public class CaptureVideoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//reference to the current of the game
 		this.turn = (Turn) getIntent().getSerializableExtra(Database.TURN);
 		dispatchTakeVideoIntent();
 	}
 	
 	/**
-	 * 
+	 * Initiates the device's built in video recording application.
 	 */
 	private void dispatchTakeVideoIntent(){
 			intentCamera = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
@@ -43,7 +39,9 @@ public class CaptureVideoActivity extends Activity {
 			intentCamera.putExtra(android.provider.MediaStore.EXTRA_SIZE_LIMIT, 12);
 			startActivityForResult(intentCamera, REQUEST_VIDEO_CAPTURED);	
 	}
-
+	/**
+	 * Starts the VideoUploadActivity on a successful recording with the camera.
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK){
@@ -63,19 +61,5 @@ public class CaptureVideoActivity extends Activity {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param context
-	 * @param action
-	 * @return
-	 */
-	public static boolean isIntentAvailable(Context context, String action) {
-		final PackageManager packageManager = context.getPackageManager();
-		final Intent intent = new Intent(action);
-		List<ResolveInfo> list =
-				packageManager.queryIntentActivities(intent,
-						PackageManager.MATCH_DEFAULT_ONLY);
-		return list.size() > 0;
-	}
 }
 
