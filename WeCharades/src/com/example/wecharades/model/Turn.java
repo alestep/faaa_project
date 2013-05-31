@@ -173,6 +173,15 @@ public class Turn implements Serializable, Comparable<Turn> {
 	}
 	
 	/**
+	 * Get the hashCode for this turn
+	 * @return the hash value
+	 */
+	@Override
+	public int hashCode(){
+		return getGameId().hashCode() + getRecPlayer().hashCode() + getAnsPlayer().hashCode() + getTurnNumber();
+	}
+	
+	/**
 	 * Check if equals
 	 * @param obj - an object to check
 	 * @return - if the object equals the turn
