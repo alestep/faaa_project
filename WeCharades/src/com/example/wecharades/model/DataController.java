@@ -362,8 +362,7 @@ public class DataController extends Observable implements Observer{
 			 * 	as corrupted, and will be replaced by the database-games.
 			 *  This test should not be done on finished games, as it then deletes this game from local storage.	
 			 */	
-			else{
-				if (
+			else if (
 						((localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 								||
 								(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO))
@@ -371,7 +370,7 @@ public class DataController extends Observable implements Observer{
 						){
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
-				}
+				
 			}
 		}
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
