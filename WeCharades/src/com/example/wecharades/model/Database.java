@@ -388,7 +388,7 @@ public class Database extends Observable implements IDatabase {
 					object.put(GAME_PLAYER_CURRENT, game.getCurrentPlayer().getParseId());
 					object.put(GAME_TURN, game.getTurnNumber());
 					object.put(GAME_FINISH, game.isFinished());
-					object.saveInBackground();
+					object.saveEventually();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
@@ -478,7 +478,7 @@ public class Database extends Observable implements IDatabase {
 					dbTurn.put(TURN_VIDEOLINK, turn.getVideoLink());
 					dbTurn.put(TURN_PLAYER_REC_SCORE, turn.getRecPlayerScore());
 					dbTurn.put(TURN_PLAYER_ANS_SCORE, turn.getAnsPlayerScore());
-					dbTurn.saveInBackground();
+					dbTurn.saveEventually();
 				} else{
 					sendError(new DatabaseException(e.getCode(), e.getMessage()));
 				}
@@ -521,6 +521,10 @@ public class Database extends Observable implements IDatabase {
 						try{
 							ParseObject.saveAll(result);
 						} catch(ParseException e2){
+							for(ParseObject obj : result){
+								//Done to ensure the save will go through!
+								obj.saveEventually();
+							}
 							sendError(new DatabaseException(e2.getCode(), e2.getMessage()));
 						}
 					} else{

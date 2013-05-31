@@ -159,10 +159,12 @@ public class Model implements Serializable{
 	 * @param games
 	 */
 	public void putGameList(ArrayList<Game> games){
-		for(Game game : games){
-			putGame(game);
+		if(games != null){
+			for(Game game : games){
+				putGame(game);
+			}
+			SAVED = false;
 		}
-		SAVED = false;
 	}
 
 	/**
@@ -170,18 +172,20 @@ public class Model implements Serializable{
 	 * @param game - the game to be updated
 	 */
 	public void putGame(Game game){
-		//This is actually kind of fast, although it might look a bit weird.
-		ArrayList<Turn> tempTurns;
-		if(gameList.containsKey(game) && gameList.get(game) != null){
-			tempTurns = gameList.get(game);
-			gameList.remove(game);
-			gameList.put(game,tempTurns);
-			gameIdList.put(game.getGameId(), game);
-		} else{
-			gameList.put(game, null);
-			gameIdList.put(game.getGameId(), game);
+		if(game != null){
+			//This is actually kind of fast, although it might look a bit weird.
+			ArrayList<Turn> tempTurns;
+			if(gameList.containsKey(game) && gameList.get(game) != null){
+				tempTurns = gameList.get(game);
+				gameList.remove(game);
+				gameList.put(game,tempTurns);
+				gameIdList.put(game.getGameId(), game);
+			} else{
+				gameList.put(game, null);
+				gameIdList.put(game.getGameId(), game);
+			}
+			SAVED = false;
 		}
-		SAVED = false;
 	}
 
 	/**
@@ -198,7 +202,10 @@ public class Model implements Serializable{
 	 * @return a Game, or null it does not exist
 	 */
 	public Game getGame(String parseId){
-		return gameIdList.get(parseId);
+		if(parseId != null){
+			return gameIdList.get(parseId);
+		}
+		return null;
 	}
 
 	/**
@@ -207,9 +214,11 @@ public class Model implements Serializable{
 	 * @return - true if the game was in the list, false otherwise
 	 */
 	public void removeGame(Game game){
-		gameIdList.remove(game.getGameId());
-		gameList.remove(game);
-		SAVED = false;
+		if(game != null){
+			gameIdList.remove(game.getGameId());
+			gameList.remove(game);
+			SAVED = false;
+		}
 	}
 
 	/**
@@ -244,8 +253,10 @@ public class Model implements Serializable{
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
 		//Do not simply replace the list, as this might cause problems with the amount of turns etc.
-		for(Turn turn : turnList){
-			putTurn(turn);
+		if(turnList != null){
+			for(Turn turn : turnList){
+				putTurn(turn);
+			}
 		}
 	}
 
@@ -313,7 +324,7 @@ public class Model implements Serializable{
 	 */
 	public Player getPlayer(String username){
 		Player retPlayer = null;
-		if(storedPlayerNames.containsKey(username)){
+		if(username != null && storedPlayerNames.containsKey(username)){
 			retPlayer = storedPlayers.get(storedPlayerNames.get(username));
 		}
 		return retPlayer;
@@ -325,7 +336,10 @@ public class Model implements Serializable{
 	 * @return a Player or null if not found
 	 */
 	public Player getPlayerById(String parseId){
-		return storedPlayers.get(parseId);
+		if(parseId != null){
+			return storedPlayers.get(parseId);
+		}
+		return null;
 	}
 
 	/**
