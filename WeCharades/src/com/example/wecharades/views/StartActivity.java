@@ -68,7 +68,7 @@ public class StartActivity extends GenericActivity {
 	@Override
 	public void onPause(){
 		super.onPause();
-		presenter.setNotUpdating();
+		hideProgressBar();
 	}
 
 	/**
