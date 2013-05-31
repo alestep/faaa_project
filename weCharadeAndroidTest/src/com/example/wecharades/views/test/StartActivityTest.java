@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.example.wecharades.R;
+import com.example.wecharades.presenter.SeparatedListAdapter;
 import com.example.wecharades.views.StartActivity;
 
 /**
@@ -46,26 +47,7 @@ ActivityInstrumentationTestCase2<StartActivity> {
 			}
 		});
 	}
-
-	/**
-	 * Test setGameList(final SeparatedListAdapter adapter)
-	 * @throws Throwable
-	 */
-	public void testSetGameList_1()
-			throws Throwable {
-		//TODO: ask alexander how to get items from SeperatedListAdapter... 
-		//TODO: 1) create adapter. 2) user setGameList(). 3) assertEquals getListItemsStuff...
-		assertTrue(true);
-	}
-
-	/**
-	 * test setInvitations()
-	 * @throws Throwable
-	 */
-//	public void testSetInvitations()
-//			throws Throwable {
-//		//Not possible to test because it only changes an image and there's no way to programmatically se if the image has changed-
-//	}
+	
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
