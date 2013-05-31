@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 import java.util.Stack;
@@ -356,6 +357,22 @@ public class Database extends Observable implements IDatabase {
 									Game g = idList.get(turn.getGameId());
 									ArrayList<Turn> tl = map.get(g);
 									tl.add(turn);
+								}
+								/*
+								 * This check is in place in order to only send complete sets of games and turns
+								 * 	further into the application. We ensure that passed on data is not currupted, 
+								 * 	but we cannot certainly conclude that we can delete this game, as the error might
+								 * 	arise from internet connections
+								 * 	//TODO add cloud code to do necessary checking
+								 */
+								LinkedList<Game> rmL = new LinkedList<Game>();
+								for(Map.Entry<Game, ArrayList<Turn>> pair : map.entrySet()){
+									if(pair.getValue().isEmpty() || pair.getValue().size() != 6){
+										rmL.add(pair.getKey());
+									}
+								}
+								for(Game g : rmL){
+									map.remove(g);
 								}
 								setChanged();
 								notifyObservers(new DBMessage(DBMessage.GAMELIST, map));
