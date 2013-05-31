@@ -358,11 +358,22 @@ public class DataController extends Observable implements Observer{
 			} 
 			/*
 			 * This is done to ensure that there are no errors in the current game
-			 * 	If there is a missmatch between current player and turn number/state, the local games are considered
-			 * 	as corrupted, and will be replaced by the database-games.
-			 *  This test should not be done on finished games, as it then deletes this game from local storage.	
-			 */	
-			else if (
+			 */
+			else {
+				/*
+				 * Test to see if a received game does not have any turns.
+				 * 	In that event, delete the local turn and try to fetch next time.
+				 * 	TODO If this is repeated three times, we delete the object from the database. 
+				 */
+				if(dbGame.getValue() == null || dbGame.getValue().isEmpty()){
+					m.removeGame(dbGame.getKey());
+				} 
+				/*
+				 * 	If there is a missmatch between current player and turn number/state, the local games are considered
+				 * 	as corrupted, and will be replaced by the database-games.
+				 *  This test should not be done on finished games, as it then deletes this game from local storage.	
+				 */	
+				else if (
 						((localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getRecPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.INIT)
 								||
 								(localGame.getCurrentPlayer().equals(m.getCurrentTurn(localGame).getAnsPlayer()) && m.getCurrentTurn(localGame).getState() != Turn.VIDEO))
@@ -370,13 +381,13 @@ public class DataController extends Observable implements Observer{
 						){
 					m.putGame(dbGame.getKey());
 					m.putTurns(dbGame.getValue());
-				
+				}
 			}
 		}
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 		return m.getGames();
 	}
-	
+
 	/**
 	 * This part removes any games that are "to old".
 	 * @param dbGames - the list of games received form the database.
