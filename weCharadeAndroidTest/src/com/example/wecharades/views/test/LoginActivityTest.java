@@ -1,6 +1,5 @@
 package com.example.wecharades.views.test;
 
-
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.example.wecharades.views.LoginActivity;

@@ -87,7 +87,7 @@ public class AccountActivity extends GenericActivity {
 	 * @param numberOfFinishedGames
 	 * @param numberOfWonGames
 	 * @param numberOfLostGames
-	 * @param numberOfDrawGames
+	 * @param numberOfDrawGames 
 	 */
 	public void updatePlayerInformation(String newUsername, int globalRanking,
 			int globalScore, int numberOfFinishedGames, int numberOfWonGames,

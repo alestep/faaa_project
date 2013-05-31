@@ -67,7 +67,9 @@ public class Model implements Serializable{
 
 	private Model(Context context){
 		//Creating a file to save to
-		saveModel(context);
+		if(context != null){
+			saveModel(context);
+		}
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class Model implements Serializable{
 	 * @param context - used to retrieve a save location
 	 */
 	public void saveModel(Context context){
-		if(!SAVED){
+		if(!SAVED && context != null){
 			try {
 				FileOutputStream ops = context.openFileOutput(SAVE_FILE, Context.MODE_PRIVATE);
 				ObjectOutputStream oOut = new ObjectOutputStream(ops);
@@ -118,18 +120,20 @@ public class Model implements Serializable{
 	 */
 	private static Model loadModel(Context context){
 		Model singleModel = null;
-		try {
-			ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
-			Object obj = oIn.readObject();
-			if (obj != null && obj.getClass().equals(Model.class)){
-				singleModel = (Model) obj;
+		if(context != null){
+			try {
+				ObjectInputStream oIn = new ObjectInputStream(context.openFileInput(SAVE_FILE));
+				Object obj = oIn.readObject();
+				if (obj != null && obj.getClass().equals(Model.class)){
+					singleModel = (Model) obj;
+				}
+			} catch (FileNotFoundException e1){
+				Log.d("IO - Model load", "No file found");
+			} catch (IOException e2){
+				Log.d("IO - Model load", "IOException");
+			} catch (ClassNotFoundException e3){
+				Log.d("IO - Model load", "ClassNotFound");
 			}
-		} catch (FileNotFoundException e1){
-			Log.d("IO - Model load", "No file found");
-		} catch (IOException e2){
-			Log.d("IO - Model load", "IOException");
-		} catch (ClassNotFoundException e3){
-			Log.d("IO - Model load", "ClassNotFound");
 		}
 		return singleModel;
 	}
@@ -139,11 +143,13 @@ public class Model implements Serializable{
 	 * @param context
 	 */
 	private static void eraseModel(Context context){
-		File modelFile = new File(context.getFilesDir(), SAVE_FILE);
-		if(modelFile.delete()){
-			Log.d("Model - File:","Removed file");
+		if(context != null){
+			File modelFile = new File(context.getFilesDir(), SAVE_FILE);
+			if(modelFile.delete()){
+				Log.d("Model - File:","Removed file");
+			}
+			RECREATE = true;
 		}
-		RECREATE = true;
 	}
 
 	//Games ---------------------------------------------------------------
@@ -153,10 +159,12 @@ public class Model implements Serializable{
 	 * @param games
 	 */
 	public void putGameList(ArrayList<Game> games){
-		for(Game game : games){
-			putGame(game);
+		if(games != null){
+			for(Game game : games){
+				putGame(game);
+			}
+			SAVED = false;
 		}
-		SAVED = false;
 	}
 
 	/**
@@ -164,18 +172,20 @@ public class Model implements Serializable{
 	 * @param game - the game to be updated
 	 */
 	public void putGame(Game game){
-		//This is actually kind of fast, although it might look a bit weird.
-		ArrayList<Turn> tempTurns;
-		if(gameList.containsKey(game) && gameList.get(game) != null){
-			tempTurns = gameList.get(game);
-			gameList.remove(game);
-			gameList.put(game,tempTurns);
-			gameIdList.put(game.getGameId(), game);
-		} else{
-			gameList.put(game, null);
-			gameIdList.put(game.getGameId(), game);
+		if(game != null){
+			//This is actually kind of fast, although it might look a bit weird.
+			ArrayList<Turn> tempTurns;
+			if(gameList.containsKey(game) && gameList.get(game) != null){
+				tempTurns = gameList.get(game);
+				gameList.remove(game);
+				gameList.put(game,tempTurns);
+				gameIdList.put(game.getGameId(), game);
+			} else{
+				gameList.put(game, null);
+				gameIdList.put(game.getGameId(), game);
+			}
+			SAVED = false;
 		}
-		SAVED = false;
 	}
 
 	/**
@@ -192,7 +202,10 @@ public class Model implements Serializable{
 	 * @return a Game, or null it does not exist
 	 */
 	public Game getGame(String parseId){
-		return gameIdList.get(parseId);
+		if(parseId != null){
+			return gameIdList.get(parseId);
+		}
+		return null;
 	}
 
 	/**
@@ -201,9 +214,11 @@ public class Model implements Serializable{
 	 * @return - true if the game was in the list, false otherwise
 	 */
 	public void removeGame(Game game){
-		gameIdList.remove(game.getGameId());
-		gameList.remove(game);
-		SAVED = false;
+		if(game != null){
+			gameIdList.remove(game.getGameId());
+			gameList.remove(game);
+			SAVED = false;
+		}
 	}
 
 	/**
@@ -238,8 +253,10 @@ public class Model implements Serializable{
 	 */
 	public void putTurns(ArrayList<Turn> turnList) throws NoSuchElementException{
 		//Do not simply replace the list, as this might cause problems with the amount of turns etc.
-		for(Turn turn : turnList){
-			putTurn(turn);
+		if(turnList != null){
+			for(Turn turn : turnList){
+				putTurn(turn);
+			}
 		}
 	}
 
@@ -249,7 +266,10 @@ public class Model implements Serializable{
 	 * @return - an arraylist of turns
 	 */
 	public ArrayList<Turn> getTurns(Game game){
-		return gameList.get(game);
+		if(game != null){
+			return gameList.get(game);
+		}
+		return null;
 	}
 
 	/**
@@ -304,7 +324,7 @@ public class Model implements Serializable{
 	 */
 	public Player getPlayer(String username){
 		Player retPlayer = null;
-		if(storedPlayerNames.containsKey(username)){
+		if(username != null && storedPlayerNames.containsKey(username)){
 			retPlayer = storedPlayers.get(storedPlayerNames.get(username));
 		}
 		return retPlayer;
@@ -316,7 +336,10 @@ public class Model implements Serializable{
 	 * @return a Player or null if not found
 	 */
 	public Player getPlayerById(String parseId){
-		return storedPlayers.get(parseId);
+		if(parseId != null){
+			return storedPlayers.get(parseId);
+		}
+		return null;
 	}
 
 	/**

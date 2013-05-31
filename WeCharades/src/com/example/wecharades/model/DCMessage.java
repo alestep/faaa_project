@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public class DCMessage implements IMessage{
-	
+
 	/*
 	 * Standard message types are declared here
 	 */
@@ -35,39 +35,41 @@ public class DCMessage implements IMessage{
 		//We make some type controls to increase the validity of provided data.
 		if(data != null){
 			switch(message){
-			case(10)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE;} else{this.message = UNDEFINED;} break;
-			case(20)	: if(data.getClass().equals(String.class))	{this.message = ERROR;} else{this.message = UNDEFINED;} break;
-			case(30)	: if(data instanceof List){
-				if(!((List) data).isEmpty()){
-					if(((List) data).iterator().next().getClass().equals(Game.class)){
+			case(MESSAGE)	: if(data.getClass().equals(String.class)) 	{this.message = MESSAGE;} else{this.message = UNDEFINED;} break;
+			case(ERROR)		: if(data.getClass().equals(String.class))	{this.message = ERROR;} else{this.message = UNDEFINED;} break;
+			case(DATABASE_GAMES): 
+				if(data instanceof List){
+					if(!((List) data).isEmpty()){
+						if(((List) data).iterator().next().getClass().equals(Game.class)){
+							this.message = message;
+						} else{
+							this.message = UNDEFINED;
+						}
+					} else{
+						//If the list is empty, we can safely ignore containing type
 						this.message = message;
 					}
-				} else{
-					this.message = message;
-				}
-			} else{this.message = message;} break;
-//					&& (
-//							!((List) data).isEmpty() 
-//							&& ((List) data).get(0).getClass().equals(Game.class)
-//							)
-//							||	((List) data).isEmpty()
-//					)//if
-//			{this.message = message;} else{this.message = UNDEFINED;} break;
-			case(40)	: if(data instanceof List 
-					&& (
-							!((List) data).isEmpty() 
-							&& ((List) data).get(0).getClass().equals(Invitation.class)
-							)
-							||	((List) data).isEmpty()
-					)//if
-			{this.message = message;} else{this.message = UNDEFINED;} break;
-			default		: this.message = UNDEFINED; break;
+				} else{this.message = UNDEFINED;} break;
+			case(INVITATIONS): 
+				if(data instanceof List){
+					if(!((List) data).isEmpty()){
+						if(((List) data).iterator().next().getClass().equals(Invitation.class)){
+							this.message = message;
+						} else{
+							this.message = UNDEFINED;
+						}
+					} else{
+						//If the list is empty, we can safely ignore containing type
+						this.message = message;
+					}
+				} else{ this.message = UNDEFINED;} break;
+			default: this.message = UNDEFINED; break;
 			}
 		} else{
 			this.message = UNDEFINED;
 		}
 	}
-	
+
 	/**
 	 * Get the message code
 	 * @return an messege expressed as an int

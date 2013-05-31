@@ -67,14 +67,11 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
-		
-		//Sets where in the FTP-server the video should be uploaded
 		setServerStorageLocation();
 		
 		//Initiate the uploading
 		upload = new UploadVideo(context, path);
 		upload.execute();
-		
 	}
 
 	/**
@@ -173,6 +170,7 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onPreExecute(){
 			
 			//Show progress dialog indicating video is being uploaded
+
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.setContentView(R.layout.dialog_progress);
@@ -181,10 +179,10 @@ public class VideoUploadPresenter extends Presenter {
 
 			TextView progressTitle = (TextView) dialog.findViewById(R.id.progressTitle);
 			progressTitle.setText("Uploading");
-			
+
 			TextView progressText = (TextView) dialog.findViewById(R.id.progressText);
 			progressText.setText("Please wait");
-			
+
 			dialog.show();
 			Button cancelButton = (Button) dialog.findViewById(R.id.ok);
 			cancelButton.setOnClickListener(new OnClickListener(){
@@ -194,9 +192,10 @@ public class VideoUploadPresenter extends Presenter {
 					
 					//Go to onCancelled-method
 					cancel(true);
-					
+
 				}
 			});
+
 		}
 
 		@Override
@@ -262,16 +261,16 @@ public class VideoUploadPresenter extends Presenter {
 			//Uploaded was successful and user is directed to StartActivity
 			if(dialog.isShowing()){
 				dialog.dismiss();
-				
-				//Path to video on stored on server is connected to the turn
-				turn.setVideoLink(serverPath);
-				
-				//State is set to VIDEO, which indicates that video has been uploaded
-				turn.setState(Turn.VIDEO);
-				updateModel();
-				
-				//Send notification to opponent
-				pushNotficationtoOtherPlayer();
+
+				if(turn.getRecPlayer().equals(dc.getCurrentPlayer())){
+					//Path to video on stored on server is connected to the turn
+					turn.setVideoLink(serverPath);
+					//State is set to VIDEO, which indicates that video has been uploaded
+					turn.setState(Turn.VIDEO);
+					updateModel();
+					//Send notification to opponent
+					pushNotficationtoOtherPlayer();
+				}
 				goToStartActivity();
 			}
 		}

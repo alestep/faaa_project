@@ -23,10 +23,16 @@ import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 /**
+<<<<<<< HEAD
  * Presenter-class intended to provide StartActivity with relevant information
  * and manage communication with DataController and other Model-instances.
  * Class implements the Observer interface and observes changes in the DataController-class
  * @author weCharade
+=======
+ * 
+ * @author weCharade
+ *
+>>>>>>> master
  */
 public class StartPresenter extends Presenter implements Observer{
 
@@ -40,7 +46,7 @@ public class StartPresenter extends Presenter implements Observer{
 	
 	//Map which keeps track of games, its player and the players' scores.
 	private Map<Game, Map<Player, Integer>> score;
-	private boolean isUpdating = false;
+
 
 	/**
 	 * Create an instance of StartPresenter
@@ -98,21 +104,10 @@ public class StartPresenter extends Presenter implements Observer{
 		//Add DataController observer
 		dc.addObserver(this);
 		updateList(dc.getGames());
-		
-		//To avoid spamming of the update-button. This is reset when activity pauses.
-		if(!isUpdating){ 
-			dc.fetchGames();
-			dc.getInvitations();
-			activity.showProgressBar();
-			isUpdating = true;
-		}
-	}
+		dc.fetchGames();
+		dc.getInvitations();
+		activity.showProgressBar();
 
-	/**
-	 * Change state of the isUpdating-variable
-	 */
-	public void setNotUpdating(){
-		isUpdating = false;
 	}
 
 	/**
@@ -240,7 +235,6 @@ public class StartPresenter extends Presenter implements Observer{
 			if(recent == 2){
 				activity.hideProgressBar();
 				recent = 0;
-				isUpdating = false;
 			}
 		}
 	}
