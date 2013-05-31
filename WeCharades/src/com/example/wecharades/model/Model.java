@@ -255,7 +255,10 @@ public class Model implements Serializable{
 	 * @return - an arraylist of turns
 	 */
 	public ArrayList<Turn> getTurns(Game game){
-		return gameList.get(game);
+		if(game != null){
+			return gameList.get(game);
+		} 
+		return null;
 	}
 
 	/**
