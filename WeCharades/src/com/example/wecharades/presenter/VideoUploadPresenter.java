@@ -58,39 +58,39 @@ public class VideoUploadPresenter extends Presenter {
 	 * @param path
 	 */
 	public void uploadVideo(Context context, String path) {
-//		final Context c = context;
-//		final String p = path;
+		//		final Context c = context;
+		//		final String p = path;
 		setServerStorageLocation();
 		upload = new UploadVideo(context, path);
 		upload.execute();
 		//Check if the user has internet connection
-//		if(isNetworkConnected()) { //TODO KOlla lite på detta sen
-//			setServerStorageLocation();
-//			upload = new UploadVideo(context, path);
-//			upload.execute();
-//		} else {
-//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//			builder.setTitle("Error!")
-//			.setMessage("You've got no internet connection!")
-//			.setCancelable(false)
-//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					//Try again...
-//					uploadVideo(c,p);
-//				}
-//			})
-//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int id) {
-//					//Go to homecreen
-//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
-//					activity.startActivity(intent);
-//					activity.finish();	
-//					dialog.cancel();
-//				}
-//			});
-//			AlertDialog alert = builder.create();
-//			alert.show();
-//		}
+		//		if(isNetworkConnected()) { //TODO KOlla lite på detta sen
+		//			setServerStorageLocation();
+		//			upload = new UploadVideo(context, path);
+		//			upload.execute();
+		//		} else {
+		//			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		//			builder.setTitle("Error!")
+		//			.setMessage("You've got no internet connection!")
+		//			.setCancelable(false)
+		//			.setPositiveButton("Try again!", new DialogInterface.OnClickListener() {
+		//				public void onClick(DialogInterface dialog, int id) {
+		//					//Try again...
+		//					uploadVideo(c,p);
+		//				}
+		//			})
+		//			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		//				public void onClick(DialogInterface dialog, int id) {
+		//					//Go to homecreen
+		//					Intent intent = new Intent(activity.getApplicationContext(), StartActivity.class);
+		//					activity.startActivity(intent);
+		//					activity.finish();	
+		//					dialog.cancel();
+		//				}
+		//			});
+		//			AlertDialog alert = builder.create();
+		//			alert.show();
+		//		}
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class VideoUploadPresenter extends Presenter {
 
 		@Override
 		protected void onPreExecute(){
-			
+
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.setContentView(R.layout.dialog_progress);
@@ -175,10 +175,10 @@ public class VideoUploadPresenter extends Presenter {
 
 			TextView progressTitle = (TextView) dialog.findViewById(R.id.progressTitle);
 			progressTitle.setText("Uploading");
-			
+
 			TextView progressText = (TextView) dialog.findViewById(R.id.progressText);
 			progressText.setText("Please wait");
-			
+
 			dialog.show();
 			Button cancelButton = (Button) dialog.findViewById(R.id.ok);
 			cancelButton.setOnClickListener(new OnClickListener(){
@@ -186,11 +186,11 @@ public class VideoUploadPresenter extends Presenter {
 				@Override
 				public void onClick(View v) {
 					cancel(true);
-					
+
 				}
-				
+
 			});
-			
+
 
 		}
 
@@ -253,10 +253,12 @@ public class VideoUploadPresenter extends Presenter {
 		protected void onPostExecute(Boolean result){
 			if(dialog.isShowing()){
 				dialog.dismiss();
-				turn.setVideoLink(serverPath);
-				turn.setState(Turn.VIDEO);
-				updateModel();
-				pushNotficationtoOtherPlayer();
+				if(turn.getRecPlayer().equals(dc.getCurrentPlayer())){
+					turn.setVideoLink(serverPath);
+					turn.setState(Turn.VIDEO);
+					updateModel();
+					pushNotficationtoOtherPlayer();
+				}
 				goToStartActivity();
 			}
 		}

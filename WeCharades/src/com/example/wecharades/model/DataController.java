@@ -476,7 +476,7 @@ public class DataController extends Observable implements Observer{
 		break;
 		case Turn.VIDEO : 	game.setCurrentPlayer(turn.getAnsPlayer());
 		break;
-		case Turn.FINISH : 	game.incrementTurn(); //Also sets game to finished!
+		case Turn.FINISH : 	game.incrementTurn();//Also sets game to finished!
 		break;
 		}
 		game.setLastPlayed(new Date());

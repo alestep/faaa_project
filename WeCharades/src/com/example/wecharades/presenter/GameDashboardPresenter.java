@@ -50,7 +50,7 @@ public class GameDashboardPresenter extends Presenter {
 
 		//Retrieve a turnList from DataController for a specific game
 		turnList = dc.getTurns(game);
-		if(turnList != null) {
+		if(turnList != null || !turnList.isEmpty()) {
 			Collections.sort(turnList);
 			buttonList = getAllButtons(table);
 
@@ -59,7 +59,6 @@ public class GameDashboardPresenter extends Presenter {
 
 			updateButtons(turnList, buttonList);
 		}
-
 	}
 
 	/**

@@ -24,7 +24,7 @@ import com.parse.PushService;
 
 /**
  * 
- * @author Alexander
+ * @author weCharade
  *
  */
 public class StartPresenter extends Presenter implements Observer{
@@ -36,7 +36,7 @@ public class StartPresenter extends Presenter implements Observer{
 	private SeparatedListAdapter adapter;
 	private Map<Game, Map<Player, Integer>> score;
 
-	private boolean isUpdating = false;
+	//private boolean isUpdating = false;
 
 	public StartPresenter(StartActivity activity) {
 		super(activity);
@@ -73,16 +73,9 @@ public class StartPresenter extends Presenter implements Observer{
 	public void update(){
 		dc.addObserver(this);
 		updateList(dc.getGames());
-		if(!isUpdating){ //To avoid spamming of the update-button. This is reset when activity pauses.
-			dc.fetchGames();
-			dc.getInvitations();
-			activity.showProgressBar();
-			isUpdating = true;
-		}
-	}
-	
-	public void setNotUpdating(){
-		isUpdating = false;
+		dc.fetchGames();
+		dc.getInvitations();
+		activity.showProgressBar();
 	}
 
 	/**
@@ -183,7 +176,6 @@ public class StartPresenter extends Presenter implements Observer{
 			if(recent == 2){
 				activity.hideProgressBar();
 				recent = 0;
-				isUpdating = false;
 			}
 		}
 	}
