@@ -1,10 +1,7 @@
 package com.example.wecharades.views.test;
 
-
-import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.wecharades.presenter.LoginPresenter;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
@@ -83,16 +80,6 @@ public class LoginActivityTest extends
 		solo.waitForDialogToOpen(5000);
 		solo.clickOnButton("OK");
 		
-	}
-	
-	/**
-	 * Test to get the progressBar
-	 */
-	
-	public void testGetProgressBar() {
-		LoginPresenter lp = new LoginPresenter(getActivity());
-		
-		assertTrue(true);
 	}
 	
 	@Override
