@@ -6,9 +6,9 @@ import com.example.wecharades.views.RegisterActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
 /**
- * Test class to test the RegisterActivity. Test ID: T01 in the Acceptance testing.
- * @author Adam
- *
+ * Test class to test the RegisterActivity. 
+ * @author weCharade
+ * @see Test ID: T01 in the Acceptance Tests document.
  */
 public class RegisterActivityTest extends
 		ActivityInstrumentationTestCase2<RegisterActivity> {
@@ -85,7 +85,8 @@ public class RegisterActivityTest extends
 		solo.waitForDialogToClose(3000);
 	}
 	/**
-	 * Variation 6 - All 4 different cases are depending on if there is a user already registered in the database or if there exists an internetconnection.
+	 * @pre User not already registered. No internet connection for case 4.
+	 * Variation 6
 	 */
 	public void testCorrectInputs(){
 		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);

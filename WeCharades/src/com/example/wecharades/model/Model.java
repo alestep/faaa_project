@@ -268,7 +268,7 @@ public class Model implements Serializable{
 	public ArrayList<Turn> getTurns(Game game){
 		if(game != null){
 			return gameList.get(game);
-		} 
+		}
 		return null;
 	}
 

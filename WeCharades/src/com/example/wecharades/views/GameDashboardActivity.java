@@ -83,8 +83,6 @@ public class GameDashboardActivity extends GenericActivity {
 	
 	@Override
 	protected RefreshProgressBar getProgressBar() {
-		
 		return null;
-		
 	}
 }

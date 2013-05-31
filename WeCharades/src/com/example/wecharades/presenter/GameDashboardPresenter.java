@@ -45,19 +45,20 @@ public class GameDashboardPresenter extends Presenter {
 	 * @param table
 	 */
 	public void createDashboard(TableLayout table) {
-
 		//Get the game from the clicked object in StartActivity
 		game = (Game) activity.getIntent().getSerializableExtra("Game");
 
-		//Retrieve a turnList from DataController for a specific game
-		turnList = dc.getTurns(game);
-		Collections.sort(turnList);
-		buttonList = getAllButtons(table);
+		if(game != null ) {
+			//Retrieve a turnList from DataController for a specific game
+			turnList = dc.getTurns(game);
+			Collections.sort(turnList);
+			buttonList = getAllButtons(table);
 
-		activity.setTitle("Game with " + game.getOpponent(dc.getCurrentPlayer()));
-		updateScore();
+			activity.setTitle("Game with " + game.getOpponent(dc.getCurrentPlayer()));
+			updateScore();
 
-		updateButtons(turnList, buttonList);
+			updateButtons(turnList, buttonList);
+		}
 
 	}
 
@@ -112,7 +113,7 @@ public class GameDashboardPresenter extends Presenter {
 
 		//The button is locked for turns with greater turnNumber than the current turnNumber of the game
 		if (turn.getTurnNumber() > game.getTurnNumber()) {
-			
+
 			buttonText = "Locked";
 			button.setEnabled(false);
 		}
@@ -122,7 +123,7 @@ public class GameDashboardPresenter extends Presenter {
 		 * present in order to be able to show a finished game.
 		 */
 		else if(turn.getState() == Turn.FINISH || game.isFinished() || turn.getTurnNumber() < game.getTurnNumber()) {
-			
+
 			//Set current user's points received for the specific turn
 			buttonText = (turn.getAnsPlayer().equals(dc.getCurrentPlayer())) ? 
 					turn.getAnsPlayerScore() + " points" 
@@ -131,16 +132,16 @@ public class GameDashboardPresenter extends Presenter {
 
 			//The button shows "Record video" if the current user is the player who should record
 		} else if (turn.getState() == Turn.INIT && turn.getRecPlayer().equals(dc.getCurrentPlayer())) {
-			
+
 			buttonText = "Record video";
 			button.setOnClickListener(buttonListener(false, turn)); //the player should record video
 
 			//The button shows "Guess charade " if the current user is the player who should guess
 		} else if (turn.getState() == Turn.VIDEO && turn.getAnsPlayer().equals(dc.getCurrentPlayer())){
-			
+
 			buttonText = "Guess charade";
 			button.setOnClickListener(buttonListener(true, turn)); //the player should guess charade
-			
+
 			//The button is locked and showing waiting in other cases
 		} else {
 			button.setEnabled(false);
@@ -148,7 +149,7 @@ public class GameDashboardPresenter extends Presenter {
 		}
 		button.setText(buttonText);
 	} 
-	
+
 	/**
 	 * Directs the user to either GuessCharadeActivity or ShowCharadeWordActivity depending on
 	 * the current user's status as recording or guessing player.
@@ -157,7 +158,7 @@ public class GameDashboardPresenter extends Presenter {
 	 * @return
 	 */
 	private OnClickListener buttonListener(final boolean ansPlayer, final Turn turn) {
-		
+
 		//The same OnClickListener is used for all buttons, since the same thing is intended to happen
 		OnClickListener buttonListener = new View.OnClickListener() {
 
