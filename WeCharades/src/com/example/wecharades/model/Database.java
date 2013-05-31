@@ -35,8 +35,6 @@ import com.parse.SaveCallback;
 @SuppressLint("DefaultLocale")
 public class Database extends Observable implements IDatabase {
 
-	//TODO change how dbexceptions are sent
-
 	/*
 	 * These variables is used to avoid problems with using plain strings when calling the database.
 	 * 	Misspellings are not fun...
@@ -345,7 +343,7 @@ public class Database extends Observable implements IDatabase {
 								TreeMap<String, Game> idList = new TreeMap<String, Game>();
 								Game game;
 								for(ParseObject obj : gameList){
-									game = dbc.parseGame(obj); //TODO this should be changed later
+									game = dbc.parseGame(obj);
 									map.put(game, new ArrayList<Turn>());
 									idList.put(game.getGameId(), game);
 								}
@@ -354,7 +352,7 @@ public class Database extends Observable implements IDatabase {
 								 * 	We can do this in a "oneliner", but it becomes somewhat hard to read...
 								 */
 								for(ParseObject obj : resultList){
-									Turn turn = dbc.parseTurn(obj); //TODO This should also be changed later.
+									Turn turn = dbc.parseTurn(obj);
 									Game g = idList.get(turn.getGameId());
 									ArrayList<Turn> tl = map.get(g);
 									tl.add(turn);
@@ -550,6 +548,10 @@ public class Database extends Observable implements IDatabase {
 		query.whereEqualTo(PLAYER_USERNAME, playerName.toLowerCase());
 		ParseObject dbPlayer;
 		try {
+			/*
+			 * Need to get this in the main thread, 
+			 * 	as other methods rely on getting the data instantly
+			 */
 			dbPlayer = query.getFirst();
 		} catch (ParseException e) {
 			Log.d("Database", e.getMessage());
@@ -567,9 +569,11 @@ public class Database extends Observable implements IDatabase {
 	}
 
 	/**
-	 * Get a player 
+	 * Get a player: 
+	 * 	- NOTICE: IF THE PLAYER OBJECT IS NEEDED IN A QUERY, 
+	 * 	USE ParseObject.createWithoutData(_User, "id") instead
 	 * @param parseId
-	 * @return
+	 * @return a Player as a ParseObject
 	 * @throws DatabaseException
 	 */
 	private ParseObject getPlayerObject(String parseId) throws DatabaseException {
@@ -650,7 +654,7 @@ public class Database extends Observable implements IDatabase {
 						if(queryList.isEmpty()){
 							db.putRandom(player);
 							setChanged();
-							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Put in queue"));
+							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Placed in queue"));
 						} else {
 							/*
 							 * Check if the current player is in the queue 

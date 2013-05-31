@@ -15,8 +15,8 @@ public class NewGamePresenter extends Presenter {
 	public void randomInvitation() {
 		
 		//User is queued and a game is created when another user joins the queue
+		activity.showToast("Sending...");
 		dc.putInRandomQueue();
-		activity.showToast("Invitation sent");
 	}
 
 }

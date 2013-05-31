@@ -2,10 +2,21 @@ package com.example.wecharades.model;
 
 import com.parse.ParseObject;
 
+/**
+ * This class handle the conversion from database objects to
+ * 	the respective Java classes used for the internal representation.
+ * @author weCharade
+ *
+ */
 public class DatabaseConverter {
 
+	/*
+	 * We need a DataController in order to access stored users locally.
+	 * 	TODO we should move the caching of players to another class in order to reduce dependencies!
+	 */
 	DataController dc;
 
+	
 	public DatabaseConverter(DataController dc){
 		this.dc = dc;
 	}

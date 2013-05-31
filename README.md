@@ -1,16 +1,16 @@
 # weCharade for Android
 
 ## Members:
- * Anton DahlstrÃ¶m
+ * Atom058 (Anton Dahlström)
  * Alexander Stephens
  * Adam Lewestam
  * Failix Karlsson
 
 
 ## Project summary:
-We will create an app that is based loosely on the instant app Draw Something. The app will feature concepts similar to Draw Something, but will instead include video. The user will try and complete a set of charades and interact with his/her friends for a social experience.
+We will create an app which will feature charades in a competitive environment. This software is loosely based on concepts, such as DrawSomething, Quizkampen, Ruzzle and other competitive, social games on mobile devices. We have the goal to release this application sometime in the near future, although it still require some work in order to be finished.
 
-##Requirements and Dependencies:
-In order to run the application
-
+## Acknoledgements:
+* We have used the services of Parse.com for the duration of this application development. This has worked like a charm, and have reduced the amount of work required in order to implement this application.
+* In order to create a nicer user experience, we used FlatUI colour and general stylr for inspiration. Cudos.
 
