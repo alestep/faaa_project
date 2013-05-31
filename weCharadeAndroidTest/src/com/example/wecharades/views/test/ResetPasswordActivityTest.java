@@ -5,12 +5,17 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.ResetPasswordActivity;
 import com.jayway.android.robotium.solo.Solo;
-
+/**
+ * Test class to test the ResetPassword activity. Test ID: T03
+ * @author weCharade
+ * @see Acceptance Test document.
+ * @pre valid email adress.
+ */
 public class ResetPasswordActivityTest extends
 ActivityInstrumentationTestCase2<ResetPasswordActivity> {
 
 	private Solo solo;
-
+	private String validEmail ="adamlewestam@gmail.com";
 	public ResetPasswordActivityTest() {
 		super(ResetPasswordActivity.class);
 	}
@@ -41,11 +46,12 @@ ActivityInstrumentationTestCase2<ResetPasswordActivity> {
 		solo.waitForDialogToClose(3000);
 	}
 	/**
-	 * Variation 3 Case 1 and 2. Case 2 needs to be done without internetconnection.
+	 * @pre Case 2 needs to be done without internet connection.
+	 * Variation 3. Case 1 and 2.
 	 */
 	public void testValidEmail(){
 		solo.assertCurrentActivity("ResetPasswordActivity", ResetPasswordActivity.class);
-		solo.enterText(0, "adamlewestam@gmail.com");
+		solo.enterText(0, validEmail);
 		solo.clickOnButton("Send me a new password");
 		solo.waitForText("Email has been sent!");
 		solo.assertCurrentActivity("LoginScreen", LoginActivity.class);

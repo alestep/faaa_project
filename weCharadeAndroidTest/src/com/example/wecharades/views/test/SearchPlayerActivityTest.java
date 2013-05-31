@@ -7,8 +7,8 @@ import com.example.wecharades.views.SearchPlayerActivity;
 import com.jayway.android.robotium.solo.Solo;
 /**
  * Test class to test the search player function. Test ID: T04
- * @author Adam
- *
+ * @author weCharade
+ * @see Acceptance Test document
  */
 public class SearchPlayerActivityTest extends ActivityInstrumentationTestCase2<NewGameActivity> {
 

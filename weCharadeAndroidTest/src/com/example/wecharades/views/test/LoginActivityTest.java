@@ -1,19 +1,23 @@
 package com.example.wecharades.views.test;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.AutoCompleteTextView.Validator;
 
 import com.example.wecharades.views.LoginActivity;
 import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
 
 /**
- * @author Adam
+ * @author weCharade
  * Test class to test the LoginActivity Test ID: T02
+ * @pre valid user account
  */
 
 public class LoginActivityTest extends
 		ActivityInstrumentationTestCase2<LoginActivity> {
 	
+	private String userName = "adam";
+	private String password = "adam92";
 	private Solo solo;
 	
 	public LoginActivityTest() {
@@ -40,7 +44,7 @@ public class LoginActivityTest extends
 	 */
 	public void testPasswordEmptyFieldLogin(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0,"adam");
+		solo.enterText(0,userName);
 		solo.clickOnButton("Login");
 		solo.waitForDialogToOpen(5000);
 		solo.clickOnButton("OK");
@@ -50,8 +54,8 @@ public class LoginActivityTest extends
 	 */
 	public void testValidUsernameAndPasswordCaseOne(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam"); //Correct username
-		solo.enterText(1, "adam92"); //Correct password
+		solo.enterText(0, userName); //Correct username
+		solo.enterText(1, password); //Correct password
 		solo.clickOnButton("Login");
 		solo.waitForActivity(StartActivity.class);
 		solo.assertCurrentActivity("Assertion of StartScreen", StartActivity.class);
@@ -61,7 +65,7 @@ public class LoginActivityTest extends
 	 */
 	public void testValidUsernameAndPasswordCaseTwo(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam");
+		solo.enterText(0, userName);
 		solo.enterText(1, "WRONG_PASSWORD");
 		solo.clickOnButton("Login");
 		solo.waitForDialogToOpen(5000);
@@ -74,8 +78,8 @@ public class LoginActivityTest extends
 	 */
 	public void testValidUsernameAndPasswordCaseThree(){
 		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, "adam"); //Correct username
-		solo.enterText(1, "adam92"); //Correct password
+		solo.enterText(0, userName); //Correct username
+		solo.enterText(1, password); //Correct password
 		solo.clickOnButton("Login");
 		solo.waitForDialogToOpen(5000);
 		solo.clickOnButton("OK");
