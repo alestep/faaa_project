@@ -631,8 +631,11 @@ public class DataController extends Observable implements Observer{
 	 * @param player The player-representation of the player
 	 */
 	public void sendInvitation(Player player){
+		Invitation inv = new Invitation(getCurrentPlayer(), player);
 		//Create an invitation instance and send it to the database.
-		sendInvitation(new Invitation(getCurrentPlayer(), player));
+		sendInvitation(inv);
+		//Add a temp invitation in model
+		m.getSentInvitations().add(inv);
 	}
 
 	/**
