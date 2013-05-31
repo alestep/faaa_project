@@ -10,9 +10,9 @@ import com.jayway.android.robotium.solo.Solo;
 
 /**
  * 
- * @author Adam
+ * @author weCharade
  *Test class to test the GuessCharadeActivity Test ID: T07.
- *Precondition: The user must be logged out and have a game where it is the users turn to guess a charade.
+ * @pre The user must be logged out and have a game where it is the users turn to guess a charade.
  */
 
 public class GuessCharadeActivityTest extends
@@ -23,9 +23,9 @@ public class GuessCharadeActivityTest extends
 	private Solo solo;
 	private String USERNAME = "adam";
 	private String USER_PASSWORD="adam92";
-	private String OPPONENT_YOUR_TURN ="Felix";
-	private String WRONG_WORD ="ALKSsadA"; //random wrong letter combination
-	private String RIGHT_WORD = "horse";
+	private String OPPONENT_YOUR_TURN ="";
+	private String WRONG_WORD =""; //random wrong letter combination
+	private String RIGHT_WORD = "";
 	
 	public GuessCharadeActivityTest() {
 		super(LoginActivity.class);
@@ -39,46 +39,45 @@ public class GuessCharadeActivityTest extends
 	/**
 	 * Test ID: T07. Variation 1. Uses precondition.
 	 */
-	public void testGuessCharadeVideoGuessNotRight(){
-		solo.enterText(0, USERNAME);
-		solo.enterText(1, USER_PASSWORD);
-		solo.clickOnButton("Login");
-		solo.waitForActivity(StartActivity.class);
-		/*---------------------------------------*/
-		solo.clickOnText(OPPONENT_YOUR_TURN);
-		solo.waitForActivity(GameDashboardActivity.class);
-		solo.clickOnButton("Guess charade");
-		solo.waitForDialogToOpen(2000);
-		solo.waitForDialogToClose(3000);
-		solo.enterText(0, WRONG_WORD);
-		
-		solo.clickOnImageButton(0);
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("Retry");
-		solo.waitForDialogToClose(5000);
-	}
+//	public void testGuessCharadeVideoGuessNotRight(){
+//		solo.enterText(0, USERNAME);
+//		solo.enterText(1, USER_PASSWORD);
+//		solo.clickOnButton("Login");
+//		solo.waitForActivity(StartActivity.class);
+//		/*---------------------------------------*/
+//		solo.clickOnText(OPPONENT_YOUR_TURN);
+//		solo.waitForActivity(GameDashboardActivity.class);
+//		solo.clickOnButton("Guess charade");
+//		solo.waitForDialogToOpen(2000);
+//		solo.waitForDialogToClose(3000);
+//		solo.enterText(0, WRONG_WORD);
+//		
+//		solo.clickOnImageButton(0);
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("Retry");
+//		solo.waitForDialogToClose(5000);
+//	}
 	/**
 	 * Variation 2 - requires the right word. Precondition: Comment away row 98-101 in GuessCharadePresenter.java which updates the database.
 	 */
-	public void testGuessCharadeVideoGuessRight(){
-		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
-		solo.enterText(0, USERNAME);
-		solo.enterText(1, USER_PASSWORD);
-		solo.clickOnButton("Login");
-		solo.waitForActivity(StartActivity.class);
-//		/*---------------------------------------*/
-		solo.clickOnText(OPPONENT_YOUR_TURN);
-		solo.waitForActivity(GameDashboardActivity.class);
-		solo.clickOnButton("Guess charade");
-		solo.waitForDialogToOpen(2000);
-		solo.waitForDialogToClose(3000);
-		solo.enterText(0, RIGHT_WORD);
-		solo.clickOnImageButton(0);
-		solo.waitForDialogToOpen(5000);
-		solo.clickOnButton("Continue");
-		solo.waitForDialogToClose(5000);
-		
-	}
+//	public void testGuessCharadeVideoGuessRight(){
+//		solo.assertCurrentActivity("Check on LoginActivity", LoginActivity.class);
+//		solo.enterText(0, USERNAME);
+//		solo.enterText(1, USER_PASSWORD);
+//		solo.clickOnButton("Login");
+//		solo.waitForActivity(StartActivity.class);
+//		solo.clickOnText(OPPONENT_YOUR_TURN);
+//		solo.waitForActivity(GameDashboardActivity.class);
+//		solo.clickOnButton("Guess charade");
+//		solo.waitForDialogToOpen(2000);
+//		solo.waitForDialogToClose(3000);
+//		solo.enterText(0, RIGHT_WORD);
+//		solo.clickOnImageButton(0);
+//		solo.waitForDialogToOpen(5000);
+//		solo.clickOnButton("Continue");
+//		solo.waitForDialogToClose(5000);
+//		
+//	}
 	
 	@Override
 	public void tearDown() throws Exception{

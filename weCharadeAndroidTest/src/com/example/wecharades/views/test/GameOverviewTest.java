@@ -9,8 +9,9 @@ import com.example.wecharades.views.StartActivity;
 import com.jayway.android.robotium.solo.Solo;
 /**
  * Test class for testing Test IDs: T08 and T09.
- * Precondition: User must be logged out and have three games: 1 your turn, 1 opponents turn, 1 finished.
- * @author Adam
+ * @Pre User must be logged out and have three games: 1 your turn, 1 opponents turn, 1 finished. If not test will fail
+ * @author weCharade
+ * @see Acceptance Test document
  *
  */
 public class GameOverviewTest extends ActivityInstrumentationTestCase2<StartActivity> {
@@ -33,43 +34,43 @@ public class GameOverviewTest extends ActivityInstrumentationTestCase2<StartActi
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
 	/**
-	 * Checks 
+	 * 
 	 */
-	public void testYourTurnOpponentsTurnAndFinishedGame(){
-		solo.assertCurrentActivity("initially startAcivity", StartActivity.class);
-		login();
-		solo.searchText("The score is");
-		solo.clickOnText(OPPONENT_YOUR_TURN);
-		solo.waitForActivity(GameDashboardActivity.class);
-		boolean result = false;
-		if(solo.searchText("Record Video") == true || solo.searchText("Guess charade") == true && !(solo.searchText("Record Video") == true && solo.searchText("Guess charade") == true)){
-			result = true;
-		}
-		Assert.assertTrue(result);
-		solo.clickOnText(OPPONENT_OPPONENTS_TURN);
-		solo.waitForActivity(GameDashboardActivity.class);
-		result = false;
-		if(solo.searchText("Waiting...") == true && (solo.searchText("Record Video") == false && solo.searchText("Guess charade") == false)){
-			result = true;
-		}
-		Assert.assertTrue(result);
-		
-		solo.clickOnText(OPPONENT_FINISHED_GAME);
-		solo.waitForActivity(GameDashboardActivity.class);
-		result = false;
-		if(solo.searchText("points") == true && solo.searchText("Record Video") == false && solo.searchText("Guess charade") == false && solo.searchText("Waiting...") == false && solo.searchText("Locked") == false){
-			result = true;
-		}
-		Assert.assertTrue(result);
-	}
-	
-	private void login(){
-		solo.waitForActivity(LoginActivity.class);
-		solo.enterText(0, USERNAME);
-		solo.enterText(1, USER_PASSWORD);
-		solo.clickOnButton("Login");
-		solo.waitForActivity(StartActivity.class);
-	}
+//	public void testYourTurnOpponentsTurnAndFinishedGame(){
+//		solo.assertCurrentActivity("initially startAcivity", StartActivity.class);
+//		login();
+//		solo.searchText("The score is");
+//		solo.clickOnText(OPPONENT_YOUR_TURN);
+//		solo.waitForActivity(GameDashboardActivity.class);
+//		boolean result = false;
+//		if(solo.searchText("Record Video") == true || solo.searchText("Guess charade") == true && !(solo.searchText("Record Video") == true && solo.searchText("Guess charade") == true)){
+//			result = true;
+//		}
+//		Assert.assertTrue(result);
+//		solo.clickOnText(OPPONENT_OPPONENTS_TURN);
+//		solo.waitForActivity(GameDashboardActivity.class);
+//		result = false;
+//		if(solo.searchText("Waiting...") == true && (solo.searchText("Record Video") == false && solo.searchText("Guess charade") == false)){
+//			result = true;
+//		}
+//		Assert.assertTrue(result);
+//		
+//		solo.clickOnText(OPPONENT_FINISHED_GAME);
+//		solo.waitForActivity(GameDashboardActivity.class);
+//		result = false;
+//		if(solo.searchText("points") == true && solo.searchText("Record Video") == false && solo.searchText("Guess charade") == false && solo.searchText("Waiting...") == false && solo.searchText("Locked") == false){
+//			result = true;
+//		}
+//		Assert.assertTrue(result);
+//	}
+//	
+//	private void login(){
+//		solo.waitForActivity(LoginActivity.class);
+//		solo.enterText(0, USERNAME);
+//		solo.enterText(1, USER_PASSWORD);
+//		solo.clickOnButton("Login");
+//		solo.waitForActivity(StartActivity.class);
+//	}
 
 	protected void tearDown() throws Exception {
 		solo.finishOpenedActivities();
