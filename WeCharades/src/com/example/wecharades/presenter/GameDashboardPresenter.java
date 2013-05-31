@@ -48,9 +48,9 @@ public class GameDashboardPresenter extends Presenter {
 		//Get the game from the clicked object in StartActivity
 		game = (Game) activity.getIntent().getSerializableExtra("Game");
 
-		//Retrieve a turnList from DataController for a specific game
-		turnList = dc.getTurns(game);
-		if(turnList != null || !turnList.isEmpty()) {
+		if(game != null ) {
+			//Retrieve a turnList from DataController for a specific game
+			turnList = dc.getTurns(game);
 			Collections.sort(turnList);
 			buttonList = getAllButtons(table);
 
@@ -59,6 +59,7 @@ public class GameDashboardPresenter extends Presenter {
 
 			updateButtons(turnList, buttonList);
 		}
+
 	}
 
 	/**
