@@ -117,15 +117,47 @@ public class GuessCharadePresenter extends Presenter {
 				//If timer runs out both players receives a zero score
 				turn.setRecPlayerScore(0);
 				turn.setAnsPlayerScore(0);
+				
+				//Update turn properties
 				turn.setState(Turn.FINISH);
 				dc.updateGame(turn);
 				
-				//Go to StartActivity
-				Intent intent = new Intent(activity, StartActivity.class);
-				intent.putExtra("Game", dc.getGame(turn.getGameId()));
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				activity.startActivity(intent);
-				activity.finish();
+				//Set new dialog and show the right word
+				final Dialog dialog = new Dialog(activity);
+				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				dialog.setContentView(R.layout.dialog_negative);
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));               
+
+				TextView title = (TextView) dialog.findViewById(R.id.negativeTitle);
+				title.setText("Game finished");
+
+				TextView text = (TextView) dialog.findViewById(R.id.negativeText);
+				text.setText("The right word was: " + turn.getWord());
+
+				Button button = (Button) dialog.findViewById(R.id.dismiss);
+				button.setText("OK");
+
+				button.setOnClickListener(new OnClickListener() {          
+
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+						if(!dialog.isShowing()) {
+							
+							//Go to StartActivity
+							Intent intent = new Intent(activity, StartActivity.class);
+							intent.putExtra("Game", dc.getGame(turn.getGameId()));
+							
+							//Go back to the StartActivity in the bottom of the stack
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							activity.startActivity(intent);
+							activity.finish();
+						}
+					}
+				});
+				
+
 			}
 		};
 	}
@@ -153,6 +185,7 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	public void playVideo() {
 		try {
+			//Listen to VideoView if prepared
 			videoView.setOnPreparedListener(new OnPreparedListener() {
 
 				@Override
@@ -161,6 +194,7 @@ public class GuessCharadePresenter extends Presenter {
 				}
 			});
 			
+			//Set path of VideoView and start
 			videoView.setVideoPath(SAVE_PATH);
 			videoView.start();
 			
@@ -176,6 +210,8 @@ public class GuessCharadePresenter extends Presenter {
 	 */
 	private String shuffleWord(){
 		currentWord = turn.getWord();
+		
+		//Set alphabet and shuffle its letters
 		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 		alphabet = shuffle(alphabet);
 		
@@ -274,7 +310,9 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onClick(View v) {
-					cancel(true);
+					dialog.dismiss();
+					if (!dialog.isShowing())
+						activity.finish();
 				}
 			});
 			dialog.show();
@@ -377,10 +415,6 @@ public class GuessCharadePresenter extends Presenter {
 					}
 				});
 			}
-			else {
-				activity.finish();
-			}
-
 		}
 	}
 

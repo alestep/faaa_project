@@ -200,7 +200,9 @@ public class Database extends Observable implements IDatabase {
 				parseList.add(createTurn(newGame, i, wordList.pop(), recP, ansP));
 			}
 			//Save all parts of the game - Game and Turns
-			ParseObject.saveAll(parseList);
+			for(ParseObject obj : parseList){
+				obj.saveEventually();
+			}
 		} catch(ParseException e){
 			sendError(new DatabaseException(e.getCode(), e.getMessage()));
 		}
