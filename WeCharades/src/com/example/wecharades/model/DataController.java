@@ -217,6 +217,23 @@ public class DataController extends Observable implements Observer{
 		}
 		return p;
 	}
+	/**
+	 * Return an updated instace of the provided player
+	 * @param player - the player to update
+	 * @return an updated Player object
+	 */
+	public Player getUpdatePlayer(Player player){
+		//TODO implement this on account screen
+		if(player != null){
+			try{
+				return db.getPlayerById(player.getParseId());
+			} catch(DatabaseException e){
+				setChanged();
+				notifyObservers(new DCMessage(DCMessage.ERROR, e.prettyPrint()));
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Returns a list of all players as objects from the database. 
@@ -276,7 +293,7 @@ public class DataController extends Observable implements Observer{
 	public void createGame(Player p1, Player p2){
 		db.createGame(p1, p2);
 	}
-	
+
 	/**
 	 * Return the local version of the game by its gameId
 	 * @param gameId - the GameId
@@ -292,7 +309,7 @@ public class DataController extends Observable implements Observer{
 	public ArrayList<Game> getGames(){
 		return m.getGames();
 	}
-	
+
 	/**
 	 * Fetches games from the database (updates model on reply)
 	 */
@@ -305,7 +322,7 @@ public class DataController extends Observable implements Observer{
 	 * This method compares the local cashed games against the fetched games from the database.
 	 * 	The game which is ahead is updated in both positions.  
 	 * @param dbGames
-	 * @return
+	 * @return an ArrayList with games
 	 */
 	private ArrayList<Game> parseGameList(TreeMap<Game, ArrayList<Turn>> dbGames){
 		Game localGame;
@@ -360,6 +377,7 @@ public class DataController extends Observable implements Observer{
 		removeOldGames(new ArrayList<Game>(dbGames.keySet()));
 		return m.getGames();
 	}
+	
 	/**
 	 * This part removes any games that are "to old".
 	 * @param dbGames - the list of games received form the database.
@@ -459,7 +477,7 @@ public class DataController extends Observable implements Observer{
 	public ArrayList<Turn> getTurns(Game game){
 		return m.getTurns(game);
 	}
-	
+
 	/**
 	 * Update the game to the database and model. This method will update both games and turns.
 	 * @param turn - the current turn of the game.
@@ -608,7 +626,7 @@ public class DataController extends Observable implements Observer{
 		}
 		return usernames;
 	}
-	
+
 	/**
 	 * Get all received invitations for the current player
 	 * @return A List with invitations
@@ -662,7 +680,7 @@ public class DataController extends Observable implements Observer{
 	 */
 	private class RemoveVideoFromServer extends AsyncTask <Void, Long, Boolean> {
 		String gameId;
-		
+
 		public RemoveVideoFromServer(String game) {
 			/*
 			 * TODO ADAM - CHECK THIS!!! WAS PREVIOUSLY this.gameId = gameIs (was never set)

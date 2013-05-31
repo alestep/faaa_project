@@ -652,7 +652,7 @@ public class Database extends Observable implements IDatabase {
 						if(queryList.isEmpty()){
 							db.putRandom(player);
 							setChanged();
-							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Put in queue"));
+							notifyObservers(new DBMessage(DBMessage.MESSAGE, "Placed in queue"));
 						} else {
 							/*
 							 * Check if the current player is in the queue 
