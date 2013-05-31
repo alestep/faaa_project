@@ -310,7 +310,9 @@ public class GuessCharadePresenter extends Presenter {
 
 				@Override
 				public void onClick(View v) {
-					cancel(true);
+					dialog.dismiss();
+					if (!dialog.isShowing())
+						activity.finish();
 				}
 			});
 			dialog.show();
@@ -413,10 +415,6 @@ public class GuessCharadePresenter extends Presenter {
 					}
 				});
 			}
-			else {
-				activity.finish();
-			}
-
 		}
 	}
 
