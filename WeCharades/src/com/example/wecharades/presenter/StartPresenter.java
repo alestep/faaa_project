@@ -24,7 +24,7 @@ import com.parse.PushService;
 
 /**
  * 
- * @author Alexander
+ * @author weCharade
  *
  */
 public class StartPresenter extends Presenter implements Observer{

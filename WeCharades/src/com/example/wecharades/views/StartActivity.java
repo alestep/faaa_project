@@ -49,7 +49,7 @@ public class StartActivity extends GenericActivity {
 		gameListView = (ListView) findViewById(R.id.gameList);
 		invitations = (ImageButton) findViewById(R.id.invitations);
 		account = (Button) findViewById(R.id.account);
-		
+
 		//This class uses a RefreshProgressBar to visualize that data is fetched in the background
 		refresh = new RefreshProgressBar(this, (ImageButton) findViewById(R.id.refresh));
 
@@ -60,9 +60,11 @@ public class StartActivity extends GenericActivity {
 
 	@Override
 	public void onStart(){
-		presenter.initiate();
-		presenter.update();
 		super.onStart();
+		presenter.initiate();
+		if(!getIntent().getBooleanExtra("finish", false)){
+			presenter.update();
+		}
 	}
 
 	@Override
@@ -115,7 +117,7 @@ public class StartActivity extends GenericActivity {
 		Intent intent = new Intent (getApplicationContext(), AccountActivity.class);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Display the name of the current user
 	 * @param user
@@ -123,7 +125,7 @@ public class StartActivity extends GenericActivity {
 	public void setAccountName(String user){
 		account.setText(user);
 	}
-	
+
 	/**
 	 * Set the list of games which is displayed on the screen,
 	 * add onItemClickListeners to every item in the list and handle clicks
@@ -147,7 +149,7 @@ public class StartActivity extends GenericActivity {
 			}
 		});
 	}
-	
+
 	/**
 	 * Display if any new invitations are received
 	 * @param nrInvites
@@ -179,7 +181,7 @@ public class StartActivity extends GenericActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	protected RefreshProgressBar getProgressBar() {
 		return refresh;
