@@ -49,7 +49,7 @@ public class DCMessage implements IMessage{
 						//If the list is empty, we can safely ignore containing type
 						this.message = message;
 					}
-				} else{this.message = message;} break;
+				} else{this.message = UNDEFINED;} break;
 			case(INVITATIONS): 
 				if(data instanceof List){
 					if(!((List) data).isEmpty()){
