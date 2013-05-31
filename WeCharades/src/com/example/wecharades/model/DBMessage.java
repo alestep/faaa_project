@@ -26,6 +26,7 @@ public class DBMessage implements IMessage{
 
 	@SuppressWarnings("rawtypes")
 	public DBMessage(int message, Object data){
+		this.data = data;
 		//We make some type controls to increase the validity of provided data.
 		if(data != null){
 			switch(message){
@@ -38,16 +39,18 @@ public class DBMessage implements IMessage{
 							this.message = message;
 						}
 					} else{
+						//If the list is empty, we can safely ignore containing type
 						this.message = message;
 					}
 				} else{this.message = UNDEFINED;} break;
 			case(INVITATIONS): 	
 				if(data instanceof List){
 					if(!((List) data).isEmpty()){
-						if(((List) data).iterator().next().getClass().equals(Game.class)){
+						if(((List) data).iterator().next().getClass().equals(Invitation.class)){
 							this.message = message;
 						}
 					} else{
+						//If the list is empty, we can safely ignore containing type
 						this.message = message;
 					}
 				} else{this.message = UNDEFINED;} break;
@@ -57,7 +60,6 @@ public class DBMessage implements IMessage{
 		} else{
 			this.message = UNDEFINED;
 		}
-		this.data = data;
 	}
 
 	/**
