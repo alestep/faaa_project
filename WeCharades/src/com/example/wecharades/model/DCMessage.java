@@ -42,6 +42,8 @@ public class DCMessage implements IMessage{
 					if(!((List) data).isEmpty()){
 						if(((List) data).iterator().next().getClass().equals(Game.class)){
 							this.message = message;
+						} else{
+							this.message = UNDEFINED;
 						}
 					} else{
 						//If the list is empty, we can safely ignore containing type
@@ -53,13 +55,15 @@ public class DCMessage implements IMessage{
 					if(!((List) data).isEmpty()){
 						if(((List) data).iterator().next().getClass().equals(Invitation.class)){
 							this.message = message;
+						} else{
+							this.message = UNDEFINED;
 						}
 					} else{
 						//If the list is empty, we can safely ignore containing type
 						this.message = message;
 					}
 				} else{ this.message = UNDEFINED;} break;
-			default		: this.message = UNDEFINED; break;
+			default: this.message = UNDEFINED; break;
 			}
 		} else{
 			this.message = UNDEFINED;
