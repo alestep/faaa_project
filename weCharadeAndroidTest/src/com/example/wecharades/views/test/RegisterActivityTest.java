@@ -85,8 +85,12 @@ public class RegisterActivityTest extends
 		solo.waitForDialogToClose(3000);
 	}
 	/**
+<<<<<<< Updated upstream
 	 * @pre User not already registered. No internet connection for case 4.
 	 * Variation 6
+=======
+	 * Variation 6 - All 4 different cases are depending on if there is a user already registered in the database or if there exists an internetconnection.
+>>>>>>> Stashed changes
 	 */
 	public void testCorrectInputs(){
 		solo.assertCurrentActivity("Assert RegisterActivity", RegisterActivity.class);
